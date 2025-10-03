@@ -2,23 +2,32 @@ import { Star } from "lucide-react"
 
 export function HeroSection() {
   return (
-    <section className="relative pt-32 pb-20 px-4 overflow-hidden">
+    <section className="relative pt-32 pb-20 px-4 overflow-hidden min-h-screen">
+      {/* Background image */}
+      <div 
+        className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: "url('/Background.png')",
+        }}
+      />
+      {/* Background overlay for better text readability */}
+      <div className="absolute inset-0 bg-black/40" />
       {/* Background gradient effect */}
-      <div className="absolute inset-0 bg-gradient-to-b from-primary/20 via-background to-background" />
+      <div className="absolute inset-0 bg-gradient-to-b from-primary/20 via-background/50 to-background/80" />
       <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-radial from-primary/30 to-transparent blur-3xl" />
 
       <div className="container mx-auto relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
           <div className="space-y-6">
             <h1 className="text-5xl lg:text-6xl font-bold leading-tight text-balance">
-              <span className="text-primary">Play Soccer</span>
+              <span className="text-primary">Play Paddle</span>
               <br />
               <span className="text-foreground">Anywhere,</span>
               <br />
               <span className="text-foreground">Anytime</span>
             </h1>
             <p className="text-lg text-muted-foreground max-w-md text-pretty">
-              Find a game near you, connect with players, and experience the joy of Soccer like never before.
+              Find a game near you, connect with players, and experience of the sport of Paddle like never before.
             </p>
             <div className="flex flex-wrap gap-3">
               <a href="#" className="inline-block">
@@ -62,20 +71,6 @@ export function HeroSection() {
                 </div>
                 <p className="text-sm text-muted-foreground">Join 5000+ players just like you</p>
               </div>
-            </div>
-          </div>
-          <div className="relative lg:h-[600px] flex items-center justify-center">
-            <div className="relative w-full max-w-md">
-              <img
-                src="/soccer-app-mobile-interface.jpg"
-                alt="Plei App Interface"
-                className="relative z-10 w-3/5 mx-auto drop-shadow-2xl"
-              />
-              <img
-                src="/soccer-app-game-list.jpg"
-                alt="Plei App Games"
-                className="absolute top-12 right-0 w-3/5 drop-shadow-2xl transform rotate-12"
-              />
             </div>
           </div>
         </div>

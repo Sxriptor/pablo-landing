@@ -18,7 +18,7 @@ export function Header() {
                 <path d="M12 2v20M2 12h20" />
               </svg>
             </div>
-            <span className="text-xl font-bold">plei</span>
+            <span className="text-xl font-bold">Pablo</span>
           </div>
           <nav className="hidden md:flex items-center gap-6">
             <a href="#about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
@@ -28,7 +28,7 @@ export function Header() {
               Contact
             </a>
             <a href="#plei2" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-              Meet Plei 2.0
+              Meet Pablo
             </a>
             <a href="#partners" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Partners
