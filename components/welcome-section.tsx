@@ -15,15 +15,16 @@ export function WelcomeSection() {
                 game, host matches, or connect with others who share your passion. Plei makes it effortless.
               </p>
             </div>
-            <div className="rounded-lg overflow-hidden">
+            <div className="rounded-lg overflow-hidden relative h-[600px]">
               <video
                 src="/welcome-video.mp4"
-                className="w-full h-auto object-cover"
+                className="w-full h-full object-cover"
                 autoPlay
                 loop
                 muted
                 playsInline
               />
+              <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, rgba(13, 18, 22, 0.6) 0%, rgba(69, 104, 130, 0.3) 100%)' }} />
             </div>
           </div>
 

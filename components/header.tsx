@@ -45,7 +45,7 @@ export function Header() {
             <a href="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Contact
             </a>
-            <a href="/plei2" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <a href="/meet-padlo" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Meet Pablo
             </a>
             <a href="/partners" className="text-sm text-muted-foreground hover:text-foreground transition-colors">

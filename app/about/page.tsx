@@ -73,7 +73,7 @@ export default function AboutPage() {
             <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
               <div className="mb-8">
                 <h1 className="text-6xl lg:text-7xl xl:text-8xl font-light text-white mb-8 tracking-tight">
-                  About <span style={{ color: '#456882' }}>Plei</span>
+                  About <span style={{ color: '#456882' }}>Padlo</span>
                 </h1>
                 <div className="w-24 h-px mx-auto mb-8" style={{ backgroundColor: '#456882' }}></div>
                 <p className="text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto font-light leading-relaxed">
@@ -99,7 +99,7 @@ export default function AboutPage() {
                   </div>
                   <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
                     <p className="font-light">
-                      Plei was born from a simple observation: padel is one of the fastest-growing sports in the world, yet finding a game or connecting with other players remained surprisingly difficult.
+                      Padlo was born from a simple observation: padel is one of the fastest-growing sports in the world, yet finding a game or connecting with other players remained surprisingly difficult.
                     </p>
                     <p className="font-light">
                       We set out to change that by building a platform that brings players, courts, and communities together in one seamless experience.
@@ -112,7 +112,7 @@ export default function AboutPage() {
                   </div>
                   <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
                     <p className="font-light">
-                      Whether you're a seasoned pro or picking up a racquet for the first time, Plei makes it easy to find your next game.
+                      Whether you're a seasoned pro or picking up a racquet for the first time, Padlo makes it easy to find your next game.
                     </p>
                     <p className="font-light">
                       Today, we're proud to serve thousands of players across multiple cities, partnering with leading facilities and brands to grow the sport we all love.
