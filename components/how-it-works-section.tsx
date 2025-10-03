@@ -19,13 +19,13 @@ export function HowItWorksSection() {
       icon: Users,
       title: "Show Up & Play",
       description:
-        "Check-in at the facility, play the beautiful game and make new connections with people who share your passion.",
+        "Check-in at the facility, play your favorite sport and make new connections with people who share your passion.",
       image: "/padel-players-on-court.jpg",
     },
   ]
 
   return (
-    <section className="py-20 px-4" style={{ background: '#060606' }}>
+    <section className="py-20 px-4" style={{ background: '#050a0f' }}>
       <div className="container mx-auto">
         <div className="max-w-2xl mb-16">
           <p className="text-primary text-sm font-semibold mb-2">How it works</p>

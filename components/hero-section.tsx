@@ -19,9 +19,9 @@ export function HeroSection() {
         <div className="grid lg:grid-cols-2 gap-12 items-end h-full">
           <div className="space-y-4 flex flex-col justify-end">
             <h1 className="text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight text-balance">
-              <span style={{ color: '#456882' }}>Play Padel</span>
+              <span style={{ color: '#456882' }}>Play Sports</span>
               <br />
-              <span 
+              <span
                 className="whitespace-nowrap text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-center lg:text-left block lg:inline"
                 style={{ color: 'white' }}
               >
@@ -29,7 +29,7 @@ export function HeroSection() {
               </span>
             </h1>
             <p className="text-lg text-white max-w-md text-pretty">
-              Find a game near you, connect with players, and experience of the sport of Padel like never before.
+              Find a game near you, connect with players, and experience sports like never before.
             </p>
             <div className="flex flex-wrap gap-3">
               <a href="#" className="inline-block">

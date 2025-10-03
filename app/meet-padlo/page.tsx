@@ -5,7 +5,7 @@ export default function MeetPadloPage() {
   const upcomingFeatures = [
     {
       title: "Multi-Sport Platform",
-      description: "Expand beyond padel to tennis, pickleball, badminton, and more racquet sports.",
+      description: "Support multiple sports including soccer, football, tennis, pickleball, padel, badminton, and more.",
       icon: (
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
@@ -64,7 +64,7 @@ export default function MeetPadloPage() {
     {
       phase: "Phase 1",
       title: "Foundation",
-      description: "Core platform with padel focus",
+      description: "Core platform foundation",
       features: ["Court booking", "Player matching", "Basic tournaments"],
       status: "completed"
     },
@@ -72,7 +72,7 @@ export default function MeetPadloPage() {
       phase: "Phase 2",
       title: "Expansion",
       description: "Multi-sport integration",
-      features: ["Tennis courts", "Pickleball venues", "Badminton facilities"],
+      features: ["Soccer fields", "Tennis courts", "Pickleball venues", "Football pitches"],
       status: "in-progress"
     },
     {
@@ -99,7 +99,7 @@ export default function MeetPadloPage() {
   ]
 
   return (
-    <div className="min-h-screen" style={{ background: '#060606' }}>
+    <div className="min-h-screen" style={{ background: '#050a0f' }}>
       <div className="relative">
         <Header />
 
@@ -120,7 +120,7 @@ export default function MeetPadloPage() {
             />
             <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
               <div className="mb-8">
-                <h1 className="text-6xl lg:text-7xl xl:text-8xl font-light text-white mb-8 tracking-tight">
+                <h1 className="text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-8 tracking-tight">
                   Meet <span style={{ color: '#456882' }}>Padlo 2.0</span>
                 </h1>
                 <div className="w-24 h-px mx-auto mb-8" style={{ backgroundColor: '#456882' }}></div>
@@ -132,7 +132,7 @@ export default function MeetPadloPage() {
           </section>
 
           {/* Stats Section */}
-          <section className="py-32 px-4" style={{ background: '#060606' }}>
+          <section className="py-32 px-4" style={{ background: '#050a0f' }}>
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-20">
                 <h2 className="text-4xl lg:text-5xl font-light text-white mb-6 tracking-tight">
@@ -156,7 +156,7 @@ export default function MeetPadloPage() {
           </section>
 
           {/* Vision Section */}
-          <section className="py-32 px-4" style={{ background: '#060606' }}>
+          <section className="py-32 px-4" style={{ background: '#050a0f' }}>
             <div className="max-w-5xl mx-auto">
               <div className="text-center mb-16">
                 <h2 className="text-4xl lg:text-5xl font-light text-white mb-6 tracking-tight">
@@ -171,7 +171,7 @@ export default function MeetPadloPage() {
                   </div>
                   <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
                     <p className="font-light">
-                      Padlo 2.0 represents our evolution from a padel-focused platform to a comprehensive sports ecosystem.
+                      Padlo 2.0 represents our evolution to a comprehensive multi-sport platform connecting players across all sports.
                     </p>
                     <p className="font-light">
                       We're building the world's largest sports community, connecting players across multiple disciplines and creating opportunities for growth, competition, and friendship.
@@ -184,7 +184,7 @@ export default function MeetPadloPage() {
                   </div>
                   <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
                     <p className="font-light">
-                      From tennis courts to pickleball venues, from local clubs to international tournaments, Padlo 2.0 will be your gateway to the entire sports world.
+                      From soccer fields to tennis courts, from padel matches to football games, Padlo 2.0 will be your gateway to the entire sports world.
                     </p>
                     <p className="font-light">
                       Join us as we revolutionize how people discover, connect, and play sports together.
@@ -196,7 +196,7 @@ export default function MeetPadloPage() {
           </section>
 
           {/* Upcoming Features */}
-          <section className="py-32 px-4" style={{ background: '#060606' }}>
+          <section className="py-32 px-4" style={{ background: '#050a0f' }}>
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-20">
                 <h2 className="text-4xl lg:text-5xl font-light text-white mb-6 tracking-tight">
@@ -223,7 +223,7 @@ export default function MeetPadloPage() {
           </section>
 
           {/* Roadmap Section */}
-          <section className="py-32 px-4" style={{ background: '#060606' }}>
+          <section className="py-32 px-4" style={{ background: '#050a0f' }}>
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-20">
                 <h2 className="text-4xl lg:text-5xl font-light text-white mb-6 tracking-tight">
@@ -274,7 +274,7 @@ export default function MeetPadloPage() {
           </section>
 
           {/* CTA Section */}
-          <section className="py-32 px-4" style={{ background: '#060606' }}>
+          <section className="py-32 px-4" style={{ background: '#050a0f' }}>
             <div className="max-w-5xl mx-auto text-center">
               <h2 className="text-5xl lg:text-6xl font-light text-white mb-8 tracking-tight">
                 Join the Journey

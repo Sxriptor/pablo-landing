@@ -10,7 +10,7 @@ export function CtaSection() {
               <div className="max-w-xl space-y-6">
                 <h2 className="text-4xl lg:text-5xl font-bold text-balance">Ready to Elevate Your Game?</h2>
                 <p className="text-lg text-muted-foreground text-pretty">
-                  Join thousands of players creating connections through padel.
+                  Join thousands of players creating connections through sports.
                 </p>
                 <div className="flex flex-wrap gap-3">
                   <a href="#" className="inline-block">

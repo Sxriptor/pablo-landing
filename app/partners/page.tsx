@@ -12,7 +12,7 @@ export default function PartnersPage() {
   const partnershipTypes = [
     {
       title: "Sponsorships",
-      description: "Align your brand with the fastest-growing racquet sport. Reach engaged players through our platform and events.",
+      description: "Align your brand with the fastest-growing sports community. Reach engaged players through our platform and events.",
       icon: (
         <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
@@ -51,7 +51,7 @@ export default function PartnersPage() {
   ]
 
   return (
-    <div className="min-h-screen" style={{ background: '#060606' }}>
+    <div className="min-h-screen" style={{ background: '#050a0f' }}>
       <div className="relative">
         <Header />
 
@@ -72,19 +72,19 @@ export default function PartnersPage() {
             />
             <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
               <div className="mb-8">
-                <h1 className="text-6xl lg:text-7xl xl:text-8xl font-light text-white mb-8 tracking-tight">
+                <h1 className="text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-8 tracking-tight">
                   Partner with <span style={{ color: '#456882' }}>Plei</span>
                 </h1>
                 <div className="w-24 h-px mx-auto mb-8" style={{ backgroundColor: '#456882' }}></div>
                 <p className="text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto font-light leading-relaxed">
-                  Join us in building the world's largest padel community
+                  Join us in building the world's largest sports community
                 </p>
               </div>
             </div>
           </section>
 
           {/* Stats Section */}
-        <section className="py-32 px-4" style={{ background: '#060606' }}>
+        <section className="py-32 px-4" style={{ background: '#050a0f' }}>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-20">
               <h2 className="text-4xl lg:text-5xl font-light text-white mb-6 tracking-tight">
@@ -108,7 +108,7 @@ export default function PartnersPage() {
         </section>
 
         {/* Partnership Opportunities */}
-        <section className="py-32 px-4" style={{ background: '#060606' }}>
+        <section className="py-32 px-4" style={{ background: '#050a0f' }}>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-20">
               <h2 className="text-4xl lg:text-5xl font-light text-white mb-6 tracking-tight">
@@ -135,7 +135,7 @@ export default function PartnersPage() {
         </section>
 
         {/* Trusted Partners */}
-        <section className="py-32 px-4" style={{ background: '#060606' }}>
+        <section className="py-32 px-4" style={{ background: '#050a0f' }}>
           <div className="max-w-6xl mx-auto">
             <div className="text-center mb-20">
               <h2 className="text-4xl lg:text-5xl font-light text-white mb-6 tracking-tight">
@@ -158,14 +158,14 @@ export default function PartnersPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-32 px-4" style={{ background: '#060606' }}>
+        <section className="py-32 px-4" style={{ background: '#050a0f' }}>
           <div className="max-w-5xl mx-auto text-center">
             <h2 className="text-5xl lg:text-6xl font-light text-white mb-8 tracking-tight">
               Ready to Partner?
             </h2>
             <div className="w-24 h-px mx-auto mb-12" style={{ backgroundColor: '#456882' }}></div>
             <p className="text-xl text-gray-300 mb-16 max-w-3xl mx-auto font-light leading-relaxed">
-              Let's discuss how we can work together to grow the sport and reach engaged players worldwide.
+              Let's discuss how we can work together to grow sports and reach engaged players worldwide.
             </p>
             <a
               href="/contact"
