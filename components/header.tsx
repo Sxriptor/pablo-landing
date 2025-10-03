@@ -1,8 +1,26 @@
+"use client"
+
 import { Button } from "@/components/ui/button"
+import { useEffect, useState } from "react"
 
 export function Header() {
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50)
+    }
+
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   return (
-    <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-sm border-b border-border/50">
+    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+      isScrolled 
+        ? 'bg-background/40 backdrop-blur-sm border-b border-border/50' 
+        : 'bg-transparent'
+    }`}>
       <div className="container mx-auto px-4 py-4 flex items-center justify-between">
         <div className="flex items-center gap-8">
           <div className="flex items-center gap-2">
@@ -18,7 +36,7 @@ export function Header() {
                 <path d="M12 2v20M2 12h20" />
               </svg>
             </div>
-            <span className="text-xl font-bold">Pablo</span>
+            <span className="text-xl text-white font-bold">Pablo</span>
           </div>
           <nav className="hidden md:flex items-center gap-6">
             <a href="#about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">

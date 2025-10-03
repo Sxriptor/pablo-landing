@@ -2,31 +2,27 @@ import { Star } from "lucide-react"
 
 export function HeroSection() {
   return (
-    <section className="relative pt-32 pb-20 px-4 overflow-hidden min-h-screen">
+    <section className="relative pt-32 pb-20 px-2 lg:px-12 overflow-hidden min-h-screen">
       {/* Background image */}
       <div 
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
-          backgroundImage: "url('/Background.png')",
+          backgroundImage: "url('/Backgrounddark1.png')",
         }}
       />
       {/* Background overlay for better text readability */}
-      <div className="absolute inset-0 bg-black/40" />
+      <div className="absolute inset-0 bg-black/0" />
       {/* Background gradient effect */}
-      <div className="absolute inset-0 bg-gradient-to-b from-primary/20 via-background/50 to-background/80" />
-      <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-radial from-primary/30 to-transparent blur-3xl" />
 
-      <div className="container mx-auto relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          <div className="space-y-6">
-            <h1 className="text-5xl lg:text-6xl font-bold leading-tight text-balance">
-              <span className="text-primary">Play Paddle</span>
+      <div className="relative z-10">
+        <div className="grid lg:grid-cols-2 gap-12 items-center min-h-screen">
+          <div className="space-y-8">
+            <h1 className="text-7xl lg:text-8xl xl:text-9xl font-bold leading-tight text-balance">
+              <span style={{ color: '#1B3C53' }}>Play Padle,</span>
               <br />
-              <span className="text-foreground">Anywhere,</span>
-              <br />
-              <span className="text-foreground">Anytime</span>
+              <span style={{ color: 'white' }}>Anytime, Anywhere</span>
             </h1>
-            <p className="text-lg text-muted-foreground max-w-md text-pretty">
+            <p className="text-lg text-white max-w-md text-pretty">
               Find a game near you, connect with players, and experience of the sport of Paddle like never before.
             </p>
             <div className="flex flex-wrap gap-3">
