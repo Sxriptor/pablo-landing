@@ -47,7 +47,7 @@ export function ContactForm() {
       <div 
         className="rounded-[20px] p-8 lg:p-10 backdrop-blur-md"
         style={{
-          background: 'rgba(13, 18, 22, 0.6)',
+          background: 'linear-gradient(135deg, rgba(13, 18, 22, 0.6) 0%, rgba(69, 104, 130, 0.3) 100%)',
           border: '1.5px solid rgba(70, 104, 130, 0.4)',
           boxShadow: '0 0 40px rgba(70, 104, 130, 0.2), inset 0 0 20px rgba(70, 104, 130, 0.08)',
         }}

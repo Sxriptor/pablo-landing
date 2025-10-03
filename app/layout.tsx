@@ -5,9 +5,9 @@ import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Padlo - Padle Finder',
+  title: 'Padlo - Padel Finder',
   description: 'Created with v0',
-  generator: 'Padlo - Padle Finder',
+  generator: 'Padlo - Padel Finder',
 }
 
 export default function RootLayout({

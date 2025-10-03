@@ -34,7 +34,7 @@ export function HowItWorksSection() {
 
         <div className="grid md:grid-cols-3 gap-8">
           {steps.map((step, index) => (
-            <div key={index} className="space-y-6 p-6 rounded-2xl backdrop-blur" style={{ background: 'rgba(69, 104, 130, 0.15)', border: '1px solid rgba(69, 104, 130, 0.3)' }}>
+            <div key={index} className="space-y-6 p-6 rounded-2xl backdrop-blur" style={{ background: 'linear-gradient(135deg, rgba(13, 18, 22, 0.6) 0%, rgba(69, 104, 130, 0.3) 100%)', border: '1px solid rgba(69, 104, 130, 0.3)' }}>
               <div className="w-12 h-12 rounded-full flex items-center justify-center" style={{ background: 'rgba(69, 104, 130, 0.3)' }}>
                 <step.icon className="w-6 h-6" style={{ color: '#456882' }} />
               </div>

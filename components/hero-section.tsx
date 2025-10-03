@@ -2,7 +2,7 @@ import { Star } from "lucide-react"
 
 export function HeroSection() {
   return (
-    <section className="relative pt-32 pb-20 px-2 lg:px-12 overflow-hidden min-h-screen">
+    <section className="relative pt-20 pb-12 px-2 lg:px-12 overflow-hidden h-screen">
       {/* Background image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -15,11 +15,11 @@ export function HeroSection() {
         background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 1) 100%)'
       }} />
 
-      <div className="relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center min-h-screen">
-          <div className="space-y-8">
+      <div className="relative z-10 h-full">
+        <div className="grid lg:grid-cols-2 gap-12 items-end h-full">
+          <div className="space-y-4 flex flex-col justify-end">
             <h1 className="text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight text-balance">
-              <span style={{ color: '#456882' }}>Play Padle</span>
+              <span style={{ color: '#456882' }}>Play Padel</span>
               <br />
               <span 
                 className="whitespace-nowrap text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-center lg:text-left block lg:inline"
@@ -29,7 +29,7 @@ export function HeroSection() {
               </span>
             </h1>
             <p className="text-lg text-white max-w-md text-pretty">
-              Find a game near you, connect with players, and experience of the sport of Paddle like never before.
+              Find a game near you, connect with players, and experience of the sport of Padel like never before.
             </p>
             <div className="flex flex-wrap gap-3">
               <a href="#" className="inline-block">
@@ -55,7 +55,7 @@ export function HeroSection() {
                 </div>
               </a>
             </div>
-            <div className="flex items-center gap-4 pt-4">
+            <div className="flex items-center gap-4 pt-2">
               <div className="flex -space-x-2">
                 {[1, 2, 3, 4].map((i) => (
                   <div

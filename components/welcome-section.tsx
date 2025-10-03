@@ -25,7 +25,7 @@ export function WelcomeSection() {
           </div>
 
           <div className="space-y-4">
-            <Card className="p-6 backdrop-blur border-border/30 hover:bg-[#456882]/20 transition-colors group cursor-pointer" style={{ background: 'rgba(69, 104, 130, 0.15)', borderColor: 'rgba(69, 104, 130, 0.3)' }}>
+            <Card className="p-6 backdrop-blur border-border/30 hover:bg-[#456882]/20 transition-colors group cursor-pointer" style={{ background: 'linear-gradient(135deg, rgba(13, 18, 22, 0.6) 0%, rgba(69, 104, 130, 0.3) 100%)', borderColor: 'rgba(69, 104, 130, 0.3)' }}>
               <h3 className="text-xl font-bold mb-2">For Players</h3>
               <p className="text-muted-foreground mb-4 text-sm">Find and join games near you.</p>
               <Button variant="link" className="p-0 group-hover:gap-2 transition-all" style={{ color: '#456882' }}>
@@ -33,7 +33,7 @@ export function WelcomeSection() {
               </Button>
             </Card>
 
-            <Card className="p-6 backdrop-blur border-border/30 hover:bg-[#456882]/20 transition-colors group cursor-pointer" style={{ background: 'rgba(69, 104, 130, 0.15)', borderColor: 'rgba(69, 104, 130, 0.3)' }}>
+            <Card className="p-6 backdrop-blur border-border/30 hover:bg-[#456882]/20 transition-colors group cursor-pointer" style={{ background: 'linear-gradient(135deg, rgba(13, 18, 22, 0.6) 0%, rgba(69, 104, 130, 0.3) 100%)', borderColor: 'rgba(69, 104, 130, 0.3)' }}>
               <h3 className="text-xl font-bold mb-2">For Partners</h3>
               <p className="text-muted-foreground mb-4 text-sm">Fill your pitches with local players.</p>
               <Button variant="link" className="p-0 group-hover:gap-2 transition-all" style={{ color: '#456882' }}>
@@ -41,7 +41,7 @@ export function WelcomeSection() {
               </Button>
             </Card>
 
-            <Card className="p-6 backdrop-blur border-border/30 hover:bg-[#456882]/20 transition-colors group cursor-pointer" style={{ background: 'rgba(69, 104, 130, 0.15)', borderColor: 'rgba(69, 104, 130, 0.3)' }}>
+            <Card className="p-6 backdrop-blur border-border/30 hover:bg-[#456882]/20 transition-colors group cursor-pointer" style={{ background: 'linear-gradient(135deg, rgba(13, 18, 22, 0.6) 0%, rgba(69, 104, 130, 0.3) 100%)', borderColor: 'rgba(69, 104, 130, 0.3)' }}>
               <h3 className="text-xl font-bold mb-2">For Enthusiasts</h3>
               <p className="text-muted-foreground mb-4 text-sm">
                 Be part of a community that shares the love of this beautiful game.

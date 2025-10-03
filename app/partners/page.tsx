@@ -51,41 +51,46 @@ export default function PartnersPage() {
   ]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-[#0a0f14] via-[#0d1219] to-[#0a0e14]">
-      <Header />
+    <div className="min-h-screen" style={{ background: '#060606' }}>
+      <div className="relative">
+        <Header />
 
-      <main className="pt-20">
-        {/* Hero Section with Background Image */}
-        <section className="relative h-[60vh] min-h-[500px] flex items-center justify-center">
-          <div
-            className="absolute inset-0 bg-cover bg-center"
-            style={{
-              backgroundImage: "url('/soccer-field-aerial-view-night.jpg')",
-            }}
-          />
-          <div
-            className="absolute inset-0"
-            style={{
-              background: 'linear-gradient(135deg, rgba(10, 15, 20, 0.85) 0%, rgba(27, 60, 83, 0.75) 50%, rgba(10, 14, 20, 0.85) 100%)'
-            }}
-          />
+        <main>
+          {/* Hero Section with Background Image */}
+          <section className="relative h-[80vh] min-h-[600px] flex items-center justify-center -mt-20 pt-20">
+            <div
+              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+              style={{
+                backgroundImage: "url('/Backgrounddark1.png')",
+                top: '-80px',
+                height: 'calc(100% + 80px)'
+              }}
+            />
+            <div
+              className="absolute inset-0"
+              style={{
+                background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(6, 6, 6, 1) 100%)',
+                top: '-80px',
+                height: 'calc(100% + 80px)'
+              }}
+            />
           <div className="relative z-10 text-center px-4 max-w-4xl mx-auto">
             <h1 className="text-5xl lg:text-6xl font-bold text-white mb-6">
-              Partner with Pablo
+              Partner with Plei
             </h1>
             <p className="text-xl lg:text-2xl text-gray-200 max-w-2xl mx-auto">
               Join us in building the world's largest padel community
             </p>
           </div>
-        </section>
+          </section>
 
-        {/* Stats Section */}
-        <section className="py-20 px-4">
+          {/* Stats Section */}
+        <section className="py-20 px-4" style={{ background: '#060606' }}>
           <div className="max-w-7xl mx-auto">
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
               {stats.map((stat, index) => (
                 <div key={index} className="text-center">
-                  <div className="text-4xl lg:text-5xl font-bold text-primary mb-2">
+                  <div className="text-4xl lg:text-5xl font-bold mb-2" style={{ color: '#456882' }}>
                     {stat.number}
                   </div>
                   <div className="text-gray-300 text-lg">
@@ -98,7 +103,7 @@ export default function PartnersPage() {
         </section>
 
         {/* Partnership Opportunities */}
-        <section className="py-20 px-4 bg-white/5">
+        <section className="py-20 px-4" style={{ background: '#060606' }}>
           <div className="max-w-7xl mx-auto">
             <h2 className="text-3xl lg:text-4xl font-bold text-white text-center mb-16">
               Partnership Opportunities
@@ -107,9 +112,13 @@ export default function PartnersPage() {
               {partnershipTypes.map((type, index) => (
                 <div
                   key={index}
-                  className="bg-gradient-to-br from-white/10 to-white/5 backdrop-blur-sm border border-white/20 rounded-2xl p-8 hover:border-primary/50 transition-all duration-300"
+                  className="backdrop-blur rounded-2xl p-8 hover:bg-[#456882]/20 transition-all duration-300"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(13, 18, 22, 0.6) 0%, rgba(69, 104, 130, 0.3) 100%)',
+                    border: '1px solid rgba(69, 104, 130, 0.3)'
+                  }}
                 >
-                  <div className="w-16 h-16 rounded-full bg-primary/20 border border-primary flex items-center justify-center mb-6 text-primary">
+                  <div className="w-16 h-16 rounded-full flex items-center justify-center mb-6" style={{ background: 'rgba(69, 104, 130, 0.3)', color: '#456882' }}>
                     {type.icon}
                   </div>
                   <h3 className="text-2xl font-bold text-white mb-4">
@@ -125,7 +134,7 @@ export default function PartnersPage() {
         </section>
 
         {/* Trusted Partners */}
-        <section className="py-20 px-4">
+        <section className="py-20 px-4" style={{ background: '#060606' }}>
           <div className="max-w-7xl mx-auto">
             <h2 className="text-3xl lg:text-4xl font-bold text-white text-center mb-16">
               Trusted by Leading Brands
@@ -134,7 +143,11 @@ export default function PartnersPage() {
               {trustedPartners.map((partner, index) => (
                 <div
                   key={index}
-                  className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-8 flex items-center justify-center hover:bg-white/10 transition-all duration-300 h-32"
+                  className="backdrop-blur rounded-xl p-8 flex items-center justify-center hover:bg-[#456882]/20 transition-all duration-300 h-32"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(13, 18, 22, 0.6) 0%, rgba(69, 104, 130, 0.3) 100%)',
+                    border: '1px solid rgba(69, 104, 130, 0.3)'
+                  }}
                 >
                   <h3 className="text-2xl font-bold text-white">
                     {partner.name}
@@ -146,9 +159,15 @@ export default function PartnersPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-20 px-4">
+        <section className="py-20 px-4" style={{ background: '#060606' }}>
           <div className="max-w-4xl mx-auto text-center">
-            <div className="bg-gradient-to-br from-primary/20 to-primary/10 backdrop-blur-sm border border-primary/30 rounded-3xl p-12 lg:p-16">
+            <div
+              className="backdrop-blur rounded-3xl p-12 lg:p-16 hover:bg-[#456882]/20 transition-all"
+              style={{
+                background: 'linear-gradient(135deg, rgba(13, 18, 22, 0.6) 0%, rgba(69, 104, 130, 0.3) 100%)',
+                border: '1px solid rgba(69, 104, 130, 0.3)'
+              }}
+            >
               <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6">
                 Ready to Partner?
               </h2>
@@ -157,14 +176,19 @@ export default function PartnersPage() {
               </p>
               <a
                 href="/contact"
-                className="inline-block bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-10 py-4 text-lg font-semibold transition-colors shadow-lg hover:shadow-xl"
+                className="inline-block rounded-full px-10 py-4 text-lg font-semibold transition-all shadow-lg hover:shadow-xl"
+                style={{
+                  backgroundColor: '#456882',
+                  color: 'white'
+                }}
               >
                 Get in Touch
               </a>
             </div>
           </div>
-        </section>
-      </main>
+          </section>
+        </main>
+      </div>
 
       <Footer />
     </div>

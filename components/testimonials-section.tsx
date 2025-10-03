@@ -53,7 +53,7 @@ export function TestimonialsSection() {
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8 items-center">
-          <Card className="p-8 backdrop-blur space-y-6" style={{ background: 'rgba(69, 104, 130, 0.15)', borderColor: 'rgba(69, 104, 130, 0.3)' }}>
+          <Card className="p-8 backdrop-blur space-y-6" style={{ background: 'linear-gradient(135deg, rgba(13, 18, 22, 0.6) 0%, rgba(69, 104, 130, 0.3) 100%)', borderColor: 'rgba(69, 104, 130, 0.3)' }}>
             <div className="flex gap-1">
               {Array.from({ length: current.rating }).map((_, i) => (
                 <Star key={i} className="w-5 h-5 fill-primary text-primary" />
