@@ -23,7 +23,7 @@ export function Header() {
     }`}>
       <div className="w-full px-12 py-4 flex items-center justify-between">
         <div className="flex items-center gap-8">
-          <div className="flex items-center gap-2">
+          <a href="/" className="flex items-center gap-2">
             <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
               <svg
                 viewBox="0 0 24 24"
@@ -37,18 +37,18 @@ export function Header() {
               </svg>
             </div>
             <span className="text-xl text-white font-bold">Pablo</span>
-          </div>
+          </a>
           <nav className="hidden md:flex items-center gap-6">
-            <a href="#about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <a href="/about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               About
             </a>
-            <a href="#contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <a href="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Contact
             </a>
-            <a href="#plei2" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <a href="/plei2" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Meet Pablo
             </a>
-            <a href="#partners" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <a href="/partners" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Partners
             </a>
           </nav>
