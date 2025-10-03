@@ -7,12 +7,21 @@ export function WelcomeSection() {
     <section className="py-20 px-4" style={{ background: '#060606' }}>
       <div className="container mx-auto">
         <div className="grid lg:grid-cols-2 gap-16 items-start">
-          <div className="max-w-md">
-            <h2 className="text-4xl lg:text-5xl font-bold mb-4 text-balance">Welcome to the Future of Padel</h2>
-            <p className="text-lg text-muted-foreground text-pretty">
-              Plei is more than just an app—it's a movement for everyone, everywhere. Whether you're looking to join a
-              game, host matches, or connect with others who share your passion. Plei makes it effortless.
-            </p>
+          <div className="max-w-md space-y-6">
+            <div>
+              <h2 className="text-4xl lg:text-5xl font-bold mb-4 text-balance">Welcome to the Future of Padel</h2>
+              <p className="text-lg text-muted-foreground text-pretty">
+                Plei is more than just an app—it's a movement for everyone, everywhere. Whether you're looking to join a
+                game, host matches, or connect with others who share your passion. Plei makes it effortless.
+              </p>
+            </div>
+            <div className="rounded-lg overflow-hidden">
+              <img
+                src="/welcome-image.jpg"
+                alt="Padel players on court"
+                className="w-full h-auto object-cover"
+              />
+            </div>
           </div>
 
           <div className="space-y-4">
