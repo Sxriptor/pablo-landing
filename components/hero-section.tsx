@@ -21,7 +21,12 @@ export function HeroSection() {
             <h1 className="text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight text-balance">
               <span style={{ color: '#456882' }}>Play Padle</span>
               <br />
-              <span style={{ color: 'white' }}>Anytime, Anywhere</span>
+              <span 
+                className="whitespace-nowrap text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-center lg:text-left block lg:inline"
+                style={{ color: 'white' }}
+              >
+                Anytime, Anywhere
+              </span>
             </h1>
             <p className="text-lg text-white max-w-md text-pretty">
               Find a game near you, connect with players, and experience of the sport of Paddle like never before.
