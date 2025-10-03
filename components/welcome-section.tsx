@@ -16,10 +16,13 @@ export function WelcomeSection() {
               </p>
             </div>
             <div className="rounded-lg overflow-hidden">
-              <img
-                src="/welcome-image.jpg"
-                alt="Padel players on court"
+              <video
+                src="/welcome-video.mp4"
                 className="w-full h-auto object-cover"
+                autoPlay
+                loop
+                muted
+                playsInline
               />
             </div>
           </div>
