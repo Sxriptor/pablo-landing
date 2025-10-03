@@ -1,16 +1,16 @@
 export function CtaSection() {
   return (
-    <section className="py-20 px-4">
+    <section className="py-20 px-4" style={{ background: '#060606' }}>
       <div className="container mx-auto">
         <div className="relative rounded-3xl overflow-hidden">
-          <img src="/soccer-players-action-shot.jpg" alt="Soccer action" className="w-full h-[400px] object-cover" />
+          <img src="/padel-players-action-shot.jpg" alt="Padel action" className="w-full h-[400px] object-cover" />
           <div className="absolute inset-0 bg-gradient-to-r from-background via-background/80 to-transparent" />
           <div className="absolute inset-0 flex items-center">
             <div className="container mx-auto px-8">
               <div className="max-w-xl space-y-6">
                 <h2 className="text-4xl lg:text-5xl font-bold text-balance">Ready to Elevate Your Game?</h2>
                 <p className="text-lg text-muted-foreground text-pretty">
-                  Join thousands of players creating connections through soccer.
+                  Join thousands of players creating connections through padel.
                 </p>
                 <div className="flex flex-wrap gap-3">
                   <a href="#" className="inline-block">

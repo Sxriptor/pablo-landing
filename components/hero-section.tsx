@@ -4,21 +4,22 @@ export function HeroSection() {
   return (
     <section className="relative pt-32 pb-20 px-2 lg:px-12 overflow-hidden min-h-screen">
       {/* Background image */}
-      <div 
+      <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage: "url('/Backgrounddark1.png')",
         }}
       />
-      {/* Background overlay for better text readability */}
-      <div className="absolute inset-0 bg-black/0" />
-      {/* Background gradient effect */}
+      {/* Background gradient overlay - fade to black at bottom */}
+      <div className="absolute inset-0" style={{
+        background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 1) 100%)'
+      }} />
 
       <div className="relative z-10">
         <div className="grid lg:grid-cols-2 gap-12 items-center min-h-screen">
           <div className="space-y-8">
-            <h1 className="text-7xl lg:text-8xl xl:text-9xl font-bold leading-tight text-balance">
-              <span style={{ color: '#1B3C53' }}>Play Padle,</span>
+            <h1 className="text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight text-balance">
+              <span style={{ color: '#456882' }}>Play Padle</span>
               <br />
               <span style={{ color: 'white' }}>Anytime, Anywhere</span>
             </h1>

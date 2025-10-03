@@ -21,7 +21,7 @@ export function Header() {
         ? 'bg-background/40 backdrop-blur-sm border-b border-border/50' 
         : 'bg-transparent'
     }`}>
-      <div className="container mx-auto px-4 py-4 flex items-center justify-between">
+      <div className="w-full px-12 py-4 flex items-center justify-between">
         <div className="flex items-center gap-8">
           <div className="flex items-center gap-2">
             <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">

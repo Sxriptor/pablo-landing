@@ -10,22 +10,22 @@ const testimonials = [
     name: "Paul S",
     role: "Plei player",
     rating: 5,
-    text: "I just moved to the area and was having a hard time trying to find pick up soccer games. I downloaded the app and was literally playing in a game a few hours later! The support team at Plei is awesome. They also helped me find a game for that evening. I look forward to touring the city and playing in the games they have to offer. I'm hooked on Plei. You guys are awesome!",
-    image: "/soccer-player-testimonial.jpg",
+    text: "I just moved to the area and was having a hard time trying to find pick up padel games. I downloaded the app and was literally playing in a game a few hours later! The support team at Plei is awesome. They also helped me find a game for that evening. I look forward to touring the city and playing in the games they have to offer. I'm hooked on Plei. You guys are awesome!",
+    image: "/padel-player-testimonial.jpg",
   },
   {
     name: "Maria G",
     role: "Plei player",
     rating: 5,
-    text: "Plei has completely changed how I play soccer. The app is so easy to use and I've met so many amazing people through the games. The facilities are always top-notch and the community is incredibly welcoming. Highly recommend!",
-    image: "/female-soccer-player.png",
+    text: "Plei has completely changed how I play padel. The app is so easy to use and I've met so many amazing people through the games. The facilities are always top-notch and the community is incredibly welcoming. Highly recommend!",
+    image: "/female-padel-player.png",
   },
   {
     name: "James T",
     role: "Plei player",
     rating: 5,
-    text: "As someone who travels frequently for work, Plei has been a game-changer. I can find quality soccer games in any city I visit. The skill matching is spot-on and the booking process is seamless. Best sports app I've ever used!",
-    image: "/soccer-player-action.jpg",
+    text: "As someone who travels frequently for work, Plei has been a game-changer. I can find quality padel games in any city I visit. The skill matching is spot-on and the booking process is seamless. Best sports app I've ever used!",
+    image: "/padel-player-action.jpg",
   },
 ]
 
@@ -43,7 +43,7 @@ export function TestimonialsSection() {
   const current = testimonials[currentIndex]
 
   return (
-    <section className="py-20 px-4 bg-gradient-to-b from-secondary/20 to-background">
+    <section className="py-20 px-4" style={{ background: '#060606' }}>
       <div className="container mx-auto">
         <div className="mb-12">
           <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-balance">What Our Players Are Saying</h2>
@@ -53,7 +53,7 @@ export function TestimonialsSection() {
         </div>
 
         <div className="grid lg:grid-cols-2 gap-8 items-center">
-          <Card className="p-8 bg-card/50 backdrop-blur border-border space-y-6">
+          <Card className="p-8 backdrop-blur space-y-6" style={{ background: 'rgba(69, 104, 130, 0.15)', borderColor: 'rgba(69, 104, 130, 0.3)' }}>
             <div className="flex gap-1">
               {Array.from({ length: current.rating }).map((_, i) => (
                 <Star key={i} className="w-5 h-5 fill-primary text-primary" />
