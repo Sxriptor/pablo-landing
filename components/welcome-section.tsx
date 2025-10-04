@@ -11,8 +11,8 @@ export function WelcomeSection() {
             <div>
               <h2 className="text-4xl lg:text-5xl font-bold mb-4 text-balance">Welcome to the Future of Sports</h2>
               <p className="text-lg text-muted-foreground text-pretty">
-                Plei is more than just an app—it's a movement for everyone, everywhere. Whether you're looking to join a
-                game, host matches, or connect with others who share your passion. Plei makes it effortless.
+                Playcircle is more than just an app—it's a movement for everyone, everywhere. Whether you're looking to join a
+                game, host matches, or connect with others who share your passion. Playcircle makes it effortless.
               </p>
             </div>
             <div className="rounded-lg overflow-hidden relative h-[600px]">
@@ -41,7 +41,7 @@ export function WelcomeSection() {
               <h3 className="text-xl font-bold mb-2">For Partners</h3>
               <p className="text-muted-foreground mb-4 text-sm">Fill your pitches with local players.</p>
               <Button variant="link" className="p-0 group-hover:gap-2 transition-all" style={{ color: '#456882' }}>
-                Grow With Plei <ArrowRight className="w-4 h-4 ml-1" />
+                Grow With Playcircle <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
             </Card>
 

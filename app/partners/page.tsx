@@ -73,7 +73,7 @@ export default function PartnersPage() {
             <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
               <div className="mb-8">
                 <h1 className="text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-8 tracking-tight">
-                  Partner with <span style={{ color: '#456882' }}>Plei</span>
+                  Partner with <span style={{ color: '#456882' }}>Playcircle</span>
                 </h1>
                 <div className="w-24 h-px mx-auto mb-8" style={{ backgroundColor: '#456882' }}></div>
                 <p className="text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto font-light leading-relaxed">
