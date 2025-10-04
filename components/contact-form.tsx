@@ -44,25 +44,25 @@ export function ContactForm() {
   return (
     <div className="w-full">
       {/* Glass Card */}
-      <div 
-        className="rounded-[20px] p-8 lg:p-10 backdrop-blur-md"
+      <div
+        className="rounded-2xl sm:rounded-[20px] p-6 sm:p-8 lg:p-10 backdrop-blur-md"
         style={{
           background: 'linear-gradient(135deg, rgba(13, 18, 22, 0.6) 0%, rgba(69, 104, 130, 0.3) 100%)',
           border: '1.5px solid rgba(70, 104, 130, 0.4)',
           boxShadow: '0 0 40px rgba(70, 104, 130, 0.2), inset 0 0 20px rgba(70, 104, 130, 0.08)',
         }}
       >
-        <form onSubmit={handleSubmit} className="space-y-6">
+        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
           {/* First Name */}
-          <div className="space-y-2">
-            <Label htmlFor="firstName" className="text-gray-300 text-sm font-medium">
+          <div className="space-y-1.5 sm:space-y-2">
+            <Label htmlFor="firstName" className="text-gray-300 text-xs sm:text-sm font-medium">
               First name <span className="text-[#4668A2]">*</span>
             </Label>
             <Input
               id="firstName"
               type="text"
               required
-              className="bg-[#0a0e14] border-[#1a2430] text-white placeholder:text-gray-600 rounded-lg h-12 focus:border-[#4668A2] focus:ring-1 focus:ring-[#4668A2] shadow-inner"
+              className="bg-[#0a0e14] border-[#1a2430] text-white placeholder:text-gray-600 rounded-lg h-10 sm:h-12 text-sm sm:text-base focus:border-[#4668A2] focus:ring-1 focus:ring-[#4668A2] shadow-inner"
               style={{
                 boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.4)',
               }}
@@ -70,15 +70,15 @@ export function ContactForm() {
           </div>
 
           {/* Last Name */}
-          <div className="space-y-2">
-            <Label htmlFor="lastName" className="text-gray-300 text-sm font-medium">
+          <div className="space-y-1.5 sm:space-y-2">
+            <Label htmlFor="lastName" className="text-gray-300 text-xs sm:text-sm font-medium">
               Last name <span className="text-[#4668A2]">*</span>
             </Label>
             <Input
               id="lastName"
               type="text"
               required
-              className="bg-[#0a0e14] border-[#1a2430] text-white placeholder:text-gray-600 rounded-lg h-12 focus:border-[#4668A2] focus:ring-1 focus:ring-[#4668A2] shadow-inner"
+              className="bg-[#0a0e14] border-[#1a2430] text-white placeholder:text-gray-600 rounded-lg h-10 sm:h-12 text-sm sm:text-base focus:border-[#4668A2] focus:ring-1 focus:ring-[#4668A2] shadow-inner"
               style={{
                 boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.4)',
               }}
@@ -86,8 +86,8 @@ export function ContactForm() {
           </div>
 
           {/* Email Address */}
-          <div className="space-y-2">
-            <Label htmlFor="email" className="text-gray-300 text-sm font-medium">
+          <div className="space-y-1.5 sm:space-y-2">
+            <Label htmlFor="email" className="text-gray-300 text-xs sm:text-sm font-medium">
               Email Address <span className="text-[#4668A2]">*</span>
             </Label>
             <Input
@@ -95,7 +95,7 @@ export function ContactForm() {
               type="email"
               required
               placeholder="you@example.com"
-              className="bg-[#0a0e14] border-[#1a2430] text-white placeholder:text-gray-600 rounded-lg h-12 focus:border-[#4668A2] focus:ring-1 focus:ring-[#4668A2] shadow-inner"
+              className="bg-[#0a0e14] border-[#1a2430] text-white placeholder:text-gray-600 rounded-lg h-10 sm:h-12 text-sm sm:text-base focus:border-[#4668A2] focus:ring-1 focus:ring-[#4668A2] shadow-inner"
               style={{
                 boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.4)',
               }}
@@ -103,8 +103,8 @@ export function ContactForm() {
           </div>
 
           {/* Phone Number */}
-          <div className="space-y-2">
-            <Label htmlFor="phone" className="text-gray-300 text-sm font-medium">
+          <div className="space-y-1.5 sm:space-y-2">
+            <Label htmlFor="phone" className="text-gray-300 text-xs sm:text-sm font-medium">
               Phone number <span className="text-[#4668A2]">*</span>
             </Label>
             <Input
@@ -115,7 +115,7 @@ export function ContactForm() {
               onChange={handlePhoneChange}
               placeholder="305-555-1234"
               maxLength={12}
-              className="bg-[#0a0e14] border-[#1a2430] text-white placeholder:text-gray-600 rounded-lg h-12 focus:border-[#4668A2] focus:ring-1 focus:ring-[#4668A2] shadow-inner"
+              className="bg-[#0a0e14] border-[#1a2430] text-white placeholder:text-gray-600 rounded-lg h-10 sm:h-12 text-sm sm:text-base focus:border-[#4668A2] focus:ring-1 focus:ring-[#4668A2] shadow-inner"
               style={{
                 boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.4)',
               }}
@@ -123,14 +123,14 @@ export function ContactForm() {
           </div>
 
           {/* How can we help? */}
-          <div className="space-y-2">
-            <Label htmlFor="helpType" className="text-gray-300 text-sm font-medium">
+          <div className="space-y-1.5 sm:space-y-2">
+            <Label htmlFor="helpType" className="text-gray-300 text-xs sm:text-sm font-medium">
               How can we help? <span className="text-[#4668A2]">*</span>
             </Label>
             <Select required>
-              <SelectTrigger 
+              <SelectTrigger
                 id="helpType"
-                className="bg-[#0a0e14] border-[#1a2430] text-white rounded-lg h-12 focus:border-[#4668A2] focus:ring-1 focus:ring-[#4668A2] shadow-inner"
+                className="bg-[#0a0e14] border-[#1a2430] text-white rounded-lg h-10 sm:h-12 text-sm sm:text-base focus:border-[#4668A2] focus:ring-1 focus:ring-[#4668A2] shadow-inner"
                 style={{
                   boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.4)',
                 }}
@@ -148,16 +148,16 @@ export function ContactForm() {
           </div>
 
           {/* Your message */}
-          <div className="space-y-2">
-            <Label htmlFor="message" className="text-gray-300 text-sm font-medium">
+          <div className="space-y-1.5 sm:space-y-2">
+            <Label htmlFor="message" className="text-gray-300 text-xs sm:text-sm font-medium">
               Your message <span className="text-[#4668A2]">*</span>
             </Label>
             <Textarea
               id="message"
               required
-              rows={5}
+              rows={4}
               placeholder="Tell us more about your inquiry..."
-              className="bg-[#0a0e14] border-[#1a2430] text-white placeholder:text-gray-600 rounded-lg focus:border-[#4668A2] focus:ring-1 focus:ring-[#4668A2] shadow-inner resize-none"
+              className="bg-[#0a0e14] border-[#1a2430] text-white placeholder:text-gray-600 rounded-lg text-sm sm:text-base focus:border-[#4668A2] focus:ring-1 focus:ring-[#4668A2] shadow-inner resize-none"
               style={{
                 boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.4)',
               }}
@@ -167,7 +167,7 @@ export function ContactForm() {
           {/* Submit Button */}
           <Button
             type="submit"
-            className="w-full h-12 bg-[#4668A2] hover:bg-[#3B5A8C] text-white font-semibold rounded-full text-base transition-all duration-200 shadow-lg hover:shadow-xl hover:shadow-[#4668A2]/20"
+            className="w-full h-10 sm:h-12 bg-[#4668A2] hover:bg-[#3B5A8C] text-white font-semibold rounded-full text-sm sm:text-base transition-all duration-200 shadow-lg hover:shadow-xl hover:shadow-[#4668A2]/20"
           >
             Send Message
           </Button>

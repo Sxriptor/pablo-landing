@@ -4,11 +4,13 @@ import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react"
 
 export function Header() {
-  const [isScrolled, setIsScrolled] = useState(false)
+  const [scrollProgress, setScrollProgress] = useState(0)
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 50)
+      // Calculate scroll progress from 0 to 1 over the first 200px
+      const progress = Math.min(window.scrollY / 200, 1)
+      setScrollProgress(progress)
     }
 
     window.addEventListener('scroll', handleScroll)
@@ -16,11 +18,14 @@ export function Header() {
   }, [])
 
   return (
-    <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-      isScrolled 
-        ? 'bg-background/40 backdrop-blur-sm border-b border-border/50' 
-        : 'bg-transparent'
-    }`}>
+    <header
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-300"
+      style={{
+        backgroundColor: `rgba(3, 7, 11, ${scrollProgress * 0.4})`,
+        backdropFilter: `blur(${scrollProgress * 12}px)`,
+        borderBottom: `1px solid rgba(39, 39, 42, ${scrollProgress * 0.5})`,
+      }}
+    >
       <div className="w-full px-12 py-4 flex items-center justify-between">
         <div className="flex items-center gap-8">
           <a href="/" className="flex items-center gap-2">

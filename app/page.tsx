@@ -8,9 +8,9 @@ import { Footer } from "@/components/footer"
 
 export default function Home() {
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen overscroll-none">
       <Header />
-      <main>
+      <main className="overscroll-none">
         <HeroSection />
         <WelcomeSection />
         <HowItWorksSection />
