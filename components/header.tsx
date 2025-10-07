@@ -41,7 +41,7 @@ export function Header() {
                 <path d="M12 2v20M2 12h20" />
               </svg>
             </div>
-            <span className="text-xl text-white font-bold">Pablo</span>
+            <span className="text-xl text-white font-bold">PlayCenter</span>
           </a>
           <nav className="hidden md:flex items-center gap-6">
             <a href="/about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
@@ -50,8 +50,8 @@ export function Header() {
             <a href="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Contact
             </a>
-            <a href="/meet-padlo" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
-              Meet Pablo
+            <a href="/meet-playcenter" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              Meet PlayCenter
             </a>
             <a href="/partners" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
               Partners

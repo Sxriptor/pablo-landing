@@ -6,16 +6,16 @@ export function WelcomeSection() {
   return (
     <section className="py-20 px-4" style={{ background: '#050a0f' }}>
       <div className="container mx-auto">
-        <div className="grid lg:grid-cols-2 gap-16 items-start">
-          <div className="max-w-md space-y-6">
-            <div>
+        <div className="grid lg:grid-cols-2 gap-8 items-start">
+          <div className="space-y-6">
+            <div className="max-w-2xl">
               <h2 className="text-4xl lg:text-5xl font-bold mb-4 text-balance">Welcome to the Future of Sports</h2>
               <p className="text-lg text-muted-foreground text-pretty">
-                Playcircle is more than just an app—it's a movement for everyone, everywhere. Whether you're looking to join a
-                game, host matches, or connect with others who share your passion. Playcircle makes it effortless.
+                PlayCenter is more than just an app—it's a movement for everyone, everywhere. Whether you're looking to join a
+                game, host matches, or connect with others who share your passion. PlayCenter makes it effortless. Join thousands of players who have already discovered the joy of seamless sports connections.
               </p>
             </div>
-            <div className="rounded-lg overflow-hidden relative h-[600px]">
+            <div className="rounded-lg overflow-hidden relative h-[400px]">
               <video
                 src="/welcome-video.mp4"
                 className="w-full h-full object-cover"
@@ -41,7 +41,7 @@ export function WelcomeSection() {
               <h3 className="text-xl font-bold mb-2">For Partners</h3>
               <p className="text-muted-foreground mb-4 text-sm">Fill your pitches with local players.</p>
               <Button variant="link" className="p-0 group-hover:gap-2 transition-all" style={{ color: '#456882' }}>
-                Grow With Playcircle <ArrowRight className="w-4 h-4 ml-1" />
+                Grow With PlayCenter <ArrowRight className="w-4 h-4 ml-1" />
               </Button>
             </Card>
 

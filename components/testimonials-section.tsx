@@ -8,23 +8,23 @@ import { Card } from "@/components/ui/card"
 const testimonials = [
   {
     name: "Paul S",
-    role: "Playcircle User",
+    role: "PlayCenter User",
     rating: 5,
-    text: "I just moved to the area and was having a hard time trying to find pick up games. I downloaded the app and was literally playing in a game a few hours later! The support team at Playcircle is awesome. They also helped me find a game for that evening. I look forward to touring the city and playing in the games they have to offer. I'm hooked on Playcircle. You guys are awesome!",
+    text: "I just moved to the area and was having a hard time trying to find pick up games. I downloaded the app and was literally playing in a game a few hours later! The support team at PlayCenter is awesome. They also helped me find a game for that evening. I look forward to touring the city and playing in the games they have to offer. I'm hooked on PlayCenter. You guys are awesome!",
     image: "/padel-player-testimonial.jpg",
   },
   {
     name: "Maria G",
-    role: "Playcircle User",
+    role: "PlayCenter User",
     rating: 5,
-    text: "Playcircle has completely changed how I play sports. The app is so easy to use and I've met so many amazing people through the games. The facilities are always top-notch and the community is incredibly welcoming. Highly recommend!",
+    text: "PlayCenter has completely changed how I play sports. The app is so easy to use and I've met so many amazing people through the games. The facilities are always top-notch and the community is incredibly welcoming. Highly recommend!",
     image: "/female-padel-player.png",
   },
   {
     name: "James T",
-    role: "Playcircle User",
+    role: "PlayCenter User",
     rating: 5,
-    text: "As someone who travels frequently for work, Playcircle has been a game-changer. I can find quality games in any city I visit. The skill matching is spot-on and the booking process is seamless. Best sports app I've ever used!",
+    text: "As someone who travels frequently for work, PlayCenter has been a game-changer. I can find quality games in any city I visit. The skill matching is spot-on and the booking process is seamless. Best sports app I've ever used!",
     image: "/padel-player-action.jpg",
   },
 ]

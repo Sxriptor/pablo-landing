@@ -5,9 +5,9 @@ import { Analytics } from '@vercel/analytics/next'
 import './globals.css'
 
 export const metadata: Metadata = {
-  title: 'Padlo - Multi-Sport Game Finder',
+  title: 'PlayCenter - Multi-Sport Game Finder',
   description: 'Find and join sports games near you - Soccer, Football, Tennis, Padel, and more',
-  generator: 'Padlo - Multi-Sport Platform',
+  generator: 'PlayCenter - Multi-Sport Platform',
 }
 
 export default function RootLayout({

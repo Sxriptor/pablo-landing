@@ -1,7 +1,7 @@
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
 
-export default function MeetPadloPage() {
+export default function MeetPlayCenterPage() {
   const upcomingFeatures = [
     {
       title: "Multi-Sport Platform",
@@ -120,11 +120,11 @@ export default function MeetPadloPage() {
             />
             <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
               <div className="mb-8">
-                <h1 className="text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-8 tracking-tight">
-                  Meet <span style={{ color: '#456882' }}>Padlo 2.0</span>
+                <h1 className="text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-8 leading-tight">
+                  Meet <span style={{ color: '#456882' }}>PlayCenter 2.0</span>
                 </h1>
                 <div className="w-24 h-px mx-auto mb-8" style={{ backgroundColor: '#456882' }}></div>
-                <p className="text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto font-light leading-relaxed">
+                <p className="text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
                   The future of sports connection. More sports, more courts, more possibilities.
                 </p>
               </div>
@@ -135,7 +135,7 @@ export default function MeetPadloPage() {
           <section className="py-32 px-4" style={{ background: '#050a0f' }}>
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-20">
-                <h2 className="text-4xl lg:text-5xl font-light text-white mb-6 tracking-tight">
+                <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
                   Today's Impact
                 </h2>
                 <div className="w-16 h-px mx-auto" style={{ backgroundColor: '#456882' }}></div>
@@ -143,10 +143,10 @@ export default function MeetPadloPage() {
               <div className="grid grid-cols-2 lg:grid-cols-4 gap-16">
                 {stats.map((stat, index) => (
                   <div key={index} className="text-center group">
-                    <div className="text-6xl lg:text-7xl font-light mb-4 tracking-tight" style={{ color: '#456882' }}>
+                    <div className="text-6xl lg:text-7xl font-bold mb-4 leading-tight" style={{ color: '#456882' }}>
                       {stat.number}
                     </div>
-                    <div className="text-lg font-light text-white tracking-wide">
+                    <div className="text-lg text-white">
                       {stat.label}
                     </div>
                   </div>
@@ -159,34 +159,34 @@ export default function MeetPadloPage() {
           <section className="py-32 px-4" style={{ background: '#050a0f' }}>
             <div className="max-w-5xl mx-auto">
               <div className="text-center mb-16">
-                <h2 className="text-4xl lg:text-5xl font-light text-white mb-6 tracking-tight">
+                <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
                   Our Vision
                 </h2>
                 <div className="w-16 h-px mx-auto" style={{ backgroundColor: '#456882' }}></div>
               </div>
               <div className="grid lg:grid-cols-2 gap-16 items-center">
                 <div className="space-y-8">
-                  <div className="text-6xl lg:text-7xl font-light text-white opacity-20" style={{ color: '#456882' }}>
+                  <div className="text-6xl lg:text-7xl font-bold text-white opacity-20" style={{ color: '#456882' }}>
                     "01"
                   </div>
                   <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
-                    <p className="font-light">
-                      Padlo 2.0 represents our evolution to a comprehensive multi-sport platform connecting players across all sports.
+                    <p>
+                      PlayCenter 2.0 represents our evolution to a comprehensive multi-sport platform connecting players across all sports.
                     </p>
-                    <p className="font-light">
+                    <p>
                       We're building the world's largest sports community, connecting players across multiple disciplines and creating opportunities for growth, competition, and friendship.
                     </p>
                   </div>
                 </div>
                 <div className="space-y-8">
-                  <div className="text-6xl lg:text-7xl font-light text-white opacity-20" style={{ color: '#456882' }}>
+                  <div className="text-6xl lg:text-7xl font-bold text-white opacity-20" style={{ color: '#456882' }}>
                     "02"
                   </div>
                   <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
-                    <p className="font-light">
-                      From soccer fields to tennis courts, from padel matches to football games, Padlo 2.0 will be your gateway to the entire sports world.
+                    <p>
+                      From soccer fields to tennis courts, from padel matches to football games, PlayCenter 2.0 will be your gateway to the entire sports world.
                     </p>
-                    <p className="font-light">
+                    <p>
                       Join us as we revolutionize how people discover, connect, and play sports together.
                     </p>
                   </div>
@@ -199,7 +199,7 @@ export default function MeetPadloPage() {
           <section className="py-32 px-4" style={{ background: '#050a0f' }}>
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-20">
-                <h2 className="text-4xl lg:text-5xl font-light text-white mb-6 tracking-tight">
+                <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
                   What's Coming
                 </h2>
                 <div className="w-16 h-px mx-auto" style={{ backgroundColor: '#456882' }}></div>
@@ -210,10 +210,10 @@ export default function MeetPadloPage() {
                     <div className="w-20 h-20 mx-auto mb-8 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110" style={{ background: 'rgba(69, 104, 130, 0.1)', color: '#456882' }}>
                       {feature.icon}
                     </div>
-                    <h3 className="text-2xl font-light text-white mb-6 tracking-wide">
+                    <h3 className="text-2xl font-semibold text-white mb-6">
                       {feature.title}
                     </h3>
-                    <p className="text-gray-400 leading-relaxed font-light">
+                    <p className="text-gray-400 leading-relaxed">
                       {feature.description}
                     </p>
                   </div>
@@ -226,7 +226,7 @@ export default function MeetPadloPage() {
           <section className="py-32 px-4" style={{ background: '#050a0f' }}>
             <div className="max-w-6xl mx-auto">
               <div className="text-center mb-20">
-                <h2 className="text-4xl lg:text-5xl font-light text-white mb-6 tracking-tight">
+                <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
                   Development Roadmap
                 </h2>
                 <div className="w-16 h-px mx-auto" style={{ backgroundColor: '#456882' }}></div>
@@ -235,7 +235,7 @@ export default function MeetPadloPage() {
                 {roadmap.map((phase, index) => (
                   <div key={index} className="flex items-start gap-8">
                     <div className="flex-shrink-0">
-                      <div className="w-16 h-16 rounded-full flex items-center justify-center text-white font-light text-lg" style={{ 
+                      <div className="w-16 h-16 rounded-full flex items-center justify-center text-white font-semibold text-lg" style={{ 
                         backgroundColor: phase.status === 'completed' ? '#456882' : phase.status === 'in-progress' ? '#456882' : 'rgba(69, 104, 130, 0.3)',
                         opacity: phase.status === 'planned' ? 0.5 : 1
                       }}>
@@ -244,7 +244,7 @@ export default function MeetPadloPage() {
                     </div>
                     <div className="flex-1">
                       <div className="flex items-center gap-4 mb-4">
-                        <h3 className="text-2xl font-light text-white tracking-wide">
+                        <h3 className="text-2xl font-semibold text-white">
                           {phase.phase}
                         </h3>
                         <span className="text-sm px-3 py-1 rounded-full text-white" style={{ 
@@ -253,10 +253,10 @@ export default function MeetPadloPage() {
                           {phase.status === 'completed' ? 'Completed' : phase.status === 'in-progress' ? 'In Progress' : 'Planned'}
                         </span>
                       </div>
-                      <h4 className="text-xl font-light text-white mb-4 tracking-wide">
+                      <h4 className="text-xl font-semibold text-white mb-4">
                         {phase.title}
                       </h4>
-                      <p className="text-gray-400 font-light mb-6">
+                      <p className="text-gray-400 mb-6">
                         {phase.description}
                       </p>
                       <div className="flex flex-wrap gap-2">
@@ -276,17 +276,17 @@ export default function MeetPadloPage() {
           {/* CTA Section */}
           <section className="py-32 px-4" style={{ background: '#050a0f' }}>
             <div className="max-w-5xl mx-auto text-center">
-              <h2 className="text-5xl lg:text-6xl font-light text-white mb-8 tracking-tight">
+              <h2 className="text-5xl lg:text-6xl font-bold text-white mb-8 leading-tight">
                 Join the Journey
               </h2>
               <div className="w-24 h-px mx-auto mb-12" style={{ backgroundColor: '#456882' }}></div>
-              <p className="text-xl text-gray-300 mb-16 max-w-3xl mx-auto font-light leading-relaxed">
-                Be among the first to experience Padlo 2.0 and help shape the future of sports connection.
+              <p className="text-xl text-gray-300 mb-16 max-w-3xl mx-auto leading-relaxed">
+                Be among the first to experience PlayCenter 2.0 and help shape the future of sports connection.
               </p>
               <div className="flex flex-col sm:flex-row gap-6 justify-center">
                 <a
                   href="/"
-                  className="inline-block rounded-full px-12 py-4 text-lg font-light transition-all duration-300 hover:scale-105 tracking-wide"
+                  className="inline-block rounded-full px-12 py-4 text-lg font-semibold transition-all duration-300 hover:scale-105"
                   style={{
                     backgroundColor: '#456882',
                     color: 'white'
@@ -296,7 +296,7 @@ export default function MeetPadloPage() {
                 </a>
                 <a
                   href="/contact"
-                  className="inline-block rounded-full px-12 py-4 text-lg font-light transition-all duration-300 hover:scale-105 tracking-wide border-2"
+                  className="inline-block rounded-full px-12 py-4 text-lg font-semibold transition-all duration-300 hover:scale-105 border-2"
                   style={{
                     borderColor: '#456882',
                     color: '#456882'

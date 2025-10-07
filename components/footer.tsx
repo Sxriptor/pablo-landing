@@ -20,7 +20,7 @@ export function Footer() {
                     <path d="M12 2v20M2 12h20" />
                   </svg>
                 </div>
-                <span className="text-xl text-white font-bold">Pablo</span>
+                <span className="text-xl text-white font-bold">PlayCenter</span>
               </div>
               <p className="text-sm text-gray-400 max-w-md">
                 Connecting the world through the beautiful game.
@@ -53,7 +53,7 @@ export function Footer() {
             {/* Divider + Legal */}
             <div className="pt-6 border-t border-gray-800">
               <p className="text-xs text-gray-500">
-                Copyright © 2025 Padlo, Inc – All rights reserved.
+                Copyright © 2025 PlayCenter, Inc – All rights reserved.
               </p>
             </div>
           </div>
