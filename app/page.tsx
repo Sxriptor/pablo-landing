@@ -1,9 +1,11 @@
 import { Header } from "@/components/header"
 import { HeroSection } from "@/components/hero-section"
-import { WelcomeSection } from "@/components/welcome-section"
-import { HowItWorksSection } from "@/components/how-it-works-section"
-import { CtaSection } from "@/components/cta-section"
+import { StatsSection } from "@/components/stats-section"
+import { SimpleHowItWorks } from "@/components/simple-how-it-works"
+import { FeaturesSection } from "@/components/features-section"
 import { TestimonialsSection } from "@/components/testimonials-section"
+import { FaqSection } from "@/components/faq-section"
+import { SimpleCtaSection } from "@/components/simple-cta-section"
 import { Footer } from "@/components/footer"
 
 export default function Home() {
@@ -12,10 +14,12 @@ export default function Home() {
       <Header />
       <main className="overscroll-none">
         <HeroSection />
-        <WelcomeSection />
-        <HowItWorksSection />
-        <CtaSection />
+        <StatsSection />
+        <SimpleHowItWorks />
+        <FeaturesSection />
         <TestimonialsSection />
+        <FaqSection />
+        <SimpleCtaSection />
       </main>
       <Footer />
     </div>
