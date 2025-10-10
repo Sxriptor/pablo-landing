@@ -84,21 +84,34 @@ export default function PartnersPage() {
           </section>
 
           {/* Stats Section */}
-        <section className="py-32 px-4" style={{ background: '#050a0f' }}>
-          <div className="max-w-6xl mx-auto">
+        <section className="py-32 px-4 relative overflow-hidden" style={{ background: '#050a0f' }}>
+          <div
+            className="absolute top-0 left-0 w-96 h-96 rounded-full opacity-5 blur-3xl"
+            style={{ background: '#456882' }}
+          />
+
+          <div className="max-w-6xl mx-auto relative z-10">
             <div className="text-center mb-20">
               <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
                 By the Numbers
               </h2>
               <div className="w-16 h-px mx-auto" style={{ backgroundColor: '#456882' }}></div>
             </div>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-16">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
               {stats.map((stat, index) => (
-                <div key={index} className="text-center group">
-                  <div className="text-6xl lg:text-7xl font-bold mb-4 leading-tight" style={{ color: '#456882' }}>
+                <div
+                  key={index}
+                  className="text-center rounded-3xl p-10 backdrop-blur-md hover:scale-105 transition-all duration-300"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(69, 104, 130, 0.12) 0%, rgba(13, 18, 22, 0.8) 100%)',
+                    border: '1px solid rgba(69, 104, 130, 0.25)',
+                    boxShadow: '0 0 30px rgba(69, 104, 130, 0.08)'
+                  }}
+                >
+                  <div className="text-5xl lg:text-6xl font-bold mb-4 leading-tight" style={{ color: '#456882' }}>
                     {stat.number}
                   </div>
-                  <div className="text-lg text-white">
+                  <div className="text-base text-gray-300">
                     {stat.label}
                   </div>
                 </div>
@@ -108,21 +121,37 @@ export default function PartnersPage() {
         </section>
 
         {/* Partnership Opportunities */}
-        <section className="py-32 px-4" style={{ background: '#050a0f' }}>
-          <div className="max-w-6xl mx-auto">
+        <section className="py-32 px-4 relative overflow-hidden" style={{ background: '#050a0f' }}>
+          <div
+            className="absolute top-1/4 right-0 w-96 h-96 rounded-full opacity-5 blur-3xl"
+            style={{ background: '#456882' }}
+          />
+
+          <div className="max-w-6xl mx-auto relative z-10">
             <div className="text-center mb-20">
               <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
                 Partnership Opportunities
               </h2>
               <div className="w-16 h-px mx-auto" style={{ backgroundColor: '#456882' }}></div>
             </div>
-            <div className="grid md:grid-cols-3 gap-12">
+            <div className="grid md:grid-cols-3 gap-8">
               {partnershipTypes.map((type, index) => (
-                <div key={index} className="text-center group">
-                  <div className="w-20 h-20 mx-auto mb-8 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110" style={{ background: 'rgba(69, 104, 130, 0.1)', color: '#456882' }}>
+                <div
+                  key={index}
+                  className="text-center rounded-3xl p-8 backdrop-blur-md hover:scale-105 transition-all duration-300"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(69, 104, 130, 0.12) 0%, rgba(13, 18, 22, 0.8) 100%)',
+                    border: '1px solid rgba(69, 104, 130, 0.25)',
+                    boxShadow: '0 0 30px rgba(69, 104, 130, 0.08)'
+                  }}
+                >
+                  <div
+                    className="w-20 h-20 mx-auto mb-8 rounded-full flex items-center justify-center"
+                    style={{ background: 'rgba(69, 104, 130, 0.2)', color: '#456882' }}
+                  >
                     {type.icon}
                   </div>
-                  <h3 className="text-2xl font-semibold text-white mb-6">
+                  <h3 className="text-2xl font-semibold text-white mb-4">
                     {type.title}
                   </h3>
                   <p className="text-gray-400 leading-relaxed">
@@ -135,18 +164,31 @@ export default function PartnersPage() {
         </section>
 
         {/* Trusted Partners */}
-        <section className="py-32 px-4" style={{ background: '#050a0f' }}>
-          <div className="max-w-6xl mx-auto">
+        <section className="py-32 px-4 relative overflow-hidden" style={{ background: '#050a0f' }}>
+          <div
+            className="absolute bottom-0 left-1/4 w-96 h-96 rounded-full opacity-5 blur-3xl"
+            style={{ background: '#456882' }}
+          />
+
+          <div className="max-w-6xl mx-auto relative z-10">
             <div className="text-center mb-20">
               <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
                 Trusted by Leading Brands
               </h2>
               <div className="w-16 h-px mx-auto" style={{ backgroundColor: '#456882' }}></div>
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
               {trustedPartners.map((partner, index) => (
-                <div key={index} className="text-center group">
-                  <div className="h-24 flex items-center justify-center transition-all duration-300 group-hover:scale-105">
+                <div
+                  key={index}
+                  className="text-center rounded-2xl p-8 backdrop-blur-md hover:scale-105 transition-all duration-300"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(69, 104, 130, 0.1) 0%, rgba(13, 18, 22, 0.7) 100%)',
+                    border: '1px solid rgba(69, 104, 130, 0.2)',
+                    boxShadow: '0 0 20px rgba(69, 104, 130, 0.05)'
+                  }}
+                >
+                  <div className="h-20 flex items-center justify-center">
                     <h3 className="text-xl font-semibold text-white">
                       {partner.name}
                     </h3>

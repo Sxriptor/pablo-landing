@@ -84,18 +84,31 @@ export default function AboutPage() {
           </section>
 
           {/* Story Section */}
-          <section className="py-32 px-4" style={{ background: '#050a0f' }}>
-            <div className="max-w-5xl mx-auto">
+          <section className="py-32 px-4 relative overflow-hidden" style={{ background: '#050a0f' }}>
+            {/* Decorative background elements */}
+            <div
+              className="absolute top-0 left-1/4 w-96 h-96 rounded-full opacity-5 blur-3xl"
+              style={{ background: '#456882' }}
+            />
+
+            <div className="max-w-5xl mx-auto relative z-10">
               <div className="text-center mb-16">
                 <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
                   Our Story
                 </h2>
                 <div className="w-16 h-px mx-auto" style={{ backgroundColor: '#456882' }}></div>
               </div>
-              <div className="grid lg:grid-cols-2 gap-16 items-center">
-                <div className="space-y-8">
-                  <div className="text-6xl lg:text-7xl font-bold text-white opacity-20" style={{ color: '#456882' }}>
-                    "01"
+              <div className="grid lg:grid-cols-2 gap-8 items-stretch">
+                <div
+                  className="rounded-3xl p-10 backdrop-blur-md hover:scale-[1.02] transition-all duration-300"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(69, 104, 130, 0.15) 0%, rgba(13, 18, 22, 0.8) 100%)',
+                    border: '1px solid rgba(69, 104, 130, 0.3)',
+                    boxShadow: '0 0 40px rgba(69, 104, 130, 0.1)'
+                  }}
+                >
+                  <div className="text-7xl font-bold mb-6 opacity-30" style={{ color: '#456882' }}>
+                    01
                   </div>
                   <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
                     <p>
@@ -106,9 +119,16 @@ export default function AboutPage() {
                     </p>
                   </div>
                 </div>
-                <div className="space-y-8">
-                  <div className="text-6xl lg:text-7xl font-bold text-white opacity-20" style={{ color: '#456882' }}>
-                    "02"
+                <div
+                  className="rounded-3xl p-10 backdrop-blur-md hover:scale-[1.02] transition-all duration-300"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(69, 104, 130, 0.15) 0%, rgba(13, 18, 22, 0.8) 100%)',
+                    border: '1px solid rgba(69, 104, 130, 0.3)',
+                    boxShadow: '0 0 40px rgba(69, 104, 130, 0.1)'
+                  }}
+                >
+                  <div className="text-7xl font-bold mb-6 opacity-30" style={{ color: '#456882' }}>
+                    02
                   </div>
                   <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
                     <p>
@@ -124,53 +144,42 @@ export default function AboutPage() {
           </section>
 
           {/* Values Section */}
-          <section className="py-32 px-4" style={{ background: '#050a0f' }}>
-            <div className="max-w-6xl mx-auto">
+          <section className="py-32 px-4 relative overflow-hidden" style={{ background: '#050a0f' }}>
+            <div
+              className="absolute bottom-0 right-0 w-96 h-96 rounded-full opacity-5 blur-3xl"
+              style={{ background: '#456882' }}
+            />
+
+            <div className="max-w-6xl mx-auto relative z-10">
               <div className="text-center mb-20">
                 <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
                   Our Values
                 </h2>
                 <div className="w-16 h-px mx-auto" style={{ backgroundColor: '#456882' }}></div>
               </div>
-              <div className="grid md:grid-cols-3 gap-12">
+              <div className="grid md:grid-cols-3 gap-8">
                 {values.map((value, index) => (
-                  <div key={index} className="text-center group">
-                    <div className="w-20 h-20 mx-auto mb-8 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110" style={{ background: 'rgba(69, 104, 130, 0.1)', color: '#456882' }}>
+                  <div
+                    key={index}
+                    className="text-center rounded-3xl p-8 backdrop-blur-md hover:scale-105 transition-all duration-300"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(69, 104, 130, 0.12) 0%, rgba(13, 18, 22, 0.8) 100%)',
+                      border: '1px solid rgba(69, 104, 130, 0.25)',
+                      boxShadow: '0 0 30px rgba(69, 104, 130, 0.08)'
+                    }}
+                  >
+                    <div
+                      className="w-20 h-20 mx-auto mb-8 rounded-full flex items-center justify-center"
+                      style={{ background: 'rgba(69, 104, 130, 0.2)', color: '#456882' }}
+                    >
                       {value.icon}
                     </div>
-                    <h3 className="text-2xl font-semibold text-white mb-6">
+                    <h3 className="text-2xl font-semibold text-white mb-4">
                       {value.title}
                     </h3>
                     <p className="text-gray-400 leading-relaxed">
                       {value.description}
                     </p>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </section>
-
-          {/* Mission Stats */}
-          <section className="py-32 px-4" style={{ background: '#050a0f' }}>
-            <div className="max-w-6xl mx-auto">
-              <div className="text-center mb-20">
-                <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
-                  By the Numbers
-                </h2>
-                <div className="w-16 h-px mx-auto" style={{ backgroundColor: '#456882' }}></div>
-              </div>
-              <div className="grid md:grid-cols-3 gap-16">
-                {team.map((item, index) => (
-                  <div key={index} className="text-center group">
-                    <div className="text-6xl lg:text-7xl font-bold mb-4 leading-tight" style={{ color: '#456882' }}>
-                      {item.value}
-                    </div>
-                    <div className="text-lg font-semibold text-white mb-2">
-                      {item.name}
-                    </div>
-                    <div className="text-gray-400">
-                      {item.description}
-                    </div>
                   </div>
                 ))}
               </div>

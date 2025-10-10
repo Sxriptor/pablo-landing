@@ -156,18 +156,30 @@ export default function MeetPlayCenterPage() {
           </section>
 
           {/* Vision Section */}
-          <section className="py-32 px-4" style={{ background: '#050a0f' }}>
-            <div className="max-w-5xl mx-auto">
+          <section className="py-32 px-4 relative overflow-hidden" style={{ background: '#050a0f' }}>
+            <div
+              className="absolute top-0 left-1/3 w-96 h-96 rounded-full opacity-5 blur-3xl"
+              style={{ background: '#456882' }}
+            />
+
+            <div className="max-w-5xl mx-auto relative z-10">
               <div className="text-center mb-16">
                 <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
                   Our Vision
                 </h2>
                 <div className="w-16 h-px mx-auto" style={{ backgroundColor: '#456882' }}></div>
               </div>
-              <div className="grid lg:grid-cols-2 gap-16 items-center">
-                <div className="space-y-8">
-                  <div className="text-6xl lg:text-7xl font-bold text-white opacity-20" style={{ color: '#456882' }}>
-                    "01"
+              <div className="grid lg:grid-cols-2 gap-8 items-stretch">
+                <div
+                  className="rounded-3xl p-10 backdrop-blur-md hover:scale-[1.02] transition-all duration-300"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(69, 104, 130, 0.15) 0%, rgba(13, 18, 22, 0.8) 100%)',
+                    border: '1px solid rgba(69, 104, 130, 0.3)',
+                    boxShadow: '0 0 40px rgba(69, 104, 130, 0.1)'
+                  }}
+                >
+                  <div className="text-7xl font-bold mb-6 opacity-30" style={{ color: '#456882' }}>
+                    01
                   </div>
                   <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
                     <p>
@@ -178,9 +190,16 @@ export default function MeetPlayCenterPage() {
                     </p>
                   </div>
                 </div>
-                <div className="space-y-8">
-                  <div className="text-6xl lg:text-7xl font-bold text-white opacity-20" style={{ color: '#456882' }}>
-                    "02"
+                <div
+                  className="rounded-3xl p-10 backdrop-blur-md hover:scale-[1.02] transition-all duration-300"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(69, 104, 130, 0.15) 0%, rgba(13, 18, 22, 0.8) 100%)',
+                    border: '1px solid rgba(69, 104, 130, 0.3)',
+                    boxShadow: '0 0 40px rgba(69, 104, 130, 0.1)'
+                  }}
+                >
+                  <div className="text-7xl font-bold mb-6 opacity-30" style={{ color: '#456882' }}>
+                    02
                   </div>
                   <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
                     <p>
@@ -196,24 +215,40 @@ export default function MeetPlayCenterPage() {
           </section>
 
           {/* Upcoming Features */}
-          <section className="py-32 px-4" style={{ background: '#050a0f' }}>
-            <div className="max-w-6xl mx-auto">
+          <section className="py-32 px-4 relative overflow-hidden" style={{ background: '#050a0f' }}>
+            <div
+              className="absolute top-1/4 right-0 w-96 h-96 rounded-full opacity-5 blur-3xl"
+              style={{ background: '#456882' }}
+            />
+
+            <div className="max-w-6xl mx-auto relative z-10">
               <div className="text-center mb-20">
                 <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
                   What's Coming
                 </h2>
                 <div className="w-16 h-px mx-auto" style={{ backgroundColor: '#456882' }}></div>
               </div>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-12">
+              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {upcomingFeatures.map((feature, index) => (
-                  <div key={index} className="text-center group">
-                    <div className="w-20 h-20 mx-auto mb-8 rounded-full flex items-center justify-center transition-all duration-300 group-hover:scale-110" style={{ background: 'rgba(69, 104, 130, 0.1)', color: '#456882' }}>
+                  <div
+                    key={index}
+                    className="text-center rounded-3xl p-8 backdrop-blur-md hover:scale-105 transition-all duration-300"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(69, 104, 130, 0.12) 0%, rgba(13, 18, 22, 0.8) 100%)',
+                      border: '1px solid rgba(69, 104, 130, 0.25)',
+                      boxShadow: '0 0 30px rgba(69, 104, 130, 0.08)'
+                    }}
+                  >
+                    <div
+                      className="w-20 h-20 mx-auto mb-8 rounded-full flex items-center justify-center"
+                      style={{ background: 'rgba(69, 104, 130, 0.2)', color: '#456882' }}
+                    >
                       {feature.icon}
                     </div>
-                    <h3 className="text-2xl font-semibold text-white mb-6">
+                    <h3 className="text-xl font-semibold text-white mb-4">
                       {feature.title}
                     </h3>
-                    <p className="text-gray-400 leading-relaxed">
+                    <p className="text-gray-400 leading-relaxed text-sm">
                       {feature.description}
                     </p>
                   </div>
@@ -223,48 +258,73 @@ export default function MeetPlayCenterPage() {
           </section>
 
           {/* Roadmap Section */}
-          <section className="py-32 px-4" style={{ background: '#050a0f' }}>
-            <div className="max-w-6xl mx-auto">
+          <section className="py-32 px-4 relative overflow-hidden" style={{ background: '#050a0f' }}>
+            <div
+              className="absolute bottom-0 left-0 w-96 h-96 rounded-full opacity-5 blur-3xl"
+              style={{ background: '#456882' }}
+            />
+
+            <div className="max-w-6xl mx-auto relative z-10">
               <div className="text-center mb-20">
                 <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
                   Development Roadmap
                 </h2>
                 <div className="w-16 h-px mx-auto" style={{ backgroundColor: '#456882' }}></div>
               </div>
-              <div className="space-y-12">
+              <div className="space-y-8">
                 {roadmap.map((phase, index) => (
-                  <div key={index} className="flex items-start gap-8">
-                    <div className="flex-shrink-0">
-                      <div className="w-16 h-16 rounded-full flex items-center justify-center text-white font-semibold text-lg" style={{ 
-                        backgroundColor: phase.status === 'completed' ? '#456882' : phase.status === 'in-progress' ? '#456882' : 'rgba(69, 104, 130, 0.3)',
-                        opacity: phase.status === 'planned' ? 0.5 : 1
-                      }}>
-                        {index + 1}
+                  <div
+                    key={index}
+                    className="rounded-3xl p-8 backdrop-blur-md hover:scale-[1.02] transition-all duration-300"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(69, 104, 130, 0.12) 0%, rgba(13, 18, 22, 0.8) 100%)',
+                      border: '1px solid rgba(69, 104, 130, 0.25)',
+                      boxShadow: '0 0 30px rgba(69, 104, 130, 0.08)',
+                      opacity: phase.status === 'planned' ? 0.7 : 1
+                    }}
+                  >
+                    <div className="flex items-start gap-8">
+                      <div className="flex-shrink-0">
+                        <div
+                          className="w-16 h-16 rounded-full flex items-center justify-center text-white font-semibold text-lg"
+                          style={{
+                            backgroundColor: phase.status === 'completed' || phase.status === 'in-progress' ? '#456882' : 'rgba(69, 104, 130, 0.3)'
+                          }}
+                        >
+                          {index + 1}
+                        </div>
                       </div>
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center gap-4 mb-4">
-                        <h3 className="text-2xl font-semibold text-white">
-                          {phase.phase}
-                        </h3>
-                        <span className="text-sm px-3 py-1 rounded-full text-white" style={{ 
-                          backgroundColor: phase.status === 'completed' ? '#456882' : phase.status === 'in-progress' ? '#456882' : 'rgba(69, 104, 130, 0.3)'
-                        }}>
-                          {phase.status === 'completed' ? 'Completed' : phase.status === 'in-progress' ? 'In Progress' : 'Planned'}
-                        </span>
-                      </div>
-                      <h4 className="text-xl font-semibold text-white mb-4">
-                        {phase.title}
-                      </h4>
-                      <p className="text-gray-400 mb-6">
-                        {phase.description}
-                      </p>
-                      <div className="flex flex-wrap gap-2">
-                        {phase.features.map((feature, featureIndex) => (
-                          <span key={featureIndex} className="text-sm px-3 py-1 rounded-full text-gray-300" style={{ backgroundColor: 'rgba(69, 104, 130, 0.1)' }}>
-                            {feature}
+                      <div className="flex-1">
+                        <div className="flex items-center gap-4 mb-4 flex-wrap">
+                          <h3 className="text-2xl font-semibold text-white">
+                            {phase.phase}
+                          </h3>
+                          <span
+                            className="text-sm px-4 py-1.5 rounded-full text-white font-medium"
+                            style={{
+                              backgroundColor: phase.status === 'completed' || phase.status === 'in-progress' ? '#456882' : 'rgba(69, 104, 130, 0.3)'
+                            }}
+                          >
+                            {phase.status === 'completed' ? 'Completed' : phase.status === 'in-progress' ? 'In Progress' : 'Planned'}
                           </span>
-                        ))}
+                        </div>
+                        <h4 className="text-xl font-semibold text-white mb-4">
+                          {phase.title}
+                        </h4>
+                        <p className="text-gray-400 mb-6 leading-relaxed">
+                          {phase.description}
+                        </p>
+                        <div className="flex flex-wrap gap-2">
+                          {phase.features.map((feature, featureIndex) => (
+                            <span
+                              key={featureIndex}
+                              className="text-sm px-4 py-2 rounded-full text-gray-300"
+                              style={{ backgroundColor: 'rgba(69, 104, 130, 0.15)' }}
+                            >
+                              {feature}
+                            </span>
+                          ))}
+                        </div>
                       </div>
                     </div>
                   </div>
