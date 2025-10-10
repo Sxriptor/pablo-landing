@@ -57,7 +57,7 @@ export default function AboutPage() {
 
         <main>
           {/* Hero Section with Background Image */}
-          <section className="relative h-screen flex items-center justify-center">
+          <section className="relative min-h-screen flex items-center">
             <div
               className="absolute inset-0 bg-cover bg-center bg-no-repeat"
               style={{
@@ -70,21 +70,23 @@ export default function AboutPage() {
                 background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 100%)'
               }}
             />
-            <div className="relative z-10 text-center px-4 max-w-5xl mx-auto">
-              <div className="mb-8">
-                <h1 className="text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-8 leading-tight">
-                  About <span style={{ color: '#456882' }}>PlayCenter</span>
-                </h1>
-                <div className="w-24 h-px mx-auto mb-8" style={{ backgroundColor: '#456882' }}></div>
-                <p className="text-xl lg:text-2xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
-                  We're on a mission to make sports accessible to everyone, everywhere
-                </p>
+            <div className="relative z-10 px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-32 w-full">
+              <div className="max-w-7xl mx-auto">
+                <div className="max-w-3xl">
+                  <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-6 sm:mb-8 leading-tight">
+                    About <span style={{ color: '#456882' }}>PlayCircle</span>
+                  </h1>
+                  <div className="w-16 sm:w-24 h-px mb-6 sm:mb-8" style={{ backgroundColor: '#456882' }}></div>
+                  <p className="text-lg sm:text-xl lg:text-2xl text-gray-300 leading-relaxed">
+                    We're on a mission to make sports accessible to everyone, everywhere
+                  </p>
+                </div>
               </div>
             </div>
           </section>
 
           {/* Story Section */}
-          <section className="py-32 px-4 relative overflow-hidden" style={{ background: '#050a0f' }}>
+          <section className="py-16 sm:py-24 lg:py-32 px-4 relative overflow-hidden" style={{ background: '#050a0f' }}>
             {/* Decorative background elements */}
             <div
               className="absolute top-0 left-1/4 w-96 h-96 rounded-full opacity-5 blur-3xl"
@@ -92,13 +94,61 @@ export default function AboutPage() {
             />
 
             <div className="max-w-5xl mx-auto relative z-10">
-              <div className="text-center mb-16">
-                <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
+              <div className="text-center mb-12 sm:mb-16">
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6 leading-tight">
                   Our Story
                 </h2>
-                <div className="w-16 h-px mx-auto" style={{ backgroundColor: '#456882' }}></div>
+                <div className="w-12 sm:w-16 h-px mx-auto" style={{ backgroundColor: '#456882' }}></div>
               </div>
-              <div className="grid lg:grid-cols-2 gap-8 items-stretch">
+
+              {/* Mobile: Horizontal Scroll, Desktop: Grid */}
+              <div className="lg:hidden overflow-x-auto pb-4 -mx-4 px-4 snap-x snap-mandatory hide-scrollbar">
+                <div className="flex gap-6 min-w-max">
+                  <div
+                    className="rounded-3xl p-8 sm:p-10 backdrop-blur-md w-[85vw] sm:w-96 snap-center flex-shrink-0"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(69, 104, 130, 0.15) 0%, rgba(13, 18, 22, 0.8) 100%)',
+                      border: '1px solid rgba(69, 104, 130, 0.3)',
+                      boxShadow: '0 0 40px rgba(69, 104, 130, 0.1)'
+                    }}
+                  >
+                    <div className="text-6xl sm:text-7xl font-bold mb-6 opacity-30" style={{ color: '#456882' }}>
+                      01
+                    </div>
+                    <div className="space-y-4 sm:space-y-6 text-gray-300 text-base sm:text-lg leading-relaxed">
+                      <p>
+                        PlayCircle was born from a simple observation: sports like soccer, tennis, padel, and more are growing rapidly, yet finding a game or connecting with other players remained surprisingly difficult.
+                      </p>
+                      <p>
+                        We set out to change that by building a platform that brings players, facilities, and communities together in one seamless experience.
+                      </p>
+                    </div>
+                  </div>
+                  <div
+                    className="rounded-3xl p-8 sm:p-10 backdrop-blur-md w-[85vw] sm:w-96 snap-center flex-shrink-0"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(69, 104, 130, 0.15) 0%, rgba(13, 18, 22, 0.8) 100%)',
+                      border: '1px solid rgba(69, 104, 130, 0.3)',
+                      boxShadow: '0 0 40px rgba(69, 104, 130, 0.1)'
+                    }}
+                  >
+                    <div className="text-6xl sm:text-7xl font-bold mb-6 opacity-30" style={{ color: '#456882' }}>
+                      02
+                    </div>
+                    <div className="space-y-4 sm:space-y-6 text-gray-300 text-base sm:text-lg leading-relaxed">
+                      <p>
+                        Whether you're a seasoned pro or just getting started with a new sport, PlayCircle makes it easy to find your next game.
+                      </p>
+                      <p>
+                        Today, we're proud to serve thousands of players across multiple cities, partnering with leading facilities and brands to grow the sport we all love.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Desktop: Grid */}
+              <div className="hidden lg:grid lg:grid-cols-2 gap-8 items-stretch">
                 <div
                   className="rounded-3xl p-10 backdrop-blur-md hover:scale-[1.02] transition-all duration-300"
                   style={{
@@ -112,7 +162,7 @@ export default function AboutPage() {
                   </div>
                   <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
                     <p>
-                      PlayCenter was born from a simple observation: sports like soccer, tennis, padel, and more are growing rapidly, yet finding a game or connecting with other players remained surprisingly difficult.
+                      PlayCircle was born from a simple observation: sports like soccer, tennis, padel, and more are growing rapidly, yet finding a game or connecting with other players remained surprisingly difficult.
                     </p>
                     <p>
                       We set out to change that by building a platform that brings players, facilities, and communities together in one seamless experience.
@@ -132,7 +182,7 @@ export default function AboutPage() {
                   </div>
                   <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
                     <p>
-                      Whether you're a seasoned pro or just getting started with a new sport, PlayCenter makes it easy to find your next game.
+                      Whether you're a seasoned pro or just getting started with a new sport, PlayCircle makes it easy to find your next game.
                     </p>
                     <p>
                       Today, we're proud to serve thousands of players across multiple cities, partnering with leading facilities and brands to grow the sport we all love.
@@ -144,24 +194,24 @@ export default function AboutPage() {
           </section>
 
           {/* Values Section */}
-          <section className="py-32 px-4 relative overflow-hidden" style={{ background: '#050a0f' }}>
+          <section className="py-16 sm:py-24 lg:py-32 px-4 relative overflow-hidden" style={{ background: '#050a0f' }}>
             <div
               className="absolute bottom-0 right-0 w-96 h-96 rounded-full opacity-5 blur-3xl"
               style={{ background: '#456882' }}
             />
 
             <div className="max-w-6xl mx-auto relative z-10">
-              <div className="text-center mb-20">
-                <h2 className="text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
+              <div className="text-center mb-12 sm:mb-16 lg:mb-20">
+                <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6 leading-tight">
                   Our Values
                 </h2>
-                <div className="w-16 h-px mx-auto" style={{ backgroundColor: '#456882' }}></div>
+                <div className="w-12 sm:w-16 h-px mx-auto" style={{ backgroundColor: '#456882' }}></div>
               </div>
-              <div className="grid md:grid-cols-3 gap-8">
+              <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
                 {values.map((value, index) => (
                   <div
                     key={index}
-                    className="text-center rounded-3xl p-8 backdrop-blur-md hover:scale-105 transition-all duration-300"
+                    className="text-center rounded-3xl p-6 sm:p-8 backdrop-blur-md hover:scale-105 transition-all duration-300"
                     style={{
                       background: 'linear-gradient(135deg, rgba(69, 104, 130, 0.12) 0%, rgba(13, 18, 22, 0.8) 100%)',
                       border: '1px solid rgba(69, 104, 130, 0.25)',
@@ -169,15 +219,15 @@ export default function AboutPage() {
                     }}
                   >
                     <div
-                      className="w-20 h-20 mx-auto mb-8 rounded-full flex items-center justify-center"
+                      className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-6 sm:mb-8 rounded-full flex items-center justify-center"
                       style={{ background: 'rgba(69, 104, 130, 0.2)', color: '#456882' }}
                     >
                       {value.icon}
                     </div>
-                    <h3 className="text-2xl font-semibold text-white mb-4">
+                    <h3 className="text-xl sm:text-2xl font-semibold text-white mb-3 sm:mb-4">
                       {value.title}
                     </h3>
-                    <p className="text-gray-400 leading-relaxed">
+                    <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
                       {value.description}
                     </p>
                   </div>
@@ -187,19 +237,19 @@ export default function AboutPage() {
           </section>
 
           {/* CTA Section */}
-          <section className="py-32 px-4" style={{ background: '#050a0f' }}>
+          <section className="py-16 sm:py-24 lg:py-32 px-4" style={{ background: '#050a0f' }}>
             <div className="max-w-5xl mx-auto text-center">
-              <h2 className="text-5xl lg:text-6xl font-bold text-white mb-8 leading-tight">
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6 sm:mb-8 leading-tight">
                 Join the Movement
               </h2>
-              <div className="w-24 h-px mx-auto mb-12" style={{ backgroundColor: '#456882' }}></div>
-              <p className="text-xl text-gray-300 mb-16 max-w-3xl mx-auto leading-relaxed">
+              <div className="w-16 sm:w-24 h-px mx-auto mb-8 sm:mb-12" style={{ backgroundColor: '#456882' }}></div>
+              <p className="text-base sm:text-lg lg:text-xl text-gray-300 mb-12 sm:mb-16 max-w-3xl mx-auto leading-relaxed px-4">
                 Be part of the community that's transforming how people play sports around the world.
               </p>
-              <div className="flex flex-col sm:flex-row gap-6 justify-center">
+              <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center px-4">
                 <a
                   href="/"
-                  className="inline-block rounded-full px-12 py-4 text-lg font-semibold transition-all duration-300 hover:scale-105"
+                  className="inline-block rounded-full px-8 sm:px-12 py-3 sm:py-4 text-base sm:text-lg font-semibold transition-all duration-300 hover:scale-105"
                   style={{
                     backgroundColor: '#456882',
                     color: 'white'
@@ -209,7 +259,7 @@ export default function AboutPage() {
                 </a>
                 <a
                   href="/partners"
-                  className="inline-block rounded-full px-12 py-4 text-lg font-semibold transition-all duration-300 hover:scale-105 border-2"
+                  className="inline-block rounded-full px-8 sm:px-12 py-3 sm:py-4 text-base sm:text-lg font-semibold transition-all duration-300 hover:scale-105 border-2"
                   style={{
                     borderColor: '#456882',
                     color: '#456882'

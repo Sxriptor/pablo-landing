@@ -30,7 +30,7 @@ export function StatsSection() {
         <div className="text-center mb-16">
           <h2 className="text-4xl lg:text-5xl font-bold mb-4">Join a Growing Community</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-            PlayCenter connects thousands of players every day, making sports more accessible and enjoyable for everyone.
+            PlayCircle connects thousands of players every day, making sports more accessible and enjoyable for everyone.
           </p>
         </div>
 

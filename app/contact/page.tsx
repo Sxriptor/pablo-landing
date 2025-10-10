@@ -51,11 +51,11 @@ export default function ContactPage() {
               <h3 className="text-lg font-semibold text-white mb-2">Email Us</h3>
               <p className="text-gray-400 text-sm mb-3">Drop us a line anytime</p>
               <a
-                href="mailto:hello@playcenter.com"
+                href="mailto:hello@playcircle.com"
                 className="text-sm hover:underline"
                 style={{ color: '#456882' }}
               >
-                hello@playcenter.com
+                hello@playcircle.com
               </a>
             </div>
 

@@ -27,7 +27,7 @@ export function SimpleCtaSection() {
               Ready to Play?
             </h2>
             <p className="text-lg text-muted-foreground">
-              Join thousands of players already connecting through PlayCenter. Download the app and find your next game today.
+              Join thousands of players already connecting through PlayCircle. Download the app and find your next game today.
             </p>
 
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
