@@ -45,99 +45,88 @@ export function ContactForm() {
     <div className="w-full">
       {/* Glass Card */}
       <div
-        className="rounded-2xl sm:rounded-[20px] p-6 sm:p-8 lg:p-10 backdrop-blur-md"
+        className="rounded-2xl p-8 lg:p-10 backdrop-blur-md"
         style={{
-          background: 'linear-gradient(135deg, rgba(13, 18, 22, 0.6) 0%, rgba(69, 104, 130, 0.3) 100%)',
-          border: '1.5px solid rgba(70, 104, 130, 0.4)',
-          boxShadow: '0 0 40px rgba(70, 104, 130, 0.2), inset 0 0 20px rgba(70, 104, 130, 0.08)',
+          background: 'linear-gradient(135deg, rgba(69, 104, 130, 0.15) 0%, rgba(13, 18, 22, 0.9) 100%)',
+          border: '1px solid rgba(69, 104, 130, 0.3)',
+          boxShadow: '0 0 40px rgba(69, 104, 130, 0.15)'
         }}
       >
-        <form onSubmit={handleSubmit} className="space-y-4 sm:space-y-6">
-          {/* First Name */}
-          <div className="space-y-1.5 sm:space-y-2">
-            <Label htmlFor="firstName" className="text-gray-300 text-xs sm:text-sm font-medium">
-              First name <span className="text-[#4668A2]">*</span>
-            </Label>
-            <Input
-              id="firstName"
-              type="text"
-              required
-              className="bg-[#0a0e14] border-[#1a2430] text-white placeholder:text-gray-600 rounded-lg h-10 sm:h-12 text-sm sm:text-base focus:border-[#4668A2] focus:ring-1 focus:ring-[#4668A2] shadow-inner"
-              style={{
-                boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.4)',
-              }}
-            />
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Name Row */}
+          <div className="grid sm:grid-cols-2 gap-5">
+            <div className="space-y-2">
+              <Label htmlFor="firstName" className="text-gray-300 text-sm font-medium">
+                First name <span style={{ color: '#456882' }}>*</span>
+              </Label>
+              <Input
+                id="firstName"
+                type="text"
+                required
+                placeholder="John"
+                className="bg-[#0a0f14]/80 border-[#456882]/30 text-white placeholder:text-gray-500 rounded-lg h-12 text-base focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all"
+              />
+            </div>
+
+            <div className="space-y-2">
+              <Label htmlFor="lastName" className="text-gray-300 text-sm font-medium">
+                Last name <span style={{ color: '#456882' }}>*</span>
+              </Label>
+              <Input
+                id="lastName"
+                type="text"
+                required
+                placeholder="Doe"
+                className="bg-[#0a0f14]/80 border-[#456882]/30 text-white placeholder:text-gray-500 rounded-lg h-12 text-base focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all"
+              />
+            </div>
           </div>
 
-          {/* Last Name */}
-          <div className="space-y-1.5 sm:space-y-2">
-            <Label htmlFor="lastName" className="text-gray-300 text-xs sm:text-sm font-medium">
-              Last name <span className="text-[#4668A2]">*</span>
-            </Label>
-            <Input
-              id="lastName"
-              type="text"
-              required
-              className="bg-[#0a0e14] border-[#1a2430] text-white placeholder:text-gray-600 rounded-lg h-10 sm:h-12 text-sm sm:text-base focus:border-[#4668A2] focus:ring-1 focus:ring-[#4668A2] shadow-inner"
-              style={{
-                boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.4)',
-              }}
-            />
-          </div>
+          {/* Email & Phone Row */}
+          <div className="grid sm:grid-cols-2 gap-5">
+            <div className="space-y-2">
+              <Label htmlFor="email" className="text-gray-300 text-sm font-medium">
+                Email <span style={{ color: '#456882' }}>*</span>
+              </Label>
+              <Input
+                id="email"
+                type="email"
+                required
+                placeholder="john@example.com"
+                className="bg-[#0a0f14]/80 border-[#456882]/30 text-white placeholder:text-gray-500 rounded-lg h-12 text-base focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all"
+              />
+            </div>
 
-          {/* Email Address */}
-          <div className="space-y-1.5 sm:space-y-2">
-            <Label htmlFor="email" className="text-gray-300 text-xs sm:text-sm font-medium">
-              Email Address <span className="text-[#4668A2]">*</span>
-            </Label>
-            <Input
-              id="email"
-              type="email"
-              required
-              placeholder="you@example.com"
-              className="bg-[#0a0e14] border-[#1a2430] text-white placeholder:text-gray-600 rounded-lg h-10 sm:h-12 text-sm sm:text-base focus:border-[#4668A2] focus:ring-1 focus:ring-[#4668A2] shadow-inner"
-              style={{
-                boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.4)',
-              }}
-            />
-          </div>
-
-          {/* Phone Number */}
-          <div className="space-y-1.5 sm:space-y-2">
-            <Label htmlFor="phone" className="text-gray-300 text-xs sm:text-sm font-medium">
-              Phone number <span className="text-[#4668A2]">*</span>
-            </Label>
-            <Input
-              id="phone"
-              type="tel"
-              required
-              value={phoneNumber}
-              onChange={handlePhoneChange}
-              placeholder="305-555-1234"
-              maxLength={12}
-              className="bg-[#0a0e14] border-[#1a2430] text-white placeholder:text-gray-600 rounded-lg h-10 sm:h-12 text-sm sm:text-base focus:border-[#4668A2] focus:ring-1 focus:ring-[#4668A2] shadow-inner"
-              style={{
-                boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.4)',
-              }}
-            />
+            <div className="space-y-2">
+              <Label htmlFor="phone" className="text-gray-300 text-sm font-medium">
+                Phone <span style={{ color: '#456882' }}>*</span>
+              </Label>
+              <Input
+                id="phone"
+                type="tel"
+                required
+                value={phoneNumber}
+                onChange={handlePhoneChange}
+                placeholder="305-555-1234"
+                maxLength={12}
+                className="bg-[#0a0f14]/80 border-[#456882]/30 text-white placeholder:text-gray-500 rounded-lg h-12 text-base focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all"
+              />
+            </div>
           </div>
 
           {/* How can we help? */}
-          <div className="space-y-1.5 sm:space-y-2">
-            <Label htmlFor="helpType" className="text-gray-300 text-xs sm:text-sm font-medium">
-              How can we help? <span className="text-[#4668A2]">*</span>
+          <div className="space-y-2">
+            <Label htmlFor="helpType" className="text-gray-300 text-sm font-medium">
+              How can we help? <span style={{ color: '#456882' }}>*</span>
             </Label>
             <Select required>
               <SelectTrigger
                 id="helpType"
-                className="bg-[#0a0e14] border-[#1a2430] text-white rounded-lg h-10 sm:h-12 text-sm sm:text-base focus:border-[#4668A2] focus:ring-1 focus:ring-[#4668A2] shadow-inner"
-                style={{
-                  boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.4)',
-                }}
+                className="bg-[#0a0f14]/80 border-[#456882]/30 text-white rounded-lg h-12 text-base focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all"
               >
                 <SelectValue placeholder="Select a topic" />
               </SelectTrigger>
-              <SelectContent className="bg-[#0d1219] border-[#1a2430] text-white">
+              <SelectContent className="bg-[#0d1219] border-[#456882]/30 text-white">
                 <SelectItem value="support">Support</SelectItem>
                 <SelectItem value="partnership">Partnership</SelectItem>
                 <SelectItem value="general">General Inquiry</SelectItem>
@@ -148,26 +137,27 @@ export function ContactForm() {
           </div>
 
           {/* Your message */}
-          <div className="space-y-1.5 sm:space-y-2">
-            <Label htmlFor="message" className="text-gray-300 text-xs sm:text-sm font-medium">
-              Your message <span className="text-[#4668A2]">*</span>
+          <div className="space-y-2">
+            <Label htmlFor="message" className="text-gray-300 text-sm font-medium">
+              Your message <span style={{ color: '#456882' }}>*</span>
             </Label>
             <Textarea
               id="message"
               required
-              rows={4}
+              rows={5}
               placeholder="Tell us more about your inquiry..."
-              className="bg-[#0a0e14] border-[#1a2430] text-white placeholder:text-gray-600 rounded-lg text-sm sm:text-base focus:border-[#4668A2] focus:ring-1 focus:ring-[#4668A2] shadow-inner resize-none"
-              style={{
-                boxShadow: 'inset 0 2px 4px rgba(0, 0, 0, 0.4)',
-              }}
+              className="bg-[#0a0f14]/80 border-[#456882]/30 text-white placeholder:text-gray-500 rounded-lg text-base focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all resize-none"
             />
           </div>
 
           {/* Submit Button */}
           <Button
             type="submit"
-            className="w-full h-10 sm:h-12 bg-[#4668A2] hover:bg-[#3B5A8C] text-white font-semibold rounded-full text-sm sm:text-base transition-all duration-200 shadow-lg hover:shadow-xl hover:shadow-[#4668A2]/20"
+            className="w-full h-12 font-semibold rounded-lg text-base transition-all duration-300 hover:scale-[1.02] hover:shadow-lg"
+            style={{
+              background: '#456882',
+              color: 'white'
+            }}
           >
             Send Message
           </Button>
