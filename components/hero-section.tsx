@@ -17,12 +17,12 @@ export function HeroSection() {
 
       <div className="relative z-10 h-full">
         <div className="grid lg:grid-cols-2 gap-12 items-end h-full">
-          <div className="space-y-4 flex flex-col justify-end">
-            <h1 className="text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight text-balance">
+          <div className="space-y-4 flex flex-col justify-end items-center lg:items-start text-center lg:text-left">
+            <h1 className="text-6xl lg:text-7xl xl:text-8xl font-bold leading-none text-balance">
               <span style={{ color: '#456882' }}>Play Sports</span>
               <br />
               <span
-                className="whitespace-nowrap text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl text-center lg:text-left block lg:inline"
+                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl xl:text-8xl inline-block"
                 style={{ color: 'white' }}
               >
                 Anytime, Anywhere
@@ -31,7 +31,7 @@ export function HeroSection() {
             <p className="text-lg text-white max-w-md text-pretty">
               Find a game near you, connect with players, and experience sports like never before.
             </p>
-            <div className="flex flex-wrap gap-3">
+            <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
               <a href="#" className="inline-block">
                 <div className="bg-card border border-border rounded-lg px-4 py-2 flex items-center gap-2 hover:bg-card/80 transition-colors">
                   <svg className="w-6 h-6" viewBox="0 0 24 24" fill="currentColor">
@@ -55,7 +55,7 @@ export function HeroSection() {
                 </div>
               </a>
             </div>
-            <div className="flex items-center gap-4 pt-2">
+            <div className="flex items-center gap-4 pt-2 justify-center lg:justify-start">
               <div className="flex -space-x-2">
                 {[1, 2, 3, 4].map((i) => (
                   <div
