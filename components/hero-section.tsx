@@ -6,7 +6,7 @@ import { motion } from "framer-motion"
 
 export function HeroSection() {
   return (
-    <section className="relative pt-12 pb-4 sm:pt-20 sm:pb-12 px-2 lg:px-12 overflow-hidden min-h-screen flex items-end">
+    <section className="relative pt-8 pb-2 sm:pt-20 sm:pb-12 px-2 lg:px-12 overflow-hidden min-h-screen flex items-center lg:items-end">
       {/* Background image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -224,7 +224,7 @@ export function HeroSection() {
           </div>
 
           {/* Phone mockups on the right */}
-          <div className="flex justify-center items-center lg:items-end order-1 lg:order-2 scale-50 sm:scale-75 lg:scale-100 origin-center lg:origin-bottom">
+          <div className="flex justify-center items-center lg:items-end order-1 lg:order-2 scale-[0.7] sm:scale-75 lg:scale-100 origin-center lg:origin-bottom">
             <PhoneMockupTriple />
           </div>
         </div>

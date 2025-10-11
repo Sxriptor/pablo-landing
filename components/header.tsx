@@ -164,28 +164,14 @@ export function Header() {
       />
 
       {/* Mobile Menu Sidebar */}
+      {mobileMenuOpen && (
       <div
-        className={`fixed top-0 right-0 h-full w-64 sm:w-72 z-50 md:hidden transition-transform duration-300 ease-in-out ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-          }`}
+        className="fixed top-0 right-0 h-full w-64 sm:w-72 z-50 md:hidden animate-in slide-in-from-right duration-300"
         style={{
           background: 'rgba(13, 18, 22, 0.15)',
           backdropFilter: 'blur(25px)',
           borderLeft: '1px solid rgba(255, 255, 255, 0.1)',
-          boxShadow: '-20px 0 60px rgba(0, 0, 0, 0.3), inset 1px 0 0 rgba(255, 255, 255, 0.05)',
-          pointerEvents: mobileMenuOpen ? 'auto' : 'none',
-          touchAction: 'pan-y'
-        }}
-        onTouchStart={(e) => {
-          if (!mobileMenuOpen) {
-            e.preventDefault();
-            e.stopPropagation();
-          }
-        }}
-        onTouchMove={(e) => {
-          if (!mobileMenuOpen) {
-            e.preventDefault();
-            e.stopPropagation();
-          }
+          boxShadow: '-20px 0 60px rgba(0, 0, 0, 0.3), inset 1px 0 0 rgba(255, 255, 255, 0.05)'
         }}
       >
         <div className="flex flex-col h-full">
@@ -254,6 +240,7 @@ export function Header() {
           </div>
         </div>
       </div>
+      )}
     </>
   )
 }
