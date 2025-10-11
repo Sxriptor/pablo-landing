@@ -19,9 +19,9 @@ export function HeroSection() {
         background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 1) 100%)'
       }} />
 
-      <div className="relative z-10 w-full pb-2 sm:pb-8 mt-14 sm:mt-0">
-        <div className="grid lg:grid-cols-2 gap-4 lg:gap-12 items-start lg:items-end">
-          <div className="space-y-1.5 sm:space-y-4 flex flex-col justify-start sm:justify-end items-center lg:items-start text-center lg:text-left order-2 lg:order-1">
+      <div className="relative z-10 w-full pb-2 sm:pb-8 mt-12 sm:mt-0">
+        <div className="grid lg:grid-cols-2 gap-3 lg:gap-12 items-start lg:items-end">
+          <div className="space-y-1 sm:space-y-4 flex flex-col justify-start sm:justify-end items-center lg:items-start text-center lg:text-left order-2 lg:order-1">
             <motion.h1 
               className="text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-none text-balance"
               initial={{ opacity: 0, y: 20 }}
@@ -224,7 +224,7 @@ export function HeroSection() {
           </div>
 
           {/* Phone mockups on the right */}
-          <div className="flex justify-center items-start lg:items-end order-1 lg:order-2 scale-[0.55] sm:scale-75 lg:scale-100 origin-top lg:origin-bottom -mt-4 sm:mt-0">
+          <div className="flex justify-center items-center lg:items-end order-1 lg:order-2 scale-[0.65] sm:scale-75 lg:scale-100 origin-center lg:origin-bottom">
             <PhoneMockupTriple />
           </div>
         </div>
