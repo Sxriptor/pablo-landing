@@ -122,7 +122,7 @@ export default function MeetPlayCirclePage() {
               <div className="max-w-7xl mx-auto">
                 <div className="max-w-3xl">
                   <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-6 sm:mb-8 leading-tight">
-                    Meet <span style={{ color: '#456882' }}>PlayCircle 2.0</span>
+                    Meet <span style={{ color: '#456882' }}>PlayCircle </span>
                   </h1>
                   <div className="w-16 sm:w-24 h-px mb-6 sm:mb-8" style={{ backgroundColor: '#456882' }}></div>
                   <p className="text-lg sm:text-xl lg:text-2xl text-gray-300 leading-relaxed">
@@ -188,7 +188,7 @@ export default function MeetPlayCirclePage() {
                     </div>
                     <div className="space-y-4 sm:space-y-6 text-gray-300 text-base sm:text-lg leading-relaxed">
                       <p>
-                        PlayCircle 2.0 represents our evolution to a comprehensive multi-sport platform connecting players across all sports.
+                        PlayCircle represents our evolution to a comprehensive multi-sport platform connecting players across all sports.
                       </p>
                       <p>
                         We're building the world's largest sports community, connecting players across multiple disciplines and creating opportunities for growth, competition, and friendship.
@@ -208,7 +208,7 @@ export default function MeetPlayCirclePage() {
                     </div>
                     <div className="space-y-4 sm:space-y-6 text-gray-300 text-base sm:text-lg leading-relaxed">
                       <p>
-                        From soccer fields to tennis courts, from padel matches to football games, PlayCircle 2.0 will be your gateway to the entire sports world.
+                        From soccer fields to tennis courts, from padel matches to football games, PlayCircle  will be your gateway to the entire sports world.
                       </p>
                       <p>
                         Join us as we revolutionize how people discover, connect, and play sports together.
@@ -233,7 +233,7 @@ export default function MeetPlayCirclePage() {
                   </div>
                   <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
                     <p>
-                      PlayCircle 2.0 represents our evolution to a comprehensive multi-sport platform connecting players across all sports.
+                      PlayCircle  represents our evolution to a comprehensive multi-sport platform connecting players across all sports.
                     </p>
                     <p>
                       We're building the world's largest sports community, connecting players across multiple disciplines and creating opportunities for growth, competition, and friendship.
@@ -253,7 +253,7 @@ export default function MeetPlayCirclePage() {
                   </div>
                   <div className="space-y-6 text-gray-300 text-lg leading-relaxed">
                     <p>
-                      From soccer fields to tennis courts, from padel matches to football games, PlayCircle 2.0 will be your gateway to the entire sports world.
+                      From soccer fields to tennis courts, from padel matches to football games, PlayCircle  will be your gateway to the entire sports world.
                     </p>
                     <p>
                       Join us as we revolutionize how people discover, connect, and play sports together.
@@ -423,7 +423,7 @@ export default function MeetPlayCirclePage() {
               </h2>
               <div className="w-16 sm:w-24 h-px mx-auto mb-8 sm:mb-12" style={{ backgroundColor: '#456882' }}></div>
               <p className="text-base sm:text-lg lg:text-xl text-gray-300 mb-12 sm:mb-16 max-w-3xl mx-auto leading-relaxed px-4">
-                Be among the first to experience PlayCircle 2.0 and help shape the future of sports connection.
+                Be among the first to experience PlayCircle  and help shape the future of sports connection.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 justify-center px-4">
                 <a
