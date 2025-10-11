@@ -90,7 +90,7 @@ export function TestimonialsSection() {
 
 
 
-  const TestimonialCard = () => (
+  const TestimonialCard = ({ isMobile = false }) => (
     <div 
       className="p-6 backdrop-blur h-[500px] flex flex-col overflow-hidden relative rounded-xl border shadow-sm"
       style={{ 
@@ -107,7 +107,7 @@ export function TestimonialsSection() {
       </div>
       
       {/* Text content - takes up available space */}
-      <div className="flex-1 mb-6 overflow-hidden" style={{ transform: 'translateY(-3%)' }}>
+      <div className="flex-1 mb-6" style={{ transform: isMobile ? 'translateY(-9%)' : 'translateY(-8%)' }}>
         <p className="text-lg leading-relaxed text-pretty line-clamp-6">{current.text}</p>
       </div>
       
@@ -188,20 +188,20 @@ export function TestimonialsSection() {
           >
             {/* Mobile: Only show testimonial card */}
             <div className="lg:hidden">
-              <TestimonialCard />
+              <TestimonialCard isMobile={true} />
             </div>
             
             {/* Desktop: Show alternating layout */}
             <div className="hidden lg:contents">
               {current.layout === "right" ? (
                 <>
-                  <TestimonialCard />
+                  <TestimonialCard isMobile={false} />
                   <ImageCard />
                 </>
               ) : (
                 <>
                   <ImageCard />
-                  <TestimonialCard />
+                  <TestimonialCard isMobile={false} />
                 </>
               )}
             </div>
