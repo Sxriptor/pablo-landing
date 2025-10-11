@@ -8,6 +8,12 @@ export const metadata: Metadata = {
   title: 'PlayCircle - Multi-Sport Game Finder',
   description: 'Find and join sports games near you - Soccer, Football, Tennis, Padel, and more',
   generator: 'PlayCircle - Multi-Sport Platform',
+  icons: {
+    icon: '/playcirclelogonew.png',
+    shortcut: '/playcirclelogonew.png',
+    apple: '/playcirclelogonew.png',
+  },
+  manifest: '/manifest.json',
 }
 
 export default function RootLayout({

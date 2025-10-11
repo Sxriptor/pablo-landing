@@ -57,11 +57,22 @@ export function HeroSection() {
             </div>
             <div className="flex items-center gap-4 pt-2 justify-center lg:justify-start">
               <div className="flex -space-x-2">
-                {[1, 2, 3, 4].map((i) => (
+                {[
+                  '/soccer-player-testimonial.jpg',
+                  '/female-soccer-player.png',
+                  '/soccer-player-action.jpg',
+                  '/soccer-players-on-field.jpg'
+                ].map((image, i) => (
                   <div
                     key={i}
-                    className="w-10 h-10 rounded-full bg-gradient-to-br from-primary/50 to-primary border-2 border-background"
-                  />
+                    className="w-10 h-10 rounded-full border-2 border-background overflow-hidden"
+                  >
+                    <img
+                      src={image}
+                      alt={`Player ${i + 1}`}
+                      className="w-full h-full object-cover"
+                    />
+                  </div>
                 ))}
               </div>
               <div>

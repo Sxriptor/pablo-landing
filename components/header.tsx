@@ -44,20 +44,12 @@ export function Header() {
         <div className="w-full px-4 sm:px-6 lg:px-12 py-4 flex items-center justify-between">
           <div className="flex items-center gap-8">
             <a href="/" className="flex items-center gap-2 whitespace-nowrap flex-shrink-0">
-              <div
-                className={`w-8 h-8 bg-primary rounded-full flex items-center justify-center transition-all duration-300 ${mobileMenuOpen ? 'blur-sm' : ''
-                  }`}
-              >
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2"
-                  className="w-5 h-5 text-primary-foreground"
-                >
-                  <circle cx="12" cy="12" r="10" />
-                  <path d="M12 2v20M2 12h20" />
-                </svg>
+              <div className={`w-10 h-10 sm:w-12 sm:h-12 transition-all duration-300 ${mobileMenuOpen ? 'blur-sm' : ''}`}>
+                <img
+                  src="/playcirclelogonew.png"
+                  alt="PlayCircle Logo"
+                  className="w-full h-full object-contain"
+                />
               </div>
               <span
                 className={`text-lg sm:text-xl text-white font-bold transition-all duration-300 ${mobileMenuOpen ? 'blur-sm' : ''
