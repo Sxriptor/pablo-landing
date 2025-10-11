@@ -1,16 +1,23 @@
+"use client"
+
 import { ArrowRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { motion } from "framer-motion"
 
 export function SimpleCtaSection() {
   return (
     <section className="py-20 px-4" style={{ background: '#050a0f' }}>
       <div className="container mx-auto">
-        <div
+        <motion.div
           className="rounded-3xl p-12 md:p-16 text-center relative overflow-hidden"
           style={{
             background: 'linear-gradient(135deg, rgba(69, 104, 130, 0.15) 0%, rgba(13, 18, 22, 0.8) 100%)',
             border: '1px solid rgba(69, 104, 130, 0.3)'
           }}
+          initial={{ opacity: 0, scale: 0.8, rotate: -5 }}
+          whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: 0.8, type: "spring", stiffness: 100 }}
         >
           {/* Decorative circles */}
           <div
@@ -23,14 +30,32 @@ export function SimpleCtaSection() {
           />
 
           <div className="relative z-10 max-w-3xl mx-auto space-y-6">
-            <h2 className="text-4xl lg:text-5xl font-bold">
+            <motion.h2 
+              className="text-4xl lg:text-5xl font-bold"
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+            >
               Ready to Play?
-            </h2>
-            <p className="text-lg text-muted-foreground">
+            </motion.h2>
+            <motion.p 
+              className="text-lg text-muted-foreground"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false }}
+              transition={{ duration: 0.6, delay: 0.4 }}
+            >
               Join thousands of players already connecting through PlayCircle. Download the app and find your next game today.
-            </p>
+            </motion.p>
 
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+            <motion.div 
+              className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: false }}
+              transition={{ duration: 0.6, delay: 0.6 }}
+            >
               <a href="#" className="inline-block">
                 <div
                   className="rounded-lg px-6 py-3 flex items-center gap-3 transition-all hover:scale-105"
@@ -65,9 +90,9 @@ export function SimpleCtaSection() {
                   </div>
                 </div>
               </a>
-            </div>
+            </motion.div>
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   )

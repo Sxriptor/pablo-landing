@@ -1,4 +1,7 @@
+"use client"
+
 import { Bell, Shield, CreditCard, MessageSquare, MapPin, UserCheck } from "lucide-react"
+import { motion } from "framer-motion"
 
 export function FeaturesSection() {
   const features = [
@@ -37,21 +40,35 @@ export function FeaturesSection() {
   return (
     <section className="py-20 px-4" style={{ background: '#0a0f14' }}>
       <div className="container mx-auto">
-        <div className="text-center mb-16">
+        <motion.div 
+          className="text-center mb-16"
+          initial={{ opacity: 0, y: -50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: 0.8 }}
+        >
           <h2 className="text-4xl lg:text-5xl font-bold mb-4">Built for Players, By Players</h2>
           <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
             Everything you need to find, book, and enjoy your favorite sports
           </p>
-        </div>
+        </motion.div>
 
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
           {features.map((feature, index) => (
-            <div
+            <motion.div
               key={index}
               className="p-6 rounded-xl transition-all hover:scale-105"
               style={{
                 background: 'rgba(13, 18, 22, 0.4)',
                 border: '1px solid rgba(69, 104, 130, 0.2)'
+              }}
+              initial={{ opacity: 0, y: 50, rotateX: -15 }}
+              whileInView={{ opacity: 1, y: 0, rotateX: 0 }}
+              viewport={{ once: false, amount: 0.2 }}
+              transition={{ 
+                duration: 0.6, 
+                delay: index * 0.15,
+                type: "spring"
               }}
             >
               <div
@@ -62,7 +79,7 @@ export function FeaturesSection() {
               </div>
               <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
               <p className="text-muted-foreground text-sm">{feature.description}</p>
-            </div>
+            </motion.div>
           ))}
         </div>
       </div>

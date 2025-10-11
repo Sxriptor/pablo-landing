@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { useEffect, useState } from "react"
 import { Menu, X } from "lucide-react"
+import { motion } from "framer-motion"
 
 export function Header() {
   const [scrollProgress, setScrollProgress] = useState(0)
@@ -41,28 +42,50 @@ export function Header() {
           borderBottom: `1px solid rgba(39, 39, 42, ${scrollProgress * 0.5})`,
         }}
       >
-        <div className="w-full px-4 sm:px-6 lg:px-12 py-4 flex items-center justify-between">
-          <div className="flex items-center gap-8">
+        <div className="w-full px-4 sm:px-6 lg:px-12 py-4 flex items-center justify-between relative">
+          <div className="flex items-center gap-2 sm:gap-8 flex-1 min-w-0">
             <a href="/" className="flex items-center gap-2 whitespace-nowrap flex-shrink-0">
-              <div className={`w-10 h-10 sm:w-12 sm:h-12 transition-all duration-300 ${mobileMenuOpen ? 'blur-sm' : ''}`}>
+              <motion.div 
+                className={`w-10 h-10 sm:w-12 sm:h-12 transition-all duration-300 ${mobileMenuOpen ? 'blur-sm' : ''}`}
+                initial={{ opacity: 0, scale: 0, rotate: -180 }}
+                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                transition={{ 
+                  duration: 0.8, 
+                  type: "spring", 
+                  stiffness: 200,
+                  delay: 0.1 
+                }}
+              >
                 <img
                   src="/playcirclelogonew.png"
                   alt="PlayCircle Logo"
                   className="w-full h-full object-contain"
                 />
-              </div>
-              <span
+              </motion.div>
+              <motion.span
                 className={`text-lg sm:text-xl text-white font-bold transition-all duration-300 ${mobileMenuOpen ? 'blur-sm' : ''
                   }`}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ 
+                  duration: 0.6, 
+                  delay: 0.3 
+                }}
               >
                 PlayCircle
-              </span>
+              </motion.span>
             </a>
-            <nav
-              className="hidden md:flex items-center gap-2 p-2 rounded-full backdrop-blur-md border border-white/10"
+            <motion.nav
+              className="hidden md:flex items-center gap-2 p-2 rounded-full backdrop-blur-md border border-white/10 flex-shrink-0"
               style={{
                 background: 'rgba(255, 255, 255, 0.05)',
                 boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 4px 20px rgba(0, 0, 0, 0.1)'
+              }}
+              initial={{ opacity: 0, y: -20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ 
+                duration: 0.6, 
+                delay: 0.5 
               }}
             >
               <a
@@ -89,26 +112,44 @@ export function Header() {
               >
                 Partners
               </a>
-            </nav>
+            </motion.nav>
           </div>
 
           {/* Desktop: Download App Button */}
-          <Button className="hidden md:flex bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-6">
-            Download App
-          </Button>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ 
+              duration: 0.5, 
+              delay: 0.7,
+              type: "spring"
+            }}
+          >
+            <Button className="hidden md:flex bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-6">
+              Download App
+            </Button>
+          </motion.div>
 
           {/* Mobile: Hamburger Menu Button */}
-          <button
+          <motion.button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-white hover:text-gray-300 transition-colors"
+            className="md:hidden p-2 text-white hover:text-gray-300 transition-colors relative z-[60] flex-shrink-0"
             aria-label="Toggle menu"
+            initial={{ opacity: 0, rotate: -90, scale: 0 }}
+            animate={{ opacity: 1, rotate: 0, scale: 1 }}
+            transition={{ 
+              duration: 0.6, 
+              delay: 0.5,
+              type: "spring",
+              stiffness: 200
+            }}
           >
             {mobileMenuOpen ? (
               <X className="w-6 h-6" />
             ) : (
               <Menu className="w-6 h-6" />
             )}
-          </button>
+          </motion.button>
         </div>
       </header>
 
@@ -121,7 +162,7 @@ export function Header() {
 
       {/* Mobile Menu Sidebar */}
       <div
-        className={`fixed top-0 right-0 h-full w-56 z-50 md:hidden transition-transform duration-300 ease-in-out ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+        className={`fixed top-0 right-0 h-full w-64 sm:w-72 z-50 md:hidden transition-transform duration-300 ease-in-out ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
           }`}
         style={{
           background: 'rgba(13, 18, 22, 0.15)',

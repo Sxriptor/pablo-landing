@@ -2,6 +2,7 @@
 
 import { Star, ChevronLeft, ChevronRight } from "lucide-react"
 import { Button } from "@/components/ui/button"
+import { motion } from "framer-motion"
 
 import { useState, useRef } from "react"
 
@@ -140,14 +141,26 @@ export function TestimonialsSection() {
   return (
     <section className="py-20 px-4" style={{ background: '#050a0f' }}>
       <div className="container mx-auto">
-        <div className="mb-12">
+        <motion.div 
+          className="mb-12"
+          initial={{ opacity: 0, x: -100 }}
+          whileInView={{ opacity: 1, x: 0 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: 0.8 }}
+        >
           <h2 className="text-4xl lg:text-5xl font-bold mb-6 text-balance">What Our Players Are Saying</h2>
           <Button className="bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-6">
             Join a Game
           </Button>
-        </div>
+        </motion.div>
 
-        <div className="relative">
+        <motion.div 
+          className="relative"
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: false, amount: 0.2 }}
+          transition={{ duration: 0.7 }}
+        >
           {/* Navigation Arrows */}
           <button
             onClick={prevTestimonial}
@@ -208,7 +221,7 @@ export function TestimonialsSection() {
               />
             ))}
           </div>
-        </div>
+        </motion.div>
       </div>
     </section>
   )

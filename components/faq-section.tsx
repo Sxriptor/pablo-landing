@@ -6,6 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion"
+import { motion } from "framer-motion"
 
 export function FaqSection() {
   const faqs = [
@@ -38,22 +39,42 @@ export function FaqSection() {
   return (
     <section className="py-20 px-4" style={{ background: '#050a0f' }}>
       <div className="container mx-auto max-w-3xl">
-        <div className="text-center mb-12">
+        <motion.div 
+          className="text-center mb-12"
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: 0.8 }}
+        >
           <h2 className="text-4xl lg:text-5xl font-bold mb-4">Frequently Asked Questions</h2>
           <p className="text-muted-foreground">Everything you need to know about PlayCircle</p>
-        </div>
+        </motion.div>
 
         <Accordion type="single" collapsible className="space-y-4">
           {faqs.map((faq, index) => (
-            <AccordionItem
+            <motion.div
               key={index}
-              value={`item-${index}`}
-              className="border rounded-lg px-6"
-              style={{
-                borderColor: 'rgba(69, 104, 130, 0.2)',
-                background: 'rgba(13, 18, 22, 0.4)'
+              initial={{ 
+                opacity: 0, 
+                x: index % 2 === 0 ? -100 : 100,
+                rotate: index % 2 === 0 ? -5 : 5
+              }}
+              whileInView={{ opacity: 1, x: 0, rotate: 0 }}
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ 
+                duration: 0.6, 
+                delay: index * 0.1,
+                type: "spring"
               }}
             >
+              <AccordionItem
+                value={`item-${index}`}
+                className="border rounded-lg px-6"
+                style={{
+                  borderColor: 'rgba(69, 104, 130, 0.2)',
+                  background: 'rgba(13, 18, 22, 0.4)'
+                }}
+              >
               <AccordionTrigger className="text-left hover:no-underline py-5">
                 <span className="font-semibold">{faq.question}</span>
               </AccordionTrigger>
@@ -61,6 +82,7 @@ export function FaqSection() {
                 {faq.answer}
               </AccordionContent>
             </AccordionItem>
+            </motion.div>
           ))}
         </Accordion>
       </div>

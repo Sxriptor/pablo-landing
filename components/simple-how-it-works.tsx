@@ -1,4 +1,10 @@
+"use client"
+
 import { Download, Search, Play } from "lucide-react"
+import { IPhoneDownloadMockup } from "./iphone-download-mockup"
+import { IPhoneGameSearchMockup } from "./iphone-game-search-mockup"
+import { IPhoneGameActiveMockup } from "./iphone-game-active-mockup"
+import { motion } from "framer-motion"
 
 export function SimpleHowItWorks() {
   const steps = [
@@ -23,30 +29,69 @@ export function SimpleHowItWorks() {
   ]
 
   return (
-    <section className="py-16 sm:py-20 px-4" style={{ background: '#0a0f14' }}>
+    <section className="py-16 sm:py-20 px-4 overflow-hidden" style={{ background: '#0a0f14' }}>
       <div className="container mx-auto">
-        <div className="text-center mb-12 sm:mb-16">
-          <p className="text-xs sm:text-sm font-semibold mb-2" style={{ color: '#456882' }}>HOW IT WORKS</p>
+        <motion.div 
+          className="text-center mb-12 sm:mb-16"
+          initial={{ opacity: 0, scale: 0.9 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: false, amount: 0.3 }}
+          transition={{ duration: 0.8 }}
+        >
+          <motion.p 
+            className="text-xs sm:text-sm font-semibold mb-2" 
+            style={{ color: '#456882', display: 'inline-block', willChange: 'transform', backfaceVisibility: 'hidden' }}
+            animate={{ 
+              y: [0, -2, 0, 2, 0],
+            }}
+            transition={{
+              duration: 8,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          >
+            HOW IT WORKS
+          </motion.p>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold">Get Playing in Minutes</h2>
-        </div>
+        </motion.div>
 
         {/* Mobile: Horizontal Scroll Carousel */}
-        <div className="lg:hidden overflow-x-auto pb-4 -mx-4 px-4 snap-x snap-mandatory hide-scrollbar">
+        <div className="lg:hidden overflow-x-auto overflow-y-visible pb-4 -mx-4 px-4 snap-x snap-mandatory hide-scrollbar">
           <div className="flex gap-6 min-w-max">
             {steps.map((step, index) => (
-              <div
+              <motion.div
                 key={index}
-                className="rounded-3xl p-8 backdrop-blur-md w-[85vw] sm:w-96 snap-center flex-shrink-0"
+                className="rounded-3xl p-8 backdrop-blur-md w-[85vw] sm:w-96 snap-center flex-shrink-0 overflow-visible"
                 style={{
                   background: 'linear-gradient(135deg, rgba(69, 104, 130, 0.15) 0%, rgba(13, 18, 22, 0.8) 100%)',
                   border: '1px solid rgba(69, 104, 130, 0.3)',
                   boxShadow: '0 0 40px rgba(69, 104, 130, 0.1)'
                 }}
+                initial={{ opacity: 0, y: 30, scale: 0.95 }}
+                whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                viewport={{ once: false, amount: 0.3 }}
+                transition={{ 
+                  duration: 0.5, 
+                  delay: index * 0.1,
+                  ease: "easeOut"
+                }}
               >
                 <div className="flex items-center gap-4 mb-6">
-                  <span className="text-5xl font-bold opacity-20" style={{ color: '#456882' }}>
+                  <motion.span 
+                    className="text-5xl font-bold opacity-20" 
+                    style={{ color: '#456882', display: 'inline-block', willChange: 'transform', backfaceVisibility: 'hidden' }}
+                    animate={{ 
+                      y: [0, -3, 0, 3, 0],
+                    }}
+                    transition={{
+                      duration: 10,
+                      repeat: Infinity,
+                      ease: "easeInOut",
+                      delay: index * 0.5
+                    }}
+                  >
                     {step.number}
-                  </span>
+                  </motion.span>
                   <div
                     className="w-16 h-16 rounded-xl flex items-center justify-center flex-shrink-0"
                     style={{ background: 'rgba(69, 104, 130, 0.2)', border: '1px solid rgba(69, 104, 130, 0.4)' }}
@@ -55,21 +100,66 @@ export function SimpleHowItWorks() {
                   </div>
                 </div>
                 <h3 className="text-2xl font-bold mb-3 text-white">{step.title}</h3>
-                <p className="text-gray-300 leading-relaxed">{step.description}</p>
-              </div>
+                <p className="text-gray-300 leading-relaxed mb-6">{step.description}</p>
+                
+                {/* iPhone mockup for step 01 on mobile */}
+                {index === 0 && (
+                  <div className="mt-6">
+                    <IPhoneDownloadMockup />
+                  </div>
+                )}
+                {/* iPhone mockup for step 02 on mobile */}
+                {index === 1 && (
+                  <div className="mt-6">
+                    <IPhoneGameSearchMockup />
+                  </div>
+                )}
+                {/* iPhone mockup for step 03 on mobile */}
+                {index === 2 && (
+                  <div className="mt-6">
+                    <IPhoneGameActiveMockup />
+                  </div>
+                )}
+              </motion.div>
             ))}
           </div>
         </div>
 
         {/* Desktop: Vertical List */}
-        <div className="hidden lg:block max-w-4xl mx-auto space-y-12">
+        <div className="hidden lg:block max-w-6xl mx-auto space-y-12">
           {steps.map((step, index) => (
-            <div
+            <motion.div
               key={index}
-              className="flex flex-col md:flex-row gap-6 items-start md:items-center pb-12 border-b border-border/30 last:border-b-0"
+              className="flex flex-col md:flex-row gap-8 items-start md:items-center pb-12 border-b border-border/30 last:border-b-0"
+              initial={{ 
+                opacity: 0, 
+                x: index % 2 === 0 ? -50 : 50,
+                scale: 0.95
+              }}
+              whileInView={{ opacity: 1, x: 0, scale: 1 }}
+              viewport={{ once: false, amount: 0.3 }}
+              transition={{ 
+                duration: 0.6, 
+                delay: 0.1,
+                ease: "easeOut"
+              }}
             >
-              <div className="flex items-center gap-6 md:w-1/3">
-                <span className="text-6xl font-bold opacity-20" style={{ color: '#456882' }}>{step.number}</span>
+              <div className="flex items-center gap-6 md:w-1/4">
+                <motion.span 
+                  className="text-6xl font-bold opacity-20" 
+                  style={{ color: '#456882', display: 'inline-block', willChange: 'transform', backfaceVisibility: 'hidden' }}
+                  animate={{ 
+                    y: [0, -4, 0, 4, 0],
+                  }}
+                  transition={{
+                    duration: 12,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: index * 0.7
+                  }}
+                >
+                  {step.number}
+                </motion.span>
                 <div
                   className="w-14 h-14 rounded-lg flex items-center justify-center flex-shrink-0"
                   style={{ background: 'rgba(69, 104, 130, 0.15)', border: '1px solid rgba(69, 104, 130, 0.3)' }}
@@ -77,11 +167,29 @@ export function SimpleHowItWorks() {
                   <step.icon className="w-7 h-7" style={{ color: '#456882' }} />
                 </div>
               </div>
-              <div className="md:w-2/3">
+              <div className="md:w-1/3">
                 <h3 className="text-2xl font-bold mb-2">{step.title}</h3>
                 <p className="text-muted-foreground">{step.description}</p>
               </div>
-            </div>
+              {/* iPhone mockup for step 01 */}
+              {index === 0 && (
+                <div className="md:w-5/12 flex justify-center">
+                  <IPhoneDownloadMockup />
+                </div>
+              )}
+              {/* iPhone mockup for step 02 */}
+              {index === 1 && (
+                <div className="md:w-5/12 flex justify-center">
+                  <IPhoneGameSearchMockup />
+                </div>
+              )}
+              {/* iPhone mockup for step 03 */}
+              {index === 2 && (
+                <div className="md:w-5/12 flex justify-center">
+                  <IPhoneGameActiveMockup />
+                </div>
+              )}
+            </motion.div>
           ))}
         </div>
       </div>

@@ -10,9 +10,9 @@ import { Footer } from "@/components/footer"
 
 export default function Home() {
   return (
-    <div className="min-h-screen overscroll-none">
+    <div className="min-h-screen overscroll-none overflow-x-hidden">
       <Header />
-      <main className="overscroll-none">
+      <main className="overscroll-none overflow-x-hidden">
         <HeroSection />
         <StatsSection />
         <SimpleHowItWorks />
