@@ -43,8 +43,11 @@ export function Header() {
       >
         <div className="w-full px-4 sm:px-6 lg:px-12 py-4 flex items-center justify-between">
           <div className="flex items-center gap-8">
-            <a href="/" className="flex items-center gap-2">
-              <div className="w-8 h-8 bg-primary rounded-full flex items-center justify-center">
+            <a href="/" className="flex items-center gap-2 whitespace-nowrap flex-shrink-0">
+              <div
+                className={`w-8 h-8 bg-primary rounded-full flex items-center justify-center transition-all duration-300 ${mobileMenuOpen ? 'blur-sm' : ''
+                  }`}
+              >
                 <svg
                   viewBox="0 0 24 24"
                   fill="none"
@@ -56,27 +59,50 @@ export function Header() {
                   <path d="M12 2v20M2 12h20" />
                 </svg>
               </div>
-              <span className="text-lg sm:text-xl text-white font-bold">PlayCircle</span>
+              <span
+                className={`text-lg sm:text-xl text-white font-bold transition-all duration-300 ${mobileMenuOpen ? 'blur-sm' : ''
+                  }`}
+              >
+                PlayCircle
+              </span>
             </a>
-            <nav className="hidden md:flex items-center gap-6">
-              <a href="/about" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+            <nav
+              className="hidden md:flex items-center gap-2 p-2 rounded-full backdrop-blur-md border border-white/10"
+              style={{
+                background: 'rgba(255, 255, 255, 0.05)',
+                boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 4px 20px rgba(0, 0, 0, 0.1)'
+              }}
+            >
+              <a
+                href="/about"
+                className="text-sm text-white/80 hover:text-white transition-all duration-200 px-4 py-2 rounded-full hover:bg-white/10 hover:backdrop-blur-sm whitespace-nowrap"
+              >
                 About
               </a>
-              <a href="/contact" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              <a
+                href="/contact"
+                className="text-sm text-white/80 hover:text-white transition-all duration-200 px-4 py-2 rounded-full hover:bg-white/10 hover:backdrop-blur-sm whitespace-nowrap"
+              >
                 Contact
               </a>
-              <a href="/meet-playcircle" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              <a
+                href="/meet-playcircle"
+                className="text-sm text-white/80 hover:text-white transition-all duration-200 px-4 py-2 rounded-full hover:bg-white/10 hover:backdrop-blur-sm whitespace-nowrap"
+              >
                 Meet PlayCircle
               </a>
-              <a href="/partners" className="text-sm text-muted-foreground hover:text-foreground transition-colors">
+              <a
+                href="/partners"
+                className="text-sm text-white/80 hover:text-white transition-all duration-200 px-4 py-2 rounded-full hover:bg-white/10 hover:backdrop-blur-sm whitespace-nowrap"
+              >
                 Partners
               </a>
             </nav>
           </div>
 
-          {/* Desktop: Open App Button */}
+          {/* Desktop: Download App Button */}
           <Button className="hidden md:flex bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-6">
-            Open App
+            Download App
           </Button>
 
           {/* Mobile: Hamburger Menu Button */}
@@ -96,27 +122,25 @@ export function Header() {
 
       {/* Mobile Menu Overlay */}
       <div
-        className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden transition-opacity duration-300 ${
-          mobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
-        }`}
+        className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+          }`}
         onClick={() => setMobileMenuOpen(false)}
       />
 
       {/* Mobile Menu Sidebar */}
       <div
-        className={`fixed top-0 right-0 h-full w-64 z-50 md:hidden transition-transform duration-300 ease-in-out ${
-          mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
-        }`}
+        className={`fixed top-0 right-0 h-full w-56 z-50 md:hidden transition-transform duration-300 ease-in-out ${mobileMenuOpen ? 'translate-x-0' : 'translate-x-full'
+          }`}
         style={{
-          background: 'linear-gradient(135deg, rgba(13, 18, 22, 0.98) 0%, rgba(69, 104, 130, 0.95) 100%)',
-          backdropFilter: 'blur(20px)',
-          borderLeft: '1px solid rgba(69, 104, 130, 0.3)',
-          boxShadow: '-10px 0 40px rgba(0, 0, 0, 0.5)'
+          background: 'rgba(13, 18, 22, 0.15)',
+          backdropFilter: 'blur(25px)',
+          borderLeft: '1px solid rgba(255, 255, 255, 0.1)',
+          boxShadow: '-20px 0 60px rgba(0, 0, 0, 0.3), inset 1px 0 0 rgba(255, 255, 255, 0.05)'
         }}
       >
         <div className="flex flex-col h-full">
           {/* Menu Header */}
-          <div className="flex items-center justify-between p-6 border-b border-white/10">
+          <div className="flex items-center justify-between p-6 border-b border-white/20 backdrop-blur-sm">
             <span className="text-lg font-bold text-white">Menu</span>
             <button
               onClick={() => setMobileMenuOpen(false)}
@@ -132,42 +156,42 @@ export function Header() {
             <a
               href="/"
               onClick={() => setMobileMenuOpen(false)}
-              className="text-base text-white hover:text-[#456882] transition-colors py-3 px-4 rounded-lg hover:bg-white/5"
+              className="text-base text-white hover:text-[#456882] transition-all duration-200 py-3 px-4 rounded-lg hover:bg-white/10 hover:backdrop-blur-md whitespace-nowrap"
             >
               Home
             </a>
             <a
               href="/about"
               onClick={() => setMobileMenuOpen(false)}
-              className="text-base text-white hover:text-[#456882] transition-colors py-3 px-4 rounded-lg hover:bg-white/5"
+              className="text-base text-white hover:text-[#456882] transition-all duration-200 py-3 px-4 rounded-lg hover:bg-white/10 hover:backdrop-blur-md whitespace-nowrap"
             >
               About
             </a>
             <a
               href="/meet-playcircle"
               onClick={() => setMobileMenuOpen(false)}
-              className="text-base text-white hover:text-[#456882] transition-colors py-3 px-4 rounded-lg hover:bg-white/5"
+              className="text-base text-white hover:text-[#456882] transition-all duration-200 py-3 px-4 rounded-lg hover:bg-white/10 hover:backdrop-blur-md whitespace-nowrap"
             >
               Meet PlayCircle
             </a>
             <a
               href="/partners"
               onClick={() => setMobileMenuOpen(false)}
-              className="text-base text-white hover:text-[#456882] transition-colors py-3 px-4 rounded-lg hover:bg-white/5"
+              className="text-base text-white hover:text-[#456882] transition-all duration-200 py-3 px-4 rounded-lg hover:bg-white/10 hover:backdrop-blur-md whitespace-nowrap"
             >
               Partners
             </a>
             <a
               href="/contact"
               onClick={() => setMobileMenuOpen(false)}
-              className="text-base text-white hover:text-[#456882] transition-colors py-3 px-4 rounded-lg hover:bg-white/5"
+              className="text-base text-white hover:text-[#456882] transition-all duration-200 py-3 px-4 rounded-lg hover:bg-white/10 hover:backdrop-blur-md whitespace-nowrap"
             >
               Contact
             </a>
           </nav>
 
           {/* Open App Button at Bottom */}
-          <div className="mt-auto p-6 border-t border-white/10">
+          <div className="mt-auto p-6 border-t border-white/20 backdrop-blur-sm">
             <Button
               className="w-full rounded-full py-3 font-semibold transition-all duration-300 hover:scale-105"
               style={{
