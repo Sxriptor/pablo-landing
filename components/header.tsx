@@ -11,10 +11,24 @@ export function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Calculate scroll progress from 0 to 1 over the first 200px
-      const progress = Math.min(window.scrollY / 200, 1)
+      // Start fading at 30px, fully opaque at 120px (90px transition range)
+      const scrollY = window.scrollY
+      let progress = 0
+      
+      if (scrollY <= 30) {
+        progress = 0 // Fully transparent
+      } else if (scrollY >= 120) {
+        progress = 1 // Fully opaque
+      } else {
+        // Smooth fade between 30px and 120px
+        progress = (scrollY - 30) / (120 - 30)
+      }
+      
       setScrollProgress(progress)
     }
+
+    // Set initial state
+    handleScroll()
 
     window.addEventListener('scroll', handleScroll)
     return () => window.removeEventListener('scroll', handleScroll)
@@ -35,11 +49,12 @@ export function Header() {
   return (
     <>
       <header
-        className="relative z-50 transition-all duration-300"
+        className="relative z-50 transition-all duration-500 ease-out"
         style={{
-          backgroundColor: scrollProgress === 0 ? 'transparent' : `rgba(3, 7, 11, ${scrollProgress * 0.8})`,
-          backdropFilter: scrollProgress === 0 ? 'none' : `blur(${scrollProgress * 12}px)`,
-          borderBottom: scrollProgress === 0 ? 'none' : `1px solid rgba(39, 39, 42, ${scrollProgress * 0.5})`,
+          backgroundColor: `rgba(3, 7, 11, ${scrollProgress * 0.95})`,
+          backdropFilter: `blur(${scrollProgress * 12}px)`,
+          borderBottom: `1px solid rgba(39, 39, 42, ${scrollProgress * 0.5})`,
+          boxShadow: scrollProgress === 1 ? '0 4px 12px rgba(0, 0, 0, 0.15)' : 'none',
         }}
       >
         <div className="w-full px-4 sm:px-6 lg:px-12 py-4 flex items-center justify-between relative">
