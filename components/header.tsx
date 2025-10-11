@@ -6,33 +6,7 @@ import { Menu, X } from "lucide-react"
 import { motion } from "framer-motion"
 
 export function Header() {
-  const [scrollProgress, setScrollProgress] = useState(0)
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
-
-  useEffect(() => {
-    const handleScroll = () => {
-      // Start fading immediately when scrolling begins, fully opaque at 80px
-      const scrollY = window.scrollY
-      let progress = 0
-
-      if (scrollY <= 0) {
-        progress = 0 // Fully transparent at top
-      } else if (scrollY >= 80) {
-        progress = 1 // Fully opaque after 80px
-      } else {
-        // Smooth fade from 0px to 80px
-        progress = scrollY / 80
-      }
-
-      setScrollProgress(progress)
-    }
-
-    // Set initial state
-    handleScroll()
-
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
 
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
@@ -49,19 +23,16 @@ export function Header() {
   return (
     <>
       <header
-        className="relative z-50 transition-all duration-500 ease-out"
-        style={{
-          backgroundColor: `rgba(3, 7, 11, ${scrollProgress * 0.95})`,
-          backdropFilter: `blur(${scrollProgress * 12}px)`,
-          borderBottom: `1px solid rgba(39, 39, 42, ${scrollProgress * 0.5})`,
-          boxShadow: scrollProgress === 1 ? '0 4px 12px rgba(0, 0, 0, 0.15)' : 'none',
-        }}
+        className="fixed top-0 left-0 right-0 z-50"
       >
         <div className="w-full px-4 sm:px-6 lg:px-12 py-4 flex items-center justify-between relative">
           <div className="flex items-center gap-2 sm:gap-8 flex-1 min-w-0">
             <a href="/" className="flex items-center gap-2 whitespace-nowrap flex-shrink-0">
               <motion.div
                 className={`w-10 h-10 sm:w-12 sm:h-12 transition-all duration-300 ${mobileMenuOpen ? 'blur-sm' : ''}`}
+                style={{
+                  filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8)) drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.9))'
+                }}
                 initial={{ opacity: 0, scale: 0, rotate: -180 }}
                 animate={{ opacity: 1, scale: 1, rotate: 0 }}
                 transition={{
@@ -80,6 +51,10 @@ export function Header() {
               <motion.span
                 className={`text-lg sm:text-xl text-white font-bold transition-all duration-300 ${mobileMenuOpen ? 'blur-sm' : ''
                   }`}
+                style={{
+                  fontWeight: 700,
+                  textShadow: '2px 2px 4px rgba(0, 0, 0, 0.8), 1px 1px 2px rgba(0, 0, 0, 0.9), 0 0 8px rgba(255, 255, 255, 0.2)'
+                }}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{
@@ -91,13 +66,7 @@ export function Header() {
               </motion.span>
             </a>
             <motion.nav
-              className="hidden md:flex items-center gap-2 p-2 rounded-full border flex-shrink-0"
-              style={{
-                background: `rgba(255, 255, 255, ${scrollProgress * 0.05})`,
-                backdropFilter: `blur(${scrollProgress * 12}px)`,
-                borderColor: `rgba(255, 255, 255, ${scrollProgress * 0.1})`,
-                boxShadow: scrollProgress > 0 ? `inset 0 1px 0 rgba(255, 255, 255, ${scrollProgress * 0.1}), 0 4px 20px rgba(0, 0, 0, ${scrollProgress * 0.1})` : 'none'
-              }}
+              className="hidden md:flex items-center gap-2 p-2 rounded-full flex-shrink-0"
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{
@@ -107,25 +76,109 @@ export function Header() {
             >
               <a
                 href="/about"
-                className="text-sm text-white/80 hover:text-white transition-all duration-200 px-4 py-2 rounded-full hover:bg-white/10 hover:backdrop-blur-sm whitespace-nowrap"
+                className="text-sm text-white/80 hover:text-white transition-all duration-200 px-4 py-2 rounded-full whitespace-nowrap focus:outline-none"
+                style={{
+                  textShadow: '1px 1px 3px rgba(0, 0, 0, 0.8)',
+                  fontWeight: 500
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.textShadow = '2px 2px 6px rgba(0, 0, 0, 0.9), 0 0 10px rgba(255, 255, 255, 0.3)'
+                  e.currentTarget.style.transform = 'translateY(-1px)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.textShadow = '1px 1px 3px rgba(0, 0, 0, 0.8)'
+                  e.currentTarget.style.transform = 'translateY(0)'
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.textShadow = '2px 2px 6px rgba(0, 0, 0, 0.9), 0 0 15px rgba(255, 255, 255, 0.5)'
+                  e.currentTarget.style.outline = '2px solid rgba(255, 255, 255, 0.6)'
+                  e.currentTarget.style.outlineOffset = '2px'
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.textShadow = '1px 1px 3px rgba(0, 0, 0, 0.8)'
+                  e.currentTarget.style.outline = 'none'
+                }}
               >
                 About
               </a>
               <a
                 href="/contact"
-                className="text-sm text-white/80 hover:text-white transition-all duration-200 px-4 py-2 rounded-full hover:bg-white/10 hover:backdrop-blur-sm whitespace-nowrap"
+                className="text-sm text-white/80 hover:text-white transition-all duration-200 px-4 py-2 rounded-full whitespace-nowrap focus:outline-none"
+                style={{
+                  textShadow: '1px 1px 3px rgba(0, 0, 0, 0.8)',
+                  fontWeight: 500
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.textShadow = '2px 2px 6px rgba(0, 0, 0, 0.9), 0 0 10px rgba(255, 255, 255, 0.3)'
+                  e.currentTarget.style.transform = 'translateY(-1px)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.textShadow = '1px 1px 3px rgba(0, 0, 0, 0.8)'
+                  e.currentTarget.style.transform = 'translateY(0)'
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.textShadow = '2px 2px 6px rgba(0, 0, 0, 0.9), 0 0 15px rgba(255, 255, 255, 0.5)'
+                  e.currentTarget.style.outline = '2px solid rgba(255, 255, 255, 0.6)'
+                  e.currentTarget.style.outlineOffset = '2px'
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.textShadow = '1px 1px 3px rgba(0, 0, 0, 0.8)'
+                  e.currentTarget.style.outline = 'none'
+                }}
               >
                 Contact
               </a>
               <a
                 href="/meet-playcircle"
-                className="text-sm text-white/80 hover:text-white transition-all duration-200 px-4 py-2 rounded-full hover:bg-white/10 hover:backdrop-blur-sm whitespace-nowrap"
+                className="text-sm text-white/80 hover:text-white transition-all duration-200 px-4 py-2 rounded-full whitespace-nowrap focus:outline-none"
+                style={{
+                  textShadow: '1px 1px 3px rgba(0, 0, 0, 0.8)',
+                  fontWeight: 500
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.textShadow = '2px 2px 6px rgba(0, 0, 0, 0.9), 0 0 10px rgba(255, 255, 255, 0.3)'
+                  e.currentTarget.style.transform = 'translateY(-1px)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.textShadow = '1px 1px 3px rgba(0, 0, 0, 0.8)'
+                  e.currentTarget.style.transform = 'translateY(0)'
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.textShadow = '2px 2px 6px rgba(0, 0, 0, 0.9), 0 0 15px rgba(255, 255, 255, 0.5)'
+                  e.currentTarget.style.outline = '2px solid rgba(255, 255, 255, 0.6)'
+                  e.currentTarget.style.outlineOffset = '2px'
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.textShadow = '1px 1px 3px rgba(0, 0, 0, 0.8)'
+                  e.currentTarget.style.outline = 'none'
+                }}
               >
                 Meet PlayCircle
               </a>
               <a
                 href="/partners"
-                className="text-sm text-white/80 hover:text-white transition-all duration-200 px-4 py-2 rounded-full hover:bg-white/10 hover:backdrop-blur-sm whitespace-nowrap"
+                className="text-sm text-white/80 hover:text-white transition-all duration-200 px-4 py-2 rounded-full whitespace-nowrap focus:outline-none"
+                style={{
+                  textShadow: '1px 1px 3px rgba(0, 0, 0, 0.8)',
+                  fontWeight: 500
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.textShadow = '2px 2px 6px rgba(0, 0, 0, 0.9), 0 0 10px rgba(255, 255, 255, 0.3)'
+                  e.currentTarget.style.transform = 'translateY(-1px)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.textShadow = '1px 1px 3px rgba(0, 0, 0, 0.8)'
+                  e.currentTarget.style.transform = 'translateY(0)'
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.textShadow = '2px 2px 6px rgba(0, 0, 0, 0.9), 0 0 15px rgba(255, 255, 255, 0.5)'
+                  e.currentTarget.style.outline = '2px solid rgba(255, 255, 255, 0.6)'
+                  e.currentTarget.style.outlineOffset = '2px'
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.textShadow = '1px 1px 3px rgba(0, 0, 0, 0.8)'
+                  e.currentTarget.style.outline = 'none'
+                }}
               >
                 Partners
               </a>
@@ -142,7 +195,29 @@ export function Header() {
               type: "spring"
             }}
           >
-            <Button className="hidden md:flex bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-6">
+            <Button 
+              className="hidden md:flex bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-6 transition-all duration-200"
+              style={{
+                filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2))'
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.filter = 'drop-shadow(3px 3px 8px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 12px rgba(255, 255, 255, 0.2))'
+                e.currentTarget.style.transform = 'translateY(-1px) scale(1.02)'
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.filter = 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2))'
+                e.currentTarget.style.transform = 'translateY(0) scale(1)'
+              }}
+              onFocus={(e) => {
+                e.currentTarget.style.filter = 'drop-shadow(3px 3px 8px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 16px rgba(255, 255, 255, 0.3))'
+                e.currentTarget.style.outline = '2px solid rgba(255, 255, 255, 0.6)'
+                e.currentTarget.style.outlineOffset = '2px'
+              }}
+              onBlur={(e) => {
+                e.currentTarget.style.filter = 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2))'
+                e.currentTarget.style.outline = 'none'
+              }}
+            >
               Download App
             </Button>
           </motion.div>
@@ -150,8 +225,12 @@ export function Header() {
           {/* Mobile: Hamburger Menu Button */}
           <motion.button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-            className="md:hidden p-2 text-white hover:text-gray-300 transition-colors relative z-[60] flex-shrink-0"
+            className="md:hidden p-2 text-white hover:text-gray-300 transition-all duration-200 relative z-[60] flex-shrink-0"
             aria-label="Toggle menu"
+            style={{
+              filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8)) drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.9))',
+              textShadow: '1px 1px 3px rgba(0, 0, 0, 0.8)'
+            }}
             initial={{ opacity: 0, rotate: -90, scale: 0 }}
             animate={{ opacity: 1, rotate: 0, scale: 1 }}
             transition={{
@@ -159,6 +238,23 @@ export function Header() {
               delay: 0.5,
               type: "spring",
               stiffness: 200
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.filter = 'drop-shadow(2px 2px 6px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 8px rgba(255, 255, 255, 0.4))'
+              e.currentTarget.style.transform = 'scale(1.05)'
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.filter = 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8)) drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.9))'
+              e.currentTarget.style.transform = 'scale(1)'
+            }}
+            onFocus={(e) => {
+              e.currentTarget.style.filter = 'drop-shadow(2px 2px 6px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 12px rgba(255, 255, 255, 0.6))'
+              e.currentTarget.style.outline = '2px solid rgba(255, 255, 255, 0.6)'
+              e.currentTarget.style.outlineOffset = '2px'
+            }}
+            onBlur={(e) => {
+              e.currentTarget.style.filter = 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8)) drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.9))'
+              e.currentTarget.style.outline = 'none'
             }}
           >
             {mobileMenuOpen ? (
@@ -197,8 +293,28 @@ export function Header() {
               <span className="text-lg font-bold text-white">Menu</span>
               <button
                 onClick={() => setMobileMenuOpen(false)}
-                className="p-2 text-white hover:text-gray-300 transition-colors"
+                className="p-2 text-white hover:text-gray-300 transition-all duration-200"
                 aria-label="Close menu"
+                style={{
+                  filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8)) drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.9))'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.filter = 'drop-shadow(2px 2px 6px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 8px rgba(255, 255, 255, 0.4))'
+                  e.currentTarget.style.transform = 'scale(1.05)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.filter = 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8)) drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.9))'
+                  e.currentTarget.style.transform = 'scale(1)'
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.filter = 'drop-shadow(2px 2px 6px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 12px rgba(255, 255, 255, 0.6))'
+                  e.currentTarget.style.outline = '2px solid rgba(255, 255, 255, 0.6)'
+                  e.currentTarget.style.outlineOffset = '2px'
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.filter = 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8)) drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.9))'
+                  e.currentTarget.style.outline = 'none'
+                }}
               >
                 <X className="w-5 h-5" />
               </button>
@@ -209,35 +325,140 @@ export function Header() {
               <a
                 href="/"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-base text-white hover:text-[#456882] transition-all duration-200 py-3 px-4 rounded-lg hover:bg-white/10 hover:backdrop-blur-md whitespace-nowrap"
+                className="text-base text-white hover:text-white transition-all duration-200 py-3 px-4 rounded-lg whitespace-nowrap focus:outline-none"
+                style={{
+                  textShadow: '1px 1px 3px rgba(0, 0, 0, 0.8)',
+                  fontWeight: 500
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.textShadow = '2px 2px 6px rgba(0, 0, 0, 0.9), 0 0 10px rgba(255, 255, 255, 0.3)'
+                  e.currentTarget.style.transform = 'translateY(-1px)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.textShadow = '1px 1px 3px rgba(0, 0, 0, 0.8)'
+                  e.currentTarget.style.transform = 'translateY(0)'
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.textShadow = '2px 2px 6px rgba(0, 0, 0, 0.9), 0 0 15px rgba(255, 255, 255, 0.5)'
+                  e.currentTarget.style.outline = '2px solid rgba(255, 255, 255, 0.6)'
+                  e.currentTarget.style.outlineOffset = '2px'
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.textShadow = '1px 1px 3px rgba(0, 0, 0, 0.8)'
+                  e.currentTarget.style.outline = 'none'
+                }}
               >
                 Home
               </a>
               <a
                 href="/about"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-base text-white hover:text-[#456882] transition-all duration-200 py-3 px-4 rounded-lg hover:bg-white/10 hover:backdrop-blur-md whitespace-nowrap"
+                className="text-base text-white hover:text-white transition-all duration-200 py-3 px-4 rounded-lg whitespace-nowrap focus:outline-none"
+                style={{
+                  textShadow: '1px 1px 3px rgba(0, 0, 0, 0.8)',
+                  fontWeight: 500
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.textShadow = '2px 2px 6px rgba(0, 0, 0, 0.9), 0 0 10px rgba(255, 255, 255, 0.3)'
+                  e.currentTarget.style.transform = 'translateY(-1px)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.textShadow = '1px 1px 3px rgba(0, 0, 0, 0.8)'
+                  e.currentTarget.style.transform = 'translateY(0)'
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.textShadow = '2px 2px 6px rgba(0, 0, 0, 0.9), 0 0 15px rgba(255, 255, 255, 0.5)'
+                  e.currentTarget.style.outline = '2px solid rgba(255, 255, 255, 0.6)'
+                  e.currentTarget.style.outlineOffset = '2px'
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.textShadow = '1px 1px 3px rgba(0, 0, 0, 0.8)'
+                  e.currentTarget.style.outline = 'none'
+                }}
               >
                 About
               </a>
               <a
                 href="/meet-playcircle"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-base text-white hover:text-[#456882] transition-all duration-200 py-3 px-4 rounded-lg hover:bg-white/10 hover:backdrop-blur-md whitespace-nowrap"
+                className="text-base text-white hover:text-white transition-all duration-200 py-3 px-4 rounded-lg whitespace-nowrap focus:outline-none"
+                style={{
+                  textShadow: '1px 1px 3px rgba(0, 0, 0, 0.8)',
+                  fontWeight: 500
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.textShadow = '2px 2px 6px rgba(0, 0, 0, 0.9), 0 0 10px rgba(255, 255, 255, 0.3)'
+                  e.currentTarget.style.transform = 'translateY(-1px)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.textShadow = '1px 1px 3px rgba(0, 0, 0, 0.8)'
+                  e.currentTarget.style.transform = 'translateY(0)'
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.textShadow = '2px 2px 6px rgba(0, 0, 0, 0.9), 0 0 15px rgba(255, 255, 255, 0.5)'
+                  e.currentTarget.style.outline = '2px solid rgba(255, 255, 255, 0.6)'
+                  e.currentTarget.style.outlineOffset = '2px'
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.textShadow = '1px 1px 3px rgba(0, 0, 0, 0.8)'
+                  e.currentTarget.style.outline = 'none'
+                }}
               >
                 Meet PlayCircle
               </a>
               <a
                 href="/partners"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-base text-white hover:text-[#456882] transition-all duration-200 py-3 px-4 rounded-lg hover:bg-white/10 hover:backdrop-blur-md whitespace-nowrap"
+                className="text-base text-white hover:text-white transition-all duration-200 py-3 px-4 rounded-lg whitespace-nowrap focus:outline-none"
+                style={{
+                  textShadow: '1px 1px 3px rgba(0, 0, 0, 0.8)',
+                  fontWeight: 500
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.textShadow = '2px 2px 6px rgba(0, 0, 0, 0.9), 0 0 10px rgba(255, 255, 255, 0.3)'
+                  e.currentTarget.style.transform = 'translateY(-1px)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.textShadow = '1px 1px 3px rgba(0, 0, 0, 0.8)'
+                  e.currentTarget.style.transform = 'translateY(0)'
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.textShadow = '2px 2px 6px rgba(0, 0, 0, 0.9), 0 0 15px rgba(255, 255, 255, 0.5)'
+                  e.currentTarget.style.outline = '2px solid rgba(255, 255, 255, 0.6)'
+                  e.currentTarget.style.outlineOffset = '2px'
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.textShadow = '1px 1px 3px rgba(0, 0, 0, 0.8)'
+                  e.currentTarget.style.outline = 'none'
+                }}
               >
                 Partners
               </a>
               <a
                 href="/contact"
                 onClick={() => setMobileMenuOpen(false)}
-                className="text-base text-white hover:text-[#456882] transition-all duration-200 py-3 px-4 rounded-lg hover:bg-white/10 hover:backdrop-blur-md whitespace-nowrap"
+                className="text-base text-white hover:text-white transition-all duration-200 py-3 px-4 rounded-lg whitespace-nowrap focus:outline-none"
+                style={{
+                  textShadow: '1px 1px 3px rgba(0, 0, 0, 0.8)',
+                  fontWeight: 500
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.textShadow = '2px 2px 6px rgba(0, 0, 0, 0.9), 0 0 10px rgba(255, 255, 255, 0.3)'
+                  e.currentTarget.style.transform = 'translateY(-1px)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.textShadow = '1px 1px 3px rgba(0, 0, 0, 0.8)'
+                  e.currentTarget.style.transform = 'translateY(0)'
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.textShadow = '2px 2px 6px rgba(0, 0, 0, 0.9), 0 0 15px rgba(255, 255, 255, 0.5)'
+                  e.currentTarget.style.outline = '2px solid rgba(255, 255, 255, 0.6)'
+                  e.currentTarget.style.outlineOffset = '2px'
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.textShadow = '1px 1px 3px rgba(0, 0, 0, 0.8)'
+                  e.currentTarget.style.outline = 'none'
+                }}
               >
                 Contact
               </a>
@@ -246,10 +467,28 @@ export function Header() {
             {/* Open App Button at Bottom */}
             <div className="mt-auto p-6 border-t border-white/20 backdrop-blur-sm">
               <Button
-                className="w-full rounded-full py-3 font-semibold transition-all duration-300 hover:scale-105"
+                className="w-full rounded-full py-3 font-semibold transition-all duration-300"
                 style={{
                   background: '#456882',
-                  color: 'white'
+                  color: 'white',
+                  filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2))'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.filter = 'drop-shadow(3px 3px 8px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 12px rgba(255, 255, 255, 0.2))'
+                  e.currentTarget.style.transform = 'translateY(-1px) scale(1.02)'
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.filter = 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2))'
+                  e.currentTarget.style.transform = 'translateY(0) scale(1)'
+                }}
+                onFocus={(e) => {
+                  e.currentTarget.style.filter = 'drop-shadow(3px 3px 8px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 16px rgba(255, 255, 255, 0.3))'
+                  e.currentTarget.style.outline = '2px solid rgba(255, 255, 255, 0.6)'
+                  e.currentTarget.style.outlineOffset = '2px'
+                }}
+                onBlur={(e) => {
+                  e.currentTarget.style.filter = 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2))'
+                  e.currentTarget.style.outline = 'none'
                 }}
               >
                 Open App
