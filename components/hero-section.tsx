@@ -6,7 +6,7 @@ import { motion } from "framer-motion"
 
 export function HeroSection() {
   return (
-    <section className="relative pt-2 pb-2 sm:pt-20 sm:pb-12 px-2 lg:px-12 overflow-hidden h-screen flex items-start sm:items-center lg:items-end">
+    <section className="relative pt-2 pb-2 sm:pt-20 sm:pb-12 lg:pt-12 lg:pb-20 px-2 lg:px-12 overflow-x-hidden min-h-screen flex items-start sm:items-center lg:items-end">
       {/* Background image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -19,9 +19,14 @@ export function HeroSection() {
         background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 1) 100%)'
       }} />
 
-      <div className="relative z-10 w-full pb-2 sm:pb-8 mt-12 sm:mt-0">
-        <div className="grid lg:grid-cols-2 gap-3 lg:gap-12 items-start lg:items-end">
-          <div className="space-y-1 sm:space-y-4 flex flex-col justify-start sm:justify-end items-center lg:items-start text-center lg:text-left order-2 lg:order-1">
+      {/* Phone mockups - positioned absolutely on desktop */}
+      <div className="hidden lg:block absolute right-32 top-1/2 -translate-y-1/2 z-20">
+        <PhoneMockupTriple />
+      </div>
+
+      <div className="relative z-10 w-full pb-2 sm:pb-8 lg:pb-12 mt-12 sm:mt-0 lg:mt-0">
+        <div className="grid lg:grid-cols-1 gap-3 lg:gap-12 items-start lg:items-end">
+          <div className="space-y-1 sm:space-y-4 lg:space-y-6 flex flex-col justify-start sm:justify-end items-center lg:items-start text-center lg:text-left">
             <motion.h1 
               className="text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-none text-balance"
               initial={{ opacity: 0, y: 20 }}
@@ -223,8 +228,8 @@ export function HeroSection() {
             </motion.div>
           </div>
 
-          {/* Phone mockups on the right */}
-          <div className="flex justify-center items-center lg:items-end order-1 lg:order-2 scale-[0.65] sm:scale-75 lg:scale-100 origin-center lg:origin-bottom">
+          {/* Phone mockups on mobile/tablet only */}
+          <div className="lg:hidden flex justify-center items-center scale-[0.65] sm:scale-75 origin-center order-1">
             <PhoneMockupTriple />
           </div>
         </div>
