@@ -559,16 +559,32 @@ export function PhoneMockupTriple() {
       </motion.div>
 
       {/* Floating indicators */}
-      <div className="absolute bottom-4 left-1/2 -translate-x-1/2 flex gap-2 z-20">
+      <motion.div 
+        className="absolute -bottom-12 left-1/2 -translate-x-1/2 hidden lg:flex gap-2 z-20"
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ 
+          duration: 0.6, 
+          delay: 1.2,
+          ease: "easeOut"
+        }}
+      >
         {mockGames.map((_, idx) => (
-          <div
+          <motion.div
             key={idx}
             className={`w-1.5 h-1.5 rounded-full transition-all ${
               idx === currentGame ? "bg-white w-4" : "bg-white/30"
             }`}
+            initial={{ opacity: 0, scale: 0 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ 
+              duration: 0.3, 
+              delay: 1.4 + idx * 0.1,
+              ease: "easeOut"
+            }}
           />
         ))}
-      </div>
+      </motion.div>
     </div>
   )
 }

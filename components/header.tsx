@@ -289,40 +289,8 @@ export function Header() {
           }}
         >
           <div className="flex flex-col h-full">
-            {/* Menu Header */}
-            <div className="flex items-center justify-between p-6 border-b border-white/20 backdrop-blur-sm">
-              <span className="text-lg font-bold text-white">Menu</span>
-              <button
-                onClick={() => setMobileMenuOpen(false)}
-                className="p-2 text-white hover:text-gray-300 transition-all duration-200"
-                aria-label="Close menu"
-                style={{
-                  filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8)) drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.9))'
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.filter = 'drop-shadow(2px 2px 6px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 8px rgba(255, 255, 255, 0.4))'
-                  e.currentTarget.style.transform = 'scale(1.05)'
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.filter = 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8)) drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.9))'
-                  e.currentTarget.style.transform = 'scale(1)'
-                }}
-                onFocus={(e) => {
-                  e.currentTarget.style.filter = 'drop-shadow(2px 2px 6px rgba(0, 0, 0, 0.9)) drop-shadow(0 0 12px rgba(255, 255, 255, 0.6))'
-                  e.currentTarget.style.outline = '2px solid rgba(255, 255, 255, 0.6)'
-                  e.currentTarget.style.outlineOffset = '2px'
-                }}
-                onBlur={(e) => {
-                  e.currentTarget.style.filter = 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.8)) drop-shadow(1px 1px 2px rgba(0, 0, 0, 0.9))'
-                  e.currentTarget.style.outline = 'none'
-                }}
-              >
-                <X className="w-5 h-5" />
-              </button>
-            </div>
-
             {/* Navigation Links */}
-            <nav className="flex flex-col gap-2 p-6">
+            <nav className="flex flex-col gap-2 p-6 pt-8">
               <a
                 href="/"
                 onClick={() => setMobileMenuOpen(false)}

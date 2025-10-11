@@ -6,18 +6,43 @@ import { motion } from "framer-motion"
 
 export function HeroSection() {
   return (
-    <section className="relative pt-16 pb-2 sm:pt-20 sm:pb-12 lg:pt-12 lg:pb-20 px-2 lg:px-12 overflow-x-hidden min-h-screen flex items-center sm:items-center lg:items-end">
+    <section className="relative pt-16 pb-2 sm:pt-20 sm:pb-12 lg:pt-12 lg:pb-20 px-2 lg:px-12 overflow-x-hidden min-h-screen flex items-center sm:items-center lg:items-end" style={{ transform: 'translateY(-2vh)' }}>
+      <style jsx>{`
+        @media (min-width: 1024px) {
+          section {
+            transform: none !important;
+          }
+        }
+      `}</style>
       {/* Background image */}
-      <div
+      <motion.div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
         style={{
           backgroundImage: "url('/Backgrounddark1.png')",
         }}
+        initial={{ opacity: 0, scale: 1.1 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ 
+          duration: 1.2, 
+          ease: "easeOut",
+          opacity: { duration: 0.8 },
+          scale: { duration: 1.2 }
+        }}
       />
       {/* Background gradient overlay - fade to black at bottom */}
-      <div className="absolute inset-0" style={{
-        background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 1) 100%)'
-      }} />
+      <motion.div 
+        className="absolute inset-0" 
+        style={{
+          background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 1) 100%)'
+        }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ 
+          duration: 1,
+          delay: 0.3,
+          ease: "easeOut"
+        }}
+      />
 
       {/* Phone mockups - positioned absolutely on desktop */}
       <div className="hidden lg:block absolute right-32 top-1/2 -translate-y-1/2 z-20">
@@ -229,7 +254,7 @@ export function HeroSection() {
           </div>
 
           {/* Phone mockups on mobile/tablet only */}
-          <div className="lg:hidden flex justify-center items-center scale-[0.715] sm:scale-[0.825] origin-center order-1 mt-4 sm:mt-0">
+          <div className="lg:hidden flex justify-center items-center scale-[0.715] sm:scale-[0.825] origin-center order-1 mt-4 sm:mt-0" style={{ transform: 'translateY(-2.5vh)' }}>
             <PhoneMockupTriple />
           </div>
         </div>
