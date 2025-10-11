@@ -107,7 +107,7 @@ export function TestimonialsSection() {
       </div>
       
       {/* Text content - takes up available space */}
-      <div className="flex-1 mb-6 overflow-hidden">
+      <div className="flex-1 mb-6 overflow-hidden" style={{ transform: 'translateY(-3%)' }}>
         <p className="text-lg leading-relaxed text-pretty line-clamp-6">{current.text}</p>
       </div>
       

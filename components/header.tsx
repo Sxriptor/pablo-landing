@@ -11,19 +11,19 @@ export function Header() {
 
   useEffect(() => {
     const handleScroll = () => {
-      // Start fading at 30px, fully opaque at 120px (90px transition range)
+      // Start fading immediately when scrolling begins, fully opaque at 80px
       const scrollY = window.scrollY
       let progress = 0
-      
-      if (scrollY <= 30) {
-        progress = 0 // Fully transparent
-      } else if (scrollY >= 120) {
-        progress = 1 // Fully opaque
+
+      if (scrollY <= 0) {
+        progress = 0 // Fully transparent at top
+      } else if (scrollY >= 80) {
+        progress = 1 // Fully opaque after 80px
       } else {
-        // Smooth fade between 30px and 120px
-        progress = (scrollY - 30) / (120 - 30)
+        // Smooth fade from 0px to 80px
+        progress = scrollY / 80
       }
-      
+
       setScrollProgress(progress)
     }
 
@@ -60,15 +60,15 @@ export function Header() {
         <div className="w-full px-4 sm:px-6 lg:px-12 py-4 flex items-center justify-between relative">
           <div className="flex items-center gap-2 sm:gap-8 flex-1 min-w-0">
             <a href="/" className="flex items-center gap-2 whitespace-nowrap flex-shrink-0">
-              <motion.div 
+              <motion.div
                 className={`w-10 h-10 sm:w-12 sm:h-12 transition-all duration-300 ${mobileMenuOpen ? 'blur-sm' : ''}`}
                 initial={{ opacity: 0, scale: 0, rotate: -180 }}
                 animate={{ opacity: 1, scale: 1, rotate: 0 }}
-                transition={{ 
-                  duration: 0.8, 
-                  type: "spring", 
+                transition={{
+                  duration: 0.8,
+                  type: "spring",
                   stiffness: 200,
-                  delay: 0.1 
+                  delay: 0.1
                 }}
               >
                 <img
@@ -82,25 +82,27 @@ export function Header() {
                   }`}
                 initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
-                transition={{ 
-                  duration: 0.6, 
-                  delay: 0.3 
+                transition={{
+                  duration: 0.6,
+                  delay: 0.3
                 }}
               >
                 PlayCircle
               </motion.span>
             </a>
             <motion.nav
-              className="hidden md:flex items-center gap-2 p-2 rounded-full backdrop-blur-md border border-white/10 flex-shrink-0"
+              className="hidden md:flex items-center gap-2 p-2 rounded-full border flex-shrink-0"
               style={{
-                background: 'rgba(255, 255, 255, 0.05)',
-                boxShadow: 'inset 0 1px 0 rgba(255, 255, 255, 0.1), 0 4px 20px rgba(0, 0, 0, 0.1)'
+                background: `rgba(255, 255, 255, ${scrollProgress * 0.05})`,
+                backdropFilter: `blur(${scrollProgress * 12}px)`,
+                borderColor: `rgba(255, 255, 255, ${scrollProgress * 0.1})`,
+                boxShadow: scrollProgress > 0 ? `inset 0 1px 0 rgba(255, 255, 255, ${scrollProgress * 0.1}), 0 4px 20px rgba(0, 0, 0, ${scrollProgress * 0.1})` : 'none'
               }}
               initial={{ opacity: 0, y: -20 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ 
-                duration: 0.6, 
-                delay: 0.5 
+              transition={{
+                duration: 0.6,
+                delay: 0.5
               }}
             >
               <a
@@ -134,8 +136,8 @@ export function Header() {
           <motion.div
             initial={{ opacity: 0, scale: 0.8 }}
             animate={{ opacity: 1, scale: 1 }}
-            transition={{ 
-              duration: 0.5, 
+            transition={{
+              duration: 0.5,
               delay: 0.7,
               type: "spring"
             }}
@@ -152,8 +154,8 @@ export function Header() {
             aria-label="Toggle menu"
             initial={{ opacity: 0, rotate: -90, scale: 0 }}
             animate={{ opacity: 1, rotate: 0, scale: 1 }}
-            transition={{ 
-              duration: 0.6, 
+            transition={{
+              duration: 0.6,
               delay: 0.5,
               type: "spring",
               stiffness: 200
@@ -180,81 +182,81 @@ export function Header() {
 
       {/* Mobile Menu Sidebar */}
       {mobileMenuOpen && (
-      <div
-        className="fixed top-0 right-0 h-full w-64 sm:w-72 z-50 md:hidden animate-in slide-in-from-right duration-300"
-        style={{
-          background: 'rgba(13, 18, 22, 0.15)',
-          backdropFilter: 'blur(25px)',
-          borderLeft: '1px solid rgba(255, 255, 255, 0.1)',
-          boxShadow: '-20px 0 60px rgba(0, 0, 0, 0.3), inset 1px 0 0 rgba(255, 255, 255, 0.05)'
-        }}
-      >
-        <div className="flex flex-col h-full">
-          {/* Menu Header */}
-          <div className="flex items-center justify-between p-6 border-b border-white/20 backdrop-blur-sm">
-            <span className="text-lg font-bold text-white">Menu</span>
-            <button
-              onClick={() => setMobileMenuOpen(false)}
-              className="p-2 text-white hover:text-gray-300 transition-colors"
-              aria-label="Close menu"
-            >
-              <X className="w-5 h-5" />
-            </button>
-          </div>
+        <div
+          className="fixed top-0 right-0 h-full w-64 sm:w-72 z-50 md:hidden animate-in slide-in-from-right duration-300"
+          style={{
+            background: 'rgba(13, 18, 22, 0.15)',
+            backdropFilter: 'blur(25px)',
+            borderLeft: '1px solid rgba(255, 255, 255, 0.1)',
+            boxShadow: '-20px 0 60px rgba(0, 0, 0, 0.3), inset 1px 0 0 rgba(255, 255, 255, 0.05)'
+          }}
+        >
+          <div className="flex flex-col h-full">
+            {/* Menu Header */}
+            <div className="flex items-center justify-between p-6 border-b border-white/20 backdrop-blur-sm">
+              <span className="text-lg font-bold text-white">Menu</span>
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="p-2 text-white hover:text-gray-300 transition-colors"
+                aria-label="Close menu"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
 
-          {/* Navigation Links */}
-          <nav className="flex flex-col gap-2 p-6">
-            <a
-              href="/"
-              onClick={() => setMobileMenuOpen(false)}
-              className="text-base text-white hover:text-[#456882] transition-all duration-200 py-3 px-4 rounded-lg hover:bg-white/10 hover:backdrop-blur-md whitespace-nowrap"
-            >
-              Home
-            </a>
-            <a
-              href="/about"
-              onClick={() => setMobileMenuOpen(false)}
-              className="text-base text-white hover:text-[#456882] transition-all duration-200 py-3 px-4 rounded-lg hover:bg-white/10 hover:backdrop-blur-md whitespace-nowrap"
-            >
-              About
-            </a>
-            <a
-              href="/meet-playcircle"
-              onClick={() => setMobileMenuOpen(false)}
-              className="text-base text-white hover:text-[#456882] transition-all duration-200 py-3 px-4 rounded-lg hover:bg-white/10 hover:backdrop-blur-md whitespace-nowrap"
-            >
-              Meet PlayCircle
-            </a>
-            <a
-              href="/partners"
-              onClick={() => setMobileMenuOpen(false)}
-              className="text-base text-white hover:text-[#456882] transition-all duration-200 py-3 px-4 rounded-lg hover:bg-white/10 hover:backdrop-blur-md whitespace-nowrap"
-            >
-              Partners
-            </a>
-            <a
-              href="/contact"
-              onClick={() => setMobileMenuOpen(false)}
-              className="text-base text-white hover:text-[#456882] transition-all duration-200 py-3 px-4 rounded-lg hover:bg-white/10 hover:backdrop-blur-md whitespace-nowrap"
-            >
-              Contact
-            </a>
-          </nav>
+            {/* Navigation Links */}
+            <nav className="flex flex-col gap-2 p-6">
+              <a
+                href="/"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-base text-white hover:text-[#456882] transition-all duration-200 py-3 px-4 rounded-lg hover:bg-white/10 hover:backdrop-blur-md whitespace-nowrap"
+              >
+                Home
+              </a>
+              <a
+                href="/about"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-base text-white hover:text-[#456882] transition-all duration-200 py-3 px-4 rounded-lg hover:bg-white/10 hover:backdrop-blur-md whitespace-nowrap"
+              >
+                About
+              </a>
+              <a
+                href="/meet-playcircle"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-base text-white hover:text-[#456882] transition-all duration-200 py-3 px-4 rounded-lg hover:bg-white/10 hover:backdrop-blur-md whitespace-nowrap"
+              >
+                Meet PlayCircle
+              </a>
+              <a
+                href="/partners"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-base text-white hover:text-[#456882] transition-all duration-200 py-3 px-4 rounded-lg hover:bg-white/10 hover:backdrop-blur-md whitespace-nowrap"
+              >
+                Partners
+              </a>
+              <a
+                href="/contact"
+                onClick={() => setMobileMenuOpen(false)}
+                className="text-base text-white hover:text-[#456882] transition-all duration-200 py-3 px-4 rounded-lg hover:bg-white/10 hover:backdrop-blur-md whitespace-nowrap"
+              >
+                Contact
+              </a>
+            </nav>
 
-          {/* Open App Button at Bottom */}
-          <div className="mt-auto p-6 border-t border-white/20 backdrop-blur-sm">
-            <Button
-              className="w-full rounded-full py-3 font-semibold transition-all duration-300 hover:scale-105"
-              style={{
-                background: '#456882',
-                color: 'white'
-              }}
-            >
-              Open App
-            </Button>
+            {/* Open App Button at Bottom */}
+            <div className="mt-auto p-6 border-t border-white/20 backdrop-blur-sm">
+              <Button
+                className="w-full rounded-full py-3 font-semibold transition-all duration-300 hover:scale-105"
+                style={{
+                  background: '#456882',
+                  color: 'white'
+                }}
+              >
+                Open App
+              </Button>
+            </div>
           </div>
         </div>
-      </div>
       )}
     </>
   )

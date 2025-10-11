@@ -229,7 +229,7 @@ export function HeroSection() {
           </div>
 
           {/* Phone mockups on mobile/tablet only */}
-          <div className="lg:hidden flex justify-center items-center scale-[0.715] sm:scale-[0.825] origin-center order-1 -mt-28 sm:-mt-36">
+          <div className="lg:hidden flex justify-center items-center scale-[0.715] sm:scale-[0.825] origin-center order-1 -mt-24 sm:-mt-36">
             <PhoneMockupTriple />
           </div>
         </div>
