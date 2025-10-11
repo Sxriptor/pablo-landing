@@ -224,7 +224,7 @@ export function HeroSection() {
           </div>
 
           {/* Phone mockups on the right */}
-          <div className="flex justify-center items-end order-1 lg:order-2">
+          <div className="flex justify-center items-center lg:items-end order-1 lg:order-2 scale-50 sm:scale-75 lg:scale-100 origin-center lg:origin-bottom">
             <PhoneMockupTriple />
           </div>
         </div>

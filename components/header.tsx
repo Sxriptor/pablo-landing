@@ -158,6 +158,9 @@ export function Header() {
         className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
           }`}
         onClick={() => setMobileMenuOpen(false)}
+        style={{
+          touchAction: 'none'
+        }}
       />
 
       {/* Mobile Menu Sidebar */}
@@ -168,7 +171,21 @@ export function Header() {
           background: 'rgba(13, 18, 22, 0.15)',
           backdropFilter: 'blur(25px)',
           borderLeft: '1px solid rgba(255, 255, 255, 0.1)',
-          boxShadow: '-20px 0 60px rgba(0, 0, 0, 0.3), inset 1px 0 0 rgba(255, 255, 255, 0.05)'
+          boxShadow: '-20px 0 60px rgba(0, 0, 0, 0.3), inset 1px 0 0 rgba(255, 255, 255, 0.05)',
+          pointerEvents: mobileMenuOpen ? 'auto' : 'none',
+          touchAction: 'pan-y'
+        }}
+        onTouchStart={(e) => {
+          if (!mobileMenuOpen) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
+        }}
+        onTouchMove={(e) => {
+          if (!mobileMenuOpen) {
+            e.preventDefault();
+            e.stopPropagation();
+          }
         }}
       >
         <div className="flex flex-col h-full">
