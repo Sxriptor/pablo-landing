@@ -26,7 +26,7 @@ export function HeroSection() {
 
       <div className="relative z-10 w-full pb-2 sm:pb-8 lg:pb-12 mt-12 sm:mt-0 lg:mt-0">
         <div className="grid lg:grid-cols-1 gap-3 lg:gap-12 items-start lg:items-end">
-          <div className="space-y-1 sm:space-y-4 lg:space-y-6 flex flex-col justify-start sm:justify-end items-center lg:items-start text-center lg:text-left">
+          <div className="space-y-1 sm:space-y-4 lg:space-y-6 flex flex-col justify-start sm:justify-end items-center lg:items-start text-center lg:text-left order-2 lg:order-1">
             <motion.h1 
               className="text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-none text-balance"
               initial={{ opacity: 0, y: 20 }}
@@ -229,7 +229,7 @@ export function HeroSection() {
           </div>
 
           {/* Phone mockups on mobile/tablet only */}
-          <div className="lg:hidden flex justify-center items-center scale-[0.65] sm:scale-75 origin-center order-1">
+          <div className="lg:hidden flex justify-center items-center scale-[0.715] sm:scale-[0.825] origin-center order-1">
             <PhoneMockupTriple />
           </div>
         </div>
