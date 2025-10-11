@@ -8,6 +8,7 @@ import { motion } from "framer-motion"
 export function Header() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
 
+
   // Prevent body scroll when mobile menu is open
   useEffect(() => {
     if (mobileMenuOpen) {
@@ -23,7 +24,7 @@ export function Header() {
   return (
     <>
       <header
-        className="fixed top-0 left-0 right-0 z-50"
+        className="fixed top-0 left-0 right-0 w-full z-50"
       >
         <div className="w-full px-4 sm:px-6 lg:px-12 py-4 flex items-center justify-between relative">
           <div className="flex items-center gap-2 sm:gap-8 flex-1 min-w-0">
@@ -268,7 +269,7 @@ export function Header() {
 
       {/* Mobile Menu Overlay */}
       <div
-        className={`fixed inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
+        className={`absolute inset-0 bg-black/60 backdrop-blur-sm z-40 md:hidden transition-opacity duration-300 ${mobileMenuOpen ? 'opacity-100' : 'opacity-0 pointer-events-none'
           }`}
         onClick={() => setMobileMenuOpen(false)}
         style={{
@@ -279,7 +280,7 @@ export function Header() {
       {/* Mobile Menu Sidebar */}
       {mobileMenuOpen && (
         <div
-          className="fixed top-0 right-0 h-full w-64 sm:w-72 z-50 md:hidden animate-in slide-in-from-right duration-300"
+          className="absolute top-0 right-0 h-full w-64 sm:w-72 z-50 md:hidden animate-in slide-in-from-right duration-300"
           style={{
             background: 'rgba(13, 18, 22, 0.15)',
             backdropFilter: 'blur(25px)',

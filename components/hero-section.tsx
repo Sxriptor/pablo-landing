@@ -6,7 +6,7 @@ import { motion } from "framer-motion"
 
 export function HeroSection() {
   return (
-    <section className="relative pt-2 pb-2 sm:pt-20 sm:pb-12 lg:pt-12 lg:pb-20 px-2 lg:px-12 overflow-x-hidden min-h-screen flex items-start sm:items-center lg:items-end">
+    <section className="relative pt-16 pb-2 sm:pt-20 sm:pb-12 lg:pt-12 lg:pb-20 px-2 lg:px-12 overflow-x-hidden min-h-screen flex items-center sm:items-center lg:items-end">
       {/* Background image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -24,7 +24,7 @@ export function HeroSection() {
         <PhoneMockupTriple />
       </div>
 
-      <div className="relative z-10 w-full pb-2 sm:pb-8 lg:pb-12 mt-12 sm:mt-0 lg:mt-0">
+      <div className="relative z-10 w-full pb-2 sm:pb-8 lg:pb-12 mt-0 sm:mt-0 lg:mt-0">
         <div className="grid lg:grid-cols-1 gap-3 lg:gap-12 items-start lg:items-end">
           <div className="space-y-1 sm:space-y-4 lg:space-y-6 flex flex-col justify-start sm:justify-end items-center lg:items-start text-center lg:text-left order-2 lg:order-1">
             <motion.h1 
@@ -229,7 +229,7 @@ export function HeroSection() {
           </div>
 
           {/* Phone mockups on mobile/tablet only */}
-          <div className="lg:hidden flex justify-center items-center scale-[0.715] sm:scale-[0.825] origin-center order-1 -mt-24 sm:-mt-36">
+          <div className="lg:hidden flex justify-center items-center scale-[0.715] sm:scale-[0.825] origin-center order-1 mt-4 sm:mt-0">
             <PhoneMockupTriple />
           </div>
         </div>
