@@ -6,7 +6,7 @@ import { motion } from "framer-motion"
 
 export function HeroSection() {
   return (
-    <section className="relative pt-8 pb-2 sm:pt-20 sm:pb-12 px-2 lg:px-12 overflow-hidden min-h-screen flex items-center lg:items-end">
+    <section className="relative pt-4 pb-2 sm:pt-20 sm:pb-12 px-2 lg:px-12 overflow-hidden min-h-screen flex items-start sm:items-center lg:items-end">
       {/* Background image */}
       <div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -19,9 +19,9 @@ export function HeroSection() {
         background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 1) 100%)'
       }} />
 
-      <div className="relative z-10 w-full pb-2 sm:pb-8">
+      <div className="relative z-10 w-full pb-2 sm:pb-8 mt-16 sm:mt-0">
         <div className="grid lg:grid-cols-2 gap-6 lg:gap-12 items-end">
-          <div className="space-y-2 sm:space-y-4 flex flex-col justify-end items-center lg:items-start text-center lg:text-left order-2 lg:order-1">
+          <div className="space-y-2 sm:space-y-4 flex flex-col justify-start sm:justify-end items-center lg:items-start text-center lg:text-left order-2 lg:order-1">
             <motion.h1 
               className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-none text-balance"
               initial={{ opacity: 0, y: 20 }}
