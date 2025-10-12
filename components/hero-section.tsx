@@ -77,7 +77,7 @@ export function HeroSection() {
               </motion.span>
               <br />
               <motion.span
-                className="block text-3xl md:text-[4rem] mt-4"
+                className="block text-3xl md:text-[4rem] md:mt-4"
                 style={{ 
                   color: 'white',
                   willChange: 'transform',
@@ -95,7 +95,7 @@ export function HeroSection() {
                 }}
               >
                 Anytime,<br />
-                <span className="block mt-8">Anywhere.</span>
+                <span className="block md:mt-8">Anywhere.</span>
               </motion.span>
             </motion.h1>
             <motion.p 
