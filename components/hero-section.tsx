@@ -51,7 +51,8 @@ export function HeroSection() {
       <motion.div 
         className="absolute inset-0" 
         style={{
-          background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 70%, rgba(5, 10, 15, 1) 100%)'
+          background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 60%, rgba(5, 10, 15, 1) 95%)',
+          height: '110%'
         }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
