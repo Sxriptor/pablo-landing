@@ -30,10 +30,6 @@ export function Footer() {
               <a href="/partners" className="text-sm text-gray-400 hover:text-white transition-colors">
                 Partners
               </a>
-              <a href="/community" className="text-sm text-gray-400 hover:text-white transition-colors">
-                Community
-              </a>
-
               <a href="/contact" className="text-sm text-gray-400 hover:text-white transition-colors">
                 Contact
               </a>

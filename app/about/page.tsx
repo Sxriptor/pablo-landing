@@ -98,15 +98,18 @@ export default function AboutPage() {
           <motion.div
             className="absolute top-20 right-0 w-96 h-96 rounded-full opacity-5 blur-3xl"
             style={{ background: '#456882' }}
+            initial={{ opacity: 0, scale: 0.8 }}
             animate={{ 
+              opacity: 0.05,
+              scale: 1,
               x: [0, -30, 0, 30, 0],
-              y: [0, 40, 0, -40, 0],
-              scale: [1, 1.1, 1, 0.9, 1]
+              y: [0, 40, 0, -40, 0]
             }}
             transition={{
-              duration: 20,
-              repeat: Infinity,
-              ease: "easeInOut"
+              opacity: { duration: 1.5, delay: 0.6 },
+              scale: { duration: 1.5, delay: 0.6 },
+              x: { duration: 20, repeat: Infinity, ease: "easeInOut", delay: 2.1 },
+              y: { duration: 20, repeat: Infinity, ease: "easeInOut", delay: 2.1 }
             }}
           />
 
@@ -239,15 +242,18 @@ export default function AboutPage() {
           <motion.div
             className="absolute top-0 left-1/4 w-96 h-96 rounded-full opacity-5 blur-3xl"
             style={{ background: '#456882' }}
+            initial={{ opacity: 0, scale: 0.8 }}
             animate={{ 
+              opacity: 0.05,
+              scale: 1,
               x: [0, 50, 0, -50, 0],
-              y: [0, -30, 0, 30, 0],
-              scale: [1, 1.1, 1, 0.9, 1]
+              y: [0, -30, 0, 30, 0]
             }}
             transition={{
-              duration: 20,
-              repeat: Infinity,
-              ease: "easeInOut"
+              opacity: { duration: 1.5, delay: 1.3 },
+              scale: { duration: 1.5, delay: 1.3 },
+              x: { duration: 20, repeat: Infinity, ease: "easeInOut", delay: 2.8 },
+              y: { duration: 20, repeat: Infinity, ease: "easeInOut", delay: 2.8 }
             }}
           />
 
@@ -455,15 +461,18 @@ export default function AboutPage() {
           <motion.div
             className="absolute bottom-0 right-0 w-96 h-96 rounded-full opacity-5 blur-3xl"
             style={{ background: '#456882' }}
+            initial={{ opacity: 0, scale: 0.8 }}
             animate={{ 
+              opacity: 0.05,
+              scale: 1,
               x: [0, -30, 0, 30, 0],
-              y: [0, 40, 0, -40, 0],
-              scale: [1, 0.9, 1, 1.1, 1]
+              y: [0, 40, 0, -40, 0]
             }}
             transition={{
-              duration: 18,
-              repeat: Infinity,
-              ease: "easeInOut"
+              opacity: { duration: 1.5, delay: 2 },
+              scale: { duration: 1.5, delay: 2 },
+              x: { duration: 18, repeat: Infinity, ease: "easeInOut", delay: 3.5 },
+              y: { duration: 18, repeat: Infinity, ease: "easeInOut", delay: 3.5 }
             }}
           />
 

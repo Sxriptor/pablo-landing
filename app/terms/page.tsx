@@ -44,15 +44,18 @@ export default function TermsPage() {
           <motion.div
             className="absolute top-20 left-0 w-96 h-96 rounded-full opacity-5 blur-3xl"
             style={{ background: '#456882' }}
+            initial={{ opacity: 0, scale: 0.8 }}
             animate={{ 
+              opacity: 0.05,
+              scale: 1,
               x: [0, 30, 0, -30, 0],
-              y: [0, -40, 0, 40, 0],
-              scale: [1, 0.9, 1, 1.1, 1]
+              y: [0, -40, 0, 40, 0]
             }}
             transition={{
-              duration: 18,
-              repeat: Infinity,
-              ease: "easeInOut"
+              opacity: { duration: 1.5, delay: 0.7 },
+              scale: { duration: 1.5, delay: 0.7 },
+              x: { duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2.2 },
+              y: { duration: 18, repeat: Infinity, ease: "easeInOut", delay: 2.2 }
             }}
           />
 
@@ -164,15 +167,18 @@ export default function TermsPage() {
             <motion.div
               className="absolute top-1/3 right-0 w-96 h-96 rounded-full opacity-5 blur-3xl"
               style={{ background: '#456882' }}
+              initial={{ opacity: 0, scale: 0.8 }}
               animate={{ 
+                opacity: 0.05,
+                scale: 1,
                 x: [0, -40, 0, 40, 0],
-                y: [0, 30, 0, -30, 0],
-                scale: [1, 0.9, 1, 1.1, 1]
+                y: [0, 30, 0, -30, 0]
               }}
               transition={{
-                duration: 22,
-                repeat: Infinity,
-                ease: "easeInOut"
+                opacity: { duration: 1.5, delay: 1.2 },
+                scale: { duration: 1.5, delay: 1.2 },
+                x: { duration: 22, repeat: Infinity, ease: "easeInOut", delay: 2.7 },
+                y: { duration: 22, repeat: Infinity, ease: "easeInOut", delay: 2.7 }
               }}
             />
 

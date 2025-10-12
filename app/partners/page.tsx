@@ -66,10 +66,10 @@ export default function PartnersPage() {
             style={{
               backgroundImage: "url('/Backgrounddark1.png')",
             }}
-            initial={{ opacity: 1, scale: 1 }}
+            initial={{ opacity: 0, scale: 1.1 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ 
-              duration: 0.3, 
+              duration: 0.8, 
               ease: "easeOut"
             }}
           />
@@ -80,10 +80,11 @@ export default function PartnersPage() {
             style={{
               background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(5, 10, 15, 0.8) 70%, rgba(5, 10, 15, 1) 100%)'
             }}
-            initial={{ opacity: 1 }}
+            initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ 
-              duration: 0.3,
+              duration: 0.6,
+              delay: 0.2,
               ease: "easeOut"
             }}
           />
@@ -92,15 +93,18 @@ export default function PartnersPage() {
           <motion.div
             className="absolute top-20 right-0 w-96 h-96 rounded-full opacity-5 blur-3xl"
             style={{ background: '#456882' }}
+            initial={{ opacity: 0, scale: 0.8 }}
             animate={{ 
+              opacity: 0.05,
+              scale: 1,
               x: [0, -30, 0, 30, 0],
-              y: [0, 40, 0, -40, 0],
-              scale: [1, 1.1, 1, 0.9, 1]
+              y: [0, 40, 0, -40, 0]
             }}
             transition={{
-              duration: 20,
-              repeat: Infinity,
-              ease: "easeInOut"
+              opacity: { duration: 1.5, delay: 0.8 },
+              scale: { duration: 1.5, delay: 0.8 },
+              x: { duration: 20, repeat: Infinity, ease: "easeInOut", delay: 2.3 },
+              y: { duration: 20, repeat: Infinity, ease: "easeInOut", delay: 2.3 }
             }}
           />
 
@@ -108,15 +112,15 @@ export default function PartnersPage() {
             {/* Header Section */}
             <motion.div 
               className="text-center max-w-4xl xl:max-w-5xl mx-auto"
-              initial={{ opacity: 1, y: 0 }}
+              initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.3 }}
+              transition={{ duration: 0.8, delay: 0.4 }}
             >
               <motion.h1 
                 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight mb-4 sm:mb-6"
-                initial={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 50 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.8, delay: 0.6 }}
               >
                 Partner with{" "}
                 <motion.span 
@@ -127,15 +131,16 @@ export default function PartnersPage() {
                     backfaceVisibility: 'hidden',
                     transform: 'translate3d(0,0,0)'
                   }}
+                  initial={{ opacity: 0 }}
                   animate={{ 
+                    opacity: 1,
                     x: [0, 2, 3, 2, 0, -2, -3, -2, 0],
                     y: [0, -2, 0, 2, 3, 2, 0, -2, 0]
                   }}
                   transition={{
-                    duration: 12,
-                    repeat: Infinity,
-                    ease: "easeInOut",
-                    delay: 1
+                    opacity: { duration: 0.8, delay: 0.8 },
+                    x: { duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 },
+                    y: { duration: 12, repeat: Infinity, ease: "easeInOut", delay: 2 }
                   }}
                 >
                   PlayCircle
@@ -143,9 +148,9 @@ export default function PartnersPage() {
               </motion.h1>
               <motion.p 
                 className="text-sm sm:text-base lg:text-lg text-gray-300 leading-relaxed max-w-2xl mx-auto"
-                initial={{ opacity: 1, y: 0 }}
+                initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3 }}
+                transition={{ duration: 0.8, delay: 1 }}
               >
                 Join us in building the world's largest sports community
               </motion.p>
@@ -213,15 +218,18 @@ export default function PartnersPage() {
             <motion.div
               className="absolute top-1/3 left-0 w-96 h-96 rounded-full opacity-5 blur-3xl"
               style={{ background: '#456882' }}
+              initial={{ opacity: 0, scale: 0.8 }}
               animate={{ 
+                opacity: 0.05,
+                scale: 1,
                 x: [0, 50, 0, -50, 0],
-                y: [0, -30, 0, 30, 0],
-                scale: [1, 1.1, 1, 0.9, 1]
+                y: [0, -30, 0, 30, 0]
               }}
               transition={{
-                duration: 20,
-                repeat: Infinity,
-                ease: "easeInOut"
+                opacity: { duration: 1.5, delay: 1.5 },
+                scale: { duration: 1.5, delay: 1.5 },
+                x: { duration: 20, repeat: Infinity, ease: "easeInOut", delay: 3 },
+                y: { duration: 20, repeat: Infinity, ease: "easeInOut", delay: 3 }
               }}
             />
 
@@ -305,15 +313,18 @@ export default function PartnersPage() {
             <motion.div
               className="absolute top-1/4 right-0 w-96 h-96 rounded-full opacity-5 blur-3xl"
               style={{ background: '#456882' }}
+              initial={{ opacity: 0, scale: 0.8 }}
               animate={{ 
+                opacity: 0.05,
+                scale: 1,
                 x: [0, -30, 0, 30, 0],
-                y: [0, 40, 0, -40, 0],
-                scale: [1, 0.9, 1, 1.1, 1]
+                y: [0, 40, 0, -40, 0]
               }}
               transition={{
-                duration: 18,
-                repeat: Infinity,
-                ease: "easeInOut"
+                opacity: { duration: 1.5, delay: 2 },
+                scale: { duration: 1.5, delay: 2 },
+                x: { duration: 18, repeat: Infinity, ease: "easeInOut", delay: 3.5 },
+                y: { duration: 18, repeat: Infinity, ease: "easeInOut", delay: 3.5 }
               }}
             />
 
@@ -621,15 +632,18 @@ export default function PartnersPage() {
             <motion.div
               className="absolute bottom-0 left-1/4 w-96 h-96 rounded-full opacity-5 blur-3xl"
               style={{ background: '#456882' }}
+              initial={{ opacity: 0, scale: 0.8 }}
               animate={{ 
+                opacity: 0.05,
+                scale: 1,
                 x: [0, 50, 0, -50, 0],
-                y: [0, -30, 0, 30, 0],
-                scale: [1, 0.9, 1, 1.1, 1]
+                y: [0, -30, 0, 30, 0]
               }}
               transition={{
-                duration: 22,
-                repeat: Infinity,
-                ease: "easeInOut"
+                opacity: { duration: 1.5, delay: 2.5 },
+                scale: { duration: 1.5, delay: 2.5 },
+                x: { duration: 22, repeat: Infinity, ease: "easeInOut", delay: 4 },
+                y: { duration: 22, repeat: Infinity, ease: "easeInOut", delay: 4 }
               }}
             />
 
