@@ -110,6 +110,58 @@ export default function ContactPage() {
               </motion.p>
             </motion.div>
           </div>
+
+          {/* Animated Scroll Indicator */}
+          <motion.div 
+            className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex flex-col items-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1 }}
+          >
+            <motion.div
+              className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center relative"
+              whileHover={{ borderColor: 'rgba(69, 104, 130, 0.8)' }}
+            >
+              <motion.div
+                className="w-1 h-3 rounded-full mt-2"
+                style={{ backgroundColor: '#456882' }}
+                animate={{
+                  y: [0, 12, 0],
+                  opacity: [1, 0.3, 1]
+                }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              />
+            </motion.div>
+            <motion.div
+              className="mt-2"
+              animate={{ 
+                y: [0, 5, 0],
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            >
+              <svg 
+                className="w-4 h-4 text-white/60" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth={2} 
+                  d="M19 14l-7 7m0 0l-7-7m7 7V3" 
+                />
+              </svg>
+            </motion.div>
+          </motion.div>
         </section>
 
         {/* Content Section */}

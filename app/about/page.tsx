@@ -36,11 +36,11 @@ export default function AboutPage() {
   ]
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen" style={{ background: '#050a0f' }}>
       <Header />
-      <main>
-        {/* Hero Section */}
-        <section className="relative pt-20 pb-4 sm:pt-20 sm:pb-12 lg:pt-12 lg:pb-20 px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 2xl:px-16 min-h-screen flex items-center sm:items-center lg:items-end" style={{ transform: 'translateY(0)' }}>
+      <main className="overscroll-none overflow-x-hidden relative">
+        {/* Hero Section with Background Image */}
+        <section className="relative min-h-[60vh] flex items-center">
           <style jsx>{`
             @media (max-width: 1023px) {
               section {
@@ -79,12 +79,11 @@ export default function AboutPage() {
             }}
           />
           
-          {/* Background gradient overlay - seamless transition to next section */}
+          {/* Background gradient overlay */}
           <motion.div 
             className="absolute inset-0" 
             style={{
-              background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 60%, rgba(5, 10, 15, 1) 95%)',
-              height: '110%'
+              background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(5, 10, 15, 0.8) 70%, rgba(5, 10, 15, 1) 100%)'
             }}
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
@@ -95,81 +94,87 @@ export default function AboutPage() {
             }}
           />
 
-          <div className="relative z-10 w-full h-full flex flex-col justify-center items-center lg:items-start pb-2 sm:pb-8 lg:pb-12">
-            <div className="w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-4 lg:gap-12 h-full">
-              <div className="space-y-3 sm:space-y-4 lg:space-y-6 flex flex-col justify-center items-center lg:items-start text-center lg:text-left order-2 lg:order-1 max-w-full lg:max-w-[60%] xl:max-w-[55%] 2xl:max-w-[50%] flex-shrink-0 px-4 sm:px-0">
-                <motion.h1 
-                  className="text-3xl xs:text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight text-balance"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.6 }}
-                  style={{ willChange: 'opacity, transform' }}
-                >
-                  <motion.span 
-                    style={{ 
-                      color: 'white',
-                      display: 'inline-block',
-                      willChange: 'transform',
-                      backfaceVisibility: 'hidden',
-                      transform: 'translate3d(0,0,0)'
-                    }}
-                    animate={{ 
-                      x: [0, 2, 3, 2, 0, -2, -3, -2, 0],
-                      y: [0, -2, 0, 2, 3, 2, 0, -2, 0]
-                    }}
-                    transition={{
-                      duration: 15,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
-                  >
-                    About
-                  </motion.span>
-                  <br />
-                  <motion.span
-                    className="text-xl xs:text-2xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl inline-block"
-                    style={{ 
-                      color: '#456882',
-                      willChange: 'transform',
-                      backfaceVisibility: 'hidden',
-                      transform: 'translate3d(0,0,0)'
-                    }}
-                    animate={{ 
-                      x: [0, -2, -3, -2, 0, 2, 3, 2, 0],
-                      y: [0, 2, 0, -2, -3, -2, 0, 2, 0]
-                    }}
-                    transition={{
-                      duration: 18,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }}
-                  >
-                    PlayCircle
-                  </motion.span>
-                </motion.h1>
-                <motion.p 
-                  className="text-sm sm:text-base lg:text-lg text-white max-w-xs sm:max-w-md lg:max-w-lg text-pretty leading-relaxed"
-                  style={{ willChange: 'transform, opacity', backfaceVisibility: 'hidden' }}
-                  initial={{ opacity: 0, y: 20 }}
+          {/* Decorative background elements */}
+          <motion.div
+            className="absolute top-20 right-0 w-96 h-96 rounded-full opacity-5 blur-3xl"
+            style={{ background: '#456882' }}
+            animate={{ 
+              x: [0, -30, 0, 30, 0],
+              y: [0, 40, 0, -40, 0],
+              scale: [1, 1.1, 1, 0.9, 1]
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+
+          <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-16 sm:py-20 md:py-24 lg:py-28 xl:py-32">
+            {/* Header Section */}
+            <motion.div 
+              className="text-center max-w-4xl xl:max-w-5xl mx-auto"
+              initial={{ opacity: 0, y: 30 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.8 }}
+            >
+              <motion.h1 
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight mb-4 sm:mb-6"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.2 }}
+              >
+                <motion.span 
+                  style={{ 
+                    color: 'white',
+                    display: 'inline-block',
+                    willChange: 'transform',
+                    backfaceVisibility: 'hidden',
+                    transform: 'translate3d(0,0,0)'
+                  }}
                   animate={{ 
-                    opacity: 1,
-                    y: 0,
-                    x: [0, 1.5, 2, 1.5, 0, -1.5, -2, -1.5, 0],
+                    x: [0, 2, 3, 2, 0, -2, -3, -2, 0],
+                    y: [0, -2, 0, 2, 3, 2, 0, -2, 0]
                   }}
                   transition={{
-                    opacity: { duration: 0.6, delay: 0.2 },
-                    y: { duration: 0.6, delay: 0.2 },
-                    x: {
-                      duration: 12,
-                      repeat: Infinity,
-                      ease: "easeInOut"
-                    }
+                    duration: 15,
+                    repeat: Infinity,
+                    ease: "easeInOut"
                   }}
                 >
-                  We're on a mission to make sports accessible to everyone, everywhere
-                </motion.p>
-              </div>
-            </div>
+                  About
+                </motion.span>{" "}
+                <motion.span 
+                  style={{ 
+                    color: '#456882',
+                    display: 'inline-block',
+                    willChange: 'transform',
+                    backfaceVisibility: 'hidden',
+                    transform: 'translate3d(0,0,0)'
+                  }}
+                  animate={{ 
+                    x: [0, 2, 3, 2, 0, -2, -3, -2, 0],
+                    y: [0, -2, 0, 2, 3, 2, 0, -2, 0]
+                  }}
+                  transition={{
+                    duration: 12,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 1
+                  }}
+                >
+                  PlayCircle
+                </motion.span>
+              </motion.h1>
+              <motion.p 
+                className="text-sm sm:text-base lg:text-lg text-gray-300 leading-relaxed max-w-2xl mx-auto"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.4 }}
+              >
+                We're on a mission to make sports accessible to everyone, everywhere
+              </motion.p>
+            </motion.div>
           </div>
 
           {/* Animated Scroll Indicator */}
@@ -224,6 +229,9 @@ export default function AboutPage() {
             </motion.div>
           </motion.div>
         </section>
+
+        {/* Content Section */}
+        <section className="relative" style={{ background: '#050a0f' }}>
    
      {/* Story Section */}
         <section className="py-12 sm:py-16 md:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 relative" style={{ background: '#050a0f' }}>
@@ -622,6 +630,7 @@ export default function AboutPage() {
               </motion.a>
             </motion.div>
           </div>
+          </section>
         </section>
       </main>
       <Footer />
