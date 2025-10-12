@@ -26,9 +26,9 @@ export function EnhancedLoginMockup() {
           style={{ transformOrigin: 'center center' }}
         >
           {/* Phone frame */}
-          <div className="relative w-[280px] h-[600px] rounded-[3rem] bg-black/50 backdrop-blur-xl border border-white/20 shadow-2xl p-3 overflow-hidden">
+          <div className="relative w-[200px] h-[420px] sm:w-[240px] sm:h-[480px] md:w-[260px] md:h-[520px] lg:w-[280px] lg:h-[560px] rounded-xl sm:rounded-2xl lg:rounded-[2rem] bg-black/50 backdrop-blur-xl border border-white/20 shadow-2xl p-2 sm:p-2.5 lg:p-3 overflow-hidden">
             {/* Inner screen */}
-            <div className="w-full h-full rounded-[2.5rem] bg-gradient-to-b from-slate-900 to-slate-800 overflow-hidden relative">
+            <div className="w-full h-full rounded-xl sm:rounded-2xl lg:rounded-[2rem] bg-gradient-to-b from-slate-900 to-slate-800 overflow-hidden relative">
               {/* Status bar */}
               <div className="absolute top-0 left-0 right-0 h-11 flex items-center justify-between px-6 text-white text-sm z-20 bg-slate-900/80 backdrop-blur-sm">
                 <span className="font-semibold">12:29</span>
@@ -197,7 +197,7 @@ export function EnhancedLoginMockup() {
             </div>
 
             {/* Phone notch */}
-            <div className="absolute top-3 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-full z-30 shadow-xl" />
+            <div className="absolute top-2 sm:top-2.5 lg:top-3 left-1/2 -translate-x-1/2 w-20 sm:w-24 lg:w-28 h-4 sm:h-5 lg:h-6 bg-black rounded-full z-30 shadow-xl" />
           </div>
 
           {/* Glow effect */}

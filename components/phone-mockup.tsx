@@ -89,9 +89,9 @@ export function PhoneMockup() {
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
         {/* Phone frame with glass effect - Responsive dimensions */}
-        <div className="relative w-[240px] h-[500px] sm:w-[280px] sm:h-[580px] md:w-[300px] md:h-[620px] lg:w-[320px] lg:h-[640px] xl:w-[340px] xl:h-[680px] rounded-[2.5rem] lg:rounded-[3rem] bg-black/40 backdrop-blur-2xl border border-white/20 shadow-2xl p-2 lg:p-3">
+        <div className="relative w-[200px] h-[420px] sm:w-[240px] sm:h-[480px] md:w-[280px] md:h-[560px] lg:w-[300px] lg:h-[600px] xl:w-[320px] xl:h-[640px] rounded-xl sm:rounded-2xl lg:rounded-[2rem] bg-black/40 backdrop-blur-2xl border border-white/20 shadow-2xl p-2 lg:p-3">
           {/* Inner screen */}
-          <div className="w-full h-full rounded-[2.5rem] bg-gradient-to-br from-slate-900/95 to-slate-800/95 overflow-hidden relative">
+          <div className="w-full h-full rounded-xl sm:rounded-2xl lg:rounded-[2rem] bg-gradient-to-br from-slate-900/95 to-slate-800/95 overflow-hidden relative">
             {/* Status bar */}
             <div className="absolute top-0 left-0 right-0 h-10 flex items-center justify-between px-6 text-white text-xs z-20">
               <span>9:41</span>
@@ -216,7 +216,7 @@ export function PhoneMockup() {
           </div>
 
           {/* Phone notch */}
-          <div className="absolute top-3 left-1/2 -translate-x-1/2 w-32 h-6 bg-black rounded-full z-30" />
+          <div className="absolute top-2 sm:top-3 left-1/2 -translate-x-1/2 w-20 sm:w-24 lg:w-28 h-4 sm:h-5 lg:h-6 bg-black rounded-full z-30" />
         </div>
 
         {/* Glow effect behind phone */}

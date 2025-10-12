@@ -27,9 +27,9 @@ export function IPhoneDownloadMockup() {
           style={{ transformOrigin: 'center center' }}
         >
           {/* Phone frame - top half - Responsive sizing */}
-          <div className="relative w-[200px] h-[240px] xs:w-[220px] xs:h-[260px] sm:w-[240px] sm:h-[280px] md:w-[260px] md:h-[300px] lg:w-[280px] lg:h-[320px] xl:w-[300px] xl:h-[340px] rounded-t-[2rem] sm:rounded-t-[2.5rem] lg:rounded-t-[3rem] bg-black/50 backdrop-blur-xl border border-white/20 border-b-0 shadow-2xl p-1.5 sm:p-2 lg:p-3 overflow-hidden">
+          <div className="relative w-[180px] h-[220px] xs:w-[200px] xs:h-[240px] sm:w-[220px] sm:h-[260px] md:w-[240px] md:h-[280px] lg:w-[260px] lg:h-[300px] xl:w-[280px] xl:h-[320px] rounded-t-lg sm:rounded-t-xl lg:rounded-t-2xl bg-black/50 backdrop-blur-xl border border-white/20 border-b-0 shadow-2xl p-1.5 sm:p-2 lg:p-3 overflow-hidden">
             {/* Inner screen */}
-            <div className="w-full h-full rounded-t-[2rem] sm:rounded-t-[2.5rem] bg-gradient-to-b from-slate-900 to-slate-800 overflow-hidden relative">
+            <div className="w-full h-full rounded-t-lg sm:rounded-t-xl lg:rounded-t-2xl bg-gradient-to-b from-slate-900 to-slate-800 overflow-hidden relative">
               {/* Status bar */}
               <div className="absolute top-0 left-0 right-0 h-8 sm:h-10 lg:h-11 flex items-center justify-between px-3 sm:px-4 lg:px-6 text-white text-[10px] sm:text-xs z-20 bg-slate-900/80 backdrop-blur-sm">
                 <span className="font-semibold">9:41</span>
@@ -149,7 +149,7 @@ export function IPhoneDownloadMockup() {
             </div>
 
             {/* Phone notch */}
-            <div className="absolute top-2 sm:top-3 left-1/2 -translate-x-1/2 w-24 sm:w-28 lg:w-32 h-4 sm:h-5 lg:h-6 bg-black rounded-full z-30 shadow-xl" />
+            <div className="absolute top-1.5 sm:top-2 lg:top-3 left-1/2 -translate-x-1/2 w-16 sm:w-20 lg:w-24 h-3 sm:h-4 lg:h-5 bg-black rounded-full z-30 shadow-xl" />
           </div>
 
           {/* Fade out effect at bottom */}
