@@ -70,7 +70,7 @@ components/
 - [x] No cropping of essential content
 - [x] All mockup screens fully visible
 - [x] Readable text at all sizes
-- [x] Proper scaling constraints (200px-320px)
+- [x] Proper scaling constraints (280px-400px)
 
 ### ✅ Visual Polish
 - [x] Subtle rotation effects on desktop
@@ -183,14 +183,14 @@ HeroMockups
 
 ### Mockup Dimensions
 - **Aspect Ratio**: 9:16 (0.5625)
-- **Min Width**: 200px
-- **Max Width**: 320px
+- **Min Width**: 280px
+- **Max Width**: 400px
 - **Responsive**: 100% within constraints
 
 ### Transforms (Desktop)
-- **Left Phone**: `translateY(-8px) rotate(-6deg)`, z-index: 10
-- **Center Phone**: `translateY(0) scale(1.05)`, z-index: 20
-- **Right Phone**: `translateY(12px) rotate(4deg)`, z-index: 10
+- **Left Phone**: `translateY(-12px) rotate(-12deg)`, z-index: 10
+- **Center Phone**: `translateY(0) scale(1.15)`, z-index: 20
+- **Right Phone**: `translateY(16px) rotate(12deg)`, z-index: 10
 
 ### Spacing
 - **Desktop Gap**: Negative margins (-8px to -16px for overlap)

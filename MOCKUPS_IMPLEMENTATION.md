@@ -53,7 +53,7 @@ Reusable wrapper that maintains aspect ratio and provides phone frame styling.
 
 **Key Features:**
 - `aspect-ratio: 9/16` ensures phone proportions
-- Min/max width constraints (200px - 320px)
+- Min/max width constraints (280px - 400px)
 - Phone frame with notch
 - Glow effect
 - Smooth animations
@@ -71,8 +71,8 @@ Three specialized screen components showing different app features:
 <div 
   style={{ 
     aspectRatio: '9 / 16',
-    maxWidth: '320px',
-    minWidth: '200px',
+    maxWidth: '400px',
+    minWidth: '280px',
     width: '100%'
   }}
 >
@@ -96,19 +96,19 @@ The `aspect-ratio` CSS property ensures the container maintains 9:16 proportions
 ```tsx
 // Left phone
 style={{ 
-  transform: 'translateY(-8px) rotate(-6deg)',
+  transform: 'translateY(-12px) rotate(-12deg)',
   zIndex: 10
 }}
 
 // Center phone (featured)
 style={{ 
-  transform: 'translateY(0px) scale(1.05)',
+  transform: 'translateY(0px) scale(1.15)',
   zIndex: 20
 }}
 
 // Right phone
 style={{ 
-  transform: 'translateY(12px) rotate(4deg)',
+  transform: 'translateY(16px) rotate(12deg)',
   zIndex: 10
 }}
 ```

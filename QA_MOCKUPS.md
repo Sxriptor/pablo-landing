@@ -16,9 +16,9 @@ This document outlines the testing procedures for the responsive phone mockups o
 
 ### 1. Desktop Testing (≥1440px)
 - [ ] Three mockups display side-by-side
-- [ ] Left mockup rotated ~-6 degrees
-- [ ] Center mockup slightly larger (scale 1.05-1.07)
-- [ ] Right mockup rotated ~4 degrees
+- [ ] Left mockup rotated ~-12 degrees
+- [ ] Center mockup larger (scale 1.15-1.18)
+- [ ] Right mockup rotated ~12 degrees
 - [ ] Mockups overlap slightly (negative margins)
 - [ ] All content visible without cropping
 - [ ] Aspect ratio maintained (9:16)

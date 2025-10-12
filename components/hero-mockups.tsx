@@ -64,14 +64,14 @@ export function HeroMockups() {
       />
 
       {/* Container for three mockups with proper aspect ratio */}
-      <div className="relative flex flex-col md:flex-row items-center justify-center gap-4 md:gap-0 w-full max-w-[1400px] mx-auto px-4 py-10">
+      <div className="relative flex flex-col md:flex-row items-center justify-center gap-6 md:gap-0 w-full max-w-[1600px] mx-auto px-4 py-12">
         
         {/* Left Phone - Game Discovery */}
         <MockupFrame
           delay={0}
-          className="md:-mr-8 lg:-mr-12 xl:-mr-16"
+          className="md:-mr-12 lg:-mr-16 xl:-mr-20"
           style={{ 
-            transform: 'translateY(-8px) rotate(-6deg)',
+            transform: 'translateY(-12px) rotate(-12deg)',
             zIndex: 10
           }}
           animateY={[-6, 0, -6]}
@@ -82,13 +82,13 @@ export function HeroMockups() {
         {/* Center Phone - Profile/Stats (larger, centered) */}
         <MockupFrame
           delay={0.1}
-          className="md:scale-105 lg:scale-110"
+          className="md:scale-110 lg:scale-125"
           style={{ 
-            transform: 'translateY(0px) scale(1.05)',
+            transform: 'translateY(0px) scale(1.15)',
             zIndex: 20
           }}
           animateY={[-8, 0, -8]}
-          animateScale={[1.05, 1.07, 1.05]}
+          animateScale={[1.15, 1.18, 1.15]}
         >
           <ProfileStatsScreen />
         </MockupFrame>
@@ -96,9 +96,9 @@ export function HeroMockups() {
         {/* Right Phone - Leaderboard */}
         <MockupFrame
           delay={0.3}
-          className="md:-ml-8 lg:-ml-12 xl:-ml-16"
+          className="md:-ml-12 lg:-ml-16 xl:-ml-20"
           style={{ 
-            transform: 'translateY(12px) rotate(4deg)',
+            transform: 'translateY(16px) rotate(12deg)',
             zIndex: 10
           }}
           animateY={[4, 0, 4]}
@@ -141,8 +141,8 @@ function MockupFrame({
         className="relative w-full"
         style={{ 
           aspectRatio: '9 / 16',
-          maxWidth: '320px',
-          minWidth: '200px',
+          maxWidth: '400px',
+          minWidth: '280px',
           width: '100%'
         }}
         animate={{
