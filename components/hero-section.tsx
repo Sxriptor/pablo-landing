@@ -44,10 +44,10 @@ export function HeroSection() {
         <PhoneMockupTriple />
       </div>
 
-      <div className="relative md:absolute bottom-0 left-0 z-10 w-full pb-1 md:pb-12 pl-4 md:pl-20 mt-1 md:mt-auto">
-        <div className="w-full max-w-2xl flex flex-col items-center md:items-start justify-start gap-0.5 md:gap-2">
+      <div className="relative md:absolute bottom-0 left-0 z-10 w-full pb-0 md:pb-12 pl-4 md:pl-20 mt-0 md:mt-auto">
+        <div className="w-full max-w-2xl flex flex-col items-center md:items-start justify-start gap-0 md:gap-2">
           
-          <div className="space-y-0.5 md:space-y-2 flex flex-col items-center md:items-start text-center md:text-left order-2 lg:order-1 max-w-full flex-shrink-0">
+          <div className="space-y-0 md:space-y-2 flex flex-col items-center md:items-start text-center md:text-left order-2 lg:order-1 max-w-full flex-shrink-0">
             <motion.h1 
               className="font-bold leading-none text-balance text-5xl md:text-[6rem]"
               style={{ willChange: 'opacity, transform' }}
