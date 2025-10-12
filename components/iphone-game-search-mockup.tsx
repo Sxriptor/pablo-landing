@@ -100,41 +100,41 @@ export function IPhoneGameSearchMockup() {
             </div>
 
             {/* Game Cards List */}
-            <div className="absolute top-44 left-0 right-0 px-4 space-y-3">
+            <div className="absolute top-40 left-0 right-0 px-3 space-y-1.5">
               {mockGames.map((game, idx) => (
                 <motion.div
                   key={idx}
-                  className="backdrop-blur-xl bg-white/10 rounded-xl border border-white/20 p-3 shadow-lg"
+                  className="backdrop-blur-xl bg-white/10 rounded-lg border border-white/20 p-2 shadow-lg relative"
                   initial={{ opacity: 0, y: 20 }}
                   whileInView={{ opacity: 1, y: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: 0.4 + idx * 0.1 }}
                 >
-                  <div className="flex items-start gap-3">
+                  <div className="flex items-start gap-2">
                     {/* Sport icon */}
-                    <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-2xl flex-shrink-0">
+                    <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center text-base flex-shrink-0">
                       {game.sport}
                     </div>
                     
                     {/* Game info */}
                     <div className="flex-1 min-w-0">
-                      <div className="flex items-start justify-between gap-2 mb-2">
-                        <h3 className="text-white font-bold text-sm">{game.name}</h3>
-                        <span className="text-emerald-400 text-xs font-semibold whitespace-nowrap">{game.distance}</span>
+                      <div className="flex items-start justify-between gap-1 mb-1">
+                        <h3 className="text-white font-bold text-[10px] leading-tight truncate">{game.name}</h3>
+                        <span className="text-emerald-400 text-[9px] font-semibold whitespace-nowrap">{game.distance}</span>
                       </div>
                       
-                      <div className="space-y-1">
-                        <div className="flex items-center gap-1.5 text-white/70 text-xs">
-                          <MapPin className="w-3 h-3" />
-                          <span>{game.location}</span>
+                      <div className="space-y-0.5">
+                        <div className="flex items-center gap-1 text-white/70 text-[9px]">
+                          <MapPin className="w-2 h-2 flex-shrink-0" />
+                          <span className="truncate">{game.location}</span>
                         </div>
-                        <div className="flex items-center gap-3">
-                          <div className="flex items-center gap-1.5 text-white/70 text-xs">
-                            <Clock className="w-3 h-3" />
-                            <span>{game.time}</span>
+                        <div className="flex items-center gap-2">
+                          <div className="flex items-center gap-0.5 text-white/70 text-[9px]">
+                            <Clock className="w-2 h-2 flex-shrink-0" />
+                            <span className="truncate">{game.time}</span>
                           </div>
-                          <div className="flex items-center gap-1.5 text-white/70 text-xs">
-                            <Users className="w-3 h-3" />
+                          <div className="flex items-center gap-0.5 text-white/70 text-[9px]">
+                            <Users className="w-2 h-2 flex-shrink-0" />
                             <span>{game.players}</span>
                           </div>
                         </div>
@@ -143,7 +143,7 @@ export function IPhoneGameSearchMockup() {
                       {/* Action button */}
                       {idx === 0 && (
                         <motion.button
-                          className="mt-2 w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-xs font-bold py-1.5 rounded-lg"
+                          className="mt-1 w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white text-[9px] font-bold py-1 rounded-md"
                           initial={{ scale: 0.9, opacity: 0 }}
                           whileInView={{ scale: 1, opacity: 1 }}
                           viewport={{ once: true }}
@@ -159,7 +159,7 @@ export function IPhoneGameSearchMockup() {
                   {/* Open badge for first game */}
                   {idx === 0 && (
                     <motion.div 
-                      className="absolute top-2 right-2 bg-emerald-500 text-white text-[9px] font-bold px-2 py-0.5 rounded-full"
+                      className="absolute top-1.5 right-1.5 bg-emerald-500 text-white text-[8px] font-bold px-1.5 py-0.5 rounded-full"
                       initial={{ scale: 0 }}
                       whileInView={{ scale: 1 }}
                       viewport={{ once: true }}
