@@ -6,7 +6,7 @@ import { motion } from "framer-motion"
 
 export function HeroSection() {
   return (
-    <section className="relative pt-16 pb-2 sm:pt-20 sm:pb-12 lg:pt-12 lg:pb-20 px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 2xl:px-16 overflow-x-hidden min-h-screen flex items-center sm:items-center lg:items-end" style={{ transform: 'translateY(-2vh)' }}>
+    <section className="relative pt-16 pb-0 sm:pt-20 sm:pb-12 lg:pt-12 lg:pb-20 px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 2xl:px-16 overflow-x-hidden min-h-screen flex items-center sm:items-center lg:items-end" style={{ transform: 'translateY(-4vh)' }}>
       <style jsx>{`
         @media (min-width: 1024px) {
           section {
@@ -47,11 +47,11 @@ export function HeroSection() {
           scale: { duration: 1.2 }
         }}
       />
-      {/* Background gradient overlay - fade to black at bottom */}
+      {/* Background gradient overlay - seamless transition to next section */}
       <motion.div 
         className="absolute inset-0" 
         style={{
-          background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.5) 50%, rgba(0, 0, 0, 1) 100%)'
+          background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.3) 70%, rgba(5, 10, 15, 1) 100%)'
         }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -272,7 +272,7 @@ export function HeroSection() {
           </div>
 
           {/* Phone mockups on mobile/tablet only - Better responsive scaling */}
-          <div className="lg:hidden flex justify-center items-center scale-[0.6] xs:scale-[0.65] sm:scale-[0.75] md:scale-[0.85] origin-center order-1 mt-2 sm:mt-0" style={{ transform: 'translateY(-1.5vh)' }}>
+          <div className="lg:hidden flex justify-center items-center scale-[0.6] xs:scale-[0.65] sm:scale-[0.75] md:scale-[0.85] origin-center order-1 mt-2 sm:mt-0" style={{ transform: 'translateY(-3.5vh)' }}>
             <PhoneMockupTriple />
           </div>
         </div>

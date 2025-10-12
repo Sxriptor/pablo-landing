@@ -2,100 +2,73 @@
 
 import { Users, MapPin, Trophy, Calendar, TrendingUp, Heart } from "lucide-react"
 import { motion, useInView, useMotionValue, useSpring } from "framer-motion"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 
 function CountUpAnimation({ value }: { value: string }) {
   const nodeRef = useRef<HTMLDivElement>(null)
-  const isInView = useInView(nodeRef, { once: true, amount: 0.5 })
+  const isInView = useInView(nodeRef, { once: true, amount: 0.3 })
+  const [displayValue, setDisplayValue] = useState(value) // Show actual value immediately
   const motionValue = useMotionValue(0)
-  const springValue = useSpring(motionValue, { 
-    damping: 30,
-    stiffness: 50,
-    duration: 2000
+  const springValue = useSpring(motionValue, {
+    damping: 25,
+    stiffness: 40
   })
-  const displayRef = useRef<HTMLDivElement>(null)
-  const rafRef = useRef<number | null>(null)
 
   useEffect(() => {
     if (isInView) {
-      // Parse the numeric value
       let target = 0
-      let suffix = ""
-      let prefix = ""
-      
-      // Handle different formats
+
+      // Parse different value formats
       if (value.includes("/")) {
         // Rating format like "4.9/5"
-        const parts = value.split("/")
-        target = parseFloat(parts[0])
-        suffix = "/" + parts[1]
+        target = parseFloat(value.split("/")[0])
+      } else if (value.includes(",")) {
+        // Comma-separated numbers like "5,000+"
+        const numericPart = value.replace(/[^\d]/g, "")
+        target = parseInt(numericPart, 10)
       } else {
-        // Remove commas and extract number
-        const matches = value.match(/([\d,\.]+)(.*)/)
-        if (matches) {
-          target = parseFloat(matches[1].replace(/,/g, ""))
-          suffix = matches[2]
-        }
+        // Simple numbers like "50+"
+        const numericPart = value.replace(/[^\d]/g, "")
+        target = parseInt(numericPart, 10)
       }
 
-      motionValue.set(target)
+      // Start animation from 0 to target
+      motionValue.set(0)
+      setTimeout(() => motionValue.set(target), 100)
     }
   }, [isInView, motionValue, value])
 
   useEffect(() => {
-    let lastUpdateTime = 0
-    const updateThrottle = 16 // ~60fps
-    
     const unsubscribe = springValue.on("change", (latest) => {
-      const now = Date.now()
-      if (now - lastUpdateTime < updateThrottle) return
-      lastUpdateTime = now
-      
-      // Use RAF for smooth updates
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current)
-      }
-      
-      rafRef.current = requestAnimationFrame(() => {
-        if (displayRef.current) {
-          let displayValue = ""
-          
-          // Format based on original value
-          if (value.includes("/")) {
-            // Rating format
-            const suffix = value.split("/")[1]
-            displayValue = latest.toFixed(1) + "/" + suffix
-          } else if (value.includes(",")) {
-            // Comma-separated numbers
-            const roundedValue = Math.floor(latest)
-            displayValue = roundedValue.toLocaleString()
-            // Add suffix (like "+")
-            const suffix = value.match(/[^\d,]+$/)?.[0] || ""
-            displayValue += suffix
-          } else {
-            // Simple numbers
-            const roundedValue = Math.floor(latest)
-            displayValue = roundedValue.toString()
-            const suffix = value.match(/[^\d]+$/)?.[0] || ""
-            displayValue += suffix
-          }
-          
-          displayRef.current.textContent = displayValue
+      if (isInView) {
+        let animatedValue = ""
+
+        if (value.includes("/")) {
+          // Rating format: show decimal
+          const suffix = "/" + value.split("/")[1]
+          animatedValue = latest.toFixed(1) + suffix
+        } else if (value.includes(",")) {
+          // Large numbers with commas
+          const roundedValue = Math.floor(latest)
+          animatedValue = roundedValue.toLocaleString()
+          if (value.includes("+")) animatedValue += "+"
+        } else {
+          // Simple numbers
+          const roundedValue = Math.floor(latest)
+          animatedValue = roundedValue.toString()
+          if (value.includes("+")) animatedValue += "+"
         }
-      })
+
+        setDisplayValue(animatedValue)
+      }
     })
 
-    return () => {
-      unsubscribe()
-      if (rafRef.current) {
-        cancelAnimationFrame(rafRef.current)
-      }
-    }
-  }, [springValue, value])
+    return unsubscribe
+  }, [springValue, value, isInView])
 
   return (
-    <div ref={nodeRef} style={{ willChange: 'contents' }}>
-      <div ref={displayRef} style={{ backfaceVisibility: 'hidden' }}>0</div>
+    <div ref={nodeRef}>
+      <div>{displayValue}</div>
     </div>
   )
 }
@@ -125,9 +98,9 @@ export function StatsSection() {
   ]
 
   return (
-    <section className="py-20 sm:py-32 lg:py-48 px-4 sm:px-6 lg:px-8" style={{ background: '#050a0f' }}>
+    <section className="pt-0 pb-20 sm:pb-32 lg:pb-48 px-4 sm:px-6 lg:px-8" style={{ background: '#050a0f' }}>
       <div className="container mx-auto max-w-7xl">
-        <motion.div 
+        <motion.div
           className="text-center mb-16 sm:mb-24 lg:mb-32"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -142,15 +115,15 @@ export function StatsSection() {
 
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-12 sm:mb-16">
           {stats.map((stat, index) => (
-            <motion.div 
-              key={index} 
+            <motion.div
+              key={index}
               className="flex flex-col items-center text-center space-y-3 sm:space-y-4"
               initial={{ opacity: 0, scale: 0.5, rotate: -10 }}
               whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
               viewport={{ once: false, amount: 0.3 }}
               style={{ willChange: 'transform, opacity', backfaceVisibility: 'hidden' }}
-              transition={{ 
-                duration: 0.5, 
+              transition={{
+                duration: 0.5,
                 delay: index * 0.1,
                 ease: "easeOut"
               }}
@@ -175,8 +148,8 @@ export function StatsSection() {
 
         {/* Community Highlights - Better responsive layout */}
         <div className="grid sm:grid-cols-2 gap-6 sm:gap-8 max-w-5xl mx-auto">
-          <motion.div 
-            className="text-center p-5 sm:p-6 rounded-lg" 
+          <motion.div
+            className="text-center p-5 sm:p-6 rounded-lg"
             style={{ background: 'rgba(69, 104, 130, 0.1)' }}
             initial={{ opacity: 0, x: -100 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -191,9 +164,9 @@ export function StatsSection() {
               Our community grows by 200+ new players every week, creating more opportunities to play and connect.
             </p>
           </motion.div>
-          
-          <motion.div 
-            className="text-center p-5 sm:p-6 rounded-lg" 
+
+          <motion.div
+            className="text-center p-5 sm:p-6 rounded-lg"
             style={{ background: 'rgba(69, 104, 130, 0.1)' }}
             initial={{ opacity: 0, x: 100 }}
             whileInView={{ opacity: 1, x: 0 }}
