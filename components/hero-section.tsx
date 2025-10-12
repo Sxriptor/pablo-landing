@@ -6,39 +6,7 @@ import { motion } from "framer-motion"
 
 export function HeroSection() {
   return (
-    <section className="relative pt-20 pb-4 sm:pt-20 sm:pb-12 lg:pt-12 lg:pb-20 px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 2xl:px-16 overflow-x-hidden min-h-screen flex items-center sm:items-center lg:items-end" style={{ transform: 'translateY(0)' }}>
-      <style jsx>{`
-        @media (max-width: 1023px) {
-          section {
-            min-height: 100vh;
-            min-height: 100dvh;
-            transform: translateY(0) !important;
-          }
-        }
-        @media (min-width: 1024px) {
-          section {
-            transform: none !important;
-          }
-        }
-        @media (min-width: 1280px) and (max-width: 1535px) {
-          .phone-container {
-            right: 8rem !important;
-            transform: translateY(-50%) scale(0.85) !important;
-          }
-        }
-        @media (min-width: 1536px) {
-          .phone-container {
-            right: 12rem !important;
-            transform: translateY(-50%) scale(0.95) !important;
-          }
-        }
-        @media (min-width: 1920px) {
-          .phone-container {
-            right: 16rem !important;
-            transform: translateY(-50%) scale(1) !important;
-          }
-        }
-      `}</style>
+    <section className="relative pt-24 pb-16 px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 2xl:px-16 min-h-screen flex items-end">
       {/* Background image */}
       <motion.div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -54,6 +22,7 @@ export function HeroSection() {
           scale: { duration: 1.2 }
         }}
       />
+      
       {/* Background gradient overlay - seamless transition to next section */}
       <motion.div 
         className="absolute inset-0" 
@@ -70,27 +39,24 @@ export function HeroSection() {
         }}
       />
 
-      {/* Phone mockups - positioned absolutely on desktop with responsive positioning */}
-      <div className="phone-container hidden lg:block absolute right-16 xl:right-24 2xl:right-32 top-1/2 -translate-y-1/2 z-20 scale-75 xl:scale-85 2xl:scale-100">
+      {/* Phone mockups - positioned absolutely on desktop with responsive positioning - moved slightly left */}
+      <div className="absolute right-32 top-1/2 -translate-y-1/2 z-20 scale-100">
         <PhoneMockupTriple />
       </div>
 
-      <div className="relative z-10 w-full h-full flex flex-col justify-center items-center lg:items-start pb-2 sm:pb-8 lg:pb-12">
-        <div className="w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-4 lg:gap-12 h-full">
-          {/* Phone mockups on mobile/tablet only - Optimized for mobile viewport */}
-          <div className="lg:hidden flex justify-center items-center scale-[0.65] xs:scale-[0.7] sm:scale-[0.75] md:scale-[0.85] order-1 flex-shrink-0">
-            <PhoneMockupTriple />
-          </div>
+      <div className="absolute bottom-0 left-0 z-10 w-full pb-12 pl-20">
+        <div className="w-full max-w-2xl flex flex-col items-start justify-start gap-2">
           
-          <div className="space-y-2 sm:space-y-4 lg:space-y-6 flex flex-col justify-center items-center lg:items-start text-center lg:text-left order-2 lg:order-1 max-w-full lg:max-w-[60%] xl:max-w-[55%] 2xl:max-w-[50%] flex-shrink-0">
+          <div className="space-y-2 flex flex-col items-start text-left order-2 lg:order-1 max-w-full flex-shrink-0">
             <motion.h1 
-              className="text-3xl xs:text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight text-balance"
+              className="text-8xl font-bold leading-none text-balance"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
               style={{ willChange: 'opacity, transform' }}
             >
               <motion.span 
+                className="whitespace-nowrap"
                 style={{ 
                   color: '#456882',
                   display: 'inline-block',
@@ -108,11 +74,11 @@ export function HeroSection() {
                   ease: "easeInOut"
                 }}
               >
-                Play Sports
+                Play Sports, 
               </motion.span>
               <br />
               <motion.span
-                className="text-xl xs:text-2xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl inline-block"
+                className="text-6xl block"
                 style={{ 
                   color: 'white',
                   willChange: 'transform',
@@ -129,11 +95,11 @@ export function HeroSection() {
                   ease: "easeInOut"
                 }}
               >
-                Anytime, Anywhere
+                Anytime,<br />Anywhere.
               </motion.span>
             </motion.h1>
             <motion.p 
-              className="text-xs sm:text-base lg:text-lg text-white max-w-xs sm:max-w-md text-pretty px-2 lg:px-0 leading-tight"
+              className="text-xl text-white max-w-lg text-pretty leading-tight"
               style={{ willChange: 'transform, opacity', backfaceVisibility: 'hidden' }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ 
@@ -154,7 +120,7 @@ export function HeroSection() {
               Find a game near you, connect with players, and experience sports like never before.
             </motion.p>
             <motion.div 
-              className="flex flex-wrap gap-1 sm:gap-3 justify-center lg:justify-start px-1 lg:px-0 scale-90 sm:scale-100"
+              className="flex flex-wrap gap-3 justify-start scale-100"
               style={{ willChange: 'transform, opacity', backfaceVisibility: 'hidden' }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ 
@@ -204,7 +170,7 @@ export function HeroSection() {
               </a>
             </motion.div>
             <motion.div 
-              className="flex items-center gap-1.5 sm:gap-4 pt-0.5 sm:pt-2 justify-center lg:justify-start scale-90 sm:scale-100"
+              className="flex items-center gap-4 pt-2 justify-start scale-100"
               style={{ willChange: 'transform, opacity', backfaceVisibility: 'hidden' }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ 

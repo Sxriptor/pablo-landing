@@ -98,7 +98,7 @@ export function StatsSection() {
   ]
 
   return (
-    <section className="-mt-20 pt-20 pb-20 sm:pb-32 lg:pb-48 px-4 sm:px-6 lg:px-8" style={{ background: '#050a0f' }}>
+    <section className="py-20 sm:py-32 lg:py-48 px-4 sm:px-6 lg:px-8" style={{ background: '#050a0f' }}>
       <div className="container mx-auto max-w-7xl">
         <motion.div
           className="text-center mb-16 sm:mb-24 lg:mb-32"
