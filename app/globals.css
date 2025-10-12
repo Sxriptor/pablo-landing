@@ -208,6 +208,191 @@ img, video {
   }
 }
 
+/* Blue glow effect for active navigation links */
+.active-nav-glow {
+  color: #456882;
+  text-shadow: 0 0 10px rgba(69, 104, 130, 0.8), 0 0 20px rgba(69, 104, 130, 0.6), 0 0 30px rgba(69, 104, 130, 0.4), 1px 1px 3px rgba(0, 0, 0, 0.8);
+  font-weight: 600;
+}
+
+/* Mobile-first responsive typography */
+@layer utilities {
+  .text-responsive-xs {
+    font-size: clamp(0.75rem, 2.5vw, 0.875rem);
+  }
+  
+  .text-responsive-sm {
+    font-size: clamp(0.875rem, 3vw, 1rem);
+  }
+  
+  .text-responsive-base {
+    font-size: clamp(1rem, 3.5vw, 1.125rem);
+  }
+  
+  .text-responsive-lg {
+    font-size: clamp(1.125rem, 4vw, 1.25rem);
+  }
+  
+  .text-responsive-xl {
+    font-size: clamp(1.25rem, 4.5vw, 1.5rem);
+  }
+  
+  .text-responsive-2xl {
+    font-size: clamp(1.5rem, 5vw, 2rem);
+  }
+  
+  .text-responsive-3xl {
+    font-size: clamp(1.875rem, 6vw, 2.5rem);
+  }
+  
+  .text-responsive-4xl {
+    font-size: clamp(2.25rem, 7vw, 3rem);
+  }
+  
+  .text-responsive-5xl {
+    font-size: clamp(2.5rem, 8vw, 4rem);
+  }
+  
+  .text-responsive-6xl {
+    font-size: clamp(3rem, 10vw, 5rem);
+  }
+  
+  .text-responsive-hero {
+    font-size: clamp(2rem, 8vw, 6rem);
+    line-height: 1.1;
+  }
+}
+
+/* Mobile-optimized spacing */
+@layer utilities {
+  .spacing-mobile {
+    padding: clamp(1rem, 4vw, 2rem);
+  }
+  
+  .spacing-mobile-x {
+    padding-left: clamp(1rem, 4vw, 2rem);
+    padding-right: clamp(1rem, 4vw, 2rem);
+  }
+  
+  .spacing-mobile-y {
+    padding-top: clamp(1rem, 4vw, 2rem);
+    padding-bottom: clamp(1rem, 4vw, 2rem);
+  }
+  
+  .gap-responsive {
+    gap: clamp(0.5rem, 2vw, 1.5rem);
+  }
+  
+  .gap-responsive-lg {
+    gap: clamp(1rem, 3vw, 2rem);
+  }
+}
+
+/* Touch-friendly interactive elements */
+@layer utilities {
+  .touch-target {
+    min-height: 44px;
+    min-width: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .touch-padding {
+    padding: 0.75rem 1rem;
+  }
+  
+  @media (max-width: 768px) {
+    .touch-padding {
+      padding: 1rem 1.25rem;
+    }
+  }
+}
+
+/* Mobile-specific optimizations */
+@media (max-width: 768px) {
+  /* Improve tap targets */
+  button, a, input, select, textarea {
+    min-height: 44px;
+  }
+  
+  /* Optimize form elements */
+  input, select, textarea {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  /* Better mobile scrolling */
+  .mobile-scroll {
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+  
+  /* Reduce motion on mobile for better performance */
+  .mobile-reduced-motion * {
+    animation-duration: 0.3s !important;
+    transition-duration: 0.2s !important;
+  }
+}
+
+/* Tablet optimizations */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .tablet-optimized {
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+  }
+}
+
+/* Large screen optimizations */
+@media (min-width: 1920px) {
+  .large-screen-container {
+    max-width: 1920px;
+    margin: 0 auto;
+  }
+}
+
+/* Ultra-wide screen optimizations */
+@media (min-width: 2560px) {
+  .ultra-wide-container {
+    max-width: 2400px;
+    margin: 0 auto;
+  }
+}
+
+/* High DPI display optimizations */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+  .high-dpi-optimized {
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+  }
+}
+
+/* Landscape mobile optimizations */
+@media (max-height: 500px) and (orientation: landscape) {
+  .landscape-mobile {
+    padding-top: 0.5rem;
+    padding-bottom: 0.5rem;
+  }
+  
+  .landscape-mobile .hero-section {
+    min-height: 80vh;
+  }
+}
+
+/* Safe area insets for notched devices */
+@supports (padding: max(0px)) {
+  .safe-area-inset {
+    padding-left: max(1rem, env(safe-area-inset-left));
+    padding-right: max(1rem, env(safe-area-inset-right));
+  }
+  
+  .safe-area-top {
+    padding-top: max(1rem, env(safe-area-inset-top));
+  }
+  
+  .safe-area-bottom {
+    padding-bottom: max(1rem, env(safe-area-inset-bottom));
+  }
+}
+
 /* Reduce motion for users who prefer it */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -217,5 +402,11 @@ img, video {
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+  
+  /* Disable glow effect for reduced motion */
+  .active-nav-glow {
+    color: #456882 !important;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;
   }
 }

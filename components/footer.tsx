@@ -7,18 +7,13 @@ export function Footer() {
           <div className="lg:col-span-7 space-y-8">
             {/* Brand Block */}
             <div className="space-y-3">
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: '#456882' }}>
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    className="w-5 h-5 text-white"
-                  >
-                    <circle cx="12" cy="12" r="10" />
-                    <path d="M12 2v20M2 12h20" />
-                  </svg>
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 flex-shrink-0">
+                  <img
+                    src="/playcirclelogonew.png"
+                    alt="PlayCircle Logo"
+                    className="w-full h-full object-contain"
+                  />
                 </div>
                 <span className="text-xl text-white font-bold">PlayCircle</span>
               </div>
