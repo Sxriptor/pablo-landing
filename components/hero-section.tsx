@@ -40,11 +40,11 @@ export function HeroSection() {
       />
 
       {/* Phone mockups - positioned absolutely on desktop with responsive positioning - moved slightly left */}
-      <div className="relative md:absolute scale-[0.6] sm:scale-[0.7] md:scale-125 md:right-80 md:top-1/2 md:-translate-y-1/2 z-20 top-0 mt-8 md:mt-0">
+      <div className="relative md:absolute scale-[0.6] sm:scale-[0.7] md:scale-125 md:right-80 md:top-1/2 md:-translate-y-1/2 z-20 top-0 mt-2 md:mt-0">
         <PhoneMockupTriple />
       </div>
 
-      <div className="relative md:absolute bottom-0 left-0 z-10 w-full pb-12 pl-4 md:pl-20 mt-auto">
+      <div className="relative md:absolute bottom-0 left-0 z-10 w-full pb-4 md:pb-12 pl-4 md:pl-20 mt-4 md:mt-auto">
         <div className="w-full max-w-2xl flex flex-col items-center md:items-start justify-start gap-2">
           
           <div className="space-y-2 flex flex-col items-center md:items-start text-center md:text-left order-2 lg:order-1 max-w-full flex-shrink-0">
