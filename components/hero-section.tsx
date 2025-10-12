@@ -94,7 +94,8 @@ export function HeroSection() {
                   ease: "easeInOut"
                 }}
               >
-                Anytime,<br />Anywhere.
+                Anytime,<br />
+                <span className="block mt-4">Anywhere.</span>
               </motion.span>
             </motion.h1>
             <motion.p 
