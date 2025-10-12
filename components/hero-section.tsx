@@ -280,7 +280,7 @@ export function HeroSection() {
           </div>
 
           {/* Phone mockups on mobile/tablet only - Optimized for mobile viewport */}
-          <div className="lg:hidden flex justify-center items-start scale-[0.45] xs:scale-[0.5] sm:scale-[0.65] md:scale-[0.75] origin-top order-1 -mt-4 sm:mt-0 flex-shrink-0">
+          <div className="lg:hidden flex justify-center items-start scale-[0.65] xs:scale-[0.7] sm:scale-[0.75] md:scale-[0.85] origin-top order-1 -mt-2 sm:mt-0 flex-shrink-0">
             <PhoneMockupTriple />
           </div>
         </div>
