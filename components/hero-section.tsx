@@ -6,8 +6,15 @@ import { motion } from "framer-motion"
 
 export function HeroSection() {
   return (
-    <section className="relative pt-16 pb-0 sm:pt-20 sm:pb-12 lg:pt-12 lg:pb-20 px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 2xl:px-16 overflow-x-hidden min-h-screen flex items-center sm:items-center lg:items-end" style={{ transform: 'translateY(-4vh)' }}>
+    <section className="relative pt-20 pb-4 sm:pt-20 sm:pb-12 lg:pt-12 lg:pb-20 px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 2xl:px-16 overflow-x-hidden min-h-screen flex items-center sm:items-center lg:items-end" style={{ transform: 'translateY(0)' }}>
       <style jsx>{`
+        @media (max-width: 1023px) {
+          section {
+            min-height: 100vh;
+            min-height: 100dvh;
+            transform: translateY(0) !important;
+          }
+        }
         @media (min-width: 1024px) {
           section {
             transform: none !important;
@@ -68,11 +75,11 @@ export function HeroSection() {
         <PhoneMockupTriple />
       </div>
 
-      <div className="relative z-10 w-full pb-2 sm:pb-8 lg:pb-12 mt-0 sm:mt-0 lg:mt-0">
-        <div className="grid lg:grid-cols-1 gap-3 lg:gap-12 items-start lg:items-end">
-          <div className="space-y-1 sm:space-y-4 lg:space-y-6 flex flex-col justify-start sm:justify-end items-center lg:items-start text-center lg:text-left order-2 lg:order-1 max-w-full lg:max-w-[60%] xl:max-w-[55%] 2xl:max-w-[50%]">
+      <div className="relative z-10 w-full h-full flex flex-col justify-between pb-2 sm:pb-8 lg:pb-12">
+        <div className="grid lg:grid-cols-1 gap-2 lg:gap-12 items-start lg:items-end h-full">
+          <div className="space-y-1 sm:space-y-4 lg:space-y-6 flex flex-col justify-center items-center lg:items-start text-center lg:text-left order-2 lg:order-1 max-w-full lg:max-w-[60%] xl:max-w-[55%] 2xl:max-w-[50%] flex-shrink-0">
             <motion.h1 
-              className="text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-none text-balance"
+              className="text-3xl xs:text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight text-balance"
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
@@ -100,7 +107,7 @@ export function HeroSection() {
               </motion.span>
               <br />
               <motion.span
-                className="text-2xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl inline-block"
+                className="text-xl xs:text-2xl sm:text-4xl md:text-5xl lg:text-7xl xl:text-8xl inline-block"
                 style={{ 
                   color: 'white',
                   willChange: 'transform',
@@ -121,7 +128,7 @@ export function HeroSection() {
               </motion.span>
             </motion.h1>
             <motion.p 
-              className="text-xs sm:text-base lg:text-lg text-white max-w-md text-pretty px-4 lg:px-0 leading-tight"
+              className="text-xs sm:text-base lg:text-lg text-white max-w-xs sm:max-w-md text-pretty px-2 lg:px-0 leading-tight"
               style={{ willChange: 'transform, opacity', backfaceVisibility: 'hidden' }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ 
@@ -142,7 +149,7 @@ export function HeroSection() {
               Find a game near you, connect with players, and experience sports like never before.
             </motion.p>
             <motion.div 
-              className="flex flex-wrap gap-1.5 sm:gap-3 justify-center lg:justify-start px-2 lg:px-0"
+              className="flex flex-wrap gap-1 sm:gap-3 justify-center lg:justify-start px-1 lg:px-0 scale-90 sm:scale-100"
               style={{ willChange: 'transform, opacity', backfaceVisibility: 'hidden' }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ 
@@ -192,7 +199,7 @@ export function HeroSection() {
               </a>
             </motion.div>
             <motion.div 
-              className="flex items-center gap-2 sm:gap-4 pt-0.5 sm:pt-2 justify-center lg:justify-start"
+              className="flex items-center gap-1.5 sm:gap-4 pt-0.5 sm:pt-2 justify-center lg:justify-start scale-90 sm:scale-100"
               style={{ willChange: 'transform, opacity', backfaceVisibility: 'hidden' }}
               initial={{ opacity: 0, y: 20 }}
               animate={{ 
@@ -272,8 +279,8 @@ export function HeroSection() {
             </motion.div>
           </div>
 
-          {/* Phone mockups on mobile/tablet only - Better responsive scaling */}
-          <div className="lg:hidden flex justify-center items-center scale-[0.6] xs:scale-[0.65] sm:scale-[0.75] md:scale-[0.85] origin-center order-1 mt-2 sm:mt-0" style={{ transform: 'translateY(-3.5vh)' }}>
+          {/* Phone mockups on mobile/tablet only - Optimized for mobile viewport */}
+          <div className="lg:hidden flex justify-center items-start scale-[0.45] xs:scale-[0.5] sm:scale-[0.65] md:scale-[0.75] origin-top order-1 -mt-4 sm:mt-0 flex-shrink-0">
             <PhoneMockupTriple />
           </div>
         </div>
