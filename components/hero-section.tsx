@@ -1,7 +1,7 @@
 "use client"
 
 import { Star } from "lucide-react"
-import { PhoneMockupTriple } from "./phone-mockup-dual"
+import { HeroMockups } from "./hero-mockups"
 import { motion } from "framer-motion"
 
 export function HeroSection() {
@@ -41,7 +41,7 @@ export function HeroSection() {
 
       {/* Phone mockups - positioned absolutely on desktop with responsive positioning - moved slightly left */}
       <div className="relative md:absolute scale-[0.55] sm:scale-[0.65] md:scale-125 md:right-80 md:top-1/2 md:-translate-y-1/2 z-20 top-0 -mt-2 md:mt-0">
-        <PhoneMockupTriple />
+        <HeroMockups />
       </div>
 
       <div className="relative md:absolute bottom-0 left-0 z-10 w-full pb-0 md:pb-12 pl-4 md:pl-20 -mt-4 md:mt-auto">
