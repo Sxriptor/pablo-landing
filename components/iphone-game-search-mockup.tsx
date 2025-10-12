@@ -32,8 +32,8 @@ export function IPhoneGameSearchMockup() {
           }}
           style={{ transformOrigin: 'center center' }}
         >
-        {/* Phone frame - top half */}
-        <div className="relative w-[280px] h-[320px] rounded-t-[3rem] bg-black/50 backdrop-blur-xl border border-white/20 border-b-0 shadow-2xl p-3 overflow-hidden">
+        {/* Phone frame - top half - Responsive sizing */}
+        <div className="relative w-[240px] h-[280px] sm:w-[260px] sm:h-[300px] md:w-[280px] md:h-[320px] lg:w-[300px] lg:h-[340px] rounded-t-[2.5rem] lg:rounded-t-[3rem] bg-black/50 backdrop-blur-xl border border-white/20 border-b-0 shadow-2xl p-2 lg:p-3 overflow-hidden">
           {/* Inner screen */}
           <div className="w-full h-full rounded-t-[2.5rem] bg-gradient-to-b from-slate-900 to-slate-800 overflow-hidden relative">
             {/* Status bar */}

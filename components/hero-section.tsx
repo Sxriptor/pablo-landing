@@ -6,11 +6,29 @@ import { motion } from "framer-motion"
 
 export function HeroSection() {
   return (
-    <section className="relative pt-16 pb-2 sm:pt-20 sm:pb-12 lg:pt-12 lg:pb-20 px-2 lg:px-12 overflow-x-hidden min-h-screen flex items-center sm:items-center lg:items-end" style={{ transform: 'translateY(-2vh)' }}>
+    <section className="relative pt-16 pb-2 sm:pt-20 sm:pb-12 lg:pt-12 lg:pb-20 px-2 sm:px-4 md:px-6 lg:px-8 xl:px-12 2xl:px-16 overflow-x-hidden min-h-screen flex items-center sm:items-center lg:items-end" style={{ transform: 'translateY(-2vh)' }}>
       <style jsx>{`
         @media (min-width: 1024px) {
           section {
             transform: none !important;
+          }
+        }
+        @media (min-width: 1280px) and (max-width: 1535px) {
+          .phone-container {
+            right: 8rem !important;
+            transform: translateY(-50%) scale(0.85) !important;
+          }
+        }
+        @media (min-width: 1536px) {
+          .phone-container {
+            right: 12rem !important;
+            transform: translateY(-50%) scale(0.95) !important;
+          }
+        }
+        @media (min-width: 1920px) {
+          .phone-container {
+            right: 16rem !important;
+            transform: translateY(-50%) scale(1) !important;
           }
         }
       `}</style>
@@ -44,14 +62,14 @@ export function HeroSection() {
         }}
       />
 
-      {/* Phone mockups - positioned absolutely on desktop */}
-      <div className="hidden lg:block absolute right-32 top-1/2 -translate-y-1/2 z-20">
+      {/* Phone mockups - positioned absolutely on desktop with responsive positioning */}
+      <div className="phone-container hidden lg:block absolute right-16 xl:right-24 2xl:right-32 top-1/2 -translate-y-1/2 z-20 scale-75 xl:scale-85 2xl:scale-100">
         <PhoneMockupTriple />
       </div>
 
       <div className="relative z-10 w-full pb-2 sm:pb-8 lg:pb-12 mt-0 sm:mt-0 lg:mt-0">
         <div className="grid lg:grid-cols-1 gap-3 lg:gap-12 items-start lg:items-end">
-          <div className="space-y-1 sm:space-y-4 lg:space-y-6 flex flex-col justify-start sm:justify-end items-center lg:items-start text-center lg:text-left order-2 lg:order-1">
+          <div className="space-y-1 sm:space-y-4 lg:space-y-6 flex flex-col justify-start sm:justify-end items-center lg:items-start text-center lg:text-left order-2 lg:order-1 max-w-full lg:max-w-[60%] xl:max-w-[55%] 2xl:max-w-[50%]">
             <motion.h1 
               className="text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-none text-balance"
               initial={{ opacity: 0, y: 20 }}
@@ -253,8 +271,8 @@ export function HeroSection() {
             </motion.div>
           </div>
 
-          {/* Phone mockups on mobile/tablet only */}
-          <div className="lg:hidden flex justify-center items-center scale-[0.715] sm:scale-[0.825] origin-center order-1 mt-4 sm:mt-0" style={{ transform: 'translateY(-2.5vh)' }}>
+          {/* Phone mockups on mobile/tablet only - Better responsive scaling */}
+          <div className="lg:hidden flex justify-center items-center scale-[0.6] xs:scale-[0.65] sm:scale-[0.75] md:scale-[0.85] origin-center order-1 mt-2 sm:mt-0" style={{ transform: 'translateY(-1.5vh)' }}>
             <PhoneMockupTriple />
           </div>
         </div>

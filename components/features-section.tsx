@@ -38,26 +38,26 @@ export function FeaturesSection() {
   ]
 
   return (
-    <section className="py-20 px-4" style={{ background: '#0a0f14' }}>
-      <div className="container mx-auto">
+    <section className="py-16 sm:py-20 px-4 sm:px-6 lg:px-8" style={{ background: '#0a0f14' }}>
+      <div className="container mx-auto max-w-7xl">
         <motion.div 
-          className="text-center mb-16"
+          className="text-center mb-12 sm:mb-16"
           initial={{ opacity: 0, y: -50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.3 }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-4xl lg:text-5xl font-bold mb-4">Built for Players, By Players</h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4">Built for Players, By Players</h2>
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
             Everything you need to find, book, and enjoy your favorite sports
           </p>
         </motion.div>
 
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
           {features.map((feature, index) => (
             <motion.div
               key={index}
-              className="p-6 rounded-xl transition-all hover:scale-105"
+              className="p-5 sm:p-6 rounded-xl transition-all hover:scale-105"
               style={{
                 background: 'rgba(13, 18, 22, 0.4)',
                 border: '1px solid rgba(69, 104, 130, 0.2)'
@@ -72,13 +72,13 @@ export function FeaturesSection() {
               }}
             >
               <div
-                className="w-12 h-12 rounded-lg flex items-center justify-center mb-4"
+                className="w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center mb-3 sm:mb-4"
                 style={{ background: 'rgba(69, 104, 130, 0.2)' }}
               >
-                <feature.icon className="w-6 h-6" style={{ color: '#456882' }} />
+                <feature.icon className="w-5 h-5 sm:w-6 sm:h-6" style={{ color: '#456882' }} />
               </div>
-              <h3 className="text-xl font-bold mb-2">{feature.title}</h3>
-              <p className="text-muted-foreground text-sm">{feature.description}</p>
+              <h3 className="text-lg sm:text-xl font-bold mb-2">{feature.title}</h3>
+              <p className="text-muted-foreground text-sm sm:text-base">{feature.description}</p>
             </motion.div>
           ))}
         </div>

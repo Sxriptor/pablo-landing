@@ -51,17 +51,17 @@ export function PhoneMockupTriple() {
   }, [])
 
   return (
-    <div className="relative w-full h-full flex items-center justify-center gap-0 sm:gap-2 lg:gap-4">
-      {/* Floating glass card background elements */}
+    <div className="relative w-full h-full flex items-center justify-center gap-0 sm:gap-1 md:gap-2 lg:gap-3 xl:gap-4 2xl:gap-6">
+      {/* Floating glass card background elements - responsive positioning */}
       <motion.div
-        className="absolute top-1/4 -left-20 w-32 h-32 rounded-3xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 backdrop-blur-xl border border-white/10"
-        initial={{ opacity: 0, scale: 0.5, x: -80, y: -50 }}
+        className="absolute top-1/4 -left-8 sm:-left-12 md:-left-16 lg:-left-20 xl:-left-24 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-32 lg:h-32 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 backdrop-blur-xl border border-white/10"
+        initial={{ opacity: 0, scale: 0.5, x: -40, y: -25 }}
         animate={{
           opacity: 1,
           scale: 1,
           x: 0,
-          y: [0, 20, 0],
-          rotate: [0, 5, 0],
+          y: [0, 10, 0],
+          rotate: [0, 3, 0],
         }}
         style={{ willChange: 'transform, opacity', backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}
         transition={{
@@ -73,14 +73,14 @@ export function PhoneMockupTriple() {
         }}
       />
       <motion.div
-        className="absolute bottom-1/4 -right-20 w-40 h-40 rounded-3xl bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 backdrop-blur-xl border border-white/10"
-        initial={{ opacity: 0, scale: 0.5, x: 80, y: 50 }}
+        className="absolute bottom-1/4 -right-8 sm:-right-12 md:-right-16 lg:-right-20 xl:-right-24 w-20 h-20 sm:w-24 sm:h-24 md:w-32 md:h-32 lg:w-40 lg:h-40 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 backdrop-blur-xl border border-white/10"
+        initial={{ opacity: 0, scale: 0.5, x: 40, y: 25 }}
         animate={{
           opacity: 1,
           scale: 1,
           x: 0,
-          y: [0, -25, 0],
-          rotate: [0, -5, 0],
+          y: [0, -12, 0],
+          rotate: [0, -3, 0],
         }}
         style={{ willChange: 'transform, opacity', backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}
         transition={{
@@ -92,13 +92,13 @@ export function PhoneMockupTriple() {
         }}
       />
       <motion.div
-        className="absolute top-1/3 left-1/2 -translate-x-1/2 w-24 h-24 rounded-3xl bg-gradient-to-br from-pink-500/20 to-orange-500/20 backdrop-blur-xl border border-white/10 -z-10"
-        initial={{ opacity: 0, scale: 0.5, y: -50 }}
+        className="absolute top-1/3 left-1/2 -translate-x-1/2 w-12 h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-pink-500/20 to-orange-500/20 backdrop-blur-xl border border-white/10 -z-10"
+        initial={{ opacity: 0, scale: 0.5, y: -25 }}
         animate={{
           opacity: 1,
           scale: 1,
-          y: [0, 15, 0],
-          rotate: [0, 10, 0],
+          y: [0, 8, 0],
+          rotate: [0, 5, 0],
         }}
         style={{ willChange: 'transform, opacity', backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}
         transition={{
@@ -109,18 +109,18 @@ export function PhoneMockupTriple() {
         }}
       />
 
-      {/* First Phone - Find Games Screen */}
+      {/* First Phone - Find Games Screen - Responsive sizing */}
       <motion.div
         className="relative z-20 hidden sm:block"
         initial={{ opacity: 0, x: -50, rotate: -8 }}
         animate={{ opacity: 1, x: 0, rotate: -8 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
-        style={{ transform: 'translateY(-30px) rotate(-8deg)', willChange: 'transform, opacity', backfaceVisibility: 'hidden' }}
+        style={{ transform: 'translateY(-15px) rotate(-8deg)', willChange: 'transform, opacity', backfaceVisibility: 'hidden' }}
       >
         <motion.div 
-          className="relative w-[240px] h-[500px] sm:w-[280px] sm:h-[560px] rounded-[3rem] bg-black/40 backdrop-blur-2xl border border-white/20 shadow-2xl p-3"
+          className="relative w-[180px] h-[380px] sm:w-[200px] sm:h-[420px] md:w-[220px] md:h-[460px] lg:w-[240px] lg:h-[500px] xl:w-[260px] xl:h-[540px] 2xl:w-[280px] 2xl:h-[580px] rounded-[2.5rem] lg:rounded-[3rem] bg-black/40 backdrop-blur-2xl border border-white/20 shadow-2xl p-2 lg:p-3"
           animate={{
-            y: [0, -10, 0],
+            y: [0, -6, 0],
           }}
           style={{ willChange: 'transform', backfaceVisibility: 'hidden' }}
           transition={{
@@ -261,19 +261,19 @@ export function PhoneMockupTriple() {
         <div className="absolute inset-0 -z-10 bg-gradient-to-br from-blue-500/30 via-purple-500/30 to-emerald-500/30 blur-3xl rounded-full scale-110" />
       </motion.div>
 
-      {/* Second Phone - Profile/Stats Screen (center, visible on all screens) */}
+      {/* Second Phone - Profile/Stats Screen (center, visible on all screens) - Responsive sizing */}
       <motion.div
         className="relative z-30"
         initial={{ opacity: 0, y: 50, scale: 0.95 }}
         animate={{ opacity: 1, y: 0, scale: 1 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.1 }}
-        style={{ transform: 'translateY(0px) scale(1.05)', willChange: 'transform, opacity', backfaceVisibility: 'hidden' }}
+        style={{ transform: 'translateY(0px) scale(1.02)', willChange: 'transform, opacity', backfaceVisibility: 'hidden' }}
       >
         <motion.div 
-          className="relative w-[260px] h-[540px] sm:w-[300px] sm:h-[600px] rounded-[3rem] bg-black/40 backdrop-blur-2xl border border-white/20 shadow-2xl p-3"
+          className="relative w-[200px] h-[420px] sm:w-[240px] sm:h-[500px] md:w-[260px] md:h-[540px] lg:w-[280px] lg:h-[580px] xl:w-[300px] xl:h-[620px] 2xl:w-[320px] 2xl:h-[660px] rounded-[2.5rem] lg:rounded-[3rem] bg-black/40 backdrop-blur-2xl border border-white/20 shadow-2xl p-2 lg:p-3"
           animate={{
-            y: [0, -12, 0],
-            scale: [1.05, 1.08, 1.05],
+            y: [0, -8, 0],
+            scale: [1.02, 1.04, 1.02],
           }}
           style={{ willChange: 'transform', backfaceVisibility: 'hidden' }}
           transition={{
@@ -397,18 +397,18 @@ export function PhoneMockupTriple() {
         <div className="absolute inset-0 -z-10 bg-gradient-to-br from-purple-500/40 via-pink-500/40 to-orange-500/40 blur-3xl rounded-full scale-120" />
       </motion.div>
 
-      {/* Third Phone - Game Active Screen */}
+      {/* Third Phone - Game Active Screen - Responsive sizing */}
       <motion.div
         className="relative z-20 hidden sm:block"
         initial={{ opacity: 0, x: 50, rotate: 6 }}
         animate={{ opacity: 1, x: 0, rotate: 6 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}
-        style={{ transform: 'translateY(40px) rotate(6deg)', willChange: 'transform, opacity', backfaceVisibility: 'hidden' }}
+        style={{ transform: 'translateY(20px) rotate(6deg)', willChange: 'transform, opacity', backfaceVisibility: 'hidden' }}
       >
         <motion.div 
-          className="relative w-[240px] h-[500px] sm:w-[280px] sm:h-[560px] rounded-[3rem] bg-black/40 backdrop-blur-2xl border border-white/20 shadow-2xl p-3"
+          className="relative w-[180px] h-[380px] sm:w-[200px] sm:h-[420px] md:w-[220px] md:h-[460px] lg:w-[240px] lg:h-[500px] xl:w-[260px] xl:h-[540px] 2xl:w-[280px] 2xl:h-[580px] rounded-[2.5rem] lg:rounded-[3rem] bg-black/40 backdrop-blur-2xl border border-white/20 shadow-2xl p-2 lg:p-3"
           animate={{
-            y: [0, 8, 0],
+            y: [0, 4, 0],
           }}
           style={{ willChange: 'transform', backfaceVisibility: 'hidden' }}
           transition={{

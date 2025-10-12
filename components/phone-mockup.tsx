@@ -80,7 +80,7 @@ export function PhoneMockup() {
         }}
       />
 
-      {/* Main phone mockup */}
+      {/* Main phone mockup - Responsive sizing */}
       <motion.div
         className="relative z-10"
         initial={{ opacity: 0, y: 50 }}
@@ -88,8 +88,8 @@ export function PhoneMockup() {
         style={{ willChange: 'transform, opacity', backfaceVisibility: 'hidden' }}
         transition={{ duration: 0.8, ease: "easeOut" }}
       >
-        {/* Phone frame with glass effect */}
-        <div className="relative w-[280px] h-[580px] sm:w-[320px] sm:h-[640px] rounded-[3rem] bg-black/40 backdrop-blur-2xl border border-white/20 shadow-2xl p-3">
+        {/* Phone frame with glass effect - Responsive dimensions */}
+        <div className="relative w-[240px] h-[500px] sm:w-[280px] sm:h-[580px] md:w-[300px] md:h-[620px] lg:w-[320px] lg:h-[640px] xl:w-[340px] xl:h-[680px] rounded-[2.5rem] lg:rounded-[3rem] bg-black/40 backdrop-blur-2xl border border-white/20 shadow-2xl p-2 lg:p-3">
           {/* Inner screen */}
           <div className="w-full h-full rounded-[2.5rem] bg-gradient-to-br from-slate-900/95 to-slate-800/95 overflow-hidden relative">
             {/* Status bar */}

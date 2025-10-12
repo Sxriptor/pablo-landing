@@ -125,26 +125,26 @@ export function StatsSection() {
   ]
 
   return (
-    <section className="py-48 px-4" style={{ background: '#050a0f' }}>
-      <div className="container mx-auto">
+    <section className="py-20 sm:py-32 lg:py-48 px-4 sm:px-6 lg:px-8" style={{ background: '#050a0f' }}>
+      <div className="container mx-auto max-w-7xl">
         <motion.div 
-          className="text-center mb-32"
+          className="text-center mb-16 sm:mb-24 lg:mb-32"
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: false, amount: 0.3 }}
           transition={{ duration: 0.8 }}
         >
-          <h2 className="text-4xl lg:text-5xl font-bold mb-4">Join a Growing Community</h2>
-          <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-4">Join a Growing Community</h2>
+          <p className="text-base sm:text-lg text-muted-foreground max-w-2xl mx-auto">
             PlayCircle connects thousands of players every day, making sports more accessible and enjoyable for everyone.
           </p>
         </motion.div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-8 mb-16">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-8 mb-12 sm:mb-16">
           {stats.map((stat, index) => (
             <motion.div 
               key={index} 
-              className="flex flex-col items-center text-center space-y-4"
+              className="flex flex-col items-center text-center space-y-3 sm:space-y-4"
               initial={{ opacity: 0, scale: 0.5, rotate: -10 }}
               whileInView={{ opacity: 1, scale: 1, rotate: 0 }}
               viewport={{ once: false, amount: 0.3 }}
@@ -156,16 +156,16 @@ export function StatsSection() {
               }}
             >
               <div
-                className="w-16 h-16 rounded-full flex items-center justify-center"
+                className="w-12 h-12 sm:w-14 sm:h-14 lg:w-16 lg:h-16 rounded-full flex items-center justify-center"
                 style={{ background: 'rgba(69, 104, 130, 0.2)', border: '2px solid rgba(69, 104, 130, 0.4)' }}
               >
-                <stat.icon className="w-8 h-8" style={{ color: '#456882' }} />
+                <stat.icon className="w-6 h-6 sm:w-7 sm:h-7 lg:w-8 lg:h-8" style={{ color: '#456882' }} />
               </div>
               <div>
-                <div className="text-4xl font-bold mb-1" style={{ color: '#456882' }}>
+                <div className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-1" style={{ color: '#456882' }}>
                   <CountUpAnimation value={stat.value} />
                 </div>
-                <div className="text-sm text-muted-foreground">
+                <div className="text-xs sm:text-sm text-muted-foreground">
                   {stat.label}
                 </div>
               </div>
@@ -173,38 +173,38 @@ export function StatsSection() {
           ))}
         </div>
 
-        {/* Community Highlights */}
-        <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
+        {/* Community Highlights - Better responsive layout */}
+        <div className="grid sm:grid-cols-2 gap-6 sm:gap-8 max-w-5xl mx-auto">
           <motion.div 
-            className="text-center p-6 rounded-lg" 
+            className="text-center p-5 sm:p-6 rounded-lg" 
             style={{ background: 'rgba(69, 104, 130, 0.1)' }}
             initial={{ opacity: 0, x: -100 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: false, amount: 0.3 }}
             transition={{ duration: 0.7 }}
           >
-            <div className="flex items-center justify-center mb-4">
-              <TrendingUp className="w-6 h-6 mr-2" style={{ color: '#456882' }} />
-              <span className="text-lg font-semibold" style={{ color: '#456882' }}>Growing Fast</span>
+            <div className="flex items-center justify-center mb-3 sm:mb-4">
+              <TrendingUp className="w-5 h-5 sm:w-6 sm:h-6 mr-2" style={{ color: '#456882' }} />
+              <span className="text-base sm:text-lg font-semibold" style={{ color: '#456882' }}>Growing Fast</span>
             </div>
-            <p className="text-muted-foreground">
+            <p className="text-sm sm:text-base text-muted-foreground">
               Our community grows by 200+ new players every week, creating more opportunities to play and connect.
             </p>
           </motion.div>
           
           <motion.div 
-            className="text-center p-6 rounded-lg" 
+            className="text-center p-5 sm:p-6 rounded-lg" 
             style={{ background: 'rgba(69, 104, 130, 0.1)' }}
             initial={{ opacity: 0, x: 100 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: false, amount: 0.3 }}
             transition={{ duration: 0.7 }}
           >
-            <div className="flex items-center justify-center mb-4">
-              <Heart className="w-6 h-6 mr-2" style={{ color: '#456882' }} />
-              <span className="text-lg font-semibold" style={{ color: '#456882' }}>Loved by Players</span>
+            <div className="flex items-center justify-center mb-3 sm:mb-4">
+              <Heart className="w-5 h-5 sm:w-6 sm:h-6 mr-2" style={{ color: '#456882' }} />
+              <span className="text-base sm:text-lg font-semibold" style={{ color: '#456882' }}>Loved by Players</span>
             </div>
-            <p className="text-muted-foreground">
+            <p className="text-sm sm:text-base text-muted-foreground">
               "PlayCircle transformed how I find games. I've made amazing friends and improved my skills!"
             </p>
           </motion.div>
