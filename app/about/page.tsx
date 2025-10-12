@@ -54,6 +54,13 @@ export default function AboutPage() {
                 transform: none !important;
               }
             }
+            .hide-scrollbar {
+              -ms-overflow-style: none;
+              scrollbar-width: none;
+            }
+            .hide-scrollbar::-webkit-scrollbar {
+              display: none;
+            }
           `}</style>
           
           {/* Background image */}
@@ -90,7 +97,7 @@ export default function AboutPage() {
 
           <div className="relative z-10 w-full h-full flex flex-col justify-center items-center lg:items-start pb-2 sm:pb-8 lg:pb-12">
             <div className="w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-4 lg:gap-12 h-full">
-              <div className="space-y-2 sm:space-y-4 lg:space-y-6 flex flex-col justify-center items-center lg:items-start text-center lg:text-left order-2 lg:order-1 max-w-full lg:max-w-[60%] xl:max-w-[55%] 2xl:max-w-[50%] flex-shrink-0">
+              <div className="space-y-3 sm:space-y-4 lg:space-y-6 flex flex-col justify-center items-center lg:items-start text-center lg:text-left order-2 lg:order-1 max-w-full lg:max-w-[60%] xl:max-w-[55%] 2xl:max-w-[50%] flex-shrink-0 px-4 sm:px-0">
                 <motion.h1 
                   className="text-3xl xs:text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight text-balance"
                   initial={{ opacity: 0, y: 20 }}
@@ -141,7 +148,7 @@ export default function AboutPage() {
                   </motion.span>
                 </motion.h1>
                 <motion.p 
-                  className="text-xs sm:text-base lg:text-lg text-white max-w-xs sm:max-w-md text-pretty px-2 lg:px-0 leading-tight"
+                  className="text-sm sm:text-base lg:text-lg text-white max-w-xs sm:max-w-md lg:max-w-lg text-pretty leading-relaxed"
                   style={{ willChange: 'transform, opacity', backfaceVisibility: 'hidden' }}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ 
@@ -167,7 +174,7 @@ export default function AboutPage() {
 
           {/* Animated Scroll Indicator */}
           <motion.div 
-            className="absolute bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex flex-col items-center"
+            className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex flex-col items-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 1 }}
@@ -219,7 +226,7 @@ export default function AboutPage() {
         </section>
    
      {/* Story Section */}
-        <section className="py-16 sm:py-24 lg:py-32 px-4 relative" style={{ background: '#050a0f' }}>
+        <section className="py-12 sm:py-16 md:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 relative" style={{ background: '#050a0f' }}>
           {/* Decorative background elements */}
           <motion.div
             className="absolute top-0 left-1/4 w-96 h-96 rounded-full opacity-5 blur-3xl"
@@ -245,7 +252,7 @@ export default function AboutPage() {
               transition={{ duration: 0.8 }}
             >
               <motion.h2 
-                className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6 leading-tight"
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6 leading-tight"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
@@ -263,8 +270,90 @@ export default function AboutPage() {
               />
             </motion.div>
 
+            {/* Mobile: Horizontal Scroll, Desktop: Grid */}
+            <div className="lg:hidden overflow-x-auto pb-4 -mx-4 px-4 snap-x snap-mandatory hide-scrollbar">
+              <div className="flex gap-6 min-w-max">
+                <motion.div
+                  className="rounded-3xl p-8 sm:p-10 backdrop-blur-md w-[85vw] sm:w-96 snap-center flex-shrink-0"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(69, 104, 130, 0.15) 0%, rgba(13, 18, 22, 0.8) 100%)',
+                    border: '1px solid rgba(69, 104, 130, 0.3)',
+                    boxShadow: '0 0 40px rgba(69, 104, 130, 0.1)'
+                  }}
+                  initial={{ opacity: 0, x: -50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.6 }}
+                  whileHover={{ scale: 1.02, y: -5 }}
+                >
+                  <motion.div 
+                    className="text-6xl sm:text-7xl font-bold mb-6 opacity-30" 
+                    style={{ color: '#456882' }}
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    whileInView={{ opacity: 0.3, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 0.2 }}
+                  >
+                    01
+                  </motion.div>
+                  <motion.div 
+                    className="space-y-4 sm:space-y-6 text-gray-300 text-base sm:text-lg leading-relaxed"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.3 }}
+                  >
+                    <p>
+                      PlayCircle was born from a simple observation: sports like soccer, tennis, padel, and more are growing rapidly, yet finding a game or connecting with other players remained surprisingly difficult.
+                    </p>
+                    <p>
+                      We set out to change that by building a platform that brings players, facilities, and communities together in one seamless experience.
+                    </p>
+                  </motion.div>
+                </motion.div>
+                <motion.div
+                  className="rounded-3xl p-8 sm:p-10 backdrop-blur-md w-[85vw] sm:w-96 snap-center flex-shrink-0"
+                  style={{
+                    background: 'linear-gradient(135deg, rgba(69, 104, 130, 0.15) 0%, rgba(13, 18, 22, 0.8) 100%)',
+                    border: '1px solid rgba(69, 104, 130, 0.3)',
+                    boxShadow: '0 0 40px rgba(69, 104, 130, 0.1)'
+                  }}
+                  initial={{ opacity: 0, x: 50 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true, margin: "-50px" }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                  whileHover={{ scale: 1.02, y: -5 }}
+                >
+                  <motion.div 
+                    className="text-6xl sm:text-7xl font-bold mb-6 opacity-30" 
+                    style={{ color: '#456882' }}
+                    initial={{ opacity: 0, scale: 0.5 }}
+                    whileInView={{ opacity: 0.3, scale: 1 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 0.4 }}
+                  >
+                    02
+                  </motion.div>
+                  <motion.div 
+                    className="space-y-4 sm:space-y-6 text-gray-300 text-base sm:text-lg leading-relaxed"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.6, delay: 0.5 }}
+                  >
+                    <p>
+                      Whether you're a seasoned pro or just getting started with a new sport, PlayCircle makes it easy to find your next game.
+                    </p>
+                    <p>
+                      Today, we're proud to serve thousands of players across multiple cities, partnering with leading facilities and brands to grow the sport we all love.
+                    </p>
+                  </motion.div>
+                </motion.div>
+              </div>
+            </div>
+
             {/* Desktop: Grid */}
-            <div className="grid lg:grid-cols-2 gap-8 items-stretch">
+            <div className="hidden lg:grid lg:grid-cols-2 gap-8 items-stretch">
               <motion.div
                 className="rounded-3xl p-10 backdrop-blur-md"
                 style={{
@@ -354,7 +443,7 @@ export default function AboutPage() {
         </section>
 
         {/* Values Section */}
-        <section className="py-16 sm:py-24 lg:py-32 px-4 relative" style={{ background: '#050a0f' }}>
+        <section className="py-12 sm:py-16 md:py-24 lg:py-32 px-4 sm:px-6 lg:px-8 relative" style={{ background: '#050a0f' }}>
           <motion.div
             className="absolute bottom-0 right-0 w-96 h-96 rounded-full opacity-5 blur-3xl"
             style={{ background: '#456882' }}
@@ -379,7 +468,7 @@ export default function AboutPage() {
               transition={{ duration: 0.8 }}
             >
               <motion.h2 
-                className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6 leading-tight"
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6 leading-tight"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, margin: "-100px" }}
@@ -396,7 +485,7 @@ export default function AboutPage() {
                 transition={{ duration: 0.8, delay: 0.4 }}
               />
             </motion.div>
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
               {values.map((value, index) => (
                 <motion.div
                   key={index}
@@ -460,10 +549,10 @@ export default function AboutPage() {
         </section>
 
         {/* CTA Section */}
-        <section className="py-16 sm:py-24 lg:py-32 px-4" style={{ background: '#050a0f' }}>
+        <section className="py-12 sm:py-16 md:py-24 lg:py-32 px-4 sm:px-6 lg:px-8" style={{ background: '#050a0f' }}>
           <div className="max-w-5xl mx-auto text-center">
             <motion.h2 
-              className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6 sm:mb-8 leading-tight"
+              className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6 sm:mb-8 leading-tight"
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: "-100px" }}
