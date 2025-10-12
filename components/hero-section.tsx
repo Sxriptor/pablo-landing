@@ -40,7 +40,7 @@ export function HeroSection() {
       />
 
       {/* Phone mockups - positioned absolutely on desktop with responsive positioning - moved slightly left */}
-      <div className="absolute right-32 top-1/2 -translate-y-1/2 z-20 scale-100">
+      <div className="absolute right-80 top-1/2 -translate-y-1/2 z-20 scale-125">
         <PhoneMockupTriple />
       </div>
 

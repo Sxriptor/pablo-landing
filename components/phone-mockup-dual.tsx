@@ -118,7 +118,7 @@ export function PhoneMockupTriple() {
         style={{ transform: 'translateY(-15px) rotate(-8deg)', willChange: 'transform, opacity', backfaceVisibility: 'hidden' }}
       >
         <motion.div 
-          className="relative w-[180px] h-[380px] sm:w-[200px] sm:h-[420px] md:w-[220px] md:h-[460px] lg:w-[240px] lg:h-[500px] xl:w-[260px] xl:h-[540px] 2xl:w-[280px] 2xl:h-[580px] rounded-[2.5rem] lg:rounded-[3rem] bg-black/40 backdrop-blur-2xl border border-white/20 shadow-2xl p-2 lg:p-3"
+          className="relative w-[200px] h-[420px] sm:w-[240px] sm:h-[480px] md:w-[260px] md:h-[520px] lg:w-[280px] lg:h-[560px] xl:w-[300px] xl:h-[600px] 2xl:w-[320px] 2xl:h-[640px] rounded-[2.5rem] lg:rounded-[3rem] bg-black/40 backdrop-blur-2xl border border-white/20 shadow-2xl p-2 lg:p-3"
           animate={{
             y: [0, -6, 0],
           }}
