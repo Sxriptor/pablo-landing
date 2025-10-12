@@ -1,5 +1,8 @@
+"use client"
+
 import { Header } from "@/components/header"
 import { Footer } from "@/components/footer"
+import { motion } from "framer-motion"
 
 export default function PartnersPage() {
   const stats = [
@@ -51,180 +54,653 @@ export default function PartnersPage() {
   ]
 
   return (
-    <div className="min-h-screen" style={{ background: '#050a0f' }}>
-      <div className="relative">
-        <Header />
+    <div className="min-h-screen overscroll-none overflow-x-hidden" style={{ background: '#050a0f' }}>
+      <Header />
 
-        <main>
-          {/* Hero Section with Background Image */}
-          <section className="relative min-h-screen flex items-center">
-            <div
-              className="absolute inset-0 bg-cover bg-center bg-no-repeat"
-              style={{
-                backgroundImage: "url('/Backgrounddark1.png')"
+      <main className="overscroll-none overflow-x-hidden relative">
+        {/* Hero Section with Background Image */}
+        <section className="relative min-h-[60vh] flex items-center">
+          {/* Background image */}
+          <motion.div
+            className="absolute inset-0 bg-cover bg-center bg-no-repeat"
+            style={{
+              backgroundImage: "url('/Backgrounddark1.png')",
+            }}
+            initial={{ opacity: 1, scale: 1 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ 
+              duration: 0.3, 
+              ease: "easeOut"
+            }}
+          />
+          
+          {/* Background gradient overlay */}
+          <motion.div 
+            className="absolute inset-0" 
+            style={{
+              background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0.4) 0%, rgba(5, 10, 15, 0.8) 70%, rgba(5, 10, 15, 1) 100%)'
+            }}
+            initial={{ opacity: 1 }}
+            animate={{ opacity: 1 }}
+            transition={{ 
+              duration: 0.3,
+              ease: "easeOut"
+            }}
+          />
+
+          {/* Decorative background elements */}
+          <motion.div
+            className="absolute top-20 right-0 w-96 h-96 rounded-full opacity-5 blur-3xl"
+            style={{ background: '#456882' }}
+            animate={{ 
+              x: [0, -30, 0, 30, 0],
+              y: [0, 40, 0, -40, 0],
+              scale: [1, 1.1, 1, 0.9, 1]
+            }}
+            transition={{
+              duration: 20,
+              repeat: Infinity,
+              ease: "easeInOut"
+            }}
+          />
+
+          <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 xl:px-12 2xl:px-16 py-16 sm:py-20 md:py-24 lg:py-28 xl:py-32">
+            {/* Header Section */}
+            <motion.div 
+              className="text-center max-w-4xl xl:max-w-5xl mx-auto"
+              initial={{ opacity: 1, y: 0 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.3 }}
+            >
+              <motion.h1 
+                className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl xl:text-6xl font-bold text-white leading-tight mb-4 sm:mb-6"
+                initial={{ opacity: 1, y: 0 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                Partner with{" "}
+                <motion.span 
+                  style={{ 
+                    color: '#456882',
+                    display: 'inline-block',
+                    willChange: 'transform',
+                    backfaceVisibility: 'hidden',
+                    transform: 'translate3d(0,0,0)'
+                  }}
+                  animate={{ 
+                    x: [0, 2, 3, 2, 0, -2, -3, -2, 0],
+                    y: [0, -2, 0, 2, 3, 2, 0, -2, 0]
+                  }}
+                  transition={{
+                    duration: 12,
+                    repeat: Infinity,
+                    ease: "easeInOut",
+                    delay: 1
+                  }}
+                >
+                  PlayCircle
+                </motion.span>
+              </motion.h1>
+              <motion.p 
+                className="text-sm sm:text-base lg:text-lg text-gray-300 leading-relaxed max-w-2xl mx-auto"
+                initial={{ opacity: 1, y: 0 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                Join us in building the world's largest sports community
+              </motion.p>
+            </motion.div>
+          </div>
+
+          {/* Animated Scroll Indicator */}
+          <motion.div 
+            className="absolute bottom-4 sm:bottom-8 left-1/2 transform -translate-x-1/2 z-20 flex flex-col items-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.8, delay: 1 }}
+          >
+            <motion.div
+              className="w-6 h-10 border-2 border-white/30 rounded-full flex justify-center relative"
+              whileHover={{ borderColor: 'rgba(69, 104, 130, 0.8)' }}
+            >
+              <motion.div
+                className="w-1 h-3 rounded-full mt-2"
+                style={{ backgroundColor: '#456882' }}
+                animate={{
+                  y: [0, 12, 0],
+                  opacity: [1, 0.3, 1]
+                }}
+                transition={{
+                  duration: 1.5,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              />
+            </motion.div>
+            <motion.div
+              className="mt-2"
+              animate={{ 
+                y: [0, 5, 0],
+              }}
+              transition={{
+                duration: 1.5,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            >
+              <svg 
+                className="w-4 h-4 text-white/60" 
+                fill="none" 
+                stroke="currentColor" 
+                viewBox="0 0 24 24"
+              >
+                <path 
+                  strokeLinecap="round" 
+                  strokeLinejoin="round" 
+                  strokeWidth={2} 
+                  d="M19 14l-7 7m0 0l-7-7m7 7V3" 
+                />
+              </svg>
+            </motion.div>
+          </motion.div>
+        </section>
+
+        {/* Content Section */}
+        <section className="relative" style={{ background: '#050a0f' }}>
+
+          {/* Stats Section */}
+          <section className="py-16 sm:py-24 lg:py-32 px-4 relative overflow-hidden" style={{ background: '#050a0f' }}>
+            <motion.div
+              className="absolute top-1/3 left-0 w-96 h-96 rounded-full opacity-5 blur-3xl"
+              style={{ background: '#456882' }}
+              animate={{ 
+                x: [0, 50, 0, -50, 0],
+                y: [0, -30, 0, 30, 0],
+                scale: [1, 1.1, 1, 0.9, 1]
+              }}
+              transition={{
+                duration: 20,
+                repeat: Infinity,
+                ease: "easeInOut"
               }}
             />
-            <div
-              className="absolute inset-0"
-              style={{
-                background: 'linear-gradient(135deg, rgba(0, 0, 0, 0.3) 0%, rgba(0, 0, 0, 0.7) 100%)'
-              }}
-            />
-            <div className="relative z-10 px-4 sm:px-6 lg:px-8 py-20 sm:py-24 lg:py-32 w-full">
-              <div className="max-w-7xl mx-auto">
-                <div className="max-w-3xl">
-                  <h1 className="text-5xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold text-white mb-6 sm:mb-8 leading-tight">
-                    Partner with <span style={{ color: '#456882' }}>PlayCircle</span>
-                  </h1>
-                  <div className="w-16 sm:w-24 h-px mb-6 sm:mb-8" style={{ backgroundColor: '#456882' }}></div>
-                  <p className="text-lg sm:text-xl lg:text-2xl text-gray-300 leading-relaxed">
-                    Join us in building the world's largest sports community
-                  </p>
-                </div>
+
+            <div className="max-w-6xl mx-auto relative z-10">
+              <motion.div 
+                className="text-center mb-12 sm:mb-16 lg:mb-20"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8 }}
+              >
+                <motion.h2 
+                  className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6 leading-tight"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                >
+                  By the Numbers
+                </motion.h2>
+                <motion.div 
+                  className="w-12 sm:w-16 h-px mx-auto" 
+                  style={{ backgroundColor: '#456882' }}
+                  initial={{ width: 0 }}
+                  whileInView={{ width: 'auto' }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                />
+              </motion.div>
+              <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
+                {stats.map((stat, index) => (
+                  <motion.div
+                    key={index}
+                    className="text-center rounded-3xl p-6 sm:p-8 lg:p-10 backdrop-blur-md"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(69, 104, 130, 0.12) 0%, rgba(13, 18, 22, 0.8) 100%)',
+                      border: '1px solid rgba(69, 104, 130, 0.25)',
+                      boxShadow: '0 0 30px rgba(69, 104, 130, 0.08)'
+                    }}
+                    initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ 
+                      duration: 0.6, 
+                      delay: index * 0.1,
+                      ease: "easeOut"
+                    }}
+                    whileHover={{ 
+                      scale: 1.05, 
+                      y: -5,
+                      boxShadow: '0 0 50px rgba(69, 104, 130, 0.15)'
+                    }}
+                  >
+                    <motion.div 
+                      className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-2 sm:mb-4 leading-tight" 
+                      style={{ color: '#456882' }}
+                      initial={{ opacity: 0, scale: 0.5 }}
+                      whileInView={{ opacity: 1, scale: 1 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: index * 0.1 + 0.3 }}
+                    >
+                      {stat.number}
+                    </motion.div>
+                    <motion.div 
+                      className="text-xs sm:text-sm lg:text-base text-gray-300"
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.4, delay: index * 0.1 + 0.5 }}
+                    >
+                      {stat.label}
+                    </motion.div>
+                  </motion.div>
+                ))}
               </div>
             </div>
           </section>
 
-          {/* Stats Section */}
-        <section className="py-16 sm:py-24 lg:py-32 px-4 relative overflow-hidden" style={{ background: '#050a0f' }}>
-          <div
-            className="absolute top-0 left-0 w-96 h-96 rounded-full opacity-5 blur-3xl"
-            style={{ background: '#456882' }}
-          />
-
-          <div className="max-w-6xl mx-auto relative z-10">
-            <div className="text-center mb-12 sm:mb-16 lg:mb-20">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6 leading-tight">
-                By the Numbers
-              </h2>
-              <div className="w-12 sm:w-16 h-px mx-auto" style={{ backgroundColor: '#456882' }}></div>
-            </div>
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-              {stats.map((stat, index) => (
-                <div
-                  key={index}
-                  className="text-center rounded-3xl p-6 sm:p-8 lg:p-10 backdrop-blur-md hover:scale-105 transition-all duration-300"
-                  style={{
-                    background: 'linear-gradient(135deg, rgba(69, 104, 130, 0.12) 0%, rgba(13, 18, 22, 0.8) 100%)',
-                    border: '1px solid rgba(69, 104, 130, 0.25)',
-                    boxShadow: '0 0 30px rgba(69, 104, 130, 0.08)'
-                  }}
-                >
-                  <div className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold mb-2 sm:mb-4 leading-tight" style={{ color: '#456882' }}>
-                    {stat.number}
-                  </div>
-                  <div className="text-xs sm:text-sm lg:text-base text-gray-300">
-                    {stat.label}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Partnership Opportunities */}
-        <section className="py-16 sm:py-24 lg:py-32 px-4 relative overflow-hidden" style={{ background: '#050a0f' }}>
-          <div
-            className="absolute top-1/4 right-0 w-96 h-96 rounded-full opacity-5 blur-3xl"
-            style={{ background: '#456882' }}
-          />
-
-          <div className="max-w-6xl mx-auto relative z-10">
-            <div className="text-center mb-12 sm:mb-16 lg:mb-20">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6 leading-tight">
-                Partnership Opportunities
-              </h2>
-              <div className="w-12 sm:w-16 h-px mx-auto" style={{ backgroundColor: '#456882' }}></div>
-            </div>
-            <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
-              {partnershipTypes.map((type, index) => (
-                <div
-                  key={index}
-                  className="text-center rounded-3xl p-6 sm:p-8 backdrop-blur-md hover:scale-105 transition-all duration-300"
-                  style={{
-                    background: 'linear-gradient(135deg, rgba(69, 104, 130, 0.12) 0%, rgba(13, 18, 22, 0.8) 100%)',
-                    border: '1px solid rgba(69, 104, 130, 0.25)',
-                    boxShadow: '0 0 30px rgba(69, 104, 130, 0.08)'
-                  }}
-                >
-                  <div
-                    className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-6 sm:mb-8 rounded-full flex items-center justify-center"
-                    style={{ background: 'rgba(69, 104, 130, 0.2)', color: '#456882' }}
-                  >
-                    {type.icon}
-                  </div>
-                  <h3 className="text-xl sm:text-2xl font-semibold text-white mb-3 sm:mb-4">
-                    {type.title}
-                  </h3>
-                  <p className="text-sm sm:text-base text-gray-400 leading-relaxed">
-                    {type.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* Trusted Partners */}
-        <section className="py-16 sm:py-24 lg:py-32 px-4 relative overflow-hidden" style={{ background: '#050a0f' }}>
-          <div
-            className="absolute bottom-0 left-1/4 w-96 h-96 rounded-full opacity-5 blur-3xl"
-            style={{ background: '#456882' }}
-          />
-
-          <div className="max-w-6xl mx-auto relative z-10">
-            <div className="text-center mb-12 sm:mb-16 lg:mb-20">
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6 leading-tight">
-                Trusted by Leading Brands
-              </h2>
-              <div className="w-12 sm:w-16 h-px mx-auto" style={{ backgroundColor: '#456882' }}></div>
-            </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-              {trustedPartners.map((partner, index) => (
-                <div
-                  key={index}
-                  className="text-center rounded-2xl p-6 sm:p-8 backdrop-blur-md hover:scale-105 transition-all duration-300"
-                  style={{
-                    background: 'linear-gradient(135deg, rgba(69, 104, 130, 0.1) 0%, rgba(13, 18, 22, 0.7) 100%)',
-                    border: '1px solid rgba(69, 104, 130, 0.2)',
-                    boxShadow: '0 0 20px rgba(69, 104, 130, 0.05)'
-                  }}
-                >
-                  <div className="h-16 sm:h-20 flex items-center justify-center">
-                    <h3 className="text-base sm:text-lg lg:text-xl font-semibold text-white">
-                      {partner.name}
-                    </h3>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        {/* CTA Section */}
-        <section className="py-16 sm:py-24 lg:py-32 px-4" style={{ background: '#050a0f' }}>
-          <div className="max-w-5xl mx-auto text-center">
-            <h2 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-white mb-6 sm:mb-8 leading-tight">
-              Ready to Partner?
-            </h2>
-            <div className="w-16 sm:w-24 h-px mx-auto mb-8 sm:mb-12" style={{ backgroundColor: '#456882' }}></div>
-            <p className="text-base sm:text-lg lg:text-xl text-gray-300 mb-12 sm:mb-16 max-w-3xl mx-auto leading-relaxed px-4">
-              Let's discuss how we can work together to grow sports and reach engaged players worldwide.
-            </p>
-            <a
-              href="/contact"
-              className="inline-block rounded-full px-8 sm:px-12 py-3 sm:py-4 text-base sm:text-lg font-semibold transition-all duration-300 hover:scale-105"
-              style={{
-                backgroundColor: '#456882',
-                color: 'white'
+          {/* Partnership Opportunities */}
+          <section className="py-16 sm:py-24 lg:py-32 px-4 relative overflow-hidden" style={{ background: '#050a0f' }}>
+            <motion.div
+              className="absolute top-1/4 right-0 w-96 h-96 rounded-full opacity-5 blur-3xl"
+              style={{ background: '#456882' }}
+              animate={{ 
+                x: [0, -30, 0, 30, 0],
+                y: [0, 40, 0, -40, 0],
+                scale: [1, 0.9, 1, 1.1, 1]
               }}
-            >
-              Get in Touch
-            </a>
-          </div>
+              transition={{
+                duration: 18,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+
+            <div className="max-w-6xl mx-auto relative z-10">
+              <motion.div 
+                className="text-center mb-12 sm:mb-16 lg:mb-20"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8 }}
+              >
+                <motion.h2 
+                  className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6 leading-tight"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                >
+                  Partnership Opportunities
+                </motion.h2>
+                <motion.div 
+                  className="w-12 sm:w-16 h-px mx-auto" 
+                  style={{ backgroundColor: '#456882' }}
+                  initial={{ width: 0 }}
+                  whileInView={{ width: 'auto' }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                />
+              </motion.div>
+              <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-6 sm:gap-8">
+                {partnershipTypes.map((type, index) => (
+                  <motion.div
+                    key={index}
+                    className="text-center rounded-3xl p-6 sm:p-8 backdrop-blur-md"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(69, 104, 130, 0.12) 0%, rgba(13, 18, 22, 0.8) 100%)',
+                      border: '1px solid rgba(69, 104, 130, 0.25)',
+                      boxShadow: '0 0 30px rgba(69, 104, 130, 0.08)'
+                    }}
+                    initial={{ opacity: 0, y: 50, scale: 0.9 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ 
+                      duration: 0.6, 
+                      delay: index * 0.1,
+                      ease: "easeOut"
+                    }}
+                    whileHover={{ 
+                      scale: 1.05, 
+                      y: -10,
+                      boxShadow: '0 0 50px rgba(69, 104, 130, 0.15)'
+                    }}
+                  >
+                    <motion.div
+                      className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-6 sm:mb-8 rounded-full flex items-center justify-center"
+                      style={{ background: 'rgba(69, 104, 130, 0.2)', color: '#456882' }}
+                      initial={{ scale: 0, rotate: -180 }}
+                      whileInView={{ scale: 1, rotate: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ 
+                        duration: 0.5, 
+                        delay: index * 0.1 + 0.3,
+                        ease: "easeOut"
+                      }}
+                      whileHover={{ rotate: 360 }}
+                    >
+                      {type.icon}
+                    </motion.div>
+                    <motion.h3 
+                      className="text-xl sm:text-2xl font-semibold text-white mb-3 sm:mb-4"
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.4, delay: index * 0.1 + 0.4 }}
+                    >
+                      {type.title}
+                    </motion.h3>
+                    <motion.p 
+                      className="text-sm sm:text-base text-gray-400 leading-relaxed"
+                      initial={{ opacity: 0, y: 10 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.4, delay: index * 0.1 + 0.5 }}
+                    >
+                      {type.description}
+                    </motion.p>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </section>
+
+          {/* Partnership Application Form */}
+          <section className="py-16 sm:py-24 lg:py-32 px-4 relative overflow-hidden" style={{ background: '#050a0f' }}>
+            <div className="max-w-4xl mx-auto relative z-10">
+              <motion.div 
+                className="text-center mb-12 sm:mb-16"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8 }}
+              >
+                <motion.h2 
+                  className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6 leading-tight"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                >
+                  Apply for Partnership
+                </motion.h2>
+                <motion.div 
+                  className="w-12 sm:w-16 h-px mx-auto mb-6" 
+                  style={{ backgroundColor: '#456882' }}
+                  initial={{ width: 0 }}
+                  whileInView={{ width: 'auto' }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                />
+                <motion.p 
+                  className="text-base sm:text-lg text-gray-300 max-w-2xl mx-auto"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.6, delay: 0.6 }}
+                >
+                  Tell us about your company and how you'd like to partner with PlayCircle
+                </motion.p>
+              </motion.div>
+
+              <motion.div
+                className="rounded-3xl p-8 sm:p-12 backdrop-blur-md"
+                style={{
+                  background: 'linear-gradient(135deg, rgba(69, 104, 130, 0.15) 0%, rgba(13, 18, 22, 0.8) 100%)',
+                  border: '1px solid rgba(69, 104, 130, 0.3)',
+                  boxShadow: '0 0 40px rgba(69, 104, 130, 0.1)'
+                }}
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8, delay: 0.8 }}
+              >
+                <form className="space-y-6">
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <motion.div
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: 1 }}
+                    >
+                      <label className="block text-sm font-medium text-white mb-2">
+                        Company Name *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        className="w-full px-4 py-3 rounded-lg bg-black/30 border border-gray-600 text-white placeholder-gray-400 focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-colors"
+                        placeholder="Your company name"
+                      />
+                    </motion.div>
+                    <motion.div
+                      initial={{ opacity: 0, x: 20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: 1.1 }}
+                    >
+                      <label className="block text-sm font-medium text-white mb-2">
+                        Industry *
+                      </label>
+                      <select
+                        required
+                        className="w-full px-4 py-3 rounded-lg bg-black/30 border border-gray-600 text-white focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-colors"
+                      >
+                        <option value="">Select industry</option>
+                        <option value="sports-equipment">Sports Equipment</option>
+                        <option value="sports-facilities">Sports Facilities</option>
+                        <option value="technology">Technology</option>
+                        <option value="media">Media & Entertainment</option>
+                        <option value="retail">Retail</option>
+                        <option value="other">Other</option>
+                      </select>
+                    </motion.div>
+                  </div>
+
+                  <div className="grid md:grid-cols-2 gap-6">
+                    <motion.div
+                      initial={{ opacity: 0, x: -20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: 1.2 }}
+                    >
+                      <label className="block text-sm font-medium text-white mb-2">
+                        Contact Name *
+                      </label>
+                      <input
+                        type="text"
+                        required
+                        className="w-full px-4 py-3 rounded-lg bg-black/30 border border-gray-600 text-white placeholder-gray-400 focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-colors"
+                        placeholder="Your full name"
+                      />
+                    </motion.div>
+                    <motion.div
+                      initial={{ opacity: 0, x: 20 }}
+                      whileInView={{ opacity: 1, x: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.5, delay: 1.3 }}
+                    >
+                      <label className="block text-sm font-medium text-white mb-2">
+                        Email Address *
+                      </label>
+                      <input
+                        type="email"
+                        required
+                        className="w-full px-4 py-3 rounded-lg bg-black/30 border border-gray-600 text-white placeholder-gray-400 focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-colors"
+                        placeholder="your@company.com"
+                      />
+                    </motion.div>
+                  </div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 1.4 }}
+                  >
+                    <label className="block text-sm font-medium text-white mb-2">
+                      Partnership Type *
+                    </label>
+                    <select
+                      required
+                      className="w-full px-4 py-3 rounded-lg bg-black/30 border border-gray-600 text-white focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-colors"
+                    >
+                      <option value="">Select partnership type</option>
+                      <option value="sponsorship">Sponsorship</option>
+                      <option value="events">Events & Tournaments</option>
+                      <option value="digital-campaigns">Digital Campaigns</option>
+                      <option value="facility-partnership">Facility Partnership</option>
+                      <option value="other">Other</option>
+                    </select>
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 1.5 }}
+                  >
+                    <label className="block text-sm font-medium text-white mb-2">
+                      Company Description *
+                    </label>
+                    <textarea
+                      required
+                      rows={4}
+                      className="w-full px-4 py-3 rounded-lg bg-black/30 border border-gray-600 text-white placeholder-gray-400 focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-colors resize-none"
+                      placeholder="Tell us about your company, products/services, and target audience..."
+                    />
+                  </motion.div>
+
+                  <motion.div
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 1.6 }}
+                  >
+                    <label className="block text-sm font-medium text-white mb-2">
+                      Partnership Goals *
+                    </label>
+                    <textarea
+                      required
+                      rows={4}
+                      className="w-full px-4 py-3 rounded-lg bg-black/30 border border-gray-600 text-white placeholder-gray-400 focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-colors resize-none"
+                      placeholder="What are your goals for this partnership? How do you envision working together?"
+                    />
+                  </motion.div>
+
+                  <motion.div
+                    className="pt-4"
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.5, delay: 1.7 }}
+                  >
+                    <motion.button
+                      type="submit"
+                      className="w-full sm:w-auto px-8 py-4 rounded-full text-lg font-semibold text-white"
+                      style={{ backgroundColor: '#456882' }}
+                      whileHover={{ 
+                        scale: 1.05, 
+                        y: -2,
+                        boxShadow: '0 10px 30px rgba(69, 104, 130, 0.3)'
+                      }}
+                      whileTap={{ scale: 0.98 }}
+                      transition={{ duration: 0.2 }}
+                    >
+                      Submit Partnership Application
+                    </motion.button>
+                  </motion.div>
+                </form>
+              </motion.div>
+            </div>
+          </section>
+
+          {/* Trusted Partners */}
+          <section className="py-16 sm:py-24 lg:py-32 px-4 relative overflow-hidden" style={{ background: '#050a0f' }}>
+            <motion.div
+              className="absolute bottom-0 left-1/4 w-96 h-96 rounded-full opacity-5 blur-3xl"
+              style={{ background: '#456882' }}
+              animate={{ 
+                x: [0, 50, 0, -50, 0],
+                y: [0, -30, 0, 30, 0],
+                scale: [1, 0.9, 1, 1.1, 1]
+              }}
+              transition={{
+                duration: 22,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            />
+
+            <div className="max-w-6xl mx-auto relative z-10">
+              <motion.div 
+                className="text-center mb-12 sm:mb-16 lg:mb-20"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8 }}
+              >
+                <motion.h2 
+                  className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6 leading-tight"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                >
+                  Trusted by Leading Brands
+                </motion.h2>
+                <motion.div 
+                  className="w-12 sm:w-16 h-px mx-auto" 
+                  style={{ backgroundColor: '#456882' }}
+                  initial={{ width: 0 }}
+                  whileInView={{ width: 'auto' }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                />
+              </motion.div>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
+                {trustedPartners.map((partner, index) => (
+                  <motion.div
+                    key={index}
+                    className="text-center rounded-2xl p-6 sm:p-8 backdrop-blur-md"
+                    style={{
+                      background: 'linear-gradient(135deg, rgba(69, 104, 130, 0.1) 0%, rgba(13, 18, 22, 0.7) 100%)',
+                      border: '1px solid rgba(69, 104, 130, 0.2)',
+                      boxShadow: '0 0 20px rgba(69, 104, 130, 0.05)'
+                    }}
+                    initial={{ opacity: 0, y: 30, scale: 0.9 }}
+                    whileInView={{ opacity: 1, y: 0, scale: 1 }}
+                    viewport={{ once: true, margin: "-50px" }}
+                    transition={{ 
+                      duration: 0.5, 
+                      delay: index * 0.1,
+                      ease: "easeOut"
+                    }}
+                    whileHover={{ 
+                      scale: 1.05, 
+                      y: -5,
+                      boxShadow: '0 0 40px rgba(69, 104, 130, 0.1)'
+                    }}
+                  >
+                    <div className="h-16 sm:h-20 flex items-center justify-center">
+                      <motion.h3 
+                        className="text-base sm:text-lg lg:text-xl font-semibold text-white"
+                        initial={{ opacity: 0 }}
+                        whileInView={{ opacity: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ duration: 0.3, delay: index * 0.1 + 0.2 }}
+                      >
+                        {partner.name}
+                      </motion.h3>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+          </section>
         </section>
-        </main>
-      </div>
+      </main>
 
       <Footer />
     </div>

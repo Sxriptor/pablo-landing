@@ -77,17 +77,15 @@
 
   - _Requirements: 4.1, 4.2, 4.3, 4.4, 2.1, 2.2_
 
-- [-] 7. Implement accessibility enhancements for transparent design
+- [x] 7. Implement accessibility enhancements for transparent design
 
   - Add enhanced focus indicators with shadows and outlines for keyboard navigation
   - Ensure focus indicators are visible against any background color
   - Verify all existing ARIA labels and semantic structure are preserved
   - Test screen reader functionality remains unchanged with transparency
   - _Requirements: 8.1, 8.2, 8.3, 8.4_
--
 
-- [-] 8. Test and validate transparent header implementation
-
+- [x] 8. Test and validate transparent header implementation
 
   - Test header visibility against light backgrounds (white, light images)
   - Test header visibility against dark backgrounds (black, dark images)  
