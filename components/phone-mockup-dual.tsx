@@ -51,7 +51,7 @@ export function PhoneMockupTriple() {
   }, [])
 
   return (
-    <div className="relative w-full h-full flex items-center justify-center gap-0 sm:gap-1 md:gap-2 lg:gap-3 xl:gap-4 2xl:gap-6">
+    <div className="relative w-full h-full flex items-center justify-center gap-1 xs:gap-2 sm:gap-1 md:gap-2 lg:gap-3 xl:gap-4 2xl:gap-6">
       {/* Floating glass card background elements - responsive positioning */}
       <motion.div
         className="absolute top-1/4 -left-8 sm:-left-12 md:-left-16 lg:-left-20 xl:-left-24 w-16 h-16 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-32 lg:h-32 rounded-2xl sm:rounded-3xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 backdrop-blur-xl border border-white/10"
@@ -111,7 +111,7 @@ export function PhoneMockupTriple() {
 
       {/* First Phone - Find Games Screen - Responsive sizing */}
       <motion.div
-        className="relative z-20 hidden sm:block"
+        className="relative z-20"
         initial={{ opacity: 0, x: -50, rotate: -8 }}
         animate={{ opacity: 1, x: 0, rotate: -8 }}
         transition={{ duration: 0.8, ease: "easeOut" }}
@@ -129,18 +129,18 @@ export function PhoneMockupTriple() {
             ease: "easeInOut",
           }}
         >
-          <div className="w-full h-full rounded-[2.5rem] bg-gradient-to-br from-slate-900/95 to-slate-800/95 overflow-hidden relative">
+          <div className="w-full h-full rounded-[1.5rem] sm:rounded-[2.5rem] bg-gradient-to-br from-slate-900/95 to-slate-800/95 overflow-hidden relative">
             {/* Status bar */}
-            <div className="absolute top-0 left-0 right-0 h-8 flex items-center justify-between px-5 text-white text-[10px] z-20">
+            <div className="absolute top-0 left-0 right-0 h-6 sm:h-8 flex items-center justify-between px-2 sm:px-5 text-white text-[8px] sm:text-[10px] z-20">
               <span>9:41</span>
               <div className="flex gap-1">
-                <div className="w-3 h-3">📶</div>
-                <div className="w-3 h-3">🔋</div>
+                <div className="w-2 h-2 sm:w-3 sm:h-3">📶</div>
+                <div className="w-2 h-2 sm:w-3 sm:h-3">🔋</div>
               </div>
             </div>
 
             {/* App header */}
-            <div className="absolute top-8 left-3 right-3 z-20 backdrop-blur-xl bg-white/10 rounded-2xl border border-white/20 p-3">
+            <div className="absolute top-6 sm:top-8 left-2 sm:left-3 right-2 sm:right-3 z-20 backdrop-blur-xl bg-white/10 rounded-xl sm:rounded-2xl border border-white/20 p-2 sm:p-3">
               <div className="flex items-center justify-between">
                 <div>
                   <h3 className="text-white font-bold text-base">Find Games</h3>
@@ -399,7 +399,7 @@ export function PhoneMockupTriple() {
 
       {/* Third Phone - Game Active Screen - Responsive sizing */}
       <motion.div
-        className="relative z-20 hidden sm:block"
+        className="relative z-20"
         initial={{ opacity: 0, x: 50, rotate: 6 }}
         animate={{ opacity: 1, x: 0, rotate: 6 }}
         transition={{ duration: 0.8, ease: "easeOut", delay: 0.3 }}

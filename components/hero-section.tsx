@@ -75,9 +75,14 @@ export function HeroSection() {
         <PhoneMockupTriple />
       </div>
 
-      <div className="relative z-10 w-full h-full flex flex-col justify-between pb-2 sm:pb-8 lg:pb-12">
-        <div className="grid lg:grid-cols-1 gap-2 lg:gap-12 items-start lg:items-end h-full">
-          <div className="space-y-1 sm:space-y-4 lg:space-y-6 flex flex-col justify-center items-center lg:items-start text-center lg:text-left order-2 lg:order-1 max-w-full lg:max-w-[60%] xl:max-w-[55%] 2xl:max-w-[50%] flex-shrink-0">
+      <div className="relative z-10 w-full h-full flex flex-col justify-center items-center lg:items-start pb-2 sm:pb-8 lg:pb-12">
+        <div className="w-full max-w-7xl mx-auto flex flex-col lg:flex-row items-center justify-center lg:justify-between gap-4 lg:gap-12 h-full">
+          {/* Phone mockups on mobile/tablet only - Optimized for mobile viewport */}
+          <div className="lg:hidden flex justify-center items-center scale-[0.65] xs:scale-[0.7] sm:scale-[0.75] md:scale-[0.85] order-1 flex-shrink-0">
+            <PhoneMockupTriple />
+          </div>
+          
+          <div className="space-y-2 sm:space-y-4 lg:space-y-6 flex flex-col justify-center items-center lg:items-start text-center lg:text-left order-2 lg:order-1 max-w-full lg:max-w-[60%] xl:max-w-[55%] 2xl:max-w-[50%] flex-shrink-0">
             <motion.h1 
               className="text-3xl xs:text-4xl sm:text-6xl lg:text-7xl xl:text-8xl font-bold leading-tight text-balance"
               initial={{ opacity: 0, y: 20 }}
@@ -277,11 +282,6 @@ export function HeroSection() {
                 </motion.p>
               </div>
             </motion.div>
-          </div>
-
-          {/* Phone mockups on mobile/tablet only - Optimized for mobile viewport */}
-          <div className="lg:hidden flex justify-center items-start scale-[0.65] xs:scale-[0.7] sm:scale-[0.75] md:scale-[0.85] origin-top order-1 -mt-2 sm:mt-0 flex-shrink-0">
-            <PhoneMockupTriple />
           </div>
         </div>
       </div>
