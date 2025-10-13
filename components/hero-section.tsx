@@ -6,7 +6,7 @@ import { motion } from "framer-motion"
 
 export function HeroSection() {
   return (
-    <section className="relative pt-24 pb-16 px-4 md:px-20 min-h-screen flex flex-col md:flex-row md:items-end items-center justify-center md:justify-start">
+    <section className="relative pt-24 pb-0 md:pb-0 px-4 md:px-20 min-h-[70vh] md:min-h-screen flex flex-col md:flex-row md:items-end items-center justify-center md:justify-start overflow-hidden">
       {/* Background image */}
       <motion.div
         className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -25,10 +25,9 @@ export function HeroSection() {
       
       {/* Background gradient overlay - seamless transition to next section */}
       <motion.div 
-        className="absolute inset-0" 
+        className="absolute inset-0 h-full md:h-[110%]" 
         style={{
-          background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 60%, rgba(5, 10, 15, 1) 95%)',
-          height: '110%'
+          background: 'linear-gradient(to bottom, rgba(0, 0, 0, 0) 0%, rgba(0, 0, 0, 0.2) 60%, rgba(5, 10, 15, 1) 95%)'
         }}
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
@@ -40,11 +39,11 @@ export function HeroSection() {
       />
 
       {/* Phone mockups - positioned absolutely on desktop with responsive positioning - moved slightly left */}
-      <div className="relative md:absolute scale-[0.55] sm:scale-[0.65] md:scale-125 md:right-80 md:top-1/2 md:-translate-y-1/2 z-20 top-0 -mt-2 md:mt-0">
+      <div className="relative md:absolute scale-[0.45] sm:scale-[0.55] md:scale-125 md:right-80 md:top-1/2 md:-translate-y-1/2 z-20 top-0 -mt-4 md:mt-0">
         <HeroMockups />
       </div>
 
-      <div className="relative md:absolute bottom-0 left-0 z-10 w-full pb-0 md:pb-12 pl-4 md:pl-20 -mt-4 md:mt-auto">
+      <div className="relative md:absolute bottom-0 left-0 z-10 w-full pb-0 md:pb-8 pl-4 md:pl-20 -mt-8 md:mt-auto">
         <div className="w-full max-w-2xl flex flex-col items-center md:items-start justify-start gap-0 md:gap-2">
           
           <div className="space-y-0 md:space-y-2 flex flex-col items-center md:items-start text-center md:text-left order-2 lg:order-1 max-w-full flex-shrink-0">

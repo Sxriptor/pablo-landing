@@ -164,7 +164,7 @@ export function HeroMockups() {
       />
 
       {/* Container for three mockups with consistent sizing across all desktop screens */}
-      <div className="relative flex flex-row md:flex-row items-center justify-center gap-2 md:gap-0 w-full mx-auto px-8 md:px-4 py-16 md:py-12 scale-[1.08] md:scale-100 overflow-visible flex-nowrap">
+      <div className="relative flex flex-row md:flex-row items-center justify-center gap-2 md:gap-0 w-full mx-auto px-8 md:px-4 py-8 md:py-12 scale-[1.08] md:scale-100 overflow-visible flex-nowrap">
         
         {/* Left Phone - Game Discovery */}
         <MockupFrame
@@ -202,7 +202,7 @@ export function HeroMockups() {
         
         {/* Screen indicators - Mobile only, below all mockups */}
         <motion.div 
-          className="flex md:hidden absolute -bottom-12 left-1/2 -translate-x-1/2 gap-1.5 z-30"
+          className="flex md:hidden absolute -bottom-16 left-1/2 -translate-x-1/2 gap-1 z-30"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, ease: "easeOut", delay: 0.8 }}
@@ -211,8 +211,8 @@ export function HeroMockups() {
             <motion.button
               key={index}
               onClick={() => setCurrentScreen(index)}
-              className={`h-1.5 rounded-full transition-all ${
-                index === currentScreen ? 'w-6 bg-emerald-400' : 'w-1.5 bg-white/30'
+              className={`h-1 rounded-full transition-all ${
+                index === currentScreen ? 'w-4 bg-emerald-400' : 'w-1 bg-white/30'
               }`}
               initial={{ opacity: 0, scale: 0 }}
               animate={{ opacity: 1, scale: 1 }}
@@ -398,7 +398,7 @@ function InteractiveCenterScreen({ currentScreen, setCurrentScreen }: { currentS
   }, [currentScreen, setCurrentScreen])
 
   const handleDragEnd = (event: any, info: PanInfo) => {
-    const threshold = 50
+    const threshold = 30
     if (info.offset.x > threshold && currentScreen > 0) {
       setCurrentScreen(currentScreen - 1)
     } else if (info.offset.x < -threshold && currentScreen < screens - 1) {
@@ -413,12 +413,13 @@ function InteractiveCenterScreen({ currentScreen, setCurrentScreen }: { currentS
           key={currentScreen}
           drag="x"
           dragConstraints={{ left: 0, right: 0 }}
-          dragElastic={0.2}
+          dragElastic={0.1}
+          dragMomentum={false}
           onDragEnd={handleDragEnd}
-          initial={{ x: 300, opacity: 0 }}
+          initial={{ x: 200, opacity: 0 }}
           animate={{ x: 0, opacity: 1 }}
-          exit={{ x: -300, opacity: 0 }}
-          transition={{ type: "spring", stiffness: 300, damping: 30 }}
+          exit={{ x: -200, opacity: 0 }}
+          transition={{ type: "spring", stiffness: 400, damping: 40, mass: 0.8 }}
           className="absolute inset-0"
         >
           {currentScreen === 0 && <ProfileStatsScreenGreen />}
@@ -429,13 +430,13 @@ function InteractiveCenterScreen({ currentScreen, setCurrentScreen }: { currentS
       </AnimatePresence>
 
       {/* Screen indicators - Desktop only, shown inside phone */}
-      <div className="hidden md:flex absolute bottom-2 left-1/2 -translate-x-1/2 gap-1.5 z-30">
+      <div className="hidden md:flex absolute bottom-2 left-1/2 -translate-x-1/2 gap-1 z-30">
         {Array.from({ length: screens }).map((_, index) => (
           <motion.button
             key={index}
             onClick={() => setCurrentScreen(index)}
-            className={`h-1.5 rounded-full transition-all ${
-              index === currentScreen ? 'w-6 bg-emerald-400' : 'w-1.5 bg-white/30'
+            className={`h-1 rounded-full transition-all ${
+              index === currentScreen ? 'w-4 bg-emerald-400' : 'w-1 bg-white/30'
             }`}
             whileHover={{ scale: 1.2 }}
             whileTap={{ scale: 0.9 }}
