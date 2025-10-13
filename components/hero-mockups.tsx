@@ -82,14 +82,94 @@ export function HeroMockups() {
           rotate: { duration: 12, repeat: Infinity, ease: "linear", delay: 2 },
         }}
       />
+      
+      {/* Top right floating shape */}
+      <motion.div
+        className="absolute top-1/3 -right-2 xs:-right-4 sm:-right-6 md:-right-10 lg:-right-14 w-6 h-6 xs:w-10 xs:h-10 sm:w-14 sm:h-14 md:w-18 md:h-18 lg:w-24 lg:h-24 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-teal-500/20 backdrop-blur-xl border border-white/10"
+        initial={{ opacity: 0, scale: 0.5, x: 30, y: -20 }}
+        animate={{
+          opacity: 1,
+          scale: 1,
+          x: 0,
+          y: [0, 8, 0],
+          rotate: [0, -5, 0],
+        }}
+        style={{ willChange: 'transform, opacity', backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}
+        transition={{
+          opacity: { duration: 1, ease: "easeOut", delay: 0.3 },
+          scale: { duration: 1, ease: "easeOut", delay: 0.3 },
+          x: { duration: 1, ease: "easeOut", delay: 0.3 },
+          y: { duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 1.5 },
+          rotate: { duration: 5.5, repeat: Infinity, ease: "easeInOut", delay: 1.5 },
+        }}
+      />
+      
+      {/* Bottom left floating shape */}
+      <motion.div
+        className="absolute bottom-1/3 -left-2 xs:-left-4 sm:-left-6 md:-left-10 lg:-left-14 w-7 h-7 xs:w-11 xs:h-11 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-28 lg:h-28 rounded-3xl bg-gradient-to-br from-yellow-500/15 to-orange-500/15 backdrop-blur-xl border border-white/10"
+        initial={{ opacity: 0, scale: 0.5, x: -30, y: 20 }}
+        animate={{
+          opacity: 1,
+          scale: 1,
+          x: 0,
+          y: [0, -10, 0],
+          rotate: [0, 4, 0],
+        }}
+        style={{ willChange: 'transform, opacity', backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}
+        transition={{
+          opacity: { duration: 1, ease: "easeOut", delay: 0.4 },
+          scale: { duration: 1, ease: "easeOut", delay: 0.4 },
+          x: { duration: 1, ease: "easeOut", delay: 0.4 },
+          y: { duration: 6.5, repeat: Infinity, ease: "easeInOut", delay: 1.8 },
+          rotate: { duration: 6.5, repeat: Infinity, ease: "easeInOut", delay: 1.8 },
+        }}
+      />
+      
+      {/* Small accent shape - top left */}
+      <motion.div
+        className="absolute top-1/4 left-1/4 w-4 h-4 xs:w-6 xs:h-6 sm:w-8 sm:h-8 md:w-12 md:h-12 rounded-lg bg-gradient-to-br from-pink-500/20 to-rose-500/20 backdrop-blur-xl border border-white/10"
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{
+          opacity: 1,
+          scale: 1,
+          y: [0, -8, 0],
+          rotate: [0, 90, 180, 270, 360],
+        }}
+        style={{ willChange: 'transform, opacity', backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}
+        transition={{
+          opacity: { duration: 1.2, ease: "easeOut", delay: 0.6 },
+          scale: { duration: 1.2, ease: "easeOut", delay: 0.6 },
+          y: { duration: 7, repeat: Infinity, ease: "easeInOut", delay: 2.2 },
+          rotate: { duration: 15, repeat: Infinity, ease: "linear", delay: 2.2 },
+        }}
+      />
+      
+      {/* Small accent shape - bottom right */}
+      <motion.div
+        className="absolute bottom-1/4 right-1/4 w-5 h-5 xs:w-7 xs:h-7 sm:w-10 sm:h-10 md:w-14 md:h-14 rounded-full bg-gradient-to-br from-indigo-500/15 to-purple-500/15 backdrop-blur-xl border border-white/10"
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{
+          opacity: 1,
+          scale: 1,
+          y: [0, 12, 0],
+          x: [0, -5, 0],
+        }}
+        style={{ willChange: 'transform, opacity', backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}
+        transition={{
+          opacity: { duration: 1.2, ease: "easeOut", delay: 0.7 },
+          scale: { duration: 1.2, ease: "easeOut", delay: 0.7 },
+          y: { duration: 6.8, repeat: Infinity, ease: "easeInOut", delay: 2.5 },
+          x: { duration: 6.8, repeat: Infinity, ease: "easeInOut", delay: 2.5 },
+        }}
+      />
 
-      {/* Container for three mockups with proper aspect ratio */}
-      <div className="relative flex flex-row md:flex-row items-center justify-center gap-2 md:gap-0 w-full max-w-[2000px] mx-auto px-8 md:px-4 py-16 md:py-12 scale-[1.08] md:scale-100 overflow-visible flex-nowrap">
+      {/* Container for three mockups with consistent sizing across all desktop screens */}
+      <div className="relative flex flex-row md:flex-row items-center justify-center gap-2 md:gap-0 w-full mx-auto px-8 md:px-4 py-16 md:py-12 scale-[1.08] md:scale-100 overflow-visible flex-nowrap">
         
         {/* Left Phone - Game Discovery */}
         <MockupFrame
           delay={0}
-          className="w-[30%] max-w-[300px] flex-shrink-0 md:w-auto md:max-w-none md:-mr-12 lg:-mr-16 xl:-mr-20 md:-rotate-12 md:-translate-y-3 md:scale-105 lg:scale-115 xl:scale-125"
+          className="w-[30%] flex-shrink-0 md:w-[min(280px,20vw)] md:-mr-12 lg:-mr-16 xl:-mr-20 md:-rotate-12 md:-translate-y-3"
           zIndex={10}
           animateY={[-6, 0, -6]}
           glowColor="from-blue-500/30 via-purple-500/30 to-pink-500/30"
@@ -100,7 +180,7 @@ export function HeroMockups() {
         {/* Center Phone - Interactive Multi-Screen (larger, centered) */}
         <MockupFrame
           delay={0.1}
-          className="w-[30%] max-w-[300px] flex-shrink-0 md:w-auto md:max-w-none md:scale-125 lg:scale-150 xl:scale-175"
+          className="w-[30%] flex-shrink-0 md:w-[min(360px,25vw)]"
           zIndex={20}
           animateY={[-8, 0, -8]}
           animateScale={[1.15, 1.18, 1.15]}
@@ -112,7 +192,7 @@ export function HeroMockups() {
         {/* Right Phone - Leaderboard */}
         <MockupFrame
           delay={0.3}
-          className="w-[30%] max-w-[300px] flex-shrink-0 md:w-auto md:max-w-none md:-ml-12 lg:-ml-16 xl:-ml-20 md:rotate-12 md:translate-y-4 md:scale-105 lg:scale-115 xl:scale-125"
+          className="w-[30%] flex-shrink-0 md:w-[min(280px,20vw)] md:-ml-12 lg:-ml-16 xl:-ml-20 md:rotate-12 md:translate-y-4"
           zIndex={10}
           animateY={[4, 0, 4]}
           glowColor="from-yellow-500/30 via-orange-500/30 to-red-500/30"
@@ -154,6 +234,7 @@ function MockupFrame({
   children, 
   delay = 0, 
   className = "",
+  style,
   animateY = [0, -6, 0],
   animateScale,
   zIndex = 10,
@@ -162,6 +243,7 @@ function MockupFrame({
   children: React.ReactNode
   delay?: number
   className?: string
+  style?: React.CSSProperties
   animateY?: number[]
   animateScale?: number[]
   zIndex?: number
@@ -179,16 +261,17 @@ function MockupFrame({
       style={{ 
         zIndex,
         willChange: 'transform, opacity', 
-        backfaceVisibility: 'hidden' 
+        backfaceVisibility: 'hidden',
+        ...style
       }}
     >
       <motion.div
-        // Aspect ratio container - maintains 9:16 phone proportions
+        // Aspect ratio container - maintains 9:16 phone proportions with consistent sizing
         className="relative w-full"
         style={{ 
           aspectRatio: '9 / 16',
-          maxWidth: '500px',
-          minWidth: '280px',
+          maxWidth: '100%',
+          minWidth: '240px',
           width: '100%'
         }}
         animate={{
@@ -212,9 +295,9 @@ function MockupFrame({
           <div className="absolute top-2 lg:top-3 left-1/2 -translate-x-1/2 w-20 sm:w-24 lg:w-28 h-4 sm:h-5 lg:h-6 bg-black rounded-full z-30" />
         </div>
 
-        {/* Glow effect - Mobile optimized */}
-        <div className={`absolute -inset-2 md:-inset-8 -z-10 bg-gradient-to-br ${glowColor} blur-xl md:blur-3xl rounded-full scale-100 md:scale-125 opacity-70 md:opacity-80`} />
-        <div className={`absolute -inset-4 md:-inset-12 -z-20 bg-gradient-to-br ${glowColor} blur-2xl md:blur-[60px] rounded-full scale-110 md:scale-150 opacity-40 md:opacity-40`} />
+        {/* Glow effect - Optimized for mobile and desktop */}
+        <div className={`absolute -inset-2 md:-inset-4 -z-10 bg-gradient-to-br ${glowColor} blur-xl md:blur-2xl rounded-full scale-100 md:scale-110 opacity-70 md:opacity-60`} />
+        <div className={`absolute -inset-4 md:-inset-6 -z-20 bg-gradient-to-br ${glowColor} blur-2xl md:blur-3xl rounded-full scale-110 md:scale-120 opacity-40 md:opacity-30`} />
       </motion.div>
     </motion.div>
   )
