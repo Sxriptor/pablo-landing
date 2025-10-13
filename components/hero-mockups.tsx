@@ -23,7 +23,7 @@ export function HeroMockups() {
   const [currentScreen, setCurrentScreen] = useState(1) // Screen state for center phone
 
   return (
-    <div className="w-full h-full flex items-center justify-center overflow-visible relative">
+    <div className="w-full h-full flex items-center justify-center overflow-visible relative" style={{ transform: 'translateZ(0)', WebkitTransform: 'translateZ(0)', willChange: 'auto' }}>
       {/* Floating background elements */}
       <motion.div
         className="absolute top-1/4 -left-4 xs:-left-6 sm:-left-8 md:-left-12 lg:-left-16 xl:-left-20 w-8 h-8 xs:w-12 xs:h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 xl:w-32 xl:h-32 rounded-xl xs:rounded-2xl sm:rounded-3xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 backdrop-blur-xl border border-white/10"
@@ -164,7 +164,7 @@ export function HeroMockups() {
       />
 
       {/* Container for three mockups with consistent sizing across all desktop screens */}
-      <div className="relative flex flex-row md:flex-row items-center justify-center gap-2 md:gap-0 w-full mx-auto px-8 md:px-4 py-8 md:py-12 scale-[1.08] md:scale-100 overflow-visible flex-nowrap">
+      <div className="hero-mockups-container relative flex flex-row md:flex-row items-center justify-center gap-2 md:gap-0 w-full mx-auto px-8 md:px-4 py-8 md:py-12 scale-[1.08] md:scale-100 overflow-visible flex-nowrap" style={{ transform: 'translateZ(0)', WebkitTransform: 'translateZ(0)', isolation: 'isolate' }}>
         
         {/* Left Phone - Game Discovery */}
         <MockupFrame
@@ -260,8 +260,7 @@ function MockupFrame({
       transition={{ duration: 0.8, ease: "easeOut", delay }}
       style={{ 
         zIndex,
-        willChange: 'transform, opacity', 
-        backfaceVisibility: 'hidden',
+        isolation: 'isolate',
         ...style
       }}
     >
@@ -272,7 +271,12 @@ function MockupFrame({
           aspectRatio: '9 / 16',
           maxWidth: '100%',
           minWidth: '240px',
-          width: '100%'
+          width: '100%',
+          transformStyle: 'preserve-3d',
+          backfaceVisibility: 'hidden',
+          WebkitBackfaceVisibility: 'hidden',
+          perspective: 1000,
+          WebkitPerspective: 1000,
         }}
         animate={{
           y: animateY,
@@ -285,9 +289,9 @@ function MockupFrame({
         }}
       >
         {/* Phone frame */}
-        <div className="absolute inset-0 rounded-2xl lg:rounded-[2rem] bg-black/40 backdrop-blur-2xl border border-white/20 shadow-2xl p-2 lg:p-3">
+        <div className="phone-mockup-frame absolute inset-0 rounded-2xl lg:rounded-[2rem] bg-black/40 backdrop-blur-2xl border border-white/20 shadow-2xl p-2 lg:p-3" style={{ transform: 'translateZ(0)', WebkitTransform: 'translateZ(0)' }}>
           {/* Inner screen - maintains aspect ratio */}
-          <div className="w-full h-full rounded-xl lg:rounded-[1.75rem] bg-gradient-to-br from-slate-900/95 to-slate-800/95 overflow-hidden relative">
+          <div className="phone-content w-full h-full rounded-xl lg:rounded-[1.75rem] bg-gradient-to-br from-slate-900/95 to-slate-800/95 overflow-hidden relative" style={{ transform: 'translateZ(0)', WebkitTransform: 'translateZ(0)' }}>
             {children}
           </div>
 
@@ -296,8 +300,8 @@ function MockupFrame({
         </div>
 
         {/* Glow effect - Optimized for mobile and desktop */}
-        <div className={`absolute -inset-2 md:-inset-4 -z-10 bg-gradient-to-br ${glowColor} blur-xl md:blur-2xl rounded-full scale-100 md:scale-110 opacity-70 md:opacity-60`} />
-        <div className={`absolute -inset-4 md:-inset-6 -z-20 bg-gradient-to-br ${glowColor} blur-2xl md:blur-3xl rounded-full scale-110 md:scale-120 opacity-40 md:opacity-30`} />
+        <div className={`phone-glow absolute -inset-2 md:-inset-4 -z-10 bg-gradient-to-br ${glowColor} blur-xl md:blur-2xl rounded-full scale-100 md:scale-110 opacity-70 md:opacity-60`} style={{ transform: 'translateZ(0)', WebkitTransform: 'translateZ(0)' }} />
+        <div className={`phone-glow absolute -inset-4 md:-inset-6 -z-20 bg-gradient-to-br ${glowColor} blur-2xl md:blur-3xl rounded-full scale-110 md:scale-120 opacity-40 md:opacity-30`} style={{ transform: 'translateZ(0)', WebkitTransform: 'translateZ(0)' }} />
       </motion.div>
     </motion.div>
   )

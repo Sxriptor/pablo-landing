@@ -1,0 +1,63 @@
+/* Mobile performance optimizations to prevent flickering */
+
+/* Force hardware acceleration on all animated elements */
+@media (max-width: 768px) {
+  /* Optimize all motion elements */
+  [class*="motion-"] {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 1000px;
+    perspective: 1000px;
+  }
+
+  /* Optimize backdrop blur on mobile */
+  [class*="backdrop-blur"] {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+  }
+
+  /* Prevent layout shifts during animations */
+  .hero-mockups-container {
+    contain: layout style paint;
+  }
+
+  /* Optimize transforms */
+  * {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* Reduce motion for better performance if needed */
+  @media (prefers-reduced-motion: reduce) {
+    * {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+/* Prevent flickering on all devices */
+.phone-mockup-frame {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  isolation: isolate;
+}
+
+/* Optimize glow effects */
+.phone-glow {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+  will-change: auto;
+}
+
+/* Prevent text flickering */
+.phone-content {
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
