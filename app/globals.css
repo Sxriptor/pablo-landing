@@ -2,33 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Prevent FOUC (Flash of Unstyled Content) on mobile */
-html {
-  background-color: #0c1222;
-  color-scheme: dark;
-}
-
-html:not(.dark) {
-  background-color: #ffffff;
-  color-scheme: light;
-}
-
-/* Prevent layout shift during hydration */
-body {
-  opacity: 1;
-  transition: none;
-}
-
-/* Hide animated elements on mobile to prevent flashing */
-@media (max-width: 768px) {
-  .motion-div,
-  [class*="motion-"],
-  [style*="will-change"] {
-    animation: none !important;
-    transition: none !important;
-  }
-}
-
 :root {
   --background: 0 0% 100%;
   --foreground: 0 0% 3.9%;
@@ -346,25 +319,10 @@ img, video {
     overscroll-behavior: contain;
   }
   
-  /* CRITICAL: Disable all animations on mobile to prevent flashing */
-  * {
-    animation: none !important;
-    transition: none !important;
-    will-change: auto !important;
-  }
-  
-  /* Force GPU acceleration for smoother rendering */
-  body, main, section {
-    -webkit-transform: translateZ(0);
-    transform: translateZ(0);
-    -webkit-backface-visibility: hidden;
-    backface-visibility: hidden;
-  }
-  
-  /* Disable framer-motion animations on mobile */
-  [data-framer-component-type] {
-    animation: none !important;
-    transition: none !important;
+  /* Reduce motion on mobile for better performance */
+  .mobile-reduced-motion * {
+    animation-duration: 0.3s !important;
+    transition-duration: 0.2s !important;
   }
 }
 
@@ -442,31 +400,5 @@ img, video {
   .active-nav-glow {
     color: #456882 !important;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8) !important;
-  }
-}
-
-/* Additional mobile flash prevention */
-@media (max-width: 768px) {
-  /* Disable all blur effects on mobile */
-  .backdrop-blur-xl,
-  .backdrop-blur-2xl,
-  .backdrop-blur-3xl,
-  .blur-xl,
-  .blur-2xl,
-  .blur-3xl {
-    backdrop-filter: none !important;
-    filter: none !important;
-  }
-  
-  /* Simplify gradients on mobile */
-  [class*="bg-gradient"] {
-    background-image: none !important;
-  }
-  
-  /* Remove glow effects on mobile */
-  [class*="shadow-"],
-  .shadow-xl,
-  .shadow-2xl {
-    box-shadow: none !important;
   }
 }
