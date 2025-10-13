@@ -20,9 +20,10 @@ import { Users, Clock, Trophy, Calendar, Zap, MessageCircle, Send, Search, Menu,
 
 export function HeroMockups() {
   const [currentGame] = useState(0)
+  const [currentScreen, setCurrentScreen] = useState(1) // Screen state for center phone
 
   return (
-    <div className="w-full h-full flex items-center justify-center">
+    <div className="w-full h-full flex items-center justify-center overflow-visible relative">
       {/* Floating background elements */}
       <motion.div
         className="absolute top-1/4 -left-4 xs:-left-6 sm:-left-8 md:-left-12 lg:-left-16 xl:-left-20 w-8 h-8 xs:w-12 xs:h-12 sm:w-16 sm:h-16 md:w-20 md:h-20 lg:w-24 lg:h-24 xl:w-32 xl:h-32 rounded-xl xs:rounded-2xl sm:rounded-3xl bg-gradient-to-br from-blue-500/20 to-purple-500/20 backdrop-blur-xl border border-white/10"
@@ -83,12 +84,12 @@ export function HeroMockups() {
       />
 
       {/* Container for three mockups with proper aspect ratio */}
-      <div className="relative flex flex-col md:flex-row items-center justify-center gap-6 md:gap-0 w-full max-w-[1600px] mx-auto px-4 py-12">
+      <div className="relative flex flex-row md:flex-row items-center justify-center gap-2 md:gap-0 w-full max-w-[2000px] mx-auto px-8 md:px-4 py-16 md:py-12 scale-[1.08] md:scale-100 overflow-visible flex-nowrap">
         
         {/* Left Phone - Game Discovery */}
         <MockupFrame
           delay={0}
-          className="md:-mr-12 lg:-mr-16 xl:-mr-20 md:-rotate-12 md:-translate-y-3"
+          className="w-[30%] max-w-[300px] flex-shrink-0 md:w-auto md:max-w-none md:-mr-12 lg:-mr-16 xl:-mr-20 md:-rotate-12 md:-translate-y-3 md:scale-105 lg:scale-115 xl:scale-125"
           zIndex={10}
           animateY={[-6, 0, -6]}
           glowColor="from-blue-500/30 via-purple-500/30 to-pink-500/30"
@@ -99,25 +100,48 @@ export function HeroMockups() {
         {/* Center Phone - Interactive Multi-Screen (larger, centered) */}
         <MockupFrame
           delay={0.1}
-          className="md:scale-110 lg:scale-125"
+          className="w-[30%] max-w-[300px] flex-shrink-0 md:w-auto md:max-w-none md:scale-125 lg:scale-150 xl:scale-175"
           zIndex={20}
           animateY={[-8, 0, -8]}
           animateScale={[1.15, 1.18, 1.15]}
           glowColor="from-emerald-500/30 via-teal-500/30 to-cyan-500/30"
         >
-          <InteractiveCenterScreen />
+          <InteractiveCenterScreen currentScreen={currentScreen} setCurrentScreen={setCurrentScreen} />
         </MockupFrame>
 
         {/* Right Phone - Leaderboard */}
         <MockupFrame
           delay={0.3}
-          className="md:-ml-12 lg:-ml-16 xl:-ml-20 md:rotate-12 md:translate-y-4"
+          className="w-[30%] max-w-[300px] flex-shrink-0 md:w-auto md:max-w-none md:-ml-12 lg:-ml-16 xl:-ml-20 md:rotate-12 md:translate-y-4 md:scale-105 lg:scale-115 xl:scale-125"
           zIndex={10}
           animateY={[4, 0, 4]}
           glowColor="from-yellow-500/30 via-orange-500/30 to-red-500/30"
         >
           <LeaderboardScreenOrange />
         </MockupFrame>
+        
+        {/* Screen indicators - Mobile only, below all mockups */}
+        <motion.div 
+          className="flex md:hidden absolute -bottom-12 left-1/2 -translate-x-1/2 gap-1.5 z-30"
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: "easeOut", delay: 0.8 }}
+        >
+          {Array.from({ length: 4 }).map((_, index) => (
+            <motion.button
+              key={index}
+              onClick={() => setCurrentScreen(index)}
+              className={`h-1.5 rounded-full transition-all ${
+                index === currentScreen ? 'w-6 bg-emerald-400' : 'w-1.5 bg-white/30'
+              }`}
+              initial={{ opacity: 0, scale: 0 }}
+              animate={{ opacity: 1, scale: 1 }}
+              transition={{ duration: 0.3, ease: "easeOut", delay: 0.9 + index * 0.1 }}
+              whileHover={{ scale: 1.2 }}
+              whileTap={{ scale: 0.9 }}
+            />
+          ))}
+        </motion.div>
       </div>
     </div>
   )
@@ -163,7 +187,7 @@ function MockupFrame({
         className="relative w-full"
         style={{ 
           aspectRatio: '9 / 16',
-          maxWidth: '400px',
+          maxWidth: '500px',
           minWidth: '280px',
           width: '100%'
         }}
@@ -188,8 +212,9 @@ function MockupFrame({
           <div className="absolute top-2 lg:top-3 left-1/2 -translate-x-1/2 w-20 sm:w-24 lg:w-28 h-4 sm:h-5 lg:h-6 bg-black rounded-full z-30" />
         </div>
 
-        {/* Glow effect */}
-        <div className={`absolute inset-0 -z-10 bg-gradient-to-br ${glowColor} blur-3xl rounded-full scale-110`} />
+        {/* Glow effect - Mobile optimized */}
+        <div className={`absolute -inset-2 md:-inset-8 -z-10 bg-gradient-to-br ${glowColor} blur-xl md:blur-3xl rounded-full scale-100 md:scale-125 opacity-70 md:opacity-80`} />
+        <div className={`absolute -inset-4 md:-inset-12 -z-20 bg-gradient-to-br ${glowColor} blur-2xl md:blur-[60px] rounded-full scale-110 md:scale-150 opacity-40 md:opacity-40`} />
       </motion.div>
     </motion.div>
   )
@@ -277,18 +302,17 @@ function GameDiscoveryScreenBlue() {
 /**
  * Interactive Center Screen with Multiple Pages
  */
-function InteractiveCenterScreen() {
-  const [currentScreen, setCurrentScreen] = useState(1) // Start with second screen (Active Game)
+function InteractiveCenterScreen({ currentScreen, setCurrentScreen }: { currentScreen: number, setCurrentScreen: (screen: number) => void }) {
   const x = useMotionValue(0)
   const screens = 4 // Total number of screens
 
   // Auto-rotate screens every 5 seconds
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrentScreen((prev) => (prev + 1) % screens)
+      setCurrentScreen((currentScreen + 1) % screens)
     }, 5000)
     return () => clearInterval(interval)
-  }, [])
+  }, [currentScreen, setCurrentScreen])
 
   const handleDragEnd = (event: any, info: PanInfo) => {
     const threshold = 50
@@ -321,8 +345,8 @@ function InteractiveCenterScreen() {
         </motion.div>
       </AnimatePresence>
 
-      {/* Screen indicators */}
-      <div className="absolute bottom-2 left-1/2 -translate-x-1/2 flex gap-1.5 z-30">
+      {/* Screen indicators - Desktop only, shown inside phone */}
+      <div className="hidden md:flex absolute bottom-2 left-1/2 -translate-x-1/2 gap-1.5 z-30">
         {Array.from({ length: screens }).map((_, index) => (
           <motion.button
             key={index}
@@ -443,7 +467,7 @@ function NotificationsScreenBlue() {
           {notifications.map((notif, index) => (
             <motion.div
               key={index}
-              className="backdrop-blur-xl bg-blue-500/10 rounded-xl border border-blue-500/20 p-2.5 flex items-start gap-2"
+              className="backdrop-blur-xl bg-blue-500/10 rounded-xl border border-blue-500/20 p-3.5 flex items-start gap-2"
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
@@ -629,7 +653,7 @@ function ProfileStatsScreenGreen() {
         viewport={{ once: true }}
         transition={{ delay: 0.4, duration: 0.8 }}
       >
-        <div className="backdrop-blur-xl bg-gradient-to-br from-emerald-500/20 to-green-500/20 rounded-2xl border border-emerald-500/30 p-3 shadow-2xl h-full">
+        <div className="backdrop-blur-xl bg-gradient-to-br from-emerald-500/20 to-green-500/20 rounded-2xl border border-emerald-500/30 p-4 shadow-2xl h-full">
           <div className="flex items-center gap-2 mb-2">
             <div className="w-5 h-5 rounded-lg bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center">
               <Trophy className="w-2.5 h-2.5 text-white" />
@@ -711,7 +735,7 @@ function ActiveGameScreenTeal() {
 
       {/* Game info card - Fixed overlay issue */}
       <div className="absolute top-24 left-3 right-3 z-20">
-        <div className="backdrop-blur-xl bg-gradient-to-br from-teal-500/20 to-cyan-500/20 rounded-2xl border border-teal-500/30 p-3 shadow-xl">
+        <div className="backdrop-blur-xl bg-gradient-to-br from-teal-500/20 to-cyan-500/20 rounded-2xl border border-teal-500/30 p-4 shadow-xl">
           {/* Title and status */}
           <div className="flex items-start justify-between mb-2">
             <div className="flex-1">
@@ -767,7 +791,7 @@ function ActiveGameScreenTeal() {
       {/* Game Details Section - Moved up slightly */}
       <div className="absolute top-[305px] left-3 right-3 bottom-16">
         <div className="space-y-2">
-          <div className="backdrop-blur-xl bg-teal-500/10 rounded-lg border border-teal-500/20 p-2.5">
+          <div className="backdrop-blur-xl bg-teal-500/10 rounded-lg border border-teal-500/20 p-3.5">
             <div className="flex items-center justify-between mb-1">
               <span className="text-teal-300 text-[9px] font-semibold">Court Type</span>
               <span className="text-white text-[10px] font-bold">Indoor Padel</span>
@@ -782,7 +806,7 @@ function ActiveGameScreenTeal() {
             </div>
           </div>
           
-          <div className="backdrop-blur-xl bg-teal-500/10 rounded-lg border border-teal-500/20 p-2.5">
+          <div className="backdrop-blur-xl bg-teal-500/10 rounded-lg border border-teal-500/20 p-3.5">
             <div className="flex items-center gap-2 mb-1">
               <div className="w-6 h-6 rounded-full bg-teal-500/30 flex items-center justify-center">
                 <Zap className="w-3 h-3 text-teal-400" />
@@ -824,7 +848,7 @@ function MessagesScreenPink() {
 
       {/* Header - Chat with Maria */}
       <div className="absolute top-8 left-3 right-3 z-20">
-        <div className="flex items-center gap-2 mb-4 backdrop-blur-xl bg-pink-500/10 rounded-xl border border-pink-500/20 p-2">
+        <div className="flex items-center gap-2 mb-4 backdrop-blur-xl bg-pink-500/10 rounded-xl border border-pink-500/20 p-3">
           <motion.button 
             className="w-7 h-7 rounded-full bg-pink-500/20 backdrop-blur-xl border border-pink-500/30 flex items-center justify-center flex-shrink-0"
             whileHover={{ scale: 1.05 }}
@@ -952,7 +976,7 @@ function LeaderboardScreenOrange() {
 
       {/* Leaderboard content */}
       <div className="absolute top-28 left-3 right-3 bottom-16 overflow-hidden">
-        <div className="backdrop-blur-xl bg-orange-500/10 rounded-xl border border-orange-500/20 p-3">
+        <div className="backdrop-blur-xl bg-orange-500/10 rounded-xl border border-orange-500/20 p-4">
           <h3 className="text-white text-xs font-bold mb-2">Top Players</h3>
           <div className="space-y-2">
             <LeaderboardEntry rank={1} name="Maria G." score="2,450" color="from-yellow-500 to-orange-600" />
@@ -969,7 +993,7 @@ function LeaderboardScreenOrange() {
 function GameCard({ title, time, duration, players, price, type, gradient }: any) {
   return (
     <motion.div
-      className={`backdrop-blur-xl bg-gradient-to-r ${gradient} rounded-xl border border-emerald-500/40 p-3 shadow-xl relative overflow-hidden`}
+      className={`backdrop-blur-xl bg-gradient-to-r ${gradient} rounded-xl border border-emerald-500/40 p-4 shadow-xl relative overflow-hidden`}
       whileHover={{ scale: 1.02, y: -1 }}
     >
       <div className="absolute inset-0 bg-gradient-to-r from-emerald-600/80 to-teal-600/80" />
@@ -1040,7 +1064,7 @@ function StatCircle({ label, value, delay }: any) {
 function WeeklyStat({ icon, value, label, delay }: any) {
   return (
     <motion.div
-      className="flex-1 backdrop-blur-lg bg-white/10 rounded-lg border border-white/20 p-1.5 text-center"
+      className="flex-1 backdrop-blur-lg bg-white/10 rounded-lg border border-white/20 p-2.5 text-center"
       initial={{ opacity: 0, y: 10 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}

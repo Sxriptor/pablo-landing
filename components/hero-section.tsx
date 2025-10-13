@@ -117,7 +117,7 @@ export function HeroSection() {
                 }
               }}
             >
-              Find a game near you, connect with players, and experience sports like never before.
+              Find a game near you, connect with players,<br className="md:hidden" /> and experience sports like never before.
             </motion.p>
             <motion.div 
               className="flex flex-wrap gap-3 justify-center md:justify-start scale-100"
