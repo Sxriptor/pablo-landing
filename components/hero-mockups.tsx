@@ -44,7 +44,7 @@ export function HeroMockups() {
         }}
       />
       <motion.div
-        className="absolute bottom-1/4 -right-4 xs:-right-6 sm:-right-8 md:-right-12 lg:-right-16 xl:-right-20 w-10 h-10 xs:w-14 xs:h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-32 lg:h-32 xl:w-40 xl:h-40 rounded-xl xs:rounded-2xl sm:rounded-3xl bg-gradient-to-br from-emerald-500/20 to-cyan-500/20 backdrop-blur-xl border border-white/10"
+        className="absolute bottom-1/4 -right-4 xs:-right-6 sm:-right-8 md:-right-12 lg:-right-16 xl:-right-20 w-10 h-10 xs:w-14 xs:h-14 sm:w-20 sm:h-20 md:w-24 md:h-24 lg:w-32 lg:h-32 xl:w-40 xl:h-40 rounded-xl xs:rounded-2xl sm:rounded-3xl bg-gradient-to-br from-orange-500/20 to-pink-500/20 backdrop-blur-xl border border-white/10"
         initial={{ opacity: 0, scale: 0.5, x: 40, y: 25 }}
         animate={{
           opacity: 1,
@@ -62,6 +62,25 @@ export function HeroMockups() {
           rotate: { duration: 6, repeat: Infinity, ease: "easeInOut", delay: 1.2 },
         }}
       />
+      
+      {/* Additional floating elements for more color variety */}
+      <motion.div
+        className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-6 h-6 xs:w-8 xs:h-8 sm:w-12 sm:h-12 md:w-16 md:h-16 lg:w-20 lg:h-20 rounded-full bg-gradient-to-br from-teal-500/15 to-cyan-500/15 backdrop-blur-xl border border-white/5"
+        initial={{ opacity: 0, scale: 0 }}
+        animate={{
+          opacity: 1,
+          scale: 1,
+          y: [0, -15, 0],
+          rotate: [0, 180, 360],
+        }}
+        style={{ willChange: 'transform, opacity', backfaceVisibility: 'hidden', transform: 'translate3d(0,0,0)' }}
+        transition={{
+          opacity: { duration: 1.5, ease: "easeOut", delay: 0.5 },
+          scale: { duration: 1.5, ease: "easeOut", delay: 0.5 },
+          y: { duration: 8, repeat: Infinity, ease: "easeInOut", delay: 2 },
+          rotate: { duration: 12, repeat: Infinity, ease: "linear", delay: 2 },
+        }}
+      />
 
       {/* Container for three mockups with proper aspect ratio */}
       <div className="relative flex flex-col md:flex-row items-center justify-center gap-6 md:gap-0 w-full max-w-[1600px] mx-auto px-4 py-12">
@@ -72,8 +91,9 @@ export function HeroMockups() {
           className="md:-mr-12 lg:-mr-16 xl:-mr-20 md:-rotate-12 md:-translate-y-3"
           zIndex={10}
           animateY={[-6, 0, -6]}
+          glowColor="from-blue-500/30 via-purple-500/30 to-pink-500/30"
         >
-          <GameDiscoveryScreenGreen />
+          <GameDiscoveryScreenBlue />
         </MockupFrame>
 
         {/* Center Phone - Interactive Multi-Screen (larger, centered) */}
@@ -83,6 +103,7 @@ export function HeroMockups() {
           zIndex={20}
           animateY={[-8, 0, -8]}
           animateScale={[1.15, 1.18, 1.15]}
+          glowColor="from-emerald-500/30 via-teal-500/30 to-cyan-500/30"
         >
           <InteractiveCenterScreen />
         </MockupFrame>
@@ -93,8 +114,9 @@ export function HeroMockups() {
           className="md:-ml-12 lg:-ml-16 xl:-ml-20 md:rotate-12 md:translate-y-4"
           zIndex={10}
           animateY={[4, 0, 4]}
+          glowColor="from-yellow-500/30 via-orange-500/30 to-red-500/30"
         >
-          <LeaderboardScreenSimpleGreen />
+          <LeaderboardScreenOrange />
         </MockupFrame>
       </div>
     </div>
@@ -110,7 +132,8 @@ function MockupFrame({
   className = "",
   animateY = [0, -6, 0],
   animateScale,
-  zIndex = 10
+  zIndex = 10,
+  glowColor = "from-emerald-500/30 via-teal-500/30 to-cyan-500/30"
 }: { 
   children: React.ReactNode
   delay?: number
@@ -118,6 +141,7 @@ function MockupFrame({
   animateY?: number[]
   animateScale?: number[]
   zIndex?: number
+  glowColor?: string
 }) {
   return (
     <motion.div
@@ -165,16 +189,16 @@ function MockupFrame({
         </div>
 
         {/* Glow effect */}
-        <div className="absolute inset-0 -z-10 bg-gradient-to-br from-emerald-500/30 via-teal-500/30 to-cyan-500/30 blur-3xl rounded-full scale-110" />
+        <div className={`absolute inset-0 -z-10 bg-gradient-to-br ${glowColor} blur-3xl rounded-full scale-110`} />
       </motion.div>
     </motion.div>
   )
 }
 
 /**
- * Game Discovery Screen Content - Green Theme
+ * Game Discovery Screen Content - Blue Theme
  */
-function GameDiscoveryScreenGreen() {
+function GameDiscoveryScreenBlue() {
   return (
     <>
       {/* Status bar */}
@@ -186,17 +210,17 @@ function GameDiscoveryScreenGreen() {
         </div>
       </div>
 
-      {/* Background gradient - Green theme */}
-      <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/20 via-green-500/10 to-slate-900" />
+      {/* Background gradient - Blue theme */}
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-500/20 via-purple-500/10 to-slate-900" />
 
       {/* Header */}
       <div className="absolute top-8 left-3 right-3 z-20">
         <div className="flex items-center gap-2 mb-3">
           <motion.button 
-            className="w-8 h-8 rounded-full bg-emerald-500/20 backdrop-blur-xl border border-emerald-500/30 flex items-center justify-center"
+            className="w-8 h-8 rounded-full bg-blue-500/20 backdrop-blur-xl border border-blue-500/30 flex items-center justify-center"
             whileHover={{ scale: 1.05 }}
           >
-            <Menu className="w-4 h-4 text-emerald-400" />
+            <Menu className="w-4 h-4 text-blue-400" />
           </motion.button>
           
           <div className="flex-1 relative">
@@ -209,13 +233,13 @@ function GameDiscoveryScreenGreen() {
 
         {/* Date selector */}
         <div className="flex gap-1 mb-2">
-          <div className="px-2 py-1 rounded-full text-[9px] font-semibold bg-emerald-500 text-white">
+          <div className="px-2 py-1 rounded-full text-[9px] font-semibold bg-blue-500 text-white">
             Sun 12
           </div>
-          <div className="px-2 py-1 rounded-full text-[9px] font-semibold bg-emerald-500/20 text-white backdrop-blur-xl border border-emerald-500/30">
+          <div className="px-2 py-1 rounded-full text-[9px] font-semibold bg-blue-500/20 text-white backdrop-blur-xl border border-blue-500/30">
             Mon 13
           </div>
-          <div className="px-2 py-1 rounded-full text-[9px] font-semibold bg-emerald-500/20 text-white backdrop-blur-xl border border-emerald-500/30">
+          <div className="px-2 py-1 rounded-full text-[9px] font-semibold bg-purple-500/20 text-white backdrop-blur-xl border border-purple-500/30">
             Tue 14
           </div>
         </div>
@@ -233,7 +257,7 @@ function GameDiscoveryScreenGreen() {
             players="3/4"
             price="$12"
             type="CASUAL"
-            gradient="from-emerald-500/30 to-green-500/30"
+            gradient="from-blue-500/30 to-purple-500/30"
           />
           <GameCard 
             title="Eastside League"
@@ -242,7 +266,7 @@ function GameDiscoveryScreenGreen() {
             players="3/4"
             price="$20"
             type="COMP"
-            gradient="from-emerald-500/20 to-green-500/20"
+            gradient="from-purple-500/20 to-pink-500/20"
           />
         </div>
       </div>
@@ -291,9 +315,9 @@ function InteractiveCenterScreen() {
           className="absolute inset-0"
         >
           {currentScreen === 0 && <ProfileStatsScreenGreen />}
-          {currentScreen === 1 && <ActiveGameScreenGreen />}
-          {currentScreen === 2 && <MessagesScreenGreen />}
-          {currentScreen === 3 && <NotificationsScreenGreen />}
+          {currentScreen === 1 && <ActiveGameScreenTeal />}
+          {currentScreen === 2 && <MessagesScreenPink />}
+          {currentScreen === 3 && <NotificationsScreenBlue />}
         </motion.div>
       </AnimatePresence>
 
@@ -316,9 +340,9 @@ function InteractiveCenterScreen() {
 }
 
 /**
- * Notifications Screen - Green Theme
+ * Notifications Screen - Blue Theme
  */
-function NotificationsScreenGreen() {
+function NotificationsScreenBlue() {
   const notifications = [
     { 
       type: "game", 
@@ -326,7 +350,7 @@ function NotificationsScreenGreen() {
       message: "Your padel match starts in 45 minutes", 
       time: "5m ago",
       icon: "🎾",
-      color: "from-emerald-500 to-green-600"
+      color: "from-green-500 to-emerald-600"
     },
     { 
       type: "invite", 
@@ -334,7 +358,7 @@ function NotificationsScreenGreen() {
       message: "Maria invited you to join a game", 
       time: "1h ago",
       icon: "📩",
-      color: "from-blue-500 to-blue-600"
+      color: "from-blue-500 to-indigo-600"
     },
     { 
       type: "achievement", 
@@ -342,7 +366,7 @@ function NotificationsScreenGreen() {
       message: "You've played 10 games this month", 
       time: "2h ago",
       icon: "🏆",
-      color: "from-yellow-500 to-orange-500"
+      color: "from-yellow-500 to-orange-600"
     },
     { 
       type: "message", 
@@ -350,7 +374,7 @@ function NotificationsScreenGreen() {
       message: "Carlos: Great game today!", 
       time: "3h ago",
       icon: "💬",
-      color: "from-purple-500 to-pink-500"
+      color: "from-purple-500 to-pink-600"
     },
     { 
       type: "reminder", 
@@ -358,7 +382,7 @@ function NotificationsScreenGreen() {
       message: "Complete payment for tomorrow's game", 
       time: "5h ago",
       icon: "💳",
-      color: "from-emerald-500 to-teal-600"
+      color: "from-teal-500 to-cyan-600"
     }
   ]
 
@@ -373,26 +397,26 @@ function NotificationsScreenGreen() {
         </div>
       </div>
 
-      {/* Background gradient - Green theme */}
-      <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/20 via-green-500/10 to-slate-900" />
+      {/* Background gradient - Blue theme */}
+      <div className="absolute inset-0 bg-gradient-to-b from-blue-500/20 via-indigo-500/10 to-slate-900" />
 
       {/* Header */}
       <div className="absolute top-8 left-3 right-3 z-20">
         <div className="flex items-center justify-between mb-4">
           <motion.button 
-            className="w-8 h-8 rounded-full bg-emerald-500/20 backdrop-blur-xl border border-emerald-500/30 flex items-center justify-center"
+            className="w-8 h-8 rounded-full bg-blue-500/20 backdrop-blur-xl border border-blue-500/30 flex items-center justify-center"
             whileHover={{ scale: 1.05 }}
           >
-            <Menu className="w-4 h-4 text-emerald-400" />
+            <Menu className="w-4 h-4 text-blue-400" />
           </motion.button>
           
           <h2 className="text-white text-sm font-bold">Notifications</h2>
           
           <motion.button 
-            className="w-8 h-8 rounded-full bg-emerald-500/20 backdrop-blur-xl border border-emerald-500/30 flex items-center justify-center"
+            className="w-8 h-8 rounded-full bg-blue-500/20 backdrop-blur-xl border border-blue-500/30 flex items-center justify-center"
             whileHover={{ scale: 1.05 }}
           >
-            <Filter className="w-4 h-4 text-emerald-400" />
+            <Filter className="w-4 h-4 text-blue-400" />
           </motion.button>
         </div>
 
@@ -403,8 +427,8 @@ function NotificationsScreenGreen() {
               key={index}
               className={`px-3 py-1 rounded-full text-[9px] font-semibold ${
                 index === 0 
-                  ? 'bg-emerald-500 text-white' 
-                  : 'bg-emerald-500/20 text-white/70 border border-emerald-500/30'
+                  ? 'bg-blue-500 text-white' 
+                  : 'bg-blue-500/20 text-white/70 border border-blue-500/30'
               }`}
             >
               {tab}
@@ -419,12 +443,12 @@ function NotificationsScreenGreen() {
           {notifications.map((notif, index) => (
             <motion.div
               key={index}
-              className="backdrop-blur-xl bg-emerald-500/10 rounded-xl border border-emerald-500/20 p-2.5 flex items-start gap-2"
+              className="backdrop-blur-xl bg-blue-500/10 rounded-xl border border-blue-500/20 p-2.5 flex items-start gap-2"
               initial={{ opacity: 0, x: -20 }}
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ delay: index * 0.05 }}
-              whileHover={{ scale: 1.02, backgroundColor: "rgba(16, 185, 129, 0.15)" }}
+              whileHover={{ scale: 1.02, backgroundColor: "rgba(59, 130, 246, 0.15)" }}
             >
               <div className={`w-9 h-9 rounded-lg bg-gradient-to-br ${notif.color} flex items-center justify-center text-lg flex-shrink-0`}>
                 {notif.icon}
@@ -434,7 +458,7 @@ function NotificationsScreenGreen() {
                   <h3 className="text-white text-[10px] font-bold leading-tight">
                     {notif.title}
                   </h3>
-                  <span className="text-emerald-300 text-[8px] flex-shrink-0 ml-1">{notif.time}</span>
+                  <span className="text-blue-300 text-[8px] flex-shrink-0 ml-1">{notif.time}</span>
                 </div>
                 <p className="text-white/70 text-[9px] leading-tight">
                   {notif.message}
@@ -644,9 +668,9 @@ function ProfileStatsScreenGreen() {
 }
 
 /**
- * Active Game Screen - Green Theme (Redesigned)
+ * Active Game Screen - Teal Theme (Redesigned)
  */
-function ActiveGameScreenGreen() {
+function ActiveGameScreenTeal() {
   return (
     <>
       {/* Status bar */}
@@ -658,36 +682,36 @@ function ActiveGameScreenGreen() {
         </div>
       </div>
 
-      {/* Background gradient - Green theme */}
-      <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/20 via-green-500/10 to-slate-900" />
+      {/* Background gradient - Teal theme */}
+      <div className="absolute inset-0 bg-gradient-to-b from-teal-500/20 via-cyan-500/10 to-slate-900" />
 
       {/* Header */}
       <div className="absolute top-8 left-3 right-3 z-20">
         <div className="flex items-center justify-between mb-4">
           <motion.button 
-            className="w-8 h-8 rounded-full bg-emerald-500/20 backdrop-blur-xl border border-emerald-500/30 flex items-center justify-center"
+            className="w-8 h-8 rounded-full bg-teal-500/20 backdrop-blur-xl border border-teal-500/30 flex items-center justify-center"
             whileHover={{ scale: 1.05 }}
           >
-            <Menu className="w-4 h-4 text-emerald-400" />
+            <Menu className="w-4 h-4 text-teal-400" />
           </motion.button>
           
           <div className="text-center">
             <h2 className="text-white text-sm font-bold">Active Game</h2>
-            <p className="text-emerald-300 text-[8px]">Downtown Padel Courts</p>
+            <p className="text-teal-300 text-[8px]">Downtown Padel Courts</p>
           </div>
           
           <motion.button 
-            className="w-8 h-8 rounded-full bg-emerald-500/20 backdrop-blur-xl border border-emerald-500/30 flex items-center justify-center"
+            className="w-8 h-8 rounded-full bg-teal-500/20 backdrop-blur-xl border border-teal-500/30 flex items-center justify-center"
             whileHover={{ scale: 1.05 }}
           >
-            <Bell className="w-4 h-4 text-emerald-400" />
+            <Bell className="w-4 h-4 text-teal-400" />
           </motion.button>
         </div>
       </div>
 
       {/* Game info card - Fixed overlay issue */}
       <div className="absolute top-24 left-3 right-3 z-20">
-        <div className="backdrop-blur-xl bg-gradient-to-br from-emerald-500/20 to-green-500/20 rounded-2xl border border-emerald-500/30 p-3 shadow-xl">
+        <div className="backdrop-blur-xl bg-gradient-to-br from-teal-500/20 to-cyan-500/20 rounded-2xl border border-teal-500/30 p-3 shadow-xl">
           {/* Title and status */}
           <div className="flex items-start justify-between mb-2">
             <div className="flex-1">
@@ -697,7 +721,7 @@ function ActiveGameScreenGreen() {
                 <span>Starting in 45 min</span>
               </div>
             </div>
-            <div className="px-2 py-0.5 rounded-full text-[8px] font-bold bg-emerald-500/30 text-emerald-200 border border-emerald-400/30 flex-shrink-0">
+            <div className="px-2 py-0.5 rounded-full text-[8px] font-bold bg-teal-500/30 text-teal-200 border border-teal-400/30 flex-shrink-0">
               CONFIRMED
             </div>
           </div>
@@ -710,10 +734,10 @@ function ActiveGameScreenGreen() {
 
           {/* Players */}
           <div className="mb-2">
-            <p className="text-emerald-300 text-[9px] mb-1.5 font-semibold">Players (4/4)</p>
+            <p className="text-teal-300 text-[9px] mb-1.5 font-semibold">Players (4/4)</p>
             <div className="flex gap-2">
               {['M', 'S', 'J', 'A'].map((initial, i) => (
-                <div key={i} className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center text-white font-bold text-xs shadow-lg">
+                <div key={i} className="w-8 h-8 rounded-full bg-gradient-to-br from-teal-500 to-cyan-600 flex items-center justify-center text-white font-bold text-xs shadow-lg">
                   {initial}
                 </div>
               ))}
@@ -723,7 +747,7 @@ function ActiveGameScreenGreen() {
           {/* Action buttons - Fixed spacing */}
           <div className="flex gap-2 mt-2">
             <motion.button
-              className="flex-1 bg-gradient-to-r from-emerald-500 to-green-600 text-white font-bold py-1.5 rounded-lg text-[10px] shadow-lg"
+              className="flex-1 bg-gradient-to-r from-teal-500 to-cyan-600 text-white font-bold py-1.5 rounded-lg text-[10px] shadow-lg"
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.98 }}
             >
@@ -743,25 +767,25 @@ function ActiveGameScreenGreen() {
       {/* Game Details Section - Moved up slightly */}
       <div className="absolute top-[305px] left-3 right-3 bottom-16">
         <div className="space-y-2">
-          <div className="backdrop-blur-xl bg-emerald-500/10 rounded-lg border border-emerald-500/20 p-2.5">
+          <div className="backdrop-blur-xl bg-teal-500/10 rounded-lg border border-teal-500/20 p-2.5">
             <div className="flex items-center justify-between mb-1">
-              <span className="text-emerald-300 text-[9px] font-semibold">Court Type</span>
+              <span className="text-teal-300 text-[9px] font-semibold">Court Type</span>
               <span className="text-white text-[10px] font-bold">Indoor Padel</span>
             </div>
             <div className="flex items-center justify-between mb-1">
-              <span className="text-emerald-300 text-[9px] font-semibold">Duration</span>
+              <span className="text-teal-300 text-[9px] font-semibold">Duration</span>
               <span className="text-white text-[10px] font-bold">90 minutes</span>
             </div>
             <div className="flex items-center justify-between">
-              <span className="text-emerald-300 text-[9px] font-semibold">Price per player</span>
+              <span className="text-teal-300 text-[9px] font-semibold">Price per player</span>
               <span className="text-white text-[10px] font-bold">$15.00</span>
             </div>
           </div>
           
-          <div className="backdrop-blur-xl bg-emerald-500/10 rounded-lg border border-emerald-500/20 p-2.5">
+          <div className="backdrop-blur-xl bg-teal-500/10 rounded-lg border border-teal-500/20 p-2.5">
             <div className="flex items-center gap-2 mb-1">
-              <div className="w-6 h-6 rounded-full bg-emerald-500/30 flex items-center justify-center">
-                <Zap className="w-3 h-3 text-emerald-400" />
+              <div className="w-6 h-6 rounded-full bg-teal-500/30 flex items-center justify-center">
+                <Zap className="w-3 h-3 text-teal-400" />
               </div>
               <span className="text-white text-[10px] font-semibold">Equipment Included</span>
             </div>
@@ -774,9 +798,9 @@ function ActiveGameScreenGreen() {
 }
 
 /**
- * Messages Screen - Green Theme (Actual Conversation View)
+ * Messages Screen - Pink Theme (Actual Conversation View)
  */
-function MessagesScreenGreen() {
+function MessagesScreenPink() {
   const conversation = [
     { text: "Hey! Are you free for a game tomorrow?", sender: "them", time: "10:23 AM" },
     { text: "Yeah! What time works for you?", sender: "me", time: "10:25 AM" },
@@ -795,33 +819,33 @@ function MessagesScreenGreen() {
         </div>
       </div>
 
-      {/* Background gradient - Green theme */}
-      <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/20 via-green-500/10 to-slate-900" />
+      {/* Background gradient - Pink theme */}
+      <div className="absolute inset-0 bg-gradient-to-b from-pink-500/20 via-rose-500/10 to-slate-900" />
 
       {/* Header - Chat with Maria */}
       <div className="absolute top-8 left-3 right-3 z-20">
-        <div className="flex items-center gap-2 mb-4 backdrop-blur-xl bg-emerald-500/10 rounded-xl border border-emerald-500/20 p-2">
+        <div className="flex items-center gap-2 mb-4 backdrop-blur-xl bg-pink-500/10 rounded-xl border border-pink-500/20 p-2">
           <motion.button 
-            className="w-7 h-7 rounded-full bg-emerald-500/20 backdrop-blur-xl border border-emerald-500/30 flex items-center justify-center flex-shrink-0"
+            className="w-7 h-7 rounded-full bg-pink-500/20 backdrop-blur-xl border border-pink-500/30 flex items-center justify-center flex-shrink-0"
             whileHover={{ scale: 1.05 }}
           >
-            <ChevronRight className="w-3.5 h-3.5 text-emerald-400 rotate-180" />
+            <ChevronRight className="w-3.5 h-3.5 text-pink-400 rotate-180" />
           </motion.button>
           
-          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center text-white font-bold text-xs flex-shrink-0">
+          <div className="w-9 h-9 rounded-full bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center text-white font-bold text-xs flex-shrink-0">
             M
           </div>
           
           <div className="flex-1 min-w-0">
             <h2 className="text-white text-xs font-bold">Maria G.</h2>
-            <p className="text-emerald-300 text-[8px]">Active now</p>
+            <p className="text-pink-300 text-[8px]">Active now</p>
           </div>
           
           <motion.button 
-            className="w-7 h-7 rounded-full bg-emerald-500/20 backdrop-blur-xl border border-emerald-500/30 flex items-center justify-center flex-shrink-0"
+            className="w-7 h-7 rounded-full bg-pink-500/20 backdrop-blur-xl border border-pink-500/30 flex items-center justify-center flex-shrink-0"
             whileHover={{ scale: 1.05 }}
           >
-            <Users className="w-3.5 h-3.5 text-emerald-400" />
+            <Users className="w-3.5 h-3.5 text-pink-400" />
           </motion.button>
         </div>
       </div>
@@ -841,7 +865,7 @@ function MessagesScreenGreen() {
               <div className={`max-w-[75%] ${msg.sender === 'me' ? 'order-2' : 'order-1'}`}>
                 <div className={`backdrop-blur-xl rounded-2xl p-2.5 ${
                   msg.sender === 'me' 
-                    ? 'bg-gradient-to-br from-emerald-500 to-green-600 rounded-br-sm' 
+                    ? 'bg-gradient-to-br from-pink-500 to-rose-600 rounded-br-sm' 
                     : 'bg-white/10 border border-white/20 rounded-bl-sm'
                 }`}>
                   <p className="text-white text-[10px] leading-relaxed">{msg.text}</p>
@@ -865,7 +889,7 @@ function MessagesScreenGreen() {
             disabled
           />
           <motion.button 
-            className="w-7 h-7 rounded-full bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center flex-shrink-0"
+            className="w-7 h-7 rounded-full bg-gradient-to-br from-pink-500 to-rose-600 flex items-center justify-center flex-shrink-0"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -878,9 +902,9 @@ function MessagesScreenGreen() {
 }
 
 /**
- * Leaderboard Screen Content (Right Phone) - Green Theme
+ * Leaderboard Screen Content (Right Phone) - Orange Theme
  */
-function LeaderboardScreenSimpleGreen() {
+function LeaderboardScreenOrange() {
   return (
     <>
       {/* Status bar */}
@@ -892,21 +916,21 @@ function LeaderboardScreenSimpleGreen() {
         </div>
       </div>
 
-      {/* Background gradient - Green theme */}
-      <div className="absolute inset-0 bg-gradient-to-b from-emerald-500/20 via-green-500/10 to-slate-900" />
+      {/* Background gradient - Orange theme */}
+      <div className="absolute inset-0 bg-gradient-to-b from-orange-500/20 via-yellow-500/10 to-slate-900" />
 
       {/* Header */}
       <div className="absolute top-8 left-2 right-2 z-20">
         <div className="flex items-center gap-1 mb-3">
           <motion.button 
-            className="w-6 h-6 rounded-full bg-emerald-500/20 backdrop-blur-xl border border-emerald-500/30 flex items-center justify-center"
+            className="w-6 h-6 rounded-full bg-orange-500/20 backdrop-blur-xl border border-orange-500/30 flex items-center justify-center"
             whileHover={{ scale: 1.05 }}
           >
-            <Menu className="w-3 h-3 text-emerald-400" />
+            <Menu className="w-3 h-3 text-orange-400" />
           </motion.button>
           
           <div className="flex gap-0.5 flex-wrap">
-            <div className="px-1.5 py-0.5 rounded-full bg-emerald-500/20 backdrop-blur-xl border border-emerald-500/30 text-white text-[7px] font-semibold">
+            <div className="px-1.5 py-0.5 rounded-full bg-orange-500/20 backdrop-blur-xl border border-orange-500/30 text-white text-[7px] font-semibold">
               🏓 Pickleball
             </div>
           </div>
@@ -914,7 +938,7 @@ function LeaderboardScreenSimpleGreen() {
 
         {/* Scope tabs */}
         <div className="flex gap-0.5 mb-3 justify-center">
-          <div className="px-2 py-0.5 rounded-full text-[8px] font-semibold border border-emerald-500 text-emerald-400 bg-emerald-500/10">
+          <div className="px-2 py-0.5 rounded-full text-[8px] font-semibold border border-orange-500 text-orange-400 bg-orange-500/10">
             Local
           </div>
           <div className="px-2 py-0.5 rounded-full text-[8px] font-semibold text-white/70">
@@ -928,12 +952,12 @@ function LeaderboardScreenSimpleGreen() {
 
       {/* Leaderboard content */}
       <div className="absolute top-28 left-3 right-3 bottom-16 overflow-hidden">
-        <div className="backdrop-blur-xl bg-emerald-500/10 rounded-xl border border-emerald-500/20 p-3">
+        <div className="backdrop-blur-xl bg-orange-500/10 rounded-xl border border-orange-500/20 p-3">
           <h3 className="text-white text-xs font-bold mb-2">Top Players</h3>
           <div className="space-y-2">
-            <LeaderboardEntry rank={1} name="Maria G." score="2,450" />
-            <LeaderboardEntry rank={2} name="John D." score="2,380" />
-            <LeaderboardEntry rank={3} name="Sarah K." score="2,310" />
+            <LeaderboardEntry rank={1} name="Maria G." score="2,450" color="from-yellow-500 to-orange-600" />
+            <LeaderboardEntry rank={2} name="John D." score="2,380" color="from-orange-500 to-red-500" />
+            <LeaderboardEntry rank={3} name="Sarah K." score="2,310" color="from-red-500 to-pink-500" />
           </div>
         </div>
       </div>
@@ -1029,16 +1053,16 @@ function WeeklyStat({ icon, value, label, delay }: any) {
   )
 }
 
-function LeaderboardEntry({ rank, name, score }: any) {
+function LeaderboardEntry({ rank, name, score, color = "from-orange-500 to-red-500" }: any) {
   return (
     <div className="flex items-center justify-between py-1.5 border-b border-white/10 last:border-0">
       <div className="flex items-center gap-2">
-        <div className="w-6 h-6 rounded-full bg-gradient-to-br from-emerald-500 to-green-600 flex items-center justify-center text-white text-[10px] font-bold">
+        <div className={`w-6 h-6 rounded-full bg-gradient-to-br ${color} flex items-center justify-center text-white text-[10px] font-bold`}>
           {rank}
         </div>
         <span className="text-white text-xs font-semibold">{name}</span>
       </div>
-      <span className="text-emerald-400 text-xs font-bold">{score}</span>
+      <span className="text-orange-400 text-xs font-bold">{score}</span>
     </div>
   )
 }
