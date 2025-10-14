@@ -417,6 +417,71 @@ export default function PartnersPage() {
             </div>
           </section>
 
+          {/* Existing Partners Section */}
+          <section className="py-16 sm:py-24 lg:py-32 px-4 relative overflow-hidden" style={{ background: '#050a0f' }}>
+            <div className="max-w-4xl mx-auto relative z-10">
+              <motion.div 
+                className="text-center mb-12 sm:mb-16"
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-100px" }}
+                transition={{ duration: 0.8 }}
+              >
+                <motion.h2 
+                  className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-4 sm:mb-6 leading-tight"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.6, delay: 0.2 }}
+                >
+                  Existing Partners
+                </motion.h2>
+                <motion.div 
+                  className="w-12 sm:w-16 h-px mx-auto mb-6" 
+                  style={{ backgroundColor: '#456882' }}
+                  initial={{ width: 0 }}
+                  whileInView={{ width: 'auto' }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                />
+                <motion.p 
+                  className="text-base sm:text-lg text-gray-300 max-w-2xl mx-auto mb-8"
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.6, delay: 0.6 }}
+                >
+                  Already a PlayCircle partner? Access your dashboard to manage venues, courts, matches, and events.
+                </motion.p>
+                
+                <motion.div
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true, margin: "-100px" }}
+                  transition={{ duration: 0.6, delay: 0.8 }}
+                >
+                  <motion.a
+                    href="/partner-dashboard"
+                    className="inline-flex items-center px-8 py-4 rounded-full text-lg font-semibold text-white"
+                    style={{ backgroundColor: '#456882' }}
+                    whileHover={{ 
+                      scale: 1.05, 
+                      y: -2,
+                      boxShadow: '0 10px 30px rgba(69, 104, 130, 0.3)'
+                    }}
+                    whileTap={{ scale: 0.98 }}
+                    transition={{ duration: 0.2 }}
+                  >
+                    <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 16l-4-4m0 0l4-4m-4 4h14m-5 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h7a3 3 0 013 3v1" />
+                    </svg>
+                    Partner Dashboard
+                  </motion.a>
+                </motion.div>
+              </motion.div>
+            </div>
+          </section>
+
           {/* Partnership Application Form */}
           <section className="py-16 sm:py-24 lg:py-32 px-4 relative overflow-hidden" style={{ background: '#050a0f' }}>
             <div className="max-w-4xl mx-auto relative z-10">
