@@ -74,13 +74,13 @@ export function Sidebar({ className }: SidebarProps) {
   return (
     <div
       className={cn(
-        'flex flex-col border-r bg-background transition-all duration-300',
+        'border-r bg-background transition-all duration-300',
         collapsed ? 'w-16' : 'w-64',
         className
       )}
     >
       {/* Navigation */}
-      <div className="flex-1 p-4">
+      <div className="p-4">
         {/* Account Pages Header */}
         {!collapsed && (
           <div className="mb-4">
@@ -89,7 +89,7 @@ export function Sidebar({ className }: SidebarProps) {
             </h3>
           </div>
         )}
-        
+
         {/* Collapse Toggle - moved to top of navigation */}
         <div className="flex justify-end mb-4">
           <Button
@@ -106,6 +106,7 @@ export function Sidebar({ className }: SidebarProps) {
           </Button>
         </div>
 
+        <nav className="space-y-1">
           {navigation.map((item) => {
             const isActive = pathname === item.href
             const Icon = item.icon

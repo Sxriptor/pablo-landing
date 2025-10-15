@@ -73,7 +73,7 @@ export function Sidebar({ className }: SidebarProps) {
   return (
     <div
       className={cn(
-        'flex flex-col transition-all duration-300 relative min-h-screen',
+        'transition-all duration-300 relative min-h-screen',
         collapsed ? 'w-24' : 'w-80',
         className
       )}
@@ -100,7 +100,7 @@ export function Sidebar({ className }: SidebarProps) {
       )}
 
       {/* Navigation */}
-      <div className="flex-1 px-4">
+      <div className="px-4 pb-4">
         <nav className="space-y-2">
         {navigation.map((item) => {
           const isActive = pathname === item.href
@@ -135,8 +135,8 @@ export function Sidebar({ className }: SidebarProps) {
 
       {/* Footer */}
       {!collapsed && (
-        <div className="mt-auto p-6 border-t border-gray-700/50">
-          <div className="rounded-2xl p-4" style={{
+        <div className="px-6 pb-6 border-t border-gray-700/50">
+          <div className="rounded-2xl p-4 mt-6" style={{
             background: 'rgba(26, 32, 53, 0.5)',
             border: '1px solid rgba(59, 130, 246, 0.1)'
           }}>

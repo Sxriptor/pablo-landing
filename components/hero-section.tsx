@@ -54,26 +54,6 @@ export function HeroSection() {
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6 }}
             >
-              <motion.span 
-                className="whitespace-nowrap inline-block"
-                style={{ 
-                  color: '#456882',
-                  willChange: 'transform',
-                  backfaceVisibility: 'hidden',
-                  transform: 'translate3d(0,0,0)'
-                }}
-                animate={{ 
-                  x: [0, 3, 4, 3, 0, -3, -4, -3, 0],
-                  y: [0, -3, 0, 3, 4, 3, 0, -3, 0]
-                }}
-                transition={{
-                  duration: 15,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              >
-                Play Sports, 
-              </motion.span>
               <br />
               <motion.span
                 className="block text-3xl md:text-[4rem] md:mt-4"
