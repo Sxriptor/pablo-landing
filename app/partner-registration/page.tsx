@@ -474,7 +474,7 @@ export default function PartnerRegistrationPage() {
             <p className="text-sm text-slate-400">
               Already have an account?{' '}
               <a
-                href="/partner-login"
+                href="/partner/entry"
                 className="font-medium text-blue-400 hover:text-blue-300 transition-colors"
               >
                 Sign in here

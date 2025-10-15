@@ -3,27 +3,32 @@
 import { useState } from 'react'
 import { motion } from "framer-motion"
 import Image from 'next/image'
-import { useRouter } from 'next/navigation'
 
-export default function PartnerActivationPage() {
-  const [activationCode, setActivationCode] = useState('')
+export default function PartnerEntryPage() {
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [rememberMe, setRememberMe] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const router = useRouter()
 
-  const handleActivation = async (e: React.FormEvent) => {
+  const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
     setLoading(true)
     setError('')
 
-    // Simulate activation code validation
+    // Dev bypass code
+    if (password === '8891') {
+      setTimeout(() => {
+        // Redirect to the partner dashboard
+        window.location.href = '/partner/dashboard'
+        setLoading(false)
+      }, 1000)
+      return
+    }
+
+    // For now, show a message about the partner dashboard being in development
     setTimeout(() => {
-      if (activationCode.toLowerCase() === 'partner2024' || activationCode === '8891') {
-        // Redirect to partner registration
-        router.push('/partner-registration')
-      } else {
-        setError('Invalid activation code. Please check your code and try again.')
-      }
+      setError('Partner Dashboard is currently in development. Please check back soon! (Use code 8891 for demo)')
       setLoading(false)
     }, 1000)
   }
@@ -124,10 +129,10 @@ export default function PartnerActivationPage() {
             >
               <h1 className="text-6xl lg:text-7xl font-black leading-none tracking-tight">
                 <span className="block bg-gradient-to-r from-white via-blue-100 to-purple-200 bg-clip-text text-transparent drop-shadow-lg">
-                  PARTNER
+                  PLAYCIRCLE
                 </span>
                 <span className="block text-4xl lg:text-5xl font-light mt-2 text-white/90 tracking-wider">
-                  ACTIVATION
+                  PARTNER DASHBOARD
                 </span>
               </h1>
             </motion.div>
@@ -151,21 +156,21 @@ export default function PartnerActivationPage() {
             >
               <div className="h-px w-24 bg-gradient-to-r from-transparent via-white/50 to-transparent mx-auto"></div>
               <p className="text-xl lg:text-2xl font-light text-white/90 leading-relaxed mx-auto max-w-lg">
-                Enter your activation code to begin your partner journey
+                Manage your venues, events, and connect with players in your community
               </p>
               <div className="flex items-center justify-center space-x-2 text-white/70">
-                <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse"></div>
-                <span className="text-sm font-medium tracking-widest uppercase">
-                  Exclusive Access
-                </span>
                 <div className="w-2 h-2 rounded-full bg-blue-400 animate-pulse"></div>
+                <span className="text-sm font-medium tracking-widest uppercase">
+                  Professional Dashboard
+                </span>
+                <div className="w-2 h-2 rounded-full bg-purple-400 animate-pulse"></div>
               </div>
             </motion.div>
           </motion.div>
         </div>
       </div>
 
-      {/* Right side - Activation Form */}
+      {/* Right side - Login Form */}
       <div className="w-full lg:w-1/2 flex items-center justify-center bg-slate-900 p-8">
         <div className="w-full max-w-md space-y-8">
           {/* Welcome Message */}
@@ -191,7 +196,7 @@ export default function PartnerActivationPage() {
                 ease: "easeInOut"
               }}
             >
-              Welcome Partner!
+              Nice to see you!
             </motion.h2>
             <motion.p 
               className="text-slate-400"
@@ -209,13 +214,13 @@ export default function PartnerActivationPage() {
                 ease: "easeInOut"
               }}
             >
-              Enter your activation code to get started
+              Enter your email and password to sign in
             </motion.p>
           </motion.div>
 
-          {/* Activation Form */}
+          {/* Login Form */}
           <motion.form 
-            onSubmit={handleActivation} 
+            onSubmit={handleSignIn} 
             className="space-y-6"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
@@ -252,27 +257,83 @@ export default function PartnerActivationPage() {
                 ease: "easeInOut"
               }}
             >
-              <label htmlFor="activationCode" className="block text-sm font-medium text-white">
-                Activation Code
+              <label htmlFor="email" className="block text-sm font-medium text-white">
+                Email
               </label>
               <input
-                id="activationCode"
-                type="text"
-                value={activationCode}
-                onChange={(e) => setActivationCode(e.target.value)}
-                placeholder="Enter your activation code"
+                id="email"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Your email address"
                 required
                 disabled={loading}
-                className="w-full px-4 py-3 rounded-lg bg-slate-800 border border-slate-700 text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors disabled:opacity-50 text-center text-lg font-mono tracking-wider"
+                className="w-full px-4 py-3 rounded-lg bg-slate-800 border border-slate-700 text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors disabled:opacity-50"
               />
-              <p className="text-xs text-slate-500 text-center">
-                Code is case-sensitive and provided by PlayCircle
-              </p>
+            </motion.div>
+
+            <motion.div 
+              className="space-y-2"
+              style={{ 
+                willChange: 'transform',
+                backfaceVisibility: 'hidden'
+              }}
+              animate={{ 
+                x: [0, -0.5, -1, -0.5, 0, 0.5, 1, 0.5, 0],
+                y: [0, 0.5, 0, -0.5, -0.5, -0.5, 0, 0.5, 0]
+              }}
+              transition={{
+                duration: 15,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            >
+              <label htmlFor="password" className="block text-sm font-medium text-white">
+                Password
+              </label>
+              <input
+                id="password"
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Your password"
+                required
+                disabled={loading}
+                className="w-full px-4 py-3 rounded-lg bg-slate-800 border border-slate-700 text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors disabled:opacity-50"
+              />
+            </motion.div>
+
+            <motion.div 
+              className="flex items-center"
+              style={{ 
+                willChange: 'transform',
+                backfaceVisibility: 'hidden'
+              }}
+              animate={{ 
+                x: [0, 1, 1.5, 1, 0, -1, -1.5, -1, 0],
+                y: [0, -0.5, 0, 0.5, 0.5, 0.5, 0, -0.5, 0]
+              }}
+              transition={{
+                duration: 17,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            >
+              <input
+                id="remember-me"
+                type="checkbox"
+                checked={rememberMe}
+                onChange={(e) => setRememberMe(e.target.checked)}
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-slate-700 rounded bg-slate-800"
+              />
+              <label htmlFor="remember-me" className="ml-2 text-sm text-slate-300">
+                Remember me
+              </label>
             </motion.div>
 
             <motion.button
               type="submit"
-              className="w-full bg-green-600 hover:bg-green-700 text-white font-medium py-3 rounded-lg transition-colors flex items-center justify-center disabled:opacity-50"
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-colors flex items-center justify-center disabled:opacity-50"
               disabled={loading}
               whileHover={{ scale: loading ? 1 : 1.02 }}
               whileTap={{ scale: loading ? 1 : 0.98 }}
@@ -281,10 +342,10 @@ export default function PartnerActivationPage() {
               {loading ? (
                 <>
                   <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                  Validating...
+                  Signing In...
                 </>
               ) : (
-                'ACTIVATE & CONTINUE'
+                'SIGN IN'
               )}
             </motion.button>
           </motion.form>
@@ -311,28 +372,54 @@ export default function PartnerActivationPage() {
                 ease: "easeInOut"
               }}
             >
-              Already have an account?{' '}
+              Have an activation code?{' '}
               <a
-                href="/partner/entry"
+                href="/partner-activation"
                 className="font-medium text-blue-400 hover:text-blue-300 transition-colors"
               >
-                Sign in here
+                Enter it here!
               </a>
             </motion.p>
           </motion.div>
 
-          {/* Info Box */}
-          <motion.div
-            className="mt-6 p-4 rounded-lg bg-blue-500/20 border border-blue-500/30 text-blue-300 text-sm text-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
+          {/* Footer */}
+          <motion.div 
+            className="text-center text-xs text-slate-500 mt-8"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1.2 }}
             style={{ 
               willChange: 'transform',
               backfaceVisibility: 'hidden'
             }}
           >
-            <motion.div
+            <motion.p
+              animate={{ 
+                x: [0, -0.5, -1, -0.5, 0, 0.5, 1, 0.5, 0],
+                y: [0, 0.5, 0, -0.5, -0.5, -0.5, 0, 0.5, 0]
+              }}
+              transition={{
+                duration: 19,
+                repeat: Infinity,
+                ease: "easeInOut"
+              }}
+            >
+              © 2024 • Made with ❤️ by PlayCircle • Creative Tim for a better web
+            </motion.p>
+          </motion.div>
+
+          {/* Development Notice */}
+          <motion.div
+            className="mt-6 p-3 rounded-lg bg-yellow-500/20 border border-yellow-500/30 text-yellow-300 text-xs text-center"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.6, delay: 1.4 }}
+            style={{ 
+              willChange: 'transform',
+              backfaceVisibility: 'hidden'
+            }}
+          >
+            <motion.p
               animate={{ 
                 x: [0, 1, 1.5, 1, 0, -1, -1.5, -1, 0],
                 y: [0, -0.5, 0, 0.5, 0.5, 0.5, 0, -0.5, 0]
@@ -343,16 +430,8 @@ export default function PartnerActivationPage() {
                 ease: "easeInOut"
               }}
             >
-              <div className="flex items-center justify-center mb-2">
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                </svg>
-                Demo Access
-              </div>
-              <p>
-                Use code <span className="font-mono font-bold">PARTNER2024</span> or <span className="font-mono font-bold">8891</span> for demo access
-              </p>
-            </motion.div>
+              Development Notice: Use code 8891 for demo access
+            </motion.p>
           </motion.div>
         </div>
       </div>

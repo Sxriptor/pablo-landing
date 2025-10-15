@@ -7,9 +7,8 @@ export default function PartnerDashboardRedirect() {
   const router = useRouter()
 
   useEffect(() => {
-    // For now, redirect to a partner login page within the same app
-    // Later this can be updated to point to the separate partner dashboard
-    router.push('/partner-login')
+    // Redirect to the partner dashboard
+    router.push('/partner/dashboard')
   }, [router])
 
   return (

@@ -79,69 +79,79 @@ export function Sidebar({ className }: SidebarProps) {
         className
       )}
     >
-      {/* Collapse Toggle */}
-      <div className="flex h-16 items-center justify-end px-4 border-b">
-        <Button
-          variant="ghost"
-          size="icon"
-          onClick={() => setCollapsed(!collapsed)}
-          className="h-8 w-8"
-        >
-          {collapsed ? (
-            <ChevronRight className="h-4 w-4" />
-          ) : (
-            <ChevronLeft className="h-4 w-4" />
-          )}
-        </Button>
-      </div>
-
       {/* Navigation */}
-      <nav className="flex-1 space-y-1 p-4">
-        {navigation.map((item) => {
-          const isActive = pathname === item.href
-          const Icon = item.icon
+      <div className="flex-1 p-4">
+        {/* Account Pages Header */}
+        {!collapsed && (
+          <div className="mb-4">
+            <h3 className="text-xs font-semibold text-muted-foreground uppercase tracking-wider">
+              Account Pages
+            </h3>
+          </div>
+        )}
+        
+        {/* Collapse Toggle - moved to top of navigation */}
+        <div className="flex justify-end mb-4">
+          <Button
+            variant="ghost"
+            size="icon"
+            onClick={() => setCollapsed(!collapsed)}
+            className="h-8 w-8"
+          >
+            {collapsed ? (
+              <ChevronRight className="h-4 w-4" />
+            ) : (
+              <ChevronLeft className="h-4 w-4" />
+            )}
+          </Button>
+        </div>
 
-          return (
-            <Link key={item.name} href={item.href}>
-              <div
-                className={cn(
-                  'group flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-colors',
-                  isActive
-                    ? 'bg-primary text-primary-foreground'
-                    : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
-                )}
-              >
-                <Icon className="h-5 w-5 flex-shrink-0" />
+          {navigation.map((item) => {
+            const isActive = pathname === item.href
+            const Icon = item.icon
+
+            return (
+              <Link key={item.name} href={item.href}>
+                <div
+                  className={cn(
+                    'group flex items-center rounded-lg px-3 py-2 text-sm font-medium transition-colors',
+                    isActive
+                      ? 'bg-primary text-primary-foreground'
+                      : 'text-muted-foreground hover:bg-accent hover:text-accent-foreground'
+                  )}
+                >
+                  <Icon className="h-5 w-5 flex-shrink-0" />
+                  {!collapsed && (
+                    <>
+                      <span className="ml-3 flex-1">{item.name}</span>
+                      {item.name === 'Matches' && (
+                        <Badge variant="secondary" className="ml-auto text-xs">
+                          3
+                        </Badge>
+                      )}
+                      {item.name === 'Events' && (
+                        <Badge variant="secondary" className="ml-auto text-xs">
+                          2
+                        </Badge>
+                      )}
+                      {item.name === 'Classes' && (
+                        <Badge variant="secondary" className="ml-auto text-xs">
+                          5
+                        </Badge>
+                      )}
+                    </>
+                  )}
+                </div>
                 {!collapsed && (
-                  <>
-                    <span className="ml-3 flex-1">{item.name}</span>
-                    {item.name === 'Matches' && (
-                      <Badge variant="secondary" className="ml-auto text-xs">
-                        3
-                      </Badge>
-                    )}
-                    {item.name === 'Events' && (
-                      <Badge variant="secondary" className="ml-auto text-xs">
-                        2
-                      </Badge>
-                    )}
-                    {item.name === 'Classes' && (
-                      <Badge variant="secondary" className="ml-auto text-xs">
-                        5
-                      </Badge>
-                    )}
-                  </>
+                  <p className="ml-11 text-xs text-muted-foreground">
+                    {item.description}
+                  </p>
                 )}
-              </div>
-              {!collapsed && (
-                <p className="ml-11 text-xs text-muted-foreground">
-                  {item.description}
-                </p>
-              )}
-            </Link>
-          )
-        })}
-      </nav>
+              </Link>
+            )
+          })}
+        </nav>
+      </div>
 
       {/* Footer */}
       {!collapsed && (

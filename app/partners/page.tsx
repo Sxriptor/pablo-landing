@@ -461,7 +461,7 @@ export default function PartnersPage() {
                   transition={{ duration: 0.6, delay: 0.8 }}
                 >
                   <motion.a
-                    href="/partner-dashboard"
+                    href="/partner/entry"
                     className="inline-flex items-center px-8 py-4 rounded-full text-lg font-semibold text-white"
                     style={{ backgroundColor: '#456882' }}
                     whileHover={{ 
