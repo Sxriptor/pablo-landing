@@ -24,7 +24,7 @@ partner-dashboard/
 │   │   ├── courts/               # Court management
 │   │   ├── matches/              # Match scheduling
 │   │   ├── events/               # Event management
-│   │   ├── analytics/            # Performance insights
+│   │   ├── classes/              # Class hosting and management
 │   │   └── settings/             # Account settings
 │   ├── layout.tsx                # Root layout
 │   └── globals.css               # Global styles
@@ -99,11 +99,13 @@ partner-dashboard/
 - Capacity and pricing management
 - Registration tracking
 
-#### 6. **Analytics**
-- Revenue trends and growth metrics
-- Court utilization statistics
-- Sport popularity analysis
-- Peak hours and booking patterns
+#### 6. **Classes**
+- Create and manage sports classes
+- Instructor assignment and scheduling
+- Student enrollment tracking
+- Class capacity and pricing management
+- Skill level categorization
+- Revenue tracking per class
 
 #### 7. **Settings**
 - Partner profile management

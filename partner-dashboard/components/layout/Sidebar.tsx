@@ -3,21 +3,20 @@
 import { useState } from 'react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { cn } from '@/lib/utils'
+import { cn } from '../../../lib/utils'
 import {
   LayoutDashboard,
   MapPin,
   Calendar,
   Users,
-  BarChart3,
   Settings,
   ChevronLeft,
   ChevronRight,
   Building2,
   Trophy,
 } from 'lucide-react'
-import { Button } from '@/components/ui/button'
-import { Badge } from '@/components/ui/badge'
+import { Button } from '../../../components/ui/button'
+import { Badge } from '../../../components/ui/badge'
 
 const navigation = [
   {
@@ -51,10 +50,10 @@ const navigation = [
     description: 'Classes and events'
   },
   {
-    name: 'Analytics',
-    href: '/analytics',
-    icon: BarChart3,
-    description: 'Performance insights'
+    name: 'Classes',
+    href: '/classes',
+    icon: Users,
+    description: 'Host and manage classes'
   },
   {
     name: 'Settings',
@@ -124,6 +123,11 @@ export function Sidebar({ className }: SidebarProps) {
                     {item.name === 'Events' && (
                       <Badge variant="secondary" className="ml-auto text-xs">
                         2
+                      </Badge>
+                    )}
+                    {item.name === 'Classes' && (
+                      <Badge variant="secondary" className="ml-auto text-xs">
+                        5
                       </Badge>
                     )}
                   </>
