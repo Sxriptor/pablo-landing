@@ -109,7 +109,7 @@ export default function DashboardLayout({
 
   return (
     <div className="min-h-screen" style={{ 
-      background: 'linear-gradient(135deg, #0f1535 0%, #1a1f3a 50%, #0a0e27 100%)'
+      background: '#050a0f'
     }}>
       <Navbar partner={partner} />
       <div className="flex">

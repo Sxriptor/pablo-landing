@@ -61,8 +61,8 @@ export default function PartnerDashboard() {
     <motion.div
       className="rounded-3xl p-6 relative overflow-hidden"
       style={{
-        background: 'linear-gradient(135deg, rgba(26, 32, 53, 0.8) 0%, rgba(15, 21, 53, 0.8) 100%)',
-        border: '1px solid rgba(59, 130, 246, 0.1)',
+        background: 'rgba(69, 104, 130, 0.1)',
+        border: '1px solid rgba(69, 104, 130, 0.2)',
         backdropFilter: 'blur(20px)'
       }}
       whileHover={{ 
@@ -72,7 +72,7 @@ export default function PartnerDashboard() {
     >
       {/* Gradient overlay */}
       <div className="absolute top-0 right-0 w-32 h-32 rounded-full" style={{
-        background: 'radial-gradient(circle, rgba(102, 126, 234, 0.15) 0%, transparent 70%)',
+        background: 'radial-gradient(circle, rgba(69, 104, 130, 0.15) 0%, transparent 70%)',
         filter: 'blur(30px)'
       }} />
       
@@ -84,9 +84,9 @@ export default function PartnerDashboard() {
           </div>
           {Icon && (
             <div className="p-3 rounded-2xl" style={{
-              background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%)'
+              background: 'rgba(69, 104, 130, 0.2)'
             }}>
-              <Icon className="h-6 w-6 text-blue-400" />
+              <Icon className="h-6 w-6" style={{ color: '#456882' }} />
             </div>
           )}
         </div>
@@ -94,8 +94,10 @@ export default function PartnerDashboard() {
         {trend && (
           <div className="flex items-center space-x-2">
             <div className={`flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-bold ${
-              trend.isPositive ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
-            }`}>
+              trend.isPositive ? 'text-green-400' : 'text-red-400'
+            }`} style={{
+              background: trend.isPositive ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)'
+            }}>
               <svg className={`w-3 h-3 ${trend.isPositive ? 'rotate-0' : 'rotate-180'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
               </svg>
@@ -109,7 +111,7 @@ export default function PartnerDashboard() {
   )
 
   const TableRow = ({ data, columns, actions }: any) => (
-    <tr className="hover:bg-white/5 transition-colors" style={{ borderBottom: '1px solid rgba(59, 130, 246, 0.05)' }}>
+    <tr className="hover:bg-white/5 transition-colors" style={{ borderBottom: '1px solid rgba(69, 104, 130, 0.1)' }}>
       {columns.map((col: any, idx: number) => (
         <td key={idx} className="px-8 py-5 whitespace-nowrap text-sm font-medium text-gray-300">
           {col.render ? col.render(data[col.key], data) : data[col.key]}
@@ -194,18 +196,18 @@ export default function PartnerDashboard() {
       </div>
 
       <div className="rounded-3xl overflow-hidden" style={{
-        background: 'linear-gradient(135deg, rgba(26, 32, 53, 0.8) 0%, rgba(15, 21, 53, 0.8) 100%)',
-        border: '1px solid rgba(59, 130, 246, 0.1)',
+        background: 'rgba(69, 104, 130, 0.1)',
+        border: '1px solid rgba(69, 104, 130, 0.2)',
         backdropFilter: 'blur(20px)'
       }}>
-        <div className="px-8 py-6" style={{ borderBottom: '1px solid rgba(59, 130, 246, 0.1)' }}>
+        <div className="px-8 py-6" style={{ borderBottom: '1px solid rgba(69, 104, 130, 0.2)' }}>
           <h3 className="text-xl font-bold text-white">Recent Matches</h3>
           <p className="text-sm text-gray-400 mt-1">Latest matches at your venues</p>
         </div>
         <div className="overflow-x-auto">
           <table className="min-w-full">
             <thead>
-              <tr style={{ borderBottom: '1px solid rgba(59, 130, 246, 0.1)' }}>
+              <tr style={{ borderBottom: '1px solid rgba(69, 104, 130, 0.2)' }}>
                 <th className="px-8 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Match</th>
                 <th className="px-8 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Sport</th>
                 <th className="px-8 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Date</th>
@@ -233,10 +235,14 @@ export default function PartnerDashboard() {
                       key: 'status', 
                       render: (value: string) => (
                         <span className={`px-4 py-2 rounded-xl text-xs font-bold uppercase ${
-                          value === 'scheduled' ? 'bg-blue-500/20 text-blue-400' :
-                          value === 'completed' ? 'bg-green-500/20 text-green-400' :
-                          'bg-gray-500/20 text-gray-400'
-                        }`}>
+                          value === 'scheduled' ? 'text-blue-400' :
+                          value === 'completed' ? 'text-green-400' :
+                          'text-gray-400'
+                        }`} style={{
+                          background: value === 'scheduled' ? 'rgba(69, 104, 130, 0.2)' :
+                                    value === 'completed' ? 'rgba(34, 197, 94, 0.2)' :
+                                    'rgba(107, 114, 128, 0.2)'
+                        }}>
                           {value}
                         </span>
                       )

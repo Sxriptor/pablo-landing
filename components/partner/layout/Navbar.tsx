@@ -49,24 +49,22 @@ export function Navbar({ partner }: NavbarProps) {
 
   return (
     <header className="sticky top-0 z-50 backdrop-blur-xl" style={{
-      background: 'rgba(15, 21, 53, 0.8)',
-      borderBottom: '1px solid rgba(59, 130, 246, 0.1)'
+      background: 'rgba(5, 10, 15, 0.8)',
+      borderBottom: '1px solid rgba(69, 104, 130, 0.2)'
     }}>
       <div className="flex h-20 items-center justify-between px-8">
         {/* Logo and Brand */}
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-3">
             <div className="text-xl font-bold tracking-wider" style={{
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent'
+              color: '#456882'
             }}>
               PLAYCIRCLE
             </div>
             <span className="px-3 py-1 text-xs font-semibold rounded-lg" style={{
-              background: 'linear-gradient(135deg, rgba(102, 126, 234, 0.2) 0%, rgba(118, 75, 162, 0.2) 100%)',
-              color: '#a78bfa',
-              border: '1px solid rgba(167, 139, 250, 0.2)'
+              background: 'rgba(69, 104, 130, 0.2)',
+              color: '#456882',
+              border: '1px solid rgba(69, 104, 130, 0.3)'
             }}>
               PARTNER
             </span>
@@ -83,8 +81,8 @@ export function Navbar({ partner }: NavbarProps) {
               onChange={(e) => setSearchQuery(e.target.value)}
               className="w-full pl-12 pr-4 py-3 rounded-2xl text-white placeholder-gray-500 focus:outline-none transition-all"
               style={{
-                background: 'rgba(26, 32, 53, 0.5)',
-                border: '1px solid rgba(59, 130, 246, 0.1)',
+                background: 'rgba(69, 104, 130, 0.1)',
+                border: '1px solid rgba(69, 104, 130, 0.2)',
                 backdropFilter: 'blur(10px)'
               }}
             />
@@ -102,9 +100,9 @@ export function Navbar({ partner }: NavbarProps) {
             <Settings className="h-5 w-5" />
           </button>
 
-          <div className="flex items-center space-x-3 pl-6" style={{ borderLeft: '1px solid rgba(59, 130, 246, 0.1)' }}>
+          <div className="flex items-center space-x-3 pl-6" style={{ borderLeft: '1px solid rgba(69, 104, 130, 0.2)' }}>
             <div className="h-10 w-10 rounded-xl flex items-center justify-center text-white text-sm font-bold" style={{
-              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)'
+              background: '#456882'
             }}>
               {partner ? getInitials(partner.company_name) : 'PC'}
             </div>

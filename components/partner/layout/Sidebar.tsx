@@ -78,13 +78,13 @@ export function Sidebar({ className }: SidebarProps) {
         className
       )}
       style={{
-        background: 'rgba(15, 21, 53, 0.6)',
+        background: 'rgba(5, 10, 15, 0.6)',
         backdropFilter: 'blur(20px)',
-        borderRight: '1px solid rgba(59, 130, 246, 0.1)'
+        borderRight: '1px solid rgba(69, 104, 130, 0.2)'
       }}
     >
       {/* Header */}
-      <div className="flex h-20 items-center justify-end px-6" style={{ borderBottom: '1px solid rgba(59, 130, 246, 0.1)' }}>
+      <div className="flex h-20 items-center justify-end px-6" style={{ borderBottom: '1px solid rgba(69, 104, 130, 0.2)' }}>
         <button
           onClick={() => setCollapsed(!collapsed)}
           className="p-2 text-gray-400 hover:text-white transition-colors rounded-lg"
@@ -116,8 +116,8 @@ export function Sidebar({ className }: SidebarProps) {
                     : 'text-gray-400 hover:text-white'
                 )}
                 style={isActive ? {
-                  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                  boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)'
+                  background: '#456882',
+                  boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)'
                 } : {}}
               >
                 <div className={`p-2 rounded-xl ${isActive ? 'bg-white/20' : 'bg-transparent'}`}>
@@ -137,8 +137,8 @@ export function Sidebar({ className }: SidebarProps) {
       {!collapsed && (
         <div className="px-6 pb-6 border-t border-gray-700/50">
           <div className="rounded-2xl p-4 mt-6" style={{
-            background: 'rgba(26, 32, 53, 0.5)',
-            border: '1px solid rgba(59, 130, 246, 0.1)'
+            background: 'rgba(69, 104, 130, 0.1)',
+            border: '1px solid rgba(69, 104, 130, 0.2)'
           }}>
             <h4 className="text-sm font-semibold text-white mb-2">Need Help?</h4>
             <p className="text-xs text-gray-400 mb-3">
@@ -147,8 +147,8 @@ export function Sidebar({ className }: SidebarProps) {
             <button 
               className="w-full px-4 py-2 rounded-xl text-xs font-semibold text-white transition-all hover:scale-105"
               style={{
-                background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                boxShadow: '0 4px 12px rgba(102, 126, 234, 0.3)'
+                background: '#456882',
+                boxShadow: '0 4px 12px rgba(69, 104, 130, 0.3)'
               }}
             >
               Get Support
