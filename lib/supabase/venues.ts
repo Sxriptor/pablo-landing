@@ -85,6 +85,78 @@ export async function getCurrentPartner(): Promise<Partner | null> {
   }
 }
 
+export async function updateVenue(venueId: string, venueData: VenueData): Promise<{ success: boolean; error?: string; venue?: any }> {
+  try {
+    console.log('Starting venue update with data:', venueData)
+    
+    // Get current partner
+    const partner = await getCurrentPartner()
+    console.log('Current partner:', partner)
+    
+    if (!partner) {
+      console.error('No partner found')
+      return { success: false, error: 'No partner found. Please ensure you are logged in as a partner.' }
+    }
+
+    // Prepare venue data for database
+    const venuePayload = {
+      name: venueData.name,
+      address: venueData.address,
+      city: venueData.city,
+      state: venueData.state,
+      postal_code: venueData.zipCode,
+      phone: venueData.phone || null,
+      email: venueData.email || null,
+      website: venueData.website || null,
+      description: venueData.description || null,
+      amenities: venueData.amenities,
+      operating_hours: venueData.operatingHours,
+      updated_at: new Date().toISOString()
+    }
+
+    console.log('Venue update payload:', venuePayload)
+
+    // Update venue in database
+    const { data: venue, error } = await supabase
+      .from('venues')
+      .update(venuePayload)
+      .eq('id', venueId)
+      .eq('partner_id', partner.id) // Ensure user can only update their own venues
+      .select()
+      .single()
+
+    console.log('Supabase update result:', { venue, error })
+
+    if (error) {
+      console.error('Error updating venue:', error)
+      return { success: false, error: error.message }
+    }
+
+    // Handle image upload if provided
+    if (venueData.image && venue) {
+      console.log('Uploading new image for venue:', venue.id)
+      const imageUrl = await uploadVenueImage(venue.id, venueData.image)
+      if (imageUrl) {
+        // Update venue with new image URL
+        const { error: updateError } = await supabase
+          .from('venues')
+          .update({ image_url: imageUrl })
+          .eq('id', venue.id)
+
+        if (updateError) {
+          console.error('Error updating venue with image:', updateError)
+        }
+      }
+    }
+
+    console.log('Venue update successful:', venue)
+    return { success: true, venue }
+  } catch (error) {
+    console.error('Error in updateVenue:', error)
+    return { success: false, error: 'An unexpected error occurred' }
+  }
+}
+
 export async function createVenue(venueData: VenueData): Promise<{ success: boolean; error?: string; venue?: any }> {
   try {
     console.log('Starting venue creation with data:', venueData)

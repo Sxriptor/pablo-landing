@@ -18,9 +18,10 @@ interface AddVenueOverlayProps {
   isOpen: boolean
   onClose: () => void
   onSubmit: (venueData: any) => void
+  editingVenue?: any // Optional venue data for editing mode
 }
 
-export function AddVenueOverlay({ isOpen, onClose, onSubmit }: AddVenueOverlayProps) {
+export function AddVenueOverlay({ isOpen, onClose, onSubmit, editingVenue }: AddVenueOverlayProps) {
   const [formData, setFormData] = useState({
     name: '',
     address: '',
@@ -154,8 +155,38 @@ export function AddVenueOverlay({ isOpen, onClose, onSubmit }: AddVenueOverlayPr
   useEffect(() => {
     if (isOpen) {
       fetchPartnerData()
+      
+      // If editing, populate form with venue data
+      if (editingVenue) {
+        setFormData({
+          name: editingVenue.name || '',
+          address: editingVenue.address || '',
+          city: editingVenue.city || '',
+          state: editingVenue.state || '',
+          zipCode: editingVenue.postal_code || '',
+          phone: editingVenue.phone || '',
+          email: editingVenue.email || '',
+          website: editingVenue.website || '',
+          description: editingVenue.description || '',
+          amenities: editingVenue.amenities || [],
+          operatingHours: editingVenue.operating_hours || {
+            monday: { open: '06:00', close: '22:00', closed: false },
+            tuesday: { open: '06:00', close: '22:00', closed: false },
+            wednesday: { open: '06:00', close: '22:00', closed: false },
+            thursday: { open: '06:00', close: '22:00', closed: false },
+            friday: { open: '06:00', close: '22:00', closed: false },
+            saturday: { open: '08:00', close: '20:00', closed: false },
+            sunday: { open: '08:00', close: '20:00', closed: false },
+          }
+        })
+        
+        // Set image preview if venue has an image
+        if (editingVenue.image_url) {
+          setImagePreview(editingVenue.image_url)
+        }
+      }
     }
-  }, [isOpen])
+  }, [isOpen, editingVenue])
 
   const usePartnerAddress = () => {
     if (partnerData) {
@@ -201,32 +232,39 @@ export function AddVenueOverlay({ isOpen, onClose, onSubmit }: AddVenueOverlayPr
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    onSubmit({ ...formData, image: selectedImage })
-    onClose()
-    // Reset form
-    setFormData({
-      name: '',
-      address: '',
-      city: '',
-      state: '',
-      zipCode: '',
-      phone: '',
-      email: '',
-      website: '',
-      description: '',
-      amenities: [],
-      operatingHours: {
-        monday: { open: '06:00', close: '22:00', closed: false },
-        tuesday: { open: '06:00', close: '22:00', closed: false },
-        wednesday: { open: '06:00', close: '22:00', closed: false },
-        thursday: { open: '06:00', close: '22:00', closed: false },
-        friday: { open: '06:00', close: '22:00', closed: false },
-        saturday: { open: '08:00', close: '20:00', closed: false },
-        sunday: { open: '08:00', close: '20:00', closed: false },
-      }
+    onSubmit({ 
+      ...formData, 
+      image: selectedImage,
+      venueId: editingVenue?.id // Include venue ID for updates
     })
-    setSelectedImage(null)
-    setImagePreview(null)
+    onClose()
+    
+    // Reset form only if not editing (to avoid clearing on close)
+    if (!editingVenue) {
+      setFormData({
+        name: '',
+        address: '',
+        city: '',
+        state: '',
+        zipCode: '',
+        phone: '',
+        email: '',
+        website: '',
+        description: '',
+        amenities: [],
+        operatingHours: {
+          monday: { open: '06:00', close: '22:00', closed: false },
+          tuesday: { open: '06:00', close: '22:00', closed: false },
+          wednesday: { open: '06:00', close: '22:00', closed: false },
+          thursday: { open: '06:00', close: '22:00', closed: false },
+          friday: { open: '06:00', close: '22:00', closed: false },
+          saturday: { open: '08:00', close: '20:00', closed: false },
+          sunday: { open: '08:00', close: '20:00', closed: false },
+        }
+      })
+      setSelectedImage(null)
+      setImagePreview(null)
+    }
   }
 
   return (
@@ -251,10 +289,13 @@ export function AddVenueOverlay({ isOpen, onClose, onSubmit }: AddVenueOverlayPr
             <div className="p-2 rounded-xl" style={{ background: 'rgba(69, 104, 130, 0.2)' }}>
               <Building2 className="h-6 w-6" style={{ color: '#456882' }} />
             </div>
-            Add New Venue
+            {editingVenue ? 'Edit Venue' : 'Add New Venue'}
           </DialogTitle>
           <DialogDescription className="text-gray-400">
-            Create a new venue to start hosting matches and events
+            {editingVenue 
+              ? 'Update your venue information and settings'
+              : 'Create a new venue to start hosting matches and events'
+            }
           </DialogDescription>
         </DialogHeader>
 
@@ -501,7 +542,7 @@ export function AddVenueOverlay({ isOpen, onClose, onSubmit }: AddVenueOverlayPr
                 boxShadow: '0 4px 12px rgba(69, 104, 130, 0.3)'
               }}
             >
-              Create Venue
+              {editingVenue ? 'Save Changes' : 'Create Venue'}
             </Button>
           </div>
         </form>

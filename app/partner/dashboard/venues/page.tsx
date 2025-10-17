@@ -14,11 +14,12 @@ import {
   MoreHorizontal
 } from 'lucide-react'
 import { AddVenueOverlay } from '@/components/partner/overlays'
-import { createVenue, VenueData, getPartnerVenues } from '@/lib/supabase/venues'
+import { createVenue, updateVenue, VenueData, getPartnerVenues } from '@/lib/supabase/venues'
 import { useToast } from '@/hooks/use-toast'
 
 export default function VenuesPage() {
   const [showAddVenueOverlay, setShowAddVenueOverlay] = useState(false)
+  const [editingVenue, setEditingVenue] = useState<any>(null)
   const [venues, setVenues] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const { toast } = useToast()
@@ -46,36 +47,55 @@ export default function VenuesPage() {
     }
   }
 
-  const handleVenueSubmit = async (venueData: VenueData) => {
-    console.log('New venue data:', venueData)
+  const handleVenueSubmit = async (venueData: VenueData & { venueId?: string }) => {
+    console.log('Venue data:', venueData)
     
     try {
-      const result = await createVenue(venueData)
+      let result
+      
+      if (venueData.venueId) {
+        // Update existing venue
+        result = await updateVenue(venueData.venueId, venueData)
+      } else {
+        // Create new venue
+        result = await createVenue(venueData)
+      }
       
       if (result.success) {
         toast({
           title: "Success!",
-          description: "Venue created successfully!",
+          description: venueData.venueId ? "Venue updated successfully!" : "Venue created successfully!",
         })
-        console.log('Created venue:', result.venue)
+        console.log('Venue operation result:', result.venue)
         setShowAddVenueOverlay(false)
+        setEditingVenue(null)
         // Reload venues instead of refreshing the page
         loadVenues()
       } else {
         toast({
           title: "Error",
-          description: result.error || 'Failed to create venue',
+          description: result.error || `Failed to ${venueData.venueId ? 'update' : 'create'} venue`,
           variant: "destructive",
         })
       }
     } catch (error) {
-      console.error('Error creating venue:', error)
+      console.error('Error with venue operation:', error)
       toast({
         title: "Error",
         description: "An unexpected error occurred",
         variant: "destructive",
       })
     }
+  }
+
+  const handleEditVenue = (venue: any) => {
+    setEditingVenue(venue)
+    setShowAddVenueOverlay(true)
+  }
+
+  const handleCloseOverlay = () => {
+    setShowAddVenueOverlay(false)
+    setEditingVenue(null)
   }
 
 
@@ -144,7 +164,10 @@ export default function VenuesPage() {
             <button className="p-2 text-blue-400 hover:text-blue-300 transition-colors rounded-lg">
               <Eye className="h-4 w-4" />
             </button>
-            <button className="p-2 text-gray-400 hover:text-white transition-colors rounded-lg">
+            <button 
+              onClick={() => handleEditVenue(venue)}
+              className="p-2 text-gray-400 hover:text-white transition-colors rounded-lg"
+            >
               <Edit className="h-4 w-4" />
             </button>
           </div>
@@ -230,11 +253,12 @@ export default function VenuesPage() {
         </div>
       )}
 
-      {/* Add Venue Overlay */}
+      {/* Add/Edit Venue Overlay */}
       <AddVenueOverlay
         isOpen={showAddVenueOverlay}
-        onClose={() => setShowAddVenueOverlay(false)}
+        onClose={handleCloseOverlay}
         onSubmit={handleVenueSubmit}
+        editingVenue={editingVenue}
       />
     </div>
   )
