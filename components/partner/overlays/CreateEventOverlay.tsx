@@ -21,6 +21,7 @@ interface CreateEventOverlayProps {
   onSubmit: (eventData: any) => void
   venues?: Array<{ id: string; name: string }>
   courts?: Array<{ id: string; name: string; venueId: string }>
+  editingEvent?: any
 }
 
 export function CreateEventOverlay({
@@ -28,7 +29,8 @@ export function CreateEventOverlay({
   onClose,
   onSubmit,
   venues = [],
-  courts = []
+  courts = [],
+  editingEvent = null
 }: CreateEventOverlayProps) {
 
   const [formData, setFormData] = useState({
@@ -231,6 +233,57 @@ export function CreateEventOverlay({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData.sport])
 
+  // Populate form when editing an event
+  useEffect(() => {
+    if (editingEvent && isOpen) {
+      console.log('Populating form with editing event:', editingEvent)
+      setFormData({
+        title: editingEvent.name || '',
+        description: editingEvent.description || '',
+        eventType: editingEvent.event_type || 'tournament',
+        sport: editingEvent.sport || 'tennis',
+        venueId: editingEvent.venue_id || '',
+        courtIds: [], // TODO: Load associated courts if needed
+        startDate: editingEvent.start_date || '',
+        endDate: editingEvent.end_date || '',
+        startTime: editingEvent.start_time || '',
+        endTime: editingEvent.end_time || '',
+        maxParticipants: editingEvent.capacity?.toString() || '',
+        entryFee: editingEvent.price?.toString() || '',
+        prizePool: '', // Not stored in events table
+        registrationDeadline: editingEvent.registration_deadline ? editingEvent.registration_deadline.split('T')[0] : '',
+        skillLevel: editingEvent.skill_level || 'all_levels',
+        format: editingEvent.match_format || '',
+        sportFormatId: editingEvent.sport_format_id || '',
+        rules: '', // Not stored in events table
+        requirements: editingEvent.requirements || [],
+      })
+    } else if (!isOpen) {
+      // Reset form when closing
+      setFormData({
+        title: '',
+        description: '',
+        eventType: 'tournament',
+        sport: 'tennis',
+        venueId: '',
+        courtIds: [],
+        startDate: '',
+        endDate: '',
+        startTime: '',
+        endTime: '',
+        maxParticipants: '',
+        entryFee: '',
+        prizePool: '',
+        registrationDeadline: '',
+        skillLevel: 'all_levels',
+        format: '',
+        sportFormatId: '',
+        rules: '',
+        requirements: [],
+      })
+    }
+  }, [editingEvent, isOpen])
+
   const requirementOptions = [
     'Valid ID Required',
     'Waiver Must Be Signed',
@@ -389,52 +442,48 @@ export function CreateEventOverlay({
           : null
       }
 
-      console.log('Creating event with data:', eventData)
+      console.log(editingEvent ? 'Updating event with data:' : 'Creating event with data:', eventData)
 
-      // Insert event into database
-      const { data: newEvent, error: insertError } = await supabase
-        .from('events')
-        .insert([eventData])
-        .select()
-        .single()
+      if (editingEvent) {
+        // Update existing event
+        const { data: updatedEvent, error: updateError } = await supabase
+          .from('events')
+          .update(eventData)
+          .eq('id', editingEvent.id)
+          .select()
+          .single()
 
-      if (insertError) {
-        console.error('Error creating event:', insertError)
-        alert(`Failed to create event: ${insertError.message}`)
-        return
+        if (updateError) {
+          console.error('Error updating event:', updateError)
+          alert(`Failed to update event: ${updateError.message}`)
+          return
+        }
+
+        console.log('Event updated successfully:', updatedEvent)
+        alert('Event updated successfully!')
+      } else {
+        // Insert new event into database
+        const { data: newEvent, error: insertError } = await supabase
+          .from('events')
+          .insert([eventData])
+          .select()
+          .single()
+
+        if (insertError) {
+          console.error('Error creating event:', insertError)
+          alert(`Failed to create event: ${insertError.message}`)
+          return
+        }
+
+        console.log('Event created successfully:', newEvent)
+        alert('Event created successfully!')
       }
-
-      console.log('Event created successfully:', newEvent)
 
       // Call the onSubmit callback if provided (for parent component updates)
       onSubmit(formData)
 
-      // Show success message
-      alert('Event created successfully!')
-
       // Close and reset form
       onClose()
-      setFormData({
-        title: '',
-        description: '',
-        eventType: 'tournament',
-        sport: 'tennis',
-        venueId: '',
-        courtIds: [],
-        startDate: '',
-        endDate: '',
-        startTime: '',
-        endTime: '',
-        maxParticipants: '',
-        entryFee: '',
-        prizePool: '',
-        registrationDeadline: '',
-        skillLevel: 'all_levels',
-        format: '',
-        sportFormatId: '',
-        rules: '',
-        requirements: [],
-      })
     } catch (error) {
       console.error('Error in handleSubmit:', error)
       alert('An unexpected error occurred while creating the event')
@@ -473,10 +522,10 @@ export function CreateEventOverlay({
             <div className="p-2 rounded-xl" style={{ background: 'rgba(69, 104, 130, 0.2)' }}>
               <Trophy className="h-6 w-6" style={{ color: '#456882' }} />
             </div>
-            Create New Event
+            {editingEvent ? 'Edit Event' : 'Create New Event'}
           </DialogTitle>
           <DialogDescription className="text-gray-400">
-            Create a tournament, league, or special event at your venue
+            {editingEvent ? 'Update your event details' : 'Create a tournament, league, or special event at your venue'}
           </DialogDescription>
         </DialogHeader>
 
@@ -866,7 +915,7 @@ export function CreateEventOverlay({
                 boxShadow: '0 4px 12px rgba(69, 104, 130, 0.3)'
               }}
             >
-              {submitting ? 'Creating Event...' : 'Create Event'}
+              {submitting ? (editingEvent ? 'Updating Event...' : 'Creating Event...') : (editingEvent ? 'Update Event' : 'Create Event')}
             </Button>
           </div>
         </form>

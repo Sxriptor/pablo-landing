@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { 
   Calendar, 
@@ -10,27 +10,205 @@ import {
   DollarSign,
   Plus,
   Eye,
+  EyeOff,
   Edit,
-  MoreHorizontal
+  MoreHorizontal,
+  Trash2,
+  AlertTriangle
 } from 'lucide-react'
 import { CreateEventOverlay } from '@/components/partner/overlays'
 import { useTheme } from '@/components/partner/layout/ThemeProvider'
 import { getThemeColors, themeColors } from '@/lib/theme-colors'
+import { supabase } from '@/lib/supabase'
+import { useToast } from '@/hooks/use-toast'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
 
 export default function EventsPage() {
   const { theme } = useTheme()
   const colors = getThemeColors(theme)
   const [showCreateEventOverlay, setShowCreateEventOverlay] = useState(false)
+  const [editingEvent, setEditingEvent] = useState<any>(null)
   const [events, setEvents] = useState<any[]>([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [eventToDelete, setEventToDelete] = useState<any>(null)
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
+  const { toast } = useToast()
 
   const mockVenues: any[] = []
   const mockCourts: any[] = []
 
-  const handleEventSubmit = (eventData: any) => {
+  // Fetch events from database
+  const fetchEvents = async () => {
+    try {
+      setLoading(true)
+      
+      // Get current user
+      const { data: { user }, error: userError } = await supabase.auth.getUser()
+      if (userError || !user) {
+        console.error('Error getting user:', userError)
+        return
+      }
+
+      // Get partner ID for this user
+      const { data: partner, error: partnerError } = await supabase
+        .from('partners')
+        .select('id')
+        .eq('user_id', user.id)
+        .single()
+
+      if (partnerError || !partner) {
+        console.error('Error fetching partner:', partnerError)
+        return
+      }
+
+      // Fetch events for this partner with venue info
+      const { data: eventsData, error: eventsError } = await supabase
+        .from('events')
+        .select(`
+          *,
+          venues:venue_id (
+            id,
+            name
+          )
+        `)
+        .eq('partner_id', partner.id)
+        .order('start_date', { ascending: true })
+
+      if (eventsError) {
+        console.error('Error fetching events:', eventsError)
+        return
+      }
+
+      // Map the data to include venue_name
+      const mappedEvents = eventsData?.map(event => ({
+        ...event,
+        venue_name: event.venues?.name || 'Unknown Venue'
+      })) || []
+
+      console.log('Fetched events:', mappedEvents)
+      setEvents(mappedEvents)
+    } catch (error) {
+      console.error('Error in fetchEvents:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  // Fetch events on component mount
+  useEffect(() => {
+    fetchEvents()
+  }, [])
+
+  const handleEventSubmit = async (eventData: any) => {
     console.log('New event data:', eventData)
-    // Here you would typically send the data to your backend API
-    alert('Event created successfully! Check console for data.')
+    // Refresh events list after creating
+    await fetchEvents()
+  }
+
+  const handleToggleEventStatus = async (event: any) => {
+    try {
+      // Toggle between 'published' and 'draft'
+      const newStatus = event.status === 'published' ? 'draft' : 'published'
+      
+      const { error } = await supabase
+        .from('events')
+        .update({ status: newStatus })
+        .eq('id', event.id)
+
+      if (error) {
+        console.error('Error updating event status:', error)
+        toast({
+          title: "Error",
+          description: "Failed to update event status",
+          variant: "destructive",
+        })
+        return
+      }
+
+      toast({
+        title: "Success!",
+        description: `Event ${newStatus === 'published' ? 'published' : 'unpublished'} successfully!`,
+      })
+      
+      // Reload events to reflect the change
+      await fetchEvents()
+    } catch (error) {
+      console.error('Error toggling event status:', error)
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred",
+        variant: "destructive",
+      })
+    }
+  }
+
+  const handleEditEvent = (event: any) => {
+    setEditingEvent(event)
+    setShowCreateEventOverlay(true)
+  }
+
+  const handleCloseOverlay = () => {
+    setShowCreateEventOverlay(false)
+    setEditingEvent(null)
+  }
+
+  const confirmDeleteEvent = (event: any) => {
+    setEventToDelete(event)
+    setShowDeleteDialog(true)
+  }
+
+  const handleDeleteEvent = async () => {
+    if (!eventToDelete) return
+
+    try {
+      const { error } = await supabase
+        .from('events')
+        .delete()
+        .eq('id', eventToDelete.id)
+
+      if (error) {
+        console.error('Error deleting event:', error)
+        toast({
+          title: "Error",
+          description: "Failed to delete event",
+          variant: "destructive",
+        })
+        return
+      }
+
+      toast({
+        title: "Success!",
+        description: "Event deleted successfully!",
+      })
+      
+      setShowDeleteDialog(false)
+      setEventToDelete(null)
+      
+      // Reload events to reflect the change
+      await fetchEvents()
+    } catch (error) {
+      console.error('Error deleting event:', error)
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred",
+        variant: "destructive",
+      })
+    }
   }
 
   const EventCard = ({ event }: any) => (
@@ -57,14 +235,18 @@ export default function EventsPage() {
             <div className="flex items-center space-x-3 mb-2">
               <h3 className="text-xl font-bold" style={{ color: colors.text }}>{event.name}</h3>
               <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${
+                event.status === 'published' ? 'bg-green-500/20 text-green-400' :
                 event.status === 'scheduled' ? 'bg-blue-500/20 text-blue-400' :
-                event.status === 'completed' ? 'bg-green-500/20 text-green-400' :
-                'bg-gray-500/20 text-gray-400'
+                event.status === 'completed' ? 'bg-purple-500/20 text-purple-400' :
+                event.status === 'draft' ? 'bg-gray-500/20 text-gray-400' :
+                'bg-yellow-500/20 text-yellow-400'
               }`}>
                 {event.status}
               </span>
             </div>
-            <p className="text-sm mb-3" style={{ color: colors.textSecondary }}>{event.description}</p>
+            {event.description && (
+              <p className="text-sm mb-3" style={{ color: colors.textSecondary }}>{event.description}</p>
+            )}
             <div className="flex items-center space-x-4 text-sm mb-3" style={{ color: colors.textSecondary }}>
               <div className="flex items-center space-x-1">
                 <Calendar className="h-4 w-4" />
@@ -75,25 +257,41 @@ export default function EventsPage() {
                 <span>{event.start_time} - {event.end_time}</span>
               </div>
             </div>
-            <div className="flex items-center space-x-4 text-sm" style={{ color: colors.textSecondary }}>
+            <div className="flex items-center flex-wrap gap-2 text-sm" style={{ color: colors.textSecondary }}>
               <div className="flex items-center space-x-1">
                 <MapPin className="h-4 w-4" />
                 <span>{event.venue_name}</span>
               </div>
               <span>•</span>
-              <span className="capitalize">{event.event_type}</span>
+              <span className="capitalize">{event.event_type.replace('_', ' ')}</span>
               <span>•</span>
               <span className="capitalize">{event.sport}</span>
             </div>
           </div>
-          <button 
-            className="p-2 transition-colors rounded-lg"
-            style={{ color: colors.textSecondary }}
-            onMouseEnter={(e) => e.currentTarget.style.color = colors.text}
-            onMouseLeave={(e) => e.currentTarget.style.color = colors.textSecondary}
-          >
-            <MoreHorizontal className="h-4 w-4" />
-          </button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button 
+                className="p-2 transition-colors rounded-lg"
+                style={{ color: colors.textSecondary }}
+                onMouseEnter={(e) => e.currentTarget.style.color = colors.text}
+                onMouseLeave={(e) => e.currentTarget.style.color = colors.textSecondary}
+              >
+                <MoreHorizontal className="h-4 w-4" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent
+              align="end"
+              className="bg-gray-900 border-gray-700"
+            >
+              <DropdownMenuItem
+                onClick={() => confirmDeleteEvent(event)}
+                className="text-red-400 hover:text-red-300 hover:bg-red-900/20 cursor-pointer"
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Remove Event
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         {event.instructor_name && (
@@ -109,31 +307,51 @@ export default function EventsPage() {
             <div className="flex items-center justify-center mb-1">
               <Users className="h-4 w-4 text-blue-400" />
             </div>
-            <p className="text-lg font-bold" style={{ color: colors.text }}>{event.current_registrations}/{event.capacity}</p>
+            <p className="text-lg font-bold" style={{ color: colors.text }}>{event.current_registrations || 0}/{event.capacity}</p>
             <p className="text-xs" style={{ color: colors.textTertiary }}>Registered</p>
           </div>
           <div className="text-center">
             <div className="flex items-center justify-center mb-1">
               <DollarSign className="h-4 w-4 text-green-400" />
             </div>
-            <p className="text-lg font-bold" style={{ color: colors.text }}>${event.price}</p>
+            <p className="text-lg font-bold" style={{ color: colors.text }}>${event.price || 0}</p>
             <p className="text-xs" style={{ color: colors.textTertiary }}>Price</p>
           </div>
           <div className="text-center">
-            <p className="text-lg font-bold" style={{ color: colors.text }}>{Math.round((event.current_registrations / event.capacity) * 100)}%</p>
+            <p className="text-lg font-bold" style={{ color: colors.text }}>
+              {event.capacity > 0 ? Math.round(((event.current_registrations || 0) / event.capacity) * 100) : 0}%
+            </p>
             <p className="text-xs" style={{ color: colors.textTertiary }}>Full</p>
           </div>
         </div>
 
         <div className="flex items-center justify-between">
           <div className="text-sm" style={{ color: colors.textSecondary }}>
-            <span className="capitalize">{event.skill_level.replace('_', ' ')}</span> • {event.age_group}
+            <span className="capitalize">{event.skill_level ? event.skill_level.replace('_', ' ') : 'All Levels'}</span>
+            {event.age_group && (
+              <> • <span className="capitalize">{event.age_group.replace('_', ' ')}</span></>
+            )}
           </div>
-          <div className="flex space-x-2">
-            <button className="p-2 text-blue-400 hover:text-blue-300 transition-colors rounded-lg">
-              <Eye className="h-4 w-4" />
+          <div className="flex items-center space-x-3">
+            <button
+              onClick={() => handleToggleEventStatus(event)}
+              className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors ${
+                event.status === 'published'
+                  ? 'text-green-400 hover:text-green-300'
+                  : 'text-gray-400 hover:text-gray-300'
+              }`}
+            >
+              {event.status === 'published' ? (
+                <Eye className="h-4 w-4" />
+              ) : (
+                <EyeOff className="h-4 w-4" />
+              )}
+              <span className="text-xs font-medium">
+                {event.status === 'published' ? 'Published' : 'Unpublished'}
+              </span>
             </button>
             <button 
+              onClick={() => handleEditEvent(event)}
               className="p-2 transition-colors rounded-lg"
               style={{ color: colors.textSecondary }}
               onMouseEnter={(e) => e.currentTarget.style.color = colors.text}
@@ -227,11 +445,61 @@ export default function EventsPage() {
       {/* Create Event Overlay */}
       <CreateEventOverlay
         isOpen={showCreateEventOverlay}
-        onClose={() => setShowCreateEventOverlay(false)}
+        onClose={handleCloseOverlay}
         onSubmit={handleEventSubmit}
         venues={mockVenues}
         courts={mockCourts}
+        editingEvent={editingEvent}
       />
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent
+          className="bg-gray-900 border-gray-700"
+        >
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-white flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-red-400" />
+              Remove Event - Dangerous Action
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-gray-300">
+              <div className="space-y-3">
+                <p>
+                  You are about to permanently remove <strong className="text-white">"{eventToDelete?.name}"</strong>.
+                </p>
+                <div
+                  className="p-4 rounded-lg border-l-4 border-red-500"
+                  style={{ background: 'rgba(239, 68, 68, 0.1)' }}
+                >
+                  <p className="text-red-400 font-semibold mb-2">⚠️ This action will permanently remove:</p>
+                  <ul className="text-sm text-gray-300 space-y-1 ml-4">
+                    <li>• All registrations for this event</li>
+                    <li>• All participant data and attendance records</li>
+                    <li>• All event history and analytics</li>
+                    <li>• Event schedule and pricing information</li>
+                  </ul>
+                </div>
+                <p className="text-red-400 font-medium">
+                  This action cannot be undone. Are you absolutely sure?
+                </p>
+              </div>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel
+              className="bg-gray-700 text-white hover:bg-gray-600 border-gray-600"
+            >
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteEvent}
+              className="bg-red-600 text-white hover:bg-red-700"
+            >
+              Yes, Remove Permanently
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }
