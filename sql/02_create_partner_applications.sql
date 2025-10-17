@@ -136,17 +136,35 @@ create policy "Admins can update all applications"
 create or replace function handle_application_status_change()
 returns trigger as $$
 begin
-  -- If application is approved, set partner status to true
+  -- If application is approved, set partner status to true and update partners table
   if new.status = 'approved' and old.status != 'approved' then
     -- Update profiles.partner to true (this will trigger partner record creation)
     update profiles
     set partner = true
     where id = new.user_id;
 
+    -- Update partners table with application data
+    update partners
+    set 
+      phone = new.phone,
+      address = concat_ws(', ', 
+        new.address, 
+        new.city, 
+        new.state, 
+        new.postal_code,
+        case when new.country != 'USA' then new.country else null end
+      ),
+      website = new.website,
+      description = new.description,
+      business_type = new.business_type,
+      contact_person = new.contact_person,
+      updated_at = now()
+    where user_id = new.user_id;
+
     -- Set reviewed_at timestamp
     new.reviewed_at = now();
 
-    raise notice 'Application approved for user %, partner status updated', new.user_id;
+    raise notice 'Application approved for user %, partner status and data updated', new.user_id;
   end if;
 
   -- If application is rejected, ensure reviewed_at is set

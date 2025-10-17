@@ -290,7 +290,50 @@ CREATE POLICY "Users can update own pending application"
     WITH CHECK (auth.uid() = user_id AND status = 'pending');
 
 -- =====================================================
--- 4. GRANT PERMISSIONS
+-- 4. APPLICATION APPROVAL TRIGGER
+-- =====================================================
+
+-- Function to update partners table when application is approved
+CREATE OR REPLACE FUNCTION update_partner_from_application()
+RETURNS TRIGGER AS $$
+BEGIN
+    -- When application is approved, update the partners table with application data
+    IF NEW.status = 'approved' AND OLD.status != 'approved' THEN
+        -- Build full address
+        UPDATE partners
+        SET 
+            phone = NEW.phone,
+            address = CONCAT_WS(', ', 
+                NEW.address, 
+                NEW.city, 
+                NEW.state, 
+                NEW.postal_code,
+                CASE WHEN NEW.country != 'USA' THEN NEW.country ELSE NULL END
+            ),
+            website = NEW.website,
+            description = NEW.description,
+            business_type = NEW.business_type,
+            contact_person = NEW.contact_person,
+            updated_at = NOW()
+        WHERE user_id = NEW.user_id;
+        
+        RAISE NOTICE '✅ Partners table updated with application data for user %', NEW.user_id;
+    END IF;
+    
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql SECURITY DEFINER;
+
+-- Create trigger for application approval
+DROP TRIGGER IF EXISTS on_application_approved ON partner_applications;
+CREATE TRIGGER on_application_approved
+    AFTER UPDATE OF status ON partner_applications
+    FOR EACH ROW
+    WHEN (NEW.status = 'approved' AND OLD.status IS DISTINCT FROM NEW.status)
+    EXECUTE FUNCTION update_partner_from_application();
+
+-- =====================================================
+-- 5. GRANT PERMISSIONS
 -- =====================================================
 
 GRANT SELECT, INSERT, UPDATE ON partners TO authenticated;
