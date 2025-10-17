@@ -13,8 +13,13 @@ import {
   Activity,
   MoreHorizontal
 } from 'lucide-react'
+import { useTheme } from '@/components/partner/layout/ThemeProvider'
+import { getThemeColors, themeColors } from '@/lib/theme-colors'
 
 export default function PartnerDashboard() {
+  const { theme } = useTheme()
+  const colors = getThemeColors(theme)
+
   // Mock data - same as partner-demo
   const mockStats = {
     totalVenues: 5,
@@ -61,8 +66,8 @@ export default function PartnerDashboard() {
     <motion.div
       className="rounded-3xl p-6 relative overflow-hidden"
       style={{
-        background: 'rgba(69, 104, 130, 0.1)',
-        border: '1px solid rgba(69, 104, 130, 0.2)',
+        background: theme === 'dark' ? 'rgba(69, 104, 130, 0.1)' : 'rgba(255, 255, 255, 0.9)',
+        border: `1px solid ${colors.cardBorder}`,
         backdropFilter: 'blur(20px)'
       }}
       whileHover={{ 
@@ -72,25 +77,25 @@ export default function PartnerDashboard() {
     >
       {/* Gradient overlay */}
       <div className="absolute top-0 right-0 w-32 h-32 rounded-full" style={{
-        background: 'radial-gradient(circle, rgba(69, 104, 130, 0.15) 0%, transparent 70%)',
+        background: theme === 'dark' ? 'radial-gradient(circle, rgba(69, 104, 130, 0.15) 0%, transparent 70%)' : 'radial-gradient(circle, rgba(69, 104, 130, 0.08) 0%, transparent 70%)',
         filter: 'blur(30px)'
       }} />
       
       <div className="relative">
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1">
-            <p className="text-sm font-medium text-gray-400 mb-2">{title}</p>
-            <p className="text-4xl font-bold text-white">{value}</p>
+            <p className="text-sm font-medium mb-2" style={{ color: colors.textSecondary }}>{title}</p>
+            <p className="text-4xl font-bold" style={{ color: colors.text }}>{value}</p>
           </div>
           {Icon && (
             <div className="p-3 rounded-2xl" style={{
-              background: 'rgba(69, 104, 130, 0.2)'
+              background: theme === 'dark' ? 'rgba(69, 104, 130, 0.2)' : 'rgba(69, 104, 130, 0.1)'
             }}>
-              <Icon className="h-6 w-6" style={{ color: '#456882' }} />
+              <Icon className="h-6 w-6" style={{ color: themeColors.accent }} />
             </div>
           )}
         </div>
-        {description && <p className="text-xs text-gray-500 mb-3">{description}</p>}
+        {description && <p className="text-xs mb-3" style={{ color: colors.textTertiary }}>{description}</p>}
         {trend && (
           <div className="flex items-center space-x-2">
             <div className={`flex items-center space-x-1 px-2.5 py-1 rounded-lg text-xs font-bold ${
@@ -103,7 +108,7 @@ export default function PartnerDashboard() {
               </svg>
               <span>{trend.isPositive ? '+' : ''}{trend.value}%</span>
             </div>
-            <span className="text-xs text-gray-500">{trend.label}</span>
+            <span className="text-xs" style={{ color: colors.textTertiary }}>{trend.label}</span>
           </div>
         )}
       </div>
@@ -111,15 +116,25 @@ export default function PartnerDashboard() {
   )
 
   const TableRow = ({ data, columns, actions }: any) => (
-    <tr className="hover:bg-white/5 transition-colors" style={{ borderBottom: '1px solid rgba(69, 104, 130, 0.1)' }}>
+    <tr 
+      className="transition-colors" 
+      style={{ borderBottom: `1px solid ${colors.borderLight}` }}
+      onMouseEnter={(e) => e.currentTarget.style.background = colors.hover}
+      onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
+    >
       {columns.map((col: any, idx: number) => (
-        <td key={idx} className="px-8 py-5 whitespace-nowrap text-sm font-medium text-gray-300">
+        <td key={idx} className="px-8 py-5 whitespace-nowrap text-sm font-medium" style={{ color: colors.textSecondary }}>
           {col.render ? col.render(data[col.key], data) : data[col.key]}
         </td>
       ))}
       {actions && (
         <td className="px-8 py-5 whitespace-nowrap text-right text-sm font-medium">
-          <button className="p-2 text-gray-400 hover:text-white transition-colors rounded-lg">
+          <button 
+            className="p-2 transition-colors rounded-lg"
+            style={{ color: colors.textSecondary }}
+            onMouseEnter={(e) => e.currentTarget.style.color = colors.text}
+            onMouseLeave={(e) => e.currentTarget.style.color = colors.textSecondary}
+          >
             <MoreHorizontal className="h-4 w-4" />
           </button>
         </td>
@@ -130,8 +145,8 @@ export default function PartnerDashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-white">Dashboard</h1>
-        <p className="text-gray-400">Welcome back! Here's what's happening with your venues.</p>
+        <h1 className="text-3xl font-bold" style={{ color: colors.text }}>Dashboard</h1>
+        <p style={{ color: colors.textSecondary }}>Welcome back! Here's what's happening with your venues.</p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
@@ -196,23 +211,23 @@ export default function PartnerDashboard() {
       </div>
 
       <div className="rounded-3xl overflow-hidden" style={{
-        background: 'rgba(69, 104, 130, 0.1)',
-        border: '1px solid rgba(69, 104, 130, 0.2)',
+        background: theme === 'dark' ? 'rgba(69, 104, 130, 0.1)' : 'rgba(255, 255, 255, 0.9)',
+        border: `1px solid ${colors.cardBorder}`,
         backdropFilter: 'blur(20px)'
       }}>
-        <div className="px-8 py-6" style={{ borderBottom: '1px solid rgba(69, 104, 130, 0.2)' }}>
-          <h3 className="text-xl font-bold text-white">Recent Matches</h3>
-          <p className="text-sm text-gray-400 mt-1">Latest matches at your venues</p>
+        <div className="px-8 py-6" style={{ borderBottom: `1px solid ${colors.border}` }}>
+          <h3 className="text-xl font-bold" style={{ color: colors.text }}>Recent Matches</h3>
+          <p className="text-sm mt-1" style={{ color: colors.textSecondary }}>Latest matches at your venues</p>
         </div>
         <div className="overflow-x-auto">
           <table className="min-w-full">
             <thead>
-              <tr style={{ borderBottom: '1px solid rgba(69, 104, 130, 0.2)' }}>
-                <th className="px-8 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Match</th>
-                <th className="px-8 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Sport</th>
-                <th className="px-8 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Date</th>
-                <th className="px-8 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Players</th>
-                <th className="px-8 py-4 text-left text-xs font-bold text-gray-400 uppercase tracking-wider">Status</th>
+              <tr style={{ borderBottom: `1px solid ${colors.border}` }}>
+                <th className="px-8 py-4 text-left text-xs font-bold uppercase tracking-wider" style={{ color: colors.textSecondary }}>Match</th>
+                <th className="px-8 py-4 text-left text-xs font-bold uppercase tracking-wider" style={{ color: colors.textSecondary }}>Sport</th>
+                <th className="px-8 py-4 text-left text-xs font-bold uppercase tracking-wider" style={{ color: colors.textSecondary }}>Date</th>
+                <th className="px-8 py-4 text-left text-xs font-bold uppercase tracking-wider" style={{ color: colors.textSecondary }}>Players</th>
+                <th className="px-8 py-4 text-left text-xs font-bold uppercase tracking-wider" style={{ color: colors.textSecondary }}>Status</th>
               </tr>
             </thead>
             <tbody>

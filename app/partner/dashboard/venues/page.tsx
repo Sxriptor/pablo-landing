@@ -35,8 +35,12 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
+import { useTheme } from '@/components/partner/layout/ThemeProvider'
+import { getThemeColors, themeColors } from '@/lib/theme-colors'
 
 export default function VenuesPage() {
+  const { theme } = useTheme()
+  const colors = getThemeColors(theme)
   const [showAddVenueOverlay, setShowAddVenueOverlay] = useState(false)
   const [editingVenue, setEditingVenue] = useState<any>(null)
   const [venues, setVenues] = useState<any[]>([])
@@ -190,8 +194,8 @@ export default function VenuesPage() {
     <motion.div
       className="rounded-3xl p-6 relative overflow-hidden"
       style={{
-        background: 'rgba(69, 104, 130, 0.1)',
-        border: '1px solid rgba(69, 104, 130, 0.2)',
+        background: theme === 'dark' ? 'rgba(69, 104, 130, 0.1)' : 'rgba(255, 255, 255, 0.9)',
+        border: `1px solid ${colors.cardBorder}`,
         backdropFilter: 'blur(20px)'
       }}
       whileHover={{ 
@@ -200,7 +204,7 @@ export default function VenuesPage() {
       }}
     >
       <div className="absolute top-0 right-0 w-32 h-32 rounded-full" style={{
-        background: 'radial-gradient(circle, rgba(69, 104, 130, 0.15) 0%, transparent 70%)',
+        background: theme === 'dark' ? 'radial-gradient(circle, rgba(69, 104, 130, 0.15) 0%, transparent 70%)' : 'radial-gradient(circle, rgba(69, 104, 130, 0.08) 0%, transparent 70%)',
         filter: 'blur(30px)'
       }} />
       
@@ -208,7 +212,7 @@ export default function VenuesPage() {
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1">
             <div className="flex items-center space-x-3 mb-2">
-              <h3 className="text-xl font-bold text-white">{venue.name}</h3>
+              <h3 className="text-xl font-bold" style={{ color: colors.text }}>{venue.name}</h3>
               <span className={`px-3 py-1 rounded-full text-xs font-bold ${
                 venue.active ? 'text-green-400' : 'text-red-400'
               }`} style={{
@@ -217,10 +221,10 @@ export default function VenuesPage() {
                 {venue.active ? 'ACTIVE' : 'INACTIVE'}
               </span>
             </div>
-            <p className="text-sm text-gray-400 mb-3">
+            <p className="text-sm mb-3" style={{ color: colors.textSecondary }}>
               {venue.address}, {venue.city}, {venue.state} {venue.postal_code}
             </p>
-            <div className="flex items-center space-x-4 text-sm text-gray-300">
+            <div className="flex items-center space-x-4 text-sm" style={{ color: colors.textSecondary }}>
               <div className="flex items-center space-x-1">
                 <MapPin className="h-4 w-4" />
                 <span>{venue.city}, {venue.state}</span>
@@ -239,7 +243,12 @@ export default function VenuesPage() {
           </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="p-2 text-gray-400 hover:text-white transition-colors rounded-lg">
+              <button 
+                className="p-2 transition-colors rounded-lg"
+                style={{ color: colors.textSecondary }}
+                onMouseEnter={(e) => e.currentTarget.style.color = colors.text}
+                onMouseLeave={(e) => e.currentTarget.style.color = colors.textSecondary}
+              >
                 <MoreHorizontal className="h-4 w-4" />
               </button>
             </DropdownMenuTrigger>
@@ -296,15 +305,15 @@ export default function VenuesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Venues</h1>
-          <p className="text-gray-400">Manage your sports venues and facilities</p>
+          <h1 className="text-3xl font-bold" style={{ color: colors.text }}>Venues</h1>
+          <p style={{ color: colors.textSecondary }}>Manage your sports venues and facilities</p>
         </div>
         {venues.length > 0 && (
           <motion.button 
             onClick={() => setShowAddVenueOverlay(true)}
             className="text-white px-6 py-3 rounded-2xl flex items-center font-bold text-sm"
             style={{
-              background: '#456882',
+              background: themeColors.accent,
               boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)'
             }}
             whileHover={{ scale: 1.05 }}
