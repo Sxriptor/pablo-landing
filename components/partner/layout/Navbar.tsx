@@ -1,7 +1,7 @@
 'use client'
 
 import { useState } from 'react'
-import { Bell, Search, Settings } from 'lucide-react'
+import { Bell, Search, Settings, DoorOpen } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import type { Partner } from '@/lib/types'
@@ -110,6 +110,13 @@ export function Navbar({ partner }: NavbarProps) {
               <p className="text-sm font-semibold text-white">{partner?.company_name || 'Partner'}</p>
               <p className="text-xs text-gray-400">{partner?.email || 'partner@playcircle.com'}</p>
             </div>
+            <button 
+              onClick={handleSignOut}
+              className="p-2 text-red-400 hover:text-red-300 transition-colors rounded-lg ml-2"
+              title="Sign Out"
+            >
+              <DoorOpen className="h-5 w-5" />
+            </button>
           </div>
         </div>
       </div>
