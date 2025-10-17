@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { 
   Building2, 
@@ -11,27 +11,141 @@ import {
   Globe,
   Save,
   Edit,
-  Phone,
-  Mail,
-  MapPin
+  Loader2,
+  CheckCircle,
+  AlertCircle
 } from 'lucide-react'
+import { supabase } from '@/lib/supabase'
 
 export default function SettingsPage() {
   const [activeTab, setActiveTab] = useState('company')
   const [isEditing, setIsEditing] = useState(false)
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
+  const [message, setMessage] = useState<{ type: 'success' | 'error', text: string } | null>(null)
+  const [partnerId, setPartnerId] = useState<string | null>(null)
 
   const [settings, setSettings] = useState({
-    company_name: 'Elite Tennis Club',
-    email: 'admin@elitetennisclub.com',
-    phone: '(212) 555-0123',
-    website: 'https://elitetennisclub.com',
-    description: 'Premier tennis facility offering world-class courts and professional instruction for players of all levels.',
-    address: '123 Elite Boulevard',
-    city: 'New York',
-    state: 'NY',
-    zip_code: '10001',
-    country: 'United States',
+    company_name: '',
+    email: '',
+    phone: '',
+    website: '',
+    description: '',
+    address: '',
   })
+
+  // Store original settings for cancel functionality
+  const [originalSettings, setOriginalSettings] = useState({
+    company_name: '',
+    email: '',
+    phone: '',
+    website: '',
+    description: '',
+    address: '',
+  })
+
+  // Fetch partner data on mount
+  useEffect(() => {
+    const fetchPartnerData = async () => {
+      try {
+        setLoading(true)
+        
+        // Get current user session
+        const { data: { session }, error: sessionError } = await supabase.auth.getSession()
+        
+        if (sessionError || !session) {
+          setMessage({ type: 'error', text: 'Not authenticated' })
+          return
+        }
+
+        // Fetch partner data
+        const { data: partnerData, error: partnerError } = await supabase
+          .from('partners')
+          .select('*')
+          .eq('user_id', session.user.id)
+          .single()
+
+        if (partnerError) {
+          console.error('Error fetching partner:', partnerError)
+          setMessage({ type: 'error', text: 'Failed to load partner data' })
+          return
+        }
+
+        if (partnerData) {
+          setPartnerId(partnerData.id)
+          const fetchedSettings = {
+            company_name: partnerData.company_name || '',
+            email: partnerData.email || '',
+            phone: partnerData.phone || '',
+            website: partnerData.website || '',
+            description: partnerData.description || '',
+            address: partnerData.address || '',
+          }
+          setSettings(fetchedSettings)
+          setOriginalSettings(fetchedSettings)
+        }
+      } catch (error) {
+        console.error('Error:', error)
+        setMessage({ type: 'error', text: 'An unexpected error occurred' })
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchPartnerData()
+  }, [])
+
+  // Handle field changes
+  const handleFieldChange = (field: string, value: string) => {
+    setSettings(prev => ({
+      ...prev,
+      [field]: value
+    }))
+  }
+
+  // Save changes to database
+  const handleSaveChanges = async () => {
+    if (!partnerId) {
+      setMessage({ type: 'error', text: 'Partner ID not found' })
+      return
+    }
+
+    try {
+      setSaving(true)
+      setMessage(null)
+
+      const { error } = await supabase
+        .from('partners')
+        .update({
+          company_name: settings.company_name,
+          email: settings.email,
+          phone: settings.phone,
+          website: settings.website,
+          description: settings.description,
+          address: settings.address,
+        })
+        .eq('id', partnerId)
+
+      if (error) {
+        console.error('Error updating partner:', error)
+        setMessage({ type: 'error', text: 'Failed to save changes' })
+        return
+      }
+
+      // Update original settings to current settings after successful save
+      setOriginalSettings(settings)
+      setMessage({ type: 'success', text: 'Changes saved successfully!' })
+      setIsEditing(false)
+      
+      // Clear success message after 3 seconds
+      setTimeout(() => setMessage(null), 3000)
+    } catch (error) {
+      console.error('Error:', error)
+      setMessage({ type: 'error', text: 'An unexpected error occurred' })
+    } finally {
+      setSaving(false)
+    }
+  }
 
   const tabs = [
     { id: 'company', label: 'Company Info', icon: Building2 },
@@ -42,127 +156,153 @@ export default function SettingsPage() {
     { id: 'integrations', label: 'Integrations', icon: Globe },
   ]
 
-  const renderCompanyInfo = () => (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-white">Company Information</h2>
-        <motion.button 
-          onClick={() => setIsEditing(!isEditing)}
-          className={`px-6 py-3 rounded-2xl flex items-center font-bold text-sm transition-all ${
-            isEditing ? 'bg-neutral-600 text-white' : 'bg-[#456882] hover:bg-[#3a5670] text-white'
-          }`}
-        >
-          <Edit className="h-4 w-4 mr-2" />
-          {isEditing ? 'CANCEL' : 'EDIT'}
-        </motion.button>
-      </div>
-
-      <div className="grid gap-6 md:grid-cols-2">
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-neutral-400 mb-2">Company Name</label>
-            <input
-              type="text"
-              value={settings.company_name}
-              disabled={!isEditing}
-              className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-neutral-400 mb-2">Email</label>
-            <input
-              type="email"
-              value={settings.email}
-              disabled={!isEditing}
-              className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-neutral-400 mb-2">Phone</label>
-            <input
-              type="tel"
-              value={settings.phone}
-              disabled={!isEditing}
-              className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
-            />
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-neutral-400 mb-2">Website</label>
-            <input
-              type="url"
-              value={settings.website}
-              disabled={!isEditing}
-              className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
-            />
-          </div>
+  const renderCompanyInfo = () => {
+    if (loading) {
+      return (
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-[#456882]" />
         </div>
+      )
+    }
 
-        <div className="space-y-4">
-          <div>
-            <label className="block text-sm font-medium text-neutral-400 mb-2">Address</label>
-            <input
-              type="text"
-              value={settings.address}
-              disabled={!isEditing}
-              className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
-            />
-          </div>
-          <div className="grid grid-cols-2 gap-4">
-            <div>
-              <label className="block text-sm font-medium text-neutral-400 mb-2">City</label>
-              <input
-                type="text"
-                value={settings.city}
-                disabled={!isEditing}
-                className="w-full px-4 py-3 rounded-2xl text-white placeholder-gray-500 focus:outline-none transition-all disabled:opacity-50"
-                style={{
-                  background: 'rgba(26, 32, 53, 0.5)',
-                  border: '1px solid rgba(59, 130, 246, 0.1)',
-                  backdropFilter: 'blur(10px)'
-                }}
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-neutral-400 mb-2">State</label>
-              <input
-                type="text"
-                value={settings.state}
-                disabled={!isEditing}
-                className="w-full px-4 py-3 rounded-2xl text-white placeholder-gray-500 focus:outline-none transition-all disabled:opacity-50"
-                style={{
-                  background: 'rgba(26, 32, 53, 0.5)',
-                  border: '1px solid rgba(59, 130, 246, 0.1)',
-                  backdropFilter: 'blur(10px)'
-                }}
-              />
-            </div>
-          </div>
-          <div>
-            <label className="block text-sm font-medium text-neutral-400 mb-2">Description</label>
-            <textarea
-              value={settings.description}
-              disabled={!isEditing}
-              rows={4}
-              className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50 resize-none"
-            />
-          </div>
-        </div>
-      </div>
-
-      {isEditing && (
-        <div className="flex justify-end">
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-white">Company Information</h2>
           <motion.button 
-            className="text-white bg-[#456882] hover:bg-[#3a5670] px-8 py-3 rounded-2xl flex items-center font-bold text-sm transition-colors"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
+            onClick={() => {
+              if (isEditing) {
+                // Revert to original settings
+                setSettings(originalSettings)
+                setIsEditing(false)
+                setMessage(null)
+              } else {
+                setIsEditing(true)
+              }
+            }}
+            className={`px-6 py-3 rounded-2xl flex items-center font-bold text-sm transition-all ${
+              isEditing ? 'bg-neutral-600 text-white' : 'bg-[#456882] hover:bg-[#3a5670] text-white'
+            }`}
           >
-            <Save className="h-4 w-4 mr-2" />
-            SAVE CHANGES
+            <Edit className="h-4 w-4 mr-2" />
+            {isEditing ? 'CANCEL' : 'EDIT'}
           </motion.button>
         </div>
-      )}
-    </div>
-  )
+
+        {/* Success/Error Message */}
+        {message && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={`flex items-center gap-2 p-4 rounded-2xl ${
+              message.type === 'success' 
+                ? 'bg-green-500/10 border border-green-500/20 text-green-400' 
+                : 'bg-red-500/10 border border-red-500/20 text-red-400'
+            }`}
+          >
+            {message.type === 'success' ? (
+              <CheckCircle className="h-5 w-5" />
+            ) : (
+              <AlertCircle className="h-5 w-5" />
+            )}
+            <span className="font-medium">{message.text}</span>
+          </motion.div>
+        )}
+
+        <div className="grid gap-6 md:grid-cols-2">
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-neutral-400 mb-2">Company Name</label>
+              <input
+                type="text"
+                value={settings.company_name}
+                onChange={(e) => handleFieldChange('company_name', e.target.value)}
+                disabled={!isEditing}
+                className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-neutral-400 mb-2">Email</label>
+              <input
+                type="email"
+                value={settings.email}
+                onChange={(e) => handleFieldChange('email', e.target.value)}
+                disabled={!isEditing}
+                className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-neutral-400 mb-2">Phone</label>
+              <input
+                type="tel"
+                value={settings.phone}
+                onChange={(e) => handleFieldChange('phone', e.target.value)}
+                disabled={!isEditing}
+                className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-neutral-400 mb-2">Website</label>
+              <input
+                type="url"
+                value={settings.website}
+                onChange={(e) => handleFieldChange('website', e.target.value)}
+                disabled={!isEditing}
+                className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium text-neutral-400 mb-2">Address</label>
+              <input
+                type="text"
+                value={settings.address}
+                onChange={(e) => handleFieldChange('address', e.target.value)}
+                disabled={!isEditing}
+                className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-neutral-400 mb-2">Description</label>
+              <textarea
+                value={settings.description}
+                onChange={(e) => handleFieldChange('description', e.target.value)}
+                disabled={!isEditing}
+                rows={8}
+                className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50 resize-none"
+              />
+            </div>
+          </div>
+        </div>
+
+        {isEditing && (
+          <div className="flex justify-end">
+            <motion.button 
+              onClick={handleSaveChanges}
+              disabled={saving}
+              className="text-white bg-[#456882] hover:bg-[#3a5670] disabled:bg-neutral-600 disabled:cursor-not-allowed px-8 py-3 rounded-2xl flex items-center font-bold text-sm transition-colors"
+              whileHover={!saving ? { scale: 1.05 } : {}}
+              whileTap={!saving ? { scale: 0.95 } : {}}
+            >
+              {saving ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  SAVING...
+                </>
+              ) : (
+                <>
+                  <Save className="h-4 w-4 mr-2" />
+                  SAVE CHANGES
+                </>
+              )}
+            </motion.button>
+          </div>
+        )}
+      </div>
+    )
+  }
 
   const renderContent = () => {
     switch (activeTab) {
