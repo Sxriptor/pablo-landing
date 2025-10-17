@@ -257,7 +257,12 @@ export function Header() {
               type: "spring"
             }}
           >
-            <Button 
+            <Button
+              onClick={() => {
+                if (pathname === '/partners') {
+                  window.location.href = '/partner/entry'
+                }
+              }}
               className="hidden md:flex bg-primary text-primary-foreground hover:bg-primary/90 rounded-full px-4 lg:px-6 py-2 lg:py-2.5 text-sm lg:text-base transition-all duration-200 touch-target"
               style={{
                 filter: 'drop-shadow(2px 2px 4px rgba(0, 0, 0, 0.3)) drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2))'
@@ -280,7 +285,7 @@ export function Header() {
                 e.currentTarget.style.outline = 'none'
               }}
             >
-              Download App
+              {pathname === '/partners' ? 'Sign In / Sign Up' : 'Download App'}
             </Button>
           </motion.div>
 
@@ -502,6 +507,11 @@ export function Header() {
             {/* Open App Button at Bottom */}
             <div className="mt-auto p-4 xs:p-6 border-t border-white/20 backdrop-blur-sm safe-area-bottom">
               <Button
+                onClick={() => {
+                  if (pathname === '/partners') {
+                    window.location.href = '/partner/entry'
+                  }
+                }}
                 className="w-full rounded-full py-3 sm:py-4 text-base sm:text-lg font-semibold transition-all duration-300 touch-target"
                 style={{
                   background: '#456882',
@@ -526,7 +536,7 @@ export function Header() {
                   e.currentTarget.style.outline = 'none'
                 }}
               >
-                Open App
+                {pathname === '/partners' ? 'Sign In / Sign Up' : 'Open App'}
               </Button>
             </div>
           </div>

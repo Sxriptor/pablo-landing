@@ -171,7 +171,33 @@ export default function PartnerEntryPage() {
       </div>
 
       {/* Right side - Login Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center bg-slate-900 p-8">
+      <div className="w-full lg:w-1/2 flex items-center justify-center bg-slate-900 p-8 relative">
+        {/* Back Arrow Button */}
+        <motion.button
+          onClick={() => window.location.href = '/partners'}
+          className="absolute top-8 left-8 text-slate-400 hover:text-white transition-colors flex items-center gap-2 group"
+          initial={{ opacity: 0, x: -20 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ duration: 0.6, delay: 0.4 }}
+          whileHover={{ x: -4 }}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth={2}
+            stroke="currentColor"
+            className="w-6 h-6"
+          >
+            <path
+              strokeLinecap="round"
+              strokeLinejoin="round"
+              d="M10.5 19.5L3 12m0 0l7.5-7.5M3 12h18"
+            />
+          </svg>
+          <span className="text-sm font-medium">Back</span>
+        </motion.button>
+
         <div className="w-full max-w-md space-y-8">
           {/* Welcome Message */}
           <motion.div 
