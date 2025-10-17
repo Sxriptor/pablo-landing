@@ -90,3 +90,148 @@ create trigger update_matches_updated_at
   before update on matches
   for each row
   execute function update_updated_at_column();
+
+-- =====================================================
+-- ROW LEVEL SECURITY (RLS) POLICIES
+-- =====================================================
+
+-- Enable RLS on matches table
+alter table matches enable row level security;
+
+-- Enable RLS on match_participants table
+alter table match_participants enable row level security;
+
+-- =====================================================
+-- MATCHES TABLE POLICIES
+-- =====================================================
+
+-- Drop existing policies if they exist
+drop policy if exists "Anyone can view matches" on matches;
+drop policy if exists "Partners can create matches" on matches;
+drop policy if exists "Partners can update own matches" on matches;
+drop policy if exists "Partners can delete own matches" on matches;
+
+-- Policy: Anyone (including anonymous) can view matches
+create policy "Anyone can view matches"
+  on matches
+  for select
+  using (true);
+
+-- Policy: Only authenticated partners can create matches
+create policy "Partners can create matches"
+  on matches
+  for insert
+  with check (
+    auth.role() = 'authenticated' 
+    and exists (
+      select 1 from partners p 
+      where p.id = partner_id 
+      and p.user_id = auth.uid()
+    )
+  );
+
+-- Policy: Partners can update their own matches
+create policy "Partners can update own matches"
+  on matches
+  for update
+  using (
+    auth.role() = 'authenticated' 
+    and exists (
+      select 1 from partners p 
+      where p.id = partner_id 
+      and p.user_id = auth.uid()
+    )
+  )
+  with check (
+    auth.role() = 'authenticated' 
+    and exists (
+      select 1 from partners p 
+      where p.id = partner_id 
+      and p.user_id = auth.uid()
+    )
+  );
+
+-- Policy: Partners can delete their own matches
+create policy "Partners can delete own matches"
+  on matches
+  for delete
+  using (
+    auth.role() = 'authenticated' 
+    and exists (
+      select 1 from partners p 
+      where p.id = partner_id 
+      and p.user_id = auth.uid()
+    )
+  );
+
+-- =====================================================
+-- MATCH_PARTICIPANTS TABLE POLICIES
+-- =====================================================
+
+-- Drop existing policies if they exist
+drop policy if exists "Anyone can view match participants" on match_participants;
+drop policy if exists "Authenticated users can join matches" on match_participants;
+drop policy if exists "Users can manage own participation" on match_participants;
+drop policy if exists "Partners can manage participants in own matches" on match_participants;
+
+-- Policy: Anyone can view match participants
+create policy "Anyone can view match participants"
+  on match_participants
+  for select
+  using (true);
+
+-- Policy: Authenticated users can join matches
+create policy "Authenticated users can join matches"
+  on match_participants
+  for insert
+  with check (
+    auth.role() = 'authenticated' 
+    and auth.uid() = user_id
+  );
+
+-- Policy: Users can manage their own participation (update/delete)
+create policy "Users can manage own participation"
+  on match_participants
+  for all
+  using (
+    auth.role() = 'authenticated' 
+    and auth.uid() = user_id
+  )
+  with check (
+    auth.role() = 'authenticated' 
+    and auth.uid() = user_id
+  );
+
+-- Policy: Partners can manage participants in their own matches
+create policy "Partners can manage participants in own matches"
+  on match_participants
+  for all
+  using (
+    auth.role() = 'authenticated' 
+    and exists (
+      select 1 from matches m
+      join partners p on p.id = m.partner_id
+      where m.id = match_id 
+      and p.user_id = auth.uid()
+    )
+  )
+  with check (
+    auth.role() = 'authenticated' 
+    and exists (
+      select 1 from matches m
+      join partners p on p.id = m.partner_id
+      where m.id = match_id 
+      and p.user_id = auth.uid()
+    )
+  );
+
+-- =====================================================
+-- COMMENTS
+-- =====================================================
+
+comment on table matches is 'Stores match information - viewable by all, manageable only by owning partners';
+comment on table match_participants is 'Stores match participation - viewable by all, users can manage own participation, partners can manage participants in their matches';
+comment on policy "Anyone can view matches" on matches is 'Allows anonymous and authenticated users to view all matches';
+comment on policy "Partners can create matches" on matches is 'Only authenticated partners can create matches for their venues';
+comment on policy "Partners can update own matches" on matches is 'Partners can only update matches they created';
+comment on policy "Partners can delete own matches" on matches is 'Partners can only delete matches they created';
