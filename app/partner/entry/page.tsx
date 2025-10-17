@@ -182,7 +182,7 @@ export default function PartnerEntryPage() {
         options: {
           data: {
             full_name: fullName,
-            company_name: companyName,
+            company_name: companyName,  // Presence of company_name indicates partner signup
           }
         }
       })
@@ -199,21 +199,52 @@ export default function PartnerEntryPage() {
         return
       }
 
-      // Wait a moment for the profile to be created by the auth trigger
-      await new Promise(resolve => setTimeout(resolve, 1000))
+      // Wait for the profile to be created by the auth trigger, with retries
+      let profileExists = false
+      for (let i = 0; i < 5; i++) {
+        await new Promise(resolve => setTimeout(resolve, 500))
+        
+        const { data: profileCheck } = await supabase
+          .from('profiles')
+          .select('id')
+          .eq('id', authData.user.id)
+          .single()
+        
+        if (profileCheck) {
+          profileExists = true
+          break
+        }
+      }
 
-      // Update profile with full name (but keep partner = false for now)
-      const { error: profileError } = await supabase
-        .from('profiles')
-        .update({
-          full_name: fullName,
-        })
-        .eq('id', authData.user.id)
+      if (!profileExists) {
+        // Profile wasn't created by trigger, create it manually
+        const { error: insertError } = await supabase
+          .from('profiles')
+          .insert({
+            id: authData.user.id,
+            username: email.split('@')[0],
+            full_name: fullName,
+            partner: false
+          })
+        
+        if (insertError && insertError.code !== '23505') { // Ignore duplicate key error
+          setError('Failed to create profile: ' + insertError.message)
+          setLoading(false)
+          return
+        }
+      } else {
+        // Update profile with full name
+        const { error: profileError } = await supabase
+          .from('profiles')
+          .update({
+            full_name: fullName,
+          })
+          .eq('id', authData.user.id)
 
-      if (profileError) {
-        setError('Failed to update profile: ' + profileError.message)
-        setLoading(false)
-        return
+        if (profileError) {
+          console.warn('Failed to update profile, but continuing:', profileError.message)
+          // Don't return - continue with application creation
+        }
       }
 
       // Create partner application record
