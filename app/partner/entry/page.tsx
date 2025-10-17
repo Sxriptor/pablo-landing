@@ -307,15 +307,27 @@ export default function PartnerEntryPage() {
     e.preventDefault()
     if (!currentUserId) return
 
+    // Validate sports offered
+    if (appSportsOffered.length === 0) {
+      setError('Please select at least one sport')
+      return
+    }
+
     setLoading(true)
     try {
+      // Normalize website URL
+      let normalizedWebsite = appWebsite.trim()
+      if (normalizedWebsite && !normalizedWebsite.startsWith('http://') && !normalizedWebsite.startsWith('https://')) {
+        normalizedWebsite = 'https://' + normalizedWebsite
+      }
+
       // Update the application with full details
       const { error: updateError } = await supabase
         .from('partner_applications')
         .update({
           company_name: companyName,
           phone: appPhone,
-          website: appWebsite,
+          website: normalizedWebsite,
           address: appAddress,
           city: appCity,
           state: appState,
@@ -324,9 +336,9 @@ export default function PartnerEntryPage() {
           description: appDescription,
           years_in_business: appYearsInBusiness ? parseInt(appYearsInBusiness) : null,
           number_of_courts: appNumberOfCourts ? parseInt(appNumberOfCourts) : null,
-          sports_offered: appSportsOffered.length > 0 ? appSportsOffered : null,
+          sports_offered: appSportsOffered,
           estimated_monthly_bookings: appEstimatedMonthlyBookings ? parseInt(appEstimatedMonthlyBookings) : null,
-          current_booking_system: appCurrentBookingSystem || null,
+          current_booking_system: appCurrentBookingSystem,
           business_license_url: appBusinessLicenseUrl || null,
           insurance_certificate_url: appInsuranceCertificateUrl || null,
         })
@@ -501,21 +513,25 @@ export default function PartnerEntryPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="block text-sm font-medium text-white">Phone</label>
+                    <label className="block text-sm font-medium text-white">Phone*</label>
                     <input
                       type="tel"
                       value={appPhone}
                       onChange={(e) => setAppPhone(e.target.value)}
+                      required
+                      placeholder="(555) 123-4567"
                       className="w-full px-4 py-3 rounded-lg bg-slate-700 border border-slate-600 text-white"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <label className="block text-sm font-medium text-white">Website</label>
+                    <label className="block text-sm font-medium text-white">Website*</label>
                     <input
-                      type="url"
+                      type="text"
                       value={appWebsite}
                       onChange={(e) => setAppWebsite(e.target.value)}
+                      required
+                      placeholder="example.com or www.example.com"
                       className="w-full px-4 py-3 rounded-lg bg-slate-700 border border-slate-600 text-white"
                     />
                   </div>
@@ -536,12 +552,14 @@ export default function PartnerEntryPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="block text-sm font-medium text-white">Years in Business</label>
+                    <label className="block text-sm font-medium text-white">Years in Business*</label>
                     <input
                       type="number"
                       value={appYearsInBusiness}
                       onChange={(e) => setAppYearsInBusiness(e.target.value)}
+                      required
                       min="0"
+                      placeholder="5"
                       className="w-full px-4 py-3 rounded-lg bg-slate-700 border border-slate-600 text-white"
                     />
                   </div>
@@ -559,41 +577,100 @@ export default function PartnerEntryPage() {
                   </div>
 
                   <div className="space-y-2 md:col-span-2">
-                    <label className="block text-sm font-medium text-white">Address</label>
+                    <label className="block text-sm font-medium text-white">Address*</label>
                     <input
                       type="text"
                       value={appAddress}
                       onChange={(e) => setAppAddress(e.target.value)}
+                      required
+                      placeholder="123 Main Street"
                       className="w-full px-4 py-3 rounded-lg bg-slate-700 border border-slate-600 text-white"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <label className="block text-sm font-medium text-white">City</label>
+                    <label className="block text-sm font-medium text-white">City*</label>
                     <input
                       type="text"
                       value={appCity}
                       onChange={(e) => setAppCity(e.target.value)}
+                      required
+                      placeholder="New York"
                       className="w-full px-4 py-3 rounded-lg bg-slate-700 border border-slate-600 text-white"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <label className="block text-sm font-medium text-white">State</label>
-                    <input
-                      type="text"
+                    <label className="block text-sm font-medium text-white">State*</label>
+                    <select
                       value={appState}
                       onChange={(e) => setAppState(e.target.value)}
+                      required
                       className="w-full px-4 py-3 rounded-lg bg-slate-700 border border-slate-600 text-white"
-                    />
+                    >
+                      <option value="">Select State</option>
+                      <option value="AL">AL</option>
+                      <option value="AK">AK</option>
+                      <option value="AZ">AZ</option>
+                      <option value="AR">AR</option>
+                      <option value="CA">CA</option>
+                      <option value="CO">CO</option>
+                      <option value="CT">CT</option>
+                      <option value="DE">DE</option>
+                      <option value="FL">FL</option>
+                      <option value="GA">GA</option>
+                      <option value="HI">HI</option>
+                      <option value="ID">ID</option>
+                      <option value="IL">IL</option>
+                      <option value="IN">IN</option>
+                      <option value="IA">IA</option>
+                      <option value="KS">KS</option>
+                      <option value="KY">KY</option>
+                      <option value="LA">LA</option>
+                      <option value="ME">ME</option>
+                      <option value="MD">MD</option>
+                      <option value="MA">MA</option>
+                      <option value="MI">MI</option>
+                      <option value="MN">MN</option>
+                      <option value="MS">MS</option>
+                      <option value="MO">MO</option>
+                      <option value="MT">MT</option>
+                      <option value="NE">NE</option>
+                      <option value="NV">NV</option>
+                      <option value="NH">NH</option>
+                      <option value="NJ">NJ</option>
+                      <option value="NM">NM</option>
+                      <option value="NY">NY</option>
+                      <option value="NC">NC</option>
+                      <option value="ND">ND</option>
+                      <option value="OH">OH</option>
+                      <option value="OK">OK</option>
+                      <option value="OR">OR</option>
+                      <option value="PA">PA</option>
+                      <option value="RI">RI</option>
+                      <option value="SC">SC</option>
+                      <option value="SD">SD</option>
+                      <option value="TN">TN</option>
+                      <option value="TX">TX</option>
+                      <option value="UT">UT</option>
+                      <option value="VT">VT</option>
+                      <option value="VA">VA</option>
+                      <option value="WA">WA</option>
+                      <option value="WV">WV</option>
+                      <option value="WI">WI</option>
+                      <option value="WY">WY</option>
+                      <option value="DC">DC</option>
+                    </select>
                   </div>
 
                   <div className="space-y-2">
-                    <label className="block text-sm font-medium text-white">Postal Code</label>
+                    <label className="block text-sm font-medium text-white">Postal Code*</label>
                     <input
                       type="text"
                       value={appPostalCode}
                       onChange={(e) => setAppPostalCode(e.target.value)}
+                      required
+                      placeholder="10001"
                       className="w-full px-4 py-3 rounded-lg bg-slate-700 border border-slate-600 text-white"
                     />
                   </div>
@@ -622,26 +699,37 @@ export default function PartnerEntryPage() {
                   </div>
 
                   <div className="space-y-2">
-                    <label className="block text-sm font-medium text-white">Estimated Monthly Bookings</label>
+                    <label className="block text-sm font-medium text-white">Estimated Monthly Bookings*</label>
                     <input
                       type="number"
                       value={appEstimatedMonthlyBookings}
                       onChange={(e) => setAppEstimatedMonthlyBookings(e.target.value)}
+                      required
                       min="0"
                       className="w-full px-4 py-3 rounded-lg bg-slate-700 border border-slate-600 text-white"
-                      placeholder="e.g., 150"
+                      placeholder="150"
                     />
                   </div>
 
                   <div className="space-y-2">
-                    <label className="block text-sm font-medium text-white">Current Booking System</label>
+                    <label className="block text-sm font-medium text-white">Current Booking System*</label>
                     <input
                       type="text"
                       value={appCurrentBookingSystem}
                       onChange={(e) => setAppCurrentBookingSystem(e.target.value)}
+                      required
                       className="w-full px-4 py-3 rounded-lg bg-slate-700 border border-slate-600 text-white"
-                      placeholder="e.g., CourtReserve, Manual, etc."
+                      placeholder="CourtReserve, Manual, None"
+                      list="booking-systems"
                     />
+                    <datalist id="booking-systems">
+                      <option value="CourtReserve" />
+                      <option value="PlayYourCourt" />
+                      <option value="Tennis Bookings" />
+                      <option value="ClubSpark" />
+                      <option value="Manual/Phone" />
+                      <option value="None" />
+                    </datalist>
                   </div>
 
                   <div className="space-y-2 md:col-span-2">
