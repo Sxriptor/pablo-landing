@@ -890,7 +890,7 @@ export default function PartnerEntryPage() {
           
           {/* Gradient Overlay - locked to image */}
           <motion.div 
-            className="absolute inset-0 bg-gradient-to-br from-purple-900/90 to-blue-900/90"
+            className="absolute inset-0 bg-gradient-to-br from-[#456882]/90 to-[#1e3a8a]/90"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ 
@@ -1129,7 +1129,7 @@ export default function PartnerEntryPage() {
 
             <motion.button
               type="submit"
-              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-colors flex items-center justify-center disabled:opacity-50"
+              className="w-full bg-[#456882] hover:bg-[#3a5670] text-white font-medium py-3 rounded-lg transition-colors flex items-center justify-center disabled:opacity-50"
               disabled={loading}
               whileHover={{ scale: loading ? 1 : 1.02 }}
               whileTap={{ scale: loading ? 1 : 0.98 }}
