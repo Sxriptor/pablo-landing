@@ -21,6 +21,7 @@ create table if not exists matches (
   -- Match configuration
   match_type text not null check (match_type in ('singles', 'doubles', 'mixed_doubles', 'tournament', 'lesson', 'clinic')),
   skill_level text check (skill_level in ('beginner', 'intermediate', 'advanced', 'open')),
+  access_type text not null default 'reserve' check (access_type in ('open', 'reserve')),
   
   -- Participation
   max_players integer not null default 4,
@@ -84,6 +85,15 @@ create index if not exists idx_matches_status on matches(status);
 
 create index if not exists idx_match_participants_match_id on match_participants(match_id);
 create index if not exists idx_match_participants_user_id on match_participants(user_id);
+
+-- Add missing columns to existing matches table
+DO $$
+BEGIN
+    -- Add access_type column if it doesn't exist
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'matches' AND column_name = 'access_type') THEN
+        ALTER TABLE matches ADD COLUMN access_type text NOT NULL DEFAULT 'reserve' CHECK (access_type IN ('open', 'reserve'));
+    END IF;
+END $$;
 
 -- Triggers
 create trigger update_matches_updated_at

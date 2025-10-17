@@ -34,6 +34,7 @@ export function CreateMatchOverlay({
     description: '',
     matchType: 'singles',
     sport: 'tennis',
+    accessType: 'reserve',
     venueId: '',
     courtId: '',
     scheduledDate: '',
@@ -64,6 +65,11 @@ export function CreateMatchOverlay({
     { value: 'squash', label: 'Squash' },
     { value: 'basketball', label: 'Basketball' },
     { value: 'volleyball', label: 'Volleyball' },
+  ]
+
+  const accessTypes = [
+    { value: 'reserve', label: 'Reserve (Mobile App Booking)' },
+    { value: 'open', label: 'Open (Walk-in)' },
   ]
 
   const skillLevels = [
@@ -117,6 +123,7 @@ export function CreateMatchOverlay({
       description: '',
       matchType: 'singles',
       sport: 'tennis',
+      accessType: 'reserve',
       venueId: '',
       courtId: '',
       scheduledDate: '',
@@ -182,6 +189,30 @@ export function CreateMatchOverlay({
                 required
                 className="bg-white/5 border-white/10 text-white placeholder-gray-500"
               />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Access Type *
+              </label>
+              <select
+                value={formData.accessType}
+                onChange={(e) => handleInputChange('accessType', e.target.value)}
+                required
+                className="w-full h-9 px-3 py-1 rounded-md bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                {accessTypes.map((type) => (
+                  <option key={type.value} value={type.value} className="bg-gray-800">
+                    {type.label}
+                  </option>
+                ))}
+              </select>
+              <p className="text-xs text-gray-400 mt-1">
+                {formData.accessType === 'reserve' 
+                  ? 'Players book and pay through the mobile app' 
+                  : 'Walk-in match - no advance booking required'
+                }
+              </p>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -348,17 +379,19 @@ export function CreateMatchOverlay({
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Registration Deadline
-              </label>
-              <Input
-                type="date"
-                value={formData.registrationDeadline}
-                onChange={(e) => handleInputChange('registrationDeadline', e.target.value)}
-                className="bg-white/5 border-white/10 text-white"
-              />
-            </div>
+            {formData.accessType === 'reserve' && (
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Registration Deadline
+                </label>
+                <Input
+                  type="date"
+                  value={formData.registrationDeadline}
+                  onChange={(e) => handleInputChange('registrationDeadline', e.target.value)}
+                  className="bg-white/5 border-white/10 text-white"
+                />
+              </div>
+            )}
           </div>
 
           {/* Match Format & Participants */}
@@ -409,37 +442,45 @@ export function CreateMatchOverlay({
               Pricing & Prizes
             </h3>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Entry Fee ($)
-                </label>
-                <Input
-                  type="number"
-                  value={formData.entryFee}
-                  onChange={(e) => handleInputChange('entryFee', e.target.value)}
-                  placeholder="25.00"
-                  min="0"
-                  step="0.01"
-                  className="bg-white/5 border-white/10 text-white placeholder-gray-500"
-                />
+            {formData.accessType === 'reserve' ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Entry Fee ($)
+                  </label>
+                  <Input
+                    type="number"
+                    value={formData.entryFee}
+                    onChange={(e) => handleInputChange('entryFee', e.target.value)}
+                    placeholder="25.00"
+                    min="0"
+                    step="0.01"
+                    className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Prize Pool ($)
+                  </label>
+                  <Input
+                    type="number"
+                    value={formData.prizePool}
+                    onChange={(e) => handleInputChange('prizePool', e.target.value)}
+                    placeholder="500.00"
+                    min="0"
+                    step="0.01"
+                    className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+                  />
+                </div>
               </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Prize Pool ($)
-                </label>
-                <Input
-                  type="number"
-                  value={formData.prizePool}
-                  onChange={(e) => handleInputChange('prizePool', e.target.value)}
-                  placeholder="500.00"
-                  min="0"
-                  step="0.01"
-                  className="bg-white/5 border-white/10 text-white placeholder-gray-500"
-                />
+            ) : (
+              <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20">
+                <p className="text-blue-400 text-sm">
+                  <strong>Open Match:</strong> This is a walk-in match. Players pay court fees directly at the venue. No advance booking or entry fees required.
+                </p>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Rules and Requirements */}
