@@ -13,9 +13,16 @@ export interface CourtData {
   surface: string
   indoor: boolean
   lighting: boolean
+  netProvided: boolean
+  equipmentRental: boolean
   description?: string
   hourlyRate?: string
   peakHourRate?: string
+  advanceBookingDays: string
+  maxBookingDuration: string
+  length?: string
+  width?: string
+  height?: string
   availability: {
     [key: string]: {
       available: boolean
@@ -71,9 +78,16 @@ export async function createCourt(courtData: CourtData): Promise<{ success: bool
       surface_type: courtData.surface,
       indoor: courtData.indoor,
       lighting: courtData.lighting,
+      net_provided: courtData.netProvided,
+      equipment_rental: courtData.equipmentRental,
       hourly_rate: courtData.hourlyRate ? parseFloat(courtData.hourlyRate) : null,
       peak_rate: courtData.peakHourRate ? parseFloat(courtData.peakHourRate) : null,
       available_hours: availableHours,
+      advance_booking_days: courtData.advanceBookingDays ? parseInt(courtData.advanceBookingDays) : 30,
+      max_booking_duration: courtData.maxBookingDuration ? parseInt(courtData.maxBookingDuration) : 180,
+      length_meters: courtData.length ? parseFloat(courtData.length) : null,
+      width_meters: courtData.width ? parseFloat(courtData.width) : null,
+      height_meters: courtData.height ? parseFloat(courtData.height) : null,
       available: true,
       maintenance_mode: false
     }
@@ -172,9 +186,16 @@ export async function updateCourt(courtId: string, courtData: CourtData): Promis
       surface_type: courtData.surface,
       indoor: courtData.indoor,
       lighting: courtData.lighting,
+      net_provided: courtData.netProvided,
+      equipment_rental: courtData.equipmentRental,
       hourly_rate: courtData.hourlyRate ? parseFloat(courtData.hourlyRate) : null,
       peak_rate: courtData.peakHourRate ? parseFloat(courtData.peakHourRate) : null,
       available_hours: availableHours,
+      advance_booking_days: courtData.advanceBookingDays ? parseInt(courtData.advanceBookingDays) : 30,
+      max_booking_duration: courtData.maxBookingDuration ? parseInt(courtData.maxBookingDuration) : 180,
+      length_meters: courtData.length ? parseFloat(courtData.length) : null,
+      width_meters: courtData.width ? parseFloat(courtData.width) : null,
+      height_meters: courtData.height ? parseFloat(courtData.height) : null,
       updated_at: new Date().toISOString()
     }
 

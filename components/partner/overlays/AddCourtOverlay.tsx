@@ -29,9 +29,16 @@ export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [] }: AddC
     surface: 'hard',
     indoor: false,
     lighting: false,
+    netProvided: true,
+    equipmentRental: false,
     description: '',
     hourlyRate: '',
     peakHourRate: '',
+    advanceBookingDays: '30',
+    maxBookingDuration: '180',
+    length: '',
+    width: '',
+    height: '',
     availability: {
       monday: { available: true, openTime: '06:00', closeTime: '22:00' },
       tuesday: { available: true, openTime: '06:00', closeTime: '22:00' },
@@ -90,9 +97,16 @@ export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [] }: AddC
       surface: 'hard',
       indoor: false,
       lighting: false,
+      netProvided: true,
+      equipmentRental: false,
       description: '',
       hourlyRate: '',
       peakHourRate: '',
+      advanceBookingDays: '30',
+      maxBookingDuration: '180',
+      length: '',
+      width: '',
+      height: '',
       availability: {
         monday: { available: true, openTime: '06:00', closeTime: '22:00' },
         tuesday: { available: true, openTime: '06:00', closeTime: '22:00' },
@@ -265,6 +279,32 @@ export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [] }: AddC
                   Lighting Available
                 </label>
               </div>
+
+              <div className="flex items-center space-x-3">
+                <input
+                  type="checkbox"
+                  id="netProvided"
+                  checked={formData.netProvided}
+                  onChange={(e) => handleInputChange('netProvided', e.target.checked)}
+                  className="w-4 h-4 rounded border-white/20 bg-white/5 text-blue-500 focus:ring-blue-500"
+                />
+                <label htmlFor="netProvided" className="text-sm font-medium text-gray-300">
+                  Net Provided
+                </label>
+              </div>
+              
+              <div className="flex items-center space-x-3">
+                <input
+                  type="checkbox"
+                  id="equipmentRental"
+                  checked={formData.equipmentRental}
+                  onChange={(e) => handleInputChange('equipmentRental', e.target.checked)}
+                  className="w-4 h-4 rounded border-white/20 bg-white/5 text-blue-500 focus:ring-blue-500"
+                />
+                <label htmlFor="equipmentRental" className="text-sm font-medium text-gray-300">
+                  Equipment Rental Available
+                </label>
+              </div>
             </div>
           </div>
 
@@ -300,6 +340,59 @@ export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [] }: AddC
                   value={formData.peakHourRate}
                   onChange={(e) => handleInputChange('peakHourRate', e.target.value)}
                   placeholder="35.00"
+                  min="0"
+                  step="0.01"
+                  className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* Court Dimensions */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-white">Court Dimensions</h3>
+            <p className="text-sm text-gray-400">Optional - specify court size in meters</p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Length (meters)
+                </label>
+                <Input
+                  type="number"
+                  value={formData.length}
+                  onChange={(e) => handleInputChange('length', e.target.value)}
+                  placeholder=""
+                  min="0"
+                  step="0.01"
+                  className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Width (meters)
+                </label>
+                <Input
+                  type="number"
+                  value={formData.width}
+                  onChange={(e) => handleInputChange('width', e.target.value)}
+                  placeholder=""
+                  min="0"
+                  step="0.01"
+                  className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Net Height (meters)
+                </label>
+                <Input
+                  type="number"
+                  value={formData.height}
+                  onChange={(e) => handleInputChange('height', e.target.value)}
+                  placeholder=""
                   min="0"
                   step="0.01"
                   className="bg-white/5 border-white/10 text-white placeholder-gray-500"
@@ -356,6 +449,45 @@ export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [] }: AddC
                   )}
                 </div>
               ))}
+            </div>
+          </div>
+
+          {/* Booking Settings */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-white">Booking Settings</h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Advance Booking Days
+                </label>
+                <Input
+                  type="number"
+                  value={formData.advanceBookingDays}
+                  onChange={(e) => handleInputChange('advanceBookingDays', e.target.value)}
+                  placeholder="30"
+                  min="1"
+                  max="365"
+                  className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+                />
+                <p className="text-xs text-gray-500 mt-1">How many days in advance can users book this court</p>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Maximum Booking Duration (minutes)
+                </label>
+                <Input
+                  type="number"
+                  value={formData.maxBookingDuration}
+                  onChange={(e) => handleInputChange('maxBookingDuration', e.target.value)}
+                  placeholder="180"
+                  min="30"
+                  step="30"
+                  className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+                />
+                <p className="text-xs text-gray-500 mt-1">Maximum time one user can book in a row</p>
+              </div>
             </div>
           </div>
 
