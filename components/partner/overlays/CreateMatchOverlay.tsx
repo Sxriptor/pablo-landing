@@ -137,7 +137,6 @@ export function CreateMatchOverlay({
     { value: 'beginner', label: 'Beginner' },
     { value: 'intermediate', label: 'Intermediate' },
     { value: 'advanced', label: 'Advanced' },
-    { value: 'professional', label: 'Professional' },
     { value: 'open', label: 'Open (All Levels)' },
   ]
 
@@ -208,10 +207,19 @@ export function CreateMatchOverlay({
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     
+    // Validate skill level - ensure it's one of the allowed values
+    const validSkillLevels = ['beginner', 'intermediate', 'advanced', 'open']
+    const sanitizedFormData = {
+      ...formData,
+      skillLevel: validSkillLevels.includes(formData.skillLevel) 
+        ? formData.skillLevel 
+        : 'open' // Default to 'open' if invalid
+    }
+    
     // Include match ID if editing
     const submitData = editingMatch 
-      ? { ...formData, matchId: editingMatch.id }
-      : formData
+      ? { ...sanitizedFormData, matchId: editingMatch.id }
+      : sanitizedFormData
     
     onSubmit(submitData)
     onClose()
@@ -242,6 +250,12 @@ export function CreateMatchOverlay({
   React.useEffect(() => {
     if (isOpen) {
       if (editingMatch) {
+        // Validate and sanitize skill level
+        const validSkillLevels = ['beginner', 'intermediate', 'advanced', 'open']
+        const sanitizedSkillLevel = validSkillLevels.includes(editingMatch.skill_level) 
+          ? editingMatch.skill_level 
+          : 'open'
+        
         // Convert boolean requirement fields back to array
         const requirementMap: { [key: string]: string } = {
           'valid_id_required': 'Valid ID Required',
@@ -276,7 +290,7 @@ export function CreateMatchOverlay({
           entryFee: editingMatch.entry_fee?.toString() || '',
           prizePool: editingMatch.prize_pool?.toString() || '',
           registrationDeadline: editingMatch.registration_deadline ? editingMatch.registration_deadline.split('T')[0] : '',
-          skillLevel: editingMatch.skill_level || 'intermediate',
+          skillLevel: sanitizedSkillLevel,
           format: editingMatch.format || 'singles',
           rules: editingMatch.rules || '',
           requirements: selectedRequirements,
