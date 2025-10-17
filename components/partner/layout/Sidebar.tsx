@@ -15,6 +15,7 @@ import {
   Building2,
   Trophy,
   ArrowRight,
+  ArrowLeft,
 } from 'lucide-react'
 
 
@@ -160,16 +161,15 @@ export function Sidebar({ className }: SidebarProps) {
 
       {/* Vertical Edge Button */}
       <button
-        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-8 h-16 rounded-l-2xl flex items-center justify-center text-white transition-all hover:scale-110 hover:shadow-2xl z-10"
+        onClick={() => setCollapsed(!collapsed)}
+        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-8 h-16 rounded-2xl flex items-center justify-center text-white transition-all hover:scale-110 hover:shadow-2xl z-10"
         style={{
-          background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
-          boxShadow: '0 4px 16px rgba(59, 130, 246, 0.4)',
-          writingMode: 'vertical-rl',
-          textOrientation: 'mixed'
+          background: '#456882',
+          boxShadow: '0 4px 16px rgba(69, 104, 130, 0.4)'
         }}
-        title="Quick Action"
+        title={collapsed ? "Expand Sidebar" : "Collapse Sidebar"}
       >
-        <ArrowRight className="h-4 w-4" />
+        {collapsed ? <ArrowRight className="h-4 w-4" /> : <ArrowLeft className="h-4 w-4" />}
       </button>
 
     </div>
