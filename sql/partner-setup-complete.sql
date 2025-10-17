@@ -1,5 +1,26 @@
--- Partners table: Core partner company information
--- This table stores approved partner companies that can access the dashboard
+-- =====================================================
+-- COMPLETE PARTNER SYSTEM SETUP
+-- This script sets up the entire partner management system
+-- Can be run multiple times safely (idempotent)
+-- =====================================================
+
+-- =====================================================
+-- 1. ADD PARTNER COLUMN TO PROFILES TABLE
+-- =====================================================
+
+-- Add the partner column with default value of false
+alter table profiles
+add column if not exists partner boolean default false;
+
+-- Add a comment to describe the column
+comment on column profiles.partner is 'Indicates whether the user is a registered partner';
+
+-- Create an index for faster queries filtering by partner status
+create index if not exists idx_profiles_partner on profiles(partner);
+
+-- =====================================================
+-- 2. CREATE PARTNERS TABLE
+-- =====================================================
 
 create table if not exists partners (
   id uuid primary key default gen_random_uuid(),
@@ -12,15 +33,15 @@ create table if not exists partners (
   description text,
   created_at timestamp with time zone default now(),
   updated_at timestamp with time zone default now(),
-  status text default 'pending' check (status in ('pending', 'approved', 'rejected', 'suspended')),
+  status text default 'approved' check (status in ('pending', 'approved', 'rejected', 'suspended')),
   activation_code text,
   user_id uuid references auth.users(id) on delete cascade,
-  
+
   -- Additional business info
   business_type text, -- 'venue', 'club', 'academy', 'other'
   contact_person text,
   tax_id text,
-  
+
   -- Constraints
   constraint partners_email_format check (email ~* '^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$')
 );
@@ -30,7 +51,11 @@ create index if not exists idx_partners_user_id on partners(user_id);
 create index if not exists idx_partners_status on partners(status);
 create index if not exists idx_partners_email on partners(email);
 
--- Trigger to update updated_at timestamp
+-- =====================================================
+-- 3. TRIGGERS
+-- =====================================================
+
+-- Function to update updated_at timestamp
 create or replace function update_updated_at_column()
 returns trigger as $$
 begin
@@ -39,6 +64,7 @@ begin
 end;
 $$ language plpgsql;
 
+-- Trigger for updated_at on partners table
 drop trigger if exists update_partners_updated_at on partners;
 create trigger update_partners_updated_at
   before update on partners
@@ -46,7 +72,7 @@ create trigger update_partners_updated_at
   execute function update_updated_at_column();
 
 -- =====================================================
--- RLS POLICIES
+-- 4. RLS POLICIES
 -- =====================================================
 
 -- Enable RLS on partners table
@@ -70,14 +96,14 @@ create policy "Partners can update own record"
   using (auth.uid() = user_id)
   with check (auth.uid() = user_id);
 
--- Policy: Service role can do everything (for admin operations)
+-- Policy: Service role has full access (for admin operations)
 create policy "Service role has full access"
   on partners
   for all
   using (auth.jwt() ->> 'role' = 'service_role');
 
 -- =====================================================
--- AUTOMATIC PARTNER RECORD MANAGEMENT
+-- 5. AUTOMATIC PARTNER RECORD MANAGEMENT
 -- =====================================================
 
 -- Function to automatically create/delete partner record when profiles.partner changes
@@ -150,7 +176,7 @@ create trigger on_partner_status_change
   execute function handle_partner_status_change();
 
 -- =====================================================
--- HELPER FUNCTIONS
+-- 6. HELPER FUNCTIONS
 -- =====================================================
 
 -- Function to get partner info for a user
@@ -178,10 +204,28 @@ end;
 $$ language plpgsql security definer;
 
 -- =====================================================
--- COMMENTS
+-- 7. COMMENTS
 -- =====================================================
 
 comment on table partners is 'Stores partner company information. Records are automatically created/deleted based on profiles.partner column';
 comment on column partners.user_id is 'Links to auth.users - automatically managed by trigger';
 comment on column partners.status is 'Partner approval status: pending, approved, rejected, or suspended';
 comment on function handle_partner_status_change() is 'Automatically creates partner record when profiles.partner = true, deletes when false';
+
+-- =====================================================
+-- SETUP COMPLETE!
+-- =====================================================
+--
+-- The partner system is now fully configured:
+-- ✅ profiles.partner column added
+-- ✅ partners table created with all fields
+-- ✅ RLS policies enabled for security
+-- ✅ Automatic record management via triggers
+-- ✅ Helper functions for querying partner data
+--
+-- To test:
+-- 1. Update a user's partner status: UPDATE profiles SET partner = true WHERE id = 'user-id';
+-- 2. Check partner record was created: SELECT * FROM partners WHERE user_id = 'user-id';
+-- 3. Set back to false: UPDATE profiles SET partner = false WHERE id = 'user-id';
+-- 4. Verify record was deleted: SELECT * FROM partners WHERE user_id = 'user-id';
+--

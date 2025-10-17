@@ -106,7 +106,10 @@ export default function PartnerEntryPage() {
         return
       }
 
-      // Update profile to set partner = true
+      // Wait a moment for the profile to be created by the auth trigger
+      await new Promise(resolve => setTimeout(resolve, 1000))
+
+      // Update profile to set partner = true (this will trigger partner record creation)
       const { error: profileError } = await supabase
         .from('profiles')
         .update({
