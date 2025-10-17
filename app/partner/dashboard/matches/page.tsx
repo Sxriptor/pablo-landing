@@ -119,8 +119,8 @@ export default function MatchesPage() {
     <motion.div
       className="rounded-3xl p-6 relative overflow-hidden"
       style={{
-        background: 'linear-gradient(135deg, rgba(26, 32, 53, 0.8) 0%, rgba(15, 21, 53, 0.8) 100%)',
-        border: '1px solid rgba(59, 130, 246, 0.1)',
+        background: 'rgba(69, 104, 130, 0.1)',
+        border: '1px solid rgba(69, 104, 130, 0.2)',
         backdropFilter: 'blur(20px)'
       }}
       whileHover={{ 
@@ -129,7 +129,7 @@ export default function MatchesPage() {
       }}
     >
       <div className="absolute top-0 right-0 w-32 h-32 rounded-full" style={{
-        background: 'radial-gradient(circle, rgba(102, 126, 234, 0.15) 0%, transparent 70%)',
+        background: 'radial-gradient(circle, rgba(69, 104, 130, 0.15) 0%, transparent 70%)',
         filter: 'blur(30px)'
       }} />
       
@@ -224,8 +224,8 @@ export default function MatchesPage() {
           onClick={() => setShowCreateMatchOverlay(true)}
           className="text-white px-6 py-3 rounded-2xl flex items-center font-bold text-sm"
           style={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)'
+            background: '#456882',
+            boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)'
           }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
