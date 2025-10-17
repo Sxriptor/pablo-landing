@@ -10,11 +10,12 @@ import {
   DollarSign,
   Plus,
   Eye,
+  EyeOff,
   Edit,
   MoreHorizontal
 } from 'lucide-react'
 import { AddVenueOverlay } from '@/components/partner/overlays'
-import { createVenue, updateVenue, VenueData, getPartnerVenues } from '@/lib/supabase/venues'
+import { createVenue, updateVenue, toggleVenueStatus, VenueData, getPartnerVenues } from '@/lib/supabase/venues'
 import { useToast } from '@/hooks/use-toast'
 
 export default function VenuesPage() {
@@ -98,6 +99,34 @@ export default function VenuesPage() {
     setEditingVenue(null)
   }
 
+  const handleToggleVenueStatus = async (venue: any) => {
+    try {
+      const result = await toggleVenueStatus(venue.id)
+      
+      if (result.success) {
+        toast({
+          title: "Success!",
+          description: `Venue ${result.venue.active ? 'activated' : 'deactivated'} successfully!`,
+        })
+        // Reload venues to reflect the change
+        loadVenues()
+      } else {
+        toast({
+          title: "Error",
+          description: result.error || 'Failed to update venue status',
+          variant: "destructive",
+        })
+      }
+    } catch (error) {
+      console.error('Error toggling venue status:', error)
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred",
+        variant: "destructive",
+      })
+    }
+  }
+
 
 
   const VenueCard = ({ venue }: any) => (
@@ -160,9 +189,23 @@ export default function VenuesPage() {
           <div className="text-xs text-gray-500">
             Created {new Date(venue.created_at).toLocaleDateString()}
           </div>
-          <div className="flex space-x-2">
-            <button className="p-2 text-blue-400 hover:text-blue-300 transition-colors rounded-lg">
-              <Eye className="h-4 w-4" />
+          <div className="flex items-center space-x-3">
+            <button 
+              onClick={() => handleToggleVenueStatus(venue)}
+              className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors ${
+                venue.active 
+                  ? 'text-green-400 hover:text-green-300' 
+                  : 'text-red-400 hover:text-red-300'
+              }`}
+            >
+              {venue.active ? (
+                <Eye className="h-4 w-4" />
+              ) : (
+                <EyeOff className="h-4 w-4" />
+              )}
+              <span className="text-xs font-medium">
+                {venue.active ? 'Active' : 'Inactive'}
+              </span>
             </button>
             <button 
               onClick={() => handleEditVenue(venue)}

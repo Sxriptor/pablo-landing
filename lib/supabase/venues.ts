@@ -255,12 +255,67 @@ async function uploadVenueImage(venueId: string, imageFile: File): Promise<strin
   }
 }
 
+export async function toggleVenueStatus(venueId: string): Promise<{ success: boolean; error?: string; venue?: any }> {
+  try {
+    console.log('Toggling venue status for:', venueId)
+    
+    // Get current partner
+    const partner = await getCurrentPartner()
+    
+    if (!partner) {
+      console.error('No partner found')
+      return { success: false, error: 'No partner found. Please ensure you are logged in as a partner.' }
+    }
+
+    // First get the current venue to check its status
+    const { data: currentVenue, error: fetchError } = await supabase
+      .from('venues')
+      .select('active')
+      .eq('id', venueId)
+      .eq('partner_id', partner.id)
+      .single()
+
+    if (fetchError) {
+      console.error('Error fetching current venue:', fetchError)
+      return { success: false, error: fetchError.message }
+    }
+
+    // Toggle the active status
+    const newStatus = !currentVenue.active
+    console.log('Toggling from', currentVenue.active, 'to', newStatus)
+
+    // Update venue status
+    const { data: venue, error } = await supabase
+      .from('venues')
+      .update({ 
+        active: newStatus,
+        updated_at: new Date().toISOString()
+      })
+      .eq('id', venueId)
+      .eq('partner_id', partner.id) // Ensure user can only update their own venues
+      .select()
+      .single()
+
+    console.log('Supabase toggle result:', { venue, error })
+
+    if (error) {
+      console.error('Error toggling venue status:', error)
+      return { success: false, error: error.message }
+    }
+
+    console.log('Venue status toggle successful:', venue)
+    return { success: true, venue }
+  } catch (error) {
+    console.error('Error in toggleVenueStatus:', error)
+    return { success: false, error: 'An unexpected error occurred' }
+  }
+}
+
 export async function getPartnerVenues(partnerId?: string): Promise<any[]> {
   try {
     let query = supabase
       .from('venues')
       .select('*')
-      .eq('active', true)
       .order('created_at', { ascending: false })
 
     if (partnerId) {
