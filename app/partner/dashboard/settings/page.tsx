@@ -571,33 +571,33 @@ export default function SettingsPage() {
                 type="text"
                 value={accountSettings.full_name}
                 onChange={(e) => handleAccountFieldChange('full_name', e.target.value)}
-                disabled={!isEditing}
-                className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
-              />
-            </div>
-            <div className="grid grid-cols-2 gap-4">
-              <div>
+              disabled={!isEditing}
+              className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
+            />
+          </div>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
                 <label className="block text-sm font-medium text-neutral-400 mb-2">First Name</label>
-                <input
-                  type="text"
+              <input
+                type="text"
                   value={accountSettings.first_name}
                   onChange={(e) => handleAccountFieldChange('first_name', e.target.value)}
-                  disabled={!isEditing}
+                disabled={!isEditing}
                   className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
-                />
-              </div>
-              <div>
-                <label className="block text-sm font-medium text-neutral-400 mb-2">Last Name</label>
-                <input
-                  type="text"
-                  value={accountSettings.last_name}
-                  onChange={(e) => handleAccountFieldChange('last_name', e.target.value)}
-                  disabled={!isEditing}
-                  className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
-                />
-              </div>
+              />
             </div>
             <div>
+                <label className="block text-sm font-medium text-neutral-400 mb-2">Last Name</label>
+              <input
+                type="text"
+                  value={accountSettings.last_name}
+                  onChange={(e) => handleAccountFieldChange('last_name', e.target.value)}
+                disabled={!isEditing}
+                  className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
+              />
+            </div>
+          </div>
+          <div>
               <label className="block text-sm font-medium text-neutral-400 mb-2">Phone</label>
               <input
                 type="tel"
@@ -871,15 +871,15 @@ export default function SettingsPage() {
                 </>
               ) : (
                 <>
-                  <Save className="h-4 w-4 mr-2" />
-                  SAVE CHANGES
+            <Save className="h-4 w-4 mr-2" />
+            SAVE CHANGES
                 </>
               )}
-            </motion.button>
-          </div>
-        )}
-      </div>
-    )
+          </motion.button>
+        </div>
+      )}
+    </div>
+  )
   }
 
   const renderContent = () => {
@@ -892,10 +892,61 @@ export default function SettingsPage() {
         return renderNotifications()
       case 'billing':
         return (
-          <div className="text-center py-12">
-            <CreditCard className="h-16 w-16 text-neutral-400 mx-auto mb-4" />
-            <h3 className="text-xl font-bold text-white mb-2">Billing & Payments</h3>
-            <p className="text-neutral-400">Manage your subscription and payment methods</p>
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold text-white">Billing & Payments</h2>
+              <p className="text-neutral-400 mt-2">Manage your subscription, payment methods, and billing history</p>
+            </div>
+
+            <div className="rounded-3xl p-8 bg-neutral-800/50 border border-neutral-700">
+              <div className="flex flex-col items-center text-center space-y-6">
+                <div className="p-4 rounded-full bg-[#456882]/10">
+                  <CreditCard className="h-12 w-12 text-[#456882]" />
+                </div>
+                
+                <div className="max-w-md space-y-2">
+                  <h3 className="text-xl font-bold text-white">Billing Management</h3>
+                  <p className="text-neutral-400">
+                    Access your billing dashboard to manage your subscription, update payment methods, view invoices, and download receipts.
+                  </p>
+                </div>
+
+                <motion.button
+                  onClick={() => {
+                    // TODO: Replace with actual Stripe Customer Portal URL
+                    // const stripePortalUrl = await createStripePortalSession()
+                    // window.open(stripePortalUrl, '_blank')
+                    window.open('https://billing.stripe.com/p/login/test_placeholder', '_blank')
+                  }}
+                  className="px-8 py-4 rounded-2xl bg-[#456882] hover:bg-[#3a5670] text-white font-bold text-base transition-all flex items-center gap-3"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  <CreditCard className="h-5 w-5" />
+                  Manage Billing with Stripe
+                </motion.button>
+
+                <p className="text-sm text-neutral-500">
+                  You'll be securely redirected to Stripe's billing portal
+                </p>
+              </div>
+            </div>
+
+            {/* Billing Info Cards */}
+            <div className="grid gap-4 md:grid-cols-3">
+              <div className="rounded-2xl p-6 bg-neutral-800/30 border border-neutral-700">
+                <h4 className="text-sm font-medium text-neutral-400 mb-1">Current Plan</h4>
+                <p className="text-2xl font-bold text-white">Professional</p>
+              </div>
+              <div className="rounded-2xl p-6 bg-neutral-800/30 border border-neutral-700">
+                <h4 className="text-sm font-medium text-neutral-400 mb-1">Billing Cycle</h4>
+                <p className="text-2xl font-bold text-white">Monthly</p>
+              </div>
+              <div className="rounded-2xl p-6 bg-neutral-800/30 border border-neutral-700">
+                <h4 className="text-sm font-medium text-neutral-400 mb-1">Next Billing Date</h4>
+                <p className="text-2xl font-bold text-white">Nov 15, 2024</p>
+              </div>
+            </div>
           </div>
         )
       case 'security':
@@ -908,10 +959,26 @@ export default function SettingsPage() {
         )
       case 'integrations':
         return (
-          <div className="text-center py-12">
-            <Globe className="h-16 w-16 text-neutral-400 mx-auto mb-4" />
-            <h3 className="text-xl font-bold text-white mb-2">Integrations</h3>
-            <p className="text-neutral-400">Connect with third-party services and APIs</p>
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold text-white">Integrations</h2>
+              <p className="text-neutral-400 mt-2">Connect with third-party services and APIs</p>
+            </div>
+
+            <div className="rounded-3xl p-8 bg-neutral-800/50 border border-neutral-700 backdrop-blur-sm">
+              <div className="flex flex-col items-center text-center space-y-6">
+                <div className="p-4 rounded-full bg-[#456882]/10">
+                  <Globe className="h-12 w-12 text-[#456882]" />
+                </div>
+                
+                <div className="max-w-md space-y-2">
+                  <h3 className="text-xl font-bold text-white">Coming Soon</h3>
+                  <p className="text-neutral-400">
+                    Integration features are currently under development. Soon you'll be able to connect with popular third-party services and APIs to enhance your experience.
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         )
       default:
