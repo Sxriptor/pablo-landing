@@ -71,6 +71,10 @@ export function Sidebar({ className }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false)
   const pathname = usePathname()
 
+  const handleGetSupport = () => {
+    window.open('/contact', '_blank')
+  }
+
   return (
     <div
       className={cn(
@@ -139,6 +143,7 @@ export function Sidebar({ className }: SidebarProps) {
               Contact our partner support team for assistance with your venues and bookings.
             </p>
             <button
+              onClick={handleGetSupport}
               className="w-full px-4 py-2 rounded-xl text-xs font-semibold text-white transition-all hover:scale-105"
               style={{
                 background: '#456882',
@@ -153,6 +158,7 @@ export function Sidebar({ className }: SidebarProps) {
         /* Collapsed Support Button */
         <div className="px-4 pb-6 mt-auto">
           <button
+            onClick={handleGetSupport}
             className="w-full p-3 rounded-2xl flex items-center justify-center text-white transition-all hover:scale-105"
             style={{
               background: '#456882',
