@@ -1,0 +1,370 @@
+'use client'
+
+import { useState } from 'react'
+import { motion } from 'framer-motion'
+import { Building2, MapPin, Phone, Globe, Upload, X } from 'lucide-react'
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogDescription,
+} from '@/components/ui/dialog'
+import { Button } from '@/components/ui/button'
+import { Input } from '@/components/ui/input'
+import { Textarea } from '@/components/ui/textarea'
+
+interface AddVenueOverlayProps {
+  isOpen: boolean
+  onClose: () => void
+  onSubmit: (venueData: any) => void
+}
+
+export function AddVenueOverlay({ isOpen, onClose, onSubmit }: AddVenueOverlayProps) {
+  const [formData, setFormData] = useState({
+    name: '',
+    address: '',
+    city: '',
+    state: '',
+    zipCode: '',
+    phone: '',
+    email: '',
+    website: '',
+    description: '',
+    amenities: [] as string[],
+    operatingHours: {
+      monday: { open: '06:00', close: '22:00', closed: false },
+      tuesday: { open: '06:00', close: '22:00', closed: false },
+      wednesday: { open: '06:00', close: '22:00', closed: false },
+      thursday: { open: '06:00', close: '22:00', closed: false },
+      friday: { open: '06:00', close: '22:00', closed: false },
+      saturday: { open: '08:00', close: '20:00', closed: false },
+      sunday: { open: '08:00', close: '20:00', closed: false },
+    }
+  })
+
+  const [selectedImage, setSelectedImage] = useState<File | null>(null)
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
+
+  const amenityOptions = [
+    'Parking', 'Restrooms', 'Locker Rooms', 'Pro Shop', 'Cafe/Restaurant',
+    'Equipment Rental', 'Lighting', 'Air Conditioning', 'WiFi', 'Seating Area'
+  ]
+
+  const handleInputChange = (field: string, value: string) => {
+    setFormData(prev => ({ ...prev, [field]: value }))
+  }
+
+  const handleAmenityToggle = (amenity: string) => {
+    setFormData(prev => ({
+      ...prev,
+      amenities: prev.amenities.includes(amenity)
+        ? prev.amenities.filter(a => a !== amenity)
+        : [...prev.amenities, amenity]
+    }))
+  }
+
+  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (file) {
+      setSelectedImage(file)
+      const reader = new FileReader()
+      reader.onload = (e) => {
+        setImagePreview(e.target?.result as string)
+      }
+      reader.readAsDataURL(file)
+    }
+  }
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+    onSubmit({ ...formData, image: selectedImage })
+    onClose()
+    // Reset form
+    setFormData({
+      name: '',
+      address: '',
+      city: '',
+      state: '',
+      zipCode: '',
+      phone: '',
+      email: '',
+      website: '',
+      description: '',
+      amenities: [],
+      operatingHours: {
+        monday: { open: '06:00', close: '22:00', closed: false },
+        tuesday: { open: '06:00', close: '22:00', closed: false },
+        wednesday: { open: '06:00', close: '22:00', closed: false },
+        thursday: { open: '06:00', close: '22:00', closed: false },
+        friday: { open: '06:00', close: '22:00', closed: false },
+        saturday: { open: '08:00', close: '20:00', closed: false },
+        sunday: { open: '08:00', close: '20:00', closed: false },
+      }
+    })
+    setSelectedImage(null)
+    setImagePreview(null)
+  }
+
+  return (
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      <DialogContent 
+        className="max-w-4xl max-h-[90vh] overflow-y-auto"
+        style={{
+          background: 'rgba(5, 10, 15, 0.95)',
+          border: '1px solid rgba(69, 104, 130, 0.3)',
+          backdropFilter: 'blur(20px)'
+        }}
+        showCloseButton={false}
+      >
+        <DialogHeader className="relative">
+          <button
+            onClick={onClose}
+            className="absolute right-0 top-0 p-2 text-gray-400 hover:text-white transition-colors rounded-lg"
+          >
+            <X className="h-5 w-5" />
+          </button>
+          <DialogTitle className="text-2xl font-bold text-white flex items-center gap-3">
+            <div className="p-2 rounded-xl" style={{ background: 'rgba(69, 104, 130, 0.2)' }}>
+              <Building2 className="h-6 w-6" style={{ color: '#456882' }} />
+            </div>
+            Add New Venue
+          </DialogTitle>
+          <DialogDescription className="text-gray-400">
+            Create a new venue to start hosting matches and events
+          </DialogDescription>
+        </DialogHeader>
+
+        <form onSubmit={handleSubmit} className="space-y-6 mt-6">
+          {/* Basic Information */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-white">Basic Information</h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Venue Name *
+                </label>
+                <Input
+                  value={formData.name}
+                  onChange={(e) => handleInputChange('name', e.target.value)}
+                  placeholder="Enter venue name"
+                  required
+                  className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Phone Number
+                </label>
+                <Input
+                  value={formData.phone}
+                  onChange={(e) => handleInputChange('phone', e.target.value)}
+                  placeholder="(555) 123-4567"
+                  className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Street Address *
+              </label>
+              <Input
+                value={formData.address}
+                onChange={(e) => handleInputChange('address', e.target.value)}
+                placeholder="123 Sports Avenue"
+                required
+                className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+              />
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  City *
+                </label>
+                <Input
+                  value={formData.city}
+                  onChange={(e) => handleInputChange('city', e.target.value)}
+                  placeholder="City"
+                  required
+                  className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  State *
+                </label>
+                <Input
+                  value={formData.state}
+                  onChange={(e) => handleInputChange('state', e.target.value)}
+                  placeholder="State"
+                  required
+                  className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  ZIP Code *
+                </label>
+                <Input
+                  value={formData.zipCode}
+                  onChange={(e) => handleInputChange('zipCode', e.target.value)}
+                  placeholder="12345"
+                  required
+                  className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+                />
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Email
+                </label>
+                <Input
+                  type="email"
+                  value={formData.email}
+                  onChange={(e) => handleInputChange('email', e.target.value)}
+                  placeholder="venue@example.com"
+                  className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Website
+                </label>
+                <Input
+                  value={formData.website}
+                  onChange={(e) => handleInputChange('website', e.target.value)}
+                  placeholder="https://venue-website.com"
+                  className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Description
+              </label>
+              <Textarea
+                value={formData.description}
+                onChange={(e) => handleInputChange('description', e.target.value)}
+                placeholder="Describe your venue, facilities, and what makes it special..."
+                rows={3}
+                className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+              />
+            </div>
+          </div>
+
+          {/* Venue Image */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-white">Venue Image</h3>
+            
+            <div className="border-2 border-dashed border-white/20 rounded-xl p-6">
+              {imagePreview ? (
+                <div className="relative">
+                  <img
+                    src={imagePreview}
+                    alt="Venue preview"
+                    className="w-full h-48 object-cover rounded-lg"
+                  />
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedImage(null)
+                      setImagePreview(null)
+                    }}
+                    className="absolute top-2 right-2 p-1 bg-red-500 text-white rounded-full hover:bg-red-600 transition-colors"
+                  >
+                    <X className="h-4 w-4" />
+                  </button>
+                </div>
+              ) : (
+                <div className="text-center">
+                  <Upload className="h-12 w-12 text-gray-400 mx-auto mb-4" />
+                  <p className="text-gray-300 mb-2">Upload venue image</p>
+                  <p className="text-sm text-gray-500 mb-4">PNG, JPG up to 10MB</p>
+                  <input
+                    type="file"
+                    accept="image/*"
+                    onChange={handleImageUpload}
+                    className="hidden"
+                    id="venue-image"
+                  />
+                  <label
+                    htmlFor="venue-image"
+                    className="inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium text-white cursor-pointer transition-all hover:scale-105"
+                    style={{
+                      background: '#456882',
+                      boxShadow: '0 4px 12px rgba(69, 104, 130, 0.3)'
+                    }}
+                  >
+                    Choose File
+                  </label>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Amenities */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-white">Amenities</h3>
+            
+            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+              {amenityOptions.map((amenity) => (
+                <button
+                  key={amenity}
+                  type="button"
+                  onClick={() => handleAmenityToggle(amenity)}
+                  className={`p-3 rounded-xl text-sm font-medium transition-all ${
+                    formData.amenities.includes(amenity)
+                      ? 'text-white'
+                      : 'text-gray-400 hover:text-white'
+                  }`}
+                  style={{
+                    background: formData.amenities.includes(amenity)
+                      ? '#456882'
+                      : 'rgba(69, 104, 130, 0.1)',
+                    border: `1px solid ${formData.amenities.includes(amenity)
+                      ? '#456882'
+                      : 'rgba(69, 104, 130, 0.2)'}`
+                  }}
+                >
+                  {amenity}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          {/* Form Actions */}
+          <div className="flex justify-end space-x-4 pt-6 border-t border-white/10">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onClose}
+              className="bg-white/5 border-white/20 text-gray-300 hover:bg-white/10 hover:text-white"
+            >
+              Cancel
+            </Button>
+            <Button
+              type="submit"
+              className="text-white"
+              style={{
+                background: '#456882',
+                boxShadow: '0 4px 12px rgba(69, 104, 130, 0.3)'
+              }}
+            >
+              Create Venue
+            </Button>
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
+  )
+}
