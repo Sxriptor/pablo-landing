@@ -35,6 +35,7 @@ create table if not exists matches (
   
   -- Match status
   status text default 'scheduled' check (status in ('scheduled', 'in_progress', 'completed', 'cancelled', 'postponed')),
+  is_active boolean default true,
   
   -- Results (filled after match completion)
   winner_ids uuid[],
@@ -92,6 +93,11 @@ BEGIN
     -- Add access_type column if it doesn't exist
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'matches' AND column_name = 'access_type') THEN
         ALTER TABLE matches ADD COLUMN access_type text NOT NULL DEFAULT 'reserve' CHECK (access_type IN ('open', 'reserve'));
+    END IF;
+    
+    -- Add is_active column if it doesn't exist
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'matches' AND column_name = 'is_active') THEN
+        ALTER TABLE matches ADD COLUMN is_active boolean DEFAULT true;
     END IF;
 END $$;
 

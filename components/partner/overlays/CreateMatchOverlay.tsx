@@ -13,6 +13,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import React from 'react'
 
 interface CreateMatchOverlayProps {
   isOpen: boolean
@@ -20,6 +21,7 @@ interface CreateMatchOverlayProps {
   onSubmit: (matchData: any) => void
   venues?: Array<{ id: string; name: string }>
   courts?: Array<{ id: string; name: string; venueId: string }>
+  editingMatch?: any
 }
 
 export function CreateMatchOverlay({ 
@@ -27,7 +29,8 @@ export function CreateMatchOverlay({
   onClose, 
   onSubmit, 
   venues = [], 
-  courts = [] 
+  courts = [],
+  editingMatch = null
 }: CreateMatchOverlayProps) {
   const [formData, setFormData] = useState({
     title: '',
@@ -204,7 +207,13 @@ export function CreateMatchOverlay({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    onSubmit(formData)
+    
+    // Include match ID if editing
+    const submitData = editingMatch 
+      ? { ...formData, matchId: editingMatch.id }
+      : formData
+    
+    onSubmit(submitData)
     onClose()
     // Reset form
     setFormData({
@@ -228,6 +237,32 @@ export function CreateMatchOverlay({
       requirements: [],
     })
   }
+
+  // Populate form when editing
+  React.useEffect(() => {
+    if (editingMatch) {
+      setFormData({
+        title: editingMatch.title || '',
+        description: editingMatch.description || '',
+        matchType: editingMatch.match_type || 'singles',
+        sport: editingMatch.sport || 'tennis',
+        accessType: editingMatch.access_type || 'reserve',
+        venueId: editingMatch.venue_id || '',
+        courtId: editingMatch.court_id || '',
+        scheduledDate: editingMatch.scheduled_date || '',
+        startTime: editingMatch.start_time || '',
+        endTime: editingMatch.end_time || '',
+        maxPlayers: editingMatch.max_players?.toString() || '',
+        entryFee: editingMatch.entry_fee?.toString() || '',
+        prizePool: editingMatch.prize_pool?.toString() || '',
+        registrationDeadline: editingMatch.registration_deadline ? editingMatch.registration_deadline.split('T')[0] : '',
+        skillLevel: editingMatch.skill_level || 'intermediate',
+        format: editingMatch.format || 'singles',
+        rules: editingMatch.rules || '',
+        requirements: editingMatch.requirements || [],
+      })
+    }
+  }, [editingMatch])
 
   const availableCourts = courts.filter(court => 
     formData.venueId ? court.venueId === formData.venueId : true
@@ -255,10 +290,13 @@ export function CreateMatchOverlay({
             <div className="p-2 rounded-xl" style={{ background: 'rgba(69, 104, 130, 0.2)' }}>
               <Target className="h-6 w-6" style={{ color: '#456882' }} />
             </div>
-            Create New Match
+            {editingMatch ? 'Edit Match' : 'Create New Match'}
           </DialogTitle>
           <DialogDescription className="text-gray-400">
-            Organize a competitive match or tournament at your venue
+            {editingMatch 
+              ? 'Update match details and settings'
+              : 'Organize a competitive match or tournament at your venue'
+            }
           </DialogDescription>
         </DialogHeader>
 
@@ -637,7 +675,7 @@ export function CreateMatchOverlay({
                 boxShadow: '0 4px 12px rgba(69, 104, 130, 0.3)'
               }}
             >
-              Create Match
+              {editingMatch ? 'Update Match' : 'Create Match'}
             </Button>
           </div>
         </form>

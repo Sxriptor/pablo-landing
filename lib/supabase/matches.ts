@@ -272,7 +272,7 @@ export async function deleteMatch(matchId: string): Promise<{ success: boolean; 
 
 export async function toggleMatchStatus(matchId: string): Promise<{ success: boolean; error?: string; match?: any }> {
   try {
-    console.log('Toggling match status for:', matchId)
+    console.log('Toggling match active status for:', matchId)
     
     // Get current partner
     const partner = await getCurrentPartner()
@@ -282,11 +282,11 @@ export async function toggleMatchStatus(matchId: string): Promise<{ success: boo
       return { success: false, error: 'No partner found. Please ensure you are logged in as a partner.' }
     }
 
-    // First get the current match to check its status
+    // First get the current match to check its is_active status
     const { data: currentMatch, error: fetchError } = await supabase
       .from('matches')
       .select(`
-        status,
+        is_active,
         venues!inner (
           partner_id
         )
@@ -305,15 +305,15 @@ export async function toggleMatchStatus(matchId: string): Promise<{ success: boo
       return { success: false, error: 'You do not have permission to update this match.' }
     }
 
-    // Toggle between scheduled and cancelled
-    const newStatus = currentMatch.status === 'scheduled' ? 'cancelled' : 'scheduled'
-    console.log('Toggling from', currentMatch.status, 'to', newStatus)
+    // Toggle the is_active status
+    const newActiveStatus = !currentMatch.is_active
+    console.log('Toggling is_active from', currentMatch.is_active, 'to', newActiveStatus)
 
-    // Update match status
+    // Update match active status
     const { data: match, error } = await supabase
       .from('matches')
       .update({ 
-        status: newStatus,
+        is_active: newActiveStatus,
         updated_at: new Date().toISOString()
       })
       .eq('id', matchId)
@@ -323,11 +323,11 @@ export async function toggleMatchStatus(matchId: string): Promise<{ success: boo
     console.log('Supabase toggle result:', { match, error })
 
     if (error) {
-      console.error('Error toggling match status:', error)
+      console.error('Error toggling match active status:', error)
       return { success: false, error: error.message }
     }
 
-    console.log('Match status toggle successful:', match)
+    console.log('Match active status toggle successful:', match)
     return { success: true, match }
   } catch (error) {
     console.error('Error in toggleMatchStatus:', error)

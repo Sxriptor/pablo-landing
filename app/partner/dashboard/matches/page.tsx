@@ -142,7 +142,7 @@ export default function MatchesPage() {
       if (result.success) {
         toast({
           title: "Success!",
-          description: `Match ${result.match.status === 'scheduled' ? 'activated' : 'cancelled'} successfully!`,
+          description: `Match ${result.match.is_active ? 'activated' : 'deactivated'} successfully!`,
         })
         // Reload matches to reflect the change
         loadData()
@@ -321,18 +321,18 @@ export default function MatchesPage() {
             <button
               onClick={() => handleToggleMatchStatus(match)}
               className={`flex items-center space-x-2 px-3 py-2 rounded-lg transition-colors ${
-                match.status === 'scheduled'
+                match.is_active
                   ? 'text-green-400 hover:text-green-300'
                   : 'text-red-400 hover:text-red-300'
               }`}
             >
-              {match.status === 'scheduled' ? (
+              {match.is_active ? (
                 <Eye className="h-4 w-4" />
               ) : (
                 <EyeOff className="h-4 w-4" />
               )}
               <span className="text-xs font-medium">
-                {match.status === 'scheduled' ? 'Active' : 'Cancelled'}
+                {match.is_active ? 'Active' : 'Inactive'}
               </span>
             </button>
             <button
