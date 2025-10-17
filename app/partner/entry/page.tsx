@@ -962,11 +962,11 @@ export default function PartnerEntryPage() {
       </div>
 
       {/* Right side - Login Form */}
-      <div className="w-full lg:w-1/2 flex items-center justify-center bg-slate-900 p-8 relative">
+      <div className="w-full lg:w-1/2 flex items-center justify-center bg-neutral-900 p-8 relative">
         {/* Back Arrow Button */}
         <motion.button
           onClick={() => window.location.href = '/partners'}
-          className="absolute top-8 left-8 text-slate-400 hover:text-white transition-colors flex items-center gap-2 group"
+          className="absolute top-8 left-8 text-neutral-400 hover:text-white transition-colors flex items-center gap-2 group"
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 0.6, delay: 0.4 }}
@@ -1000,7 +1000,7 @@ export default function PartnerEntryPage() {
             <motion.h2 className="text-3xl font-bold text-white mb-2">
               {isSignUp ? 'Create Your Account' : 'Nice to see you!'}
             </motion.h2>
-            <motion.p className="text-slate-400">
+            <motion.p className="text-neutral-400">
               {isSignUp ? 'Join PlayCircle as a partner' : 'Enter your email and password to sign in'}
             </motion.p>
           </motion.div>
@@ -1040,7 +1040,7 @@ export default function PartnerEntryPage() {
                     placeholder="Your full name"
                     required
                     disabled={loading}
-                    className="w-full px-4 py-3 rounded-lg bg-slate-800 border border-slate-700 text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors disabled:opacity-50"
+                    className="w-full px-4 py-3 rounded-lg bg-neutral-800 border border-neutral-700 text-white placeholder:text-neutral-400 focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-colors disabled:opacity-50"
                   />
                 </motion.div>
 
@@ -1056,7 +1056,7 @@ export default function PartnerEntryPage() {
                     placeholder="Your company name"
                     required
                     disabled={loading}
-                    className="w-full px-4 py-3 rounded-lg bg-slate-800 border border-slate-700 text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors disabled:opacity-50"
+                    className="w-full px-4 py-3 rounded-lg bg-neutral-800 border border-neutral-700 text-white placeholder:text-neutral-400 focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-colors disabled:opacity-50"
                   />
                 </motion.div>
               </>
@@ -1074,7 +1074,7 @@ export default function PartnerEntryPage() {
                 placeholder="Your email address"
                 required
                 disabled={loading}
-                className="w-full px-4 py-3 rounded-lg bg-slate-800 border border-slate-700 text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors disabled:opacity-50"
+                className="w-full px-4 py-3 rounded-lg bg-neutral-800 border border-neutral-700 text-white placeholder:text-neutral-400 focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-colors disabled:opacity-50"
               />
             </motion.div>
 
@@ -1090,7 +1090,7 @@ export default function PartnerEntryPage() {
                 placeholder="Your password"
                 required
                 disabled={loading}
-                className="w-full px-4 py-3 rounded-lg bg-slate-800 border border-slate-700 text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors disabled:opacity-50"
+                className="w-full px-4 py-3 rounded-lg bg-neutral-800 border border-neutral-700 text-white placeholder:text-neutral-400 focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-colors disabled:opacity-50"
               />
             </motion.div>
 
@@ -1107,7 +1107,7 @@ export default function PartnerEntryPage() {
                   placeholder="Confirm your password"
                   required
                   disabled={loading}
-                  className="w-full px-4 py-3 rounded-lg bg-slate-800 border border-slate-700 text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors disabled:opacity-50"
+                  className="w-full px-4 py-3 rounded-lg bg-neutral-800 border border-neutral-700 text-white placeholder:text-neutral-400 focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-colors disabled:opacity-50"
                 />
               </motion.div>
             )}
@@ -1119,9 +1119,9 @@ export default function PartnerEntryPage() {
                   type="checkbox"
                   checked={rememberMe}
                   onChange={(e) => setRememberMe(e.target.checked)}
-                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-slate-700 rounded bg-slate-800"
+                  className="h-4 w-4 text-[#456882] focus:ring-[#456882] border-neutral-700 rounded bg-neutral-800"
                 />
-                <label htmlFor="remember-me" className="ml-2 text-sm text-slate-300">
+                <label htmlFor="remember-me" className="ml-2 text-sm text-neutral-300">
                   Remember me
                 </label>
               </motion.div>
@@ -1152,13 +1152,13 @@ export default function PartnerEntryPage() {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1.0 }}
           >
-            <motion.p className="text-sm text-slate-400">
+            <motion.p className="text-sm text-neutral-400">
               {isSignUp ? (
                 <>
                   Already have an account?{' '}
                   <button
                     onClick={() => switchToSignIn()}
-                    className="font-medium text-blue-400 hover:text-blue-300 transition-colors"
+                    className="font-medium text-[#456882] hover:text-[#5a7a99] transition-colors"
                   >
                     Sign In
                   </button>
@@ -1168,7 +1168,7 @@ export default function PartnerEntryPage() {
                   Don't have an account?{' '}
                   <button
                     onClick={switchToSignUp}
-                    className="font-medium text-blue-400 hover:text-blue-300 transition-colors"
+                    className="font-medium text-[#456882] hover:text-[#5a7a99] transition-colors"
                   >
                     Sign Up
                   </button>
@@ -1179,7 +1179,7 @@ export default function PartnerEntryPage() {
 
           {/* Footer */}
           <motion.div 
-            className="text-center text-xs text-slate-500 mt-8"
+            className="text-center text-xs text-neutral-500 mt-8"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1.2 }}
