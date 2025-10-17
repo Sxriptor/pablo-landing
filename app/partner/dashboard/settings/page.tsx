@@ -340,6 +340,12 @@ export default function SettingsPage() {
       return
     }
 
+    // Check if account is frozen
+    if (isFrozen) {
+      setMessage({ type: 'error', text: 'Cannot save changes while account is frozen. Please unfreeze your account first.' })
+      return
+    }
+
     try {
       setSaving(true)
       setMessage(null)
@@ -358,7 +364,12 @@ export default function SettingsPage() {
 
       if (error) {
         console.error('Error updating partner:', error)
+        // Check if error is due to frozen account
+        if (error.message?.includes('frozen')) {
+          setMessage({ type: 'error', text: 'Cannot update data while account is frozen. Please unfreeze your account first.' })
+        } else {
         setMessage({ type: 'error', text: 'Failed to save changes' })
+        }
         return
       }
 
@@ -384,6 +395,12 @@ export default function SettingsPage() {
       return
     }
 
+    // Check if account is frozen
+    if (isFrozen) {
+      setMessage({ type: 'error', text: 'Cannot save changes while account is frozen. Please unfreeze your account first.' })
+      return
+    }
+
     try {
       setSaving(true)
       setMessage(null)
@@ -403,7 +420,12 @@ export default function SettingsPage() {
 
       if (error) {
         console.error('Error updating profile:', error)
+        // Check if error is due to frozen account
+        if (error.message?.includes('frozen')) {
+          setMessage({ type: 'error', text: 'Cannot update data while account is frozen. Please unfreeze your account first.' })
+        } else {
         setMessage({ type: 'error', text: 'Failed to save changes' })
+        }
         return
       }
 
@@ -429,6 +451,12 @@ export default function SettingsPage() {
       return
     }
 
+    // Check if account is frozen
+    if (isFrozen) {
+      setMessage({ type: 'error', text: 'Cannot save changes while account is frozen. Please unfreeze your account first.' })
+      return
+    }
+
     try {
       setSaving(true)
       setMessage(null)
@@ -449,7 +477,12 @@ export default function SettingsPage() {
 
       if (error) {
         console.error('Error updating notifications:', error)
+        // Check if error is due to frozen account
+        if (error.message?.includes('frozen')) {
+          setMessage({ type: 'error', text: 'Cannot update data while account is frozen. Please unfreeze your account first.' })
+        } else {
         setMessage({ type: 'error', text: 'Failed to save notification settings' })
+        }
         return
       }
 
@@ -492,6 +525,10 @@ export default function SettingsPage() {
         <h2 className="text-2xl font-bold text-white">Company Information</h2>
         <motion.button 
             onClick={() => {
+              if (isFrozen && !isEditing) {
+                setMessage({ type: 'error', text: 'Cannot edit while account is frozen. Please unfreeze your account in the Security tab.' })
+                return
+              }
               if (isEditing) {
                 // Revert to original settings
                 setSettings(originalSettings)
@@ -502,13 +539,25 @@ export default function SettingsPage() {
               }
             }}
           className={`px-6 py-3 rounded-2xl flex items-center font-bold text-sm transition-all ${
-            isEditing ? 'bg-neutral-600 text-white' : 'bg-[#456882] hover:bg-[#3a5670] text-white'
+            isEditing ? 'bg-neutral-600 text-white' : (isFrozen ? 'bg-neutral-700 text-neutral-400 cursor-not-allowed' : 'bg-[#456882] hover:bg-[#3a5670] text-white')
           }`}
         >
           <Edit className="h-4 w-4 mr-2" />
           {isEditing ? 'CANCEL' : 'EDIT'}
         </motion.button>
       </div>
+
+      {/* Frozen Account Warning */}
+      {isFrozen && (
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex items-center gap-2 p-4 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-400"
+        >
+          <AlertCircle className="h-5 w-5" />
+          <span className="font-medium">Your account is frozen. Unfreeze it in the Security tab to make changes.</span>
+        </motion.div>
+      )}
 
         {/* Success/Error Message */}
         {message && (
@@ -640,6 +689,10 @@ export default function SettingsPage() {
           <h2 className="text-2xl font-bold text-white">Account Settings</h2>
           <motion.button 
             onClick={() => {
+              if (isFrozen && !isEditing) {
+                setMessage({ type: 'error', text: 'Cannot edit while account is frozen. Please unfreeze your account in the Security tab.' })
+                return
+              }
               if (isEditing) {
                 // Revert to original account settings
                 setAccountSettings(originalAccountSettings)
@@ -650,13 +703,25 @@ export default function SettingsPage() {
               }
             }}
             className={`px-6 py-3 rounded-2xl flex items-center font-bold text-sm transition-all ${
-              isEditing ? 'bg-neutral-600 text-white' : 'bg-[#456882] hover:bg-[#3a5670] text-white'
+              isEditing ? 'bg-neutral-600 text-white' : (isFrozen ? 'bg-neutral-700 text-neutral-400 cursor-not-allowed' : 'bg-[#456882] hover:bg-[#3a5670] text-white')
             }`}
           >
             <Edit className="h-4 w-4 mr-2" />
             {isEditing ? 'CANCEL' : 'EDIT'}
           </motion.button>
         </div>
+
+        {/* Frozen Account Warning */}
+        {isFrozen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex items-center gap-2 p-4 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-400"
+          >
+            <AlertCircle className="h-5 w-5" />
+            <span className="font-medium">Your account is frozen. Unfreeze it in the Security tab to make changes.</span>
+          </motion.div>
+        )}
 
         {/* Success/Error Message */}
         {message && (
@@ -827,6 +892,10 @@ export default function SettingsPage() {
           <h2 className="text-2xl font-bold text-white">Notification Settings</h2>
           <motion.button 
             onClick={() => {
+              if (isFrozen && !isEditing) {
+                setMessage({ type: 'error', text: 'Cannot edit while account is frozen. Please unfreeze your account in the Security tab.' })
+                return
+              }
               if (isEditing) {
                 // Revert to original notification settings
                 setNotificationSettings(originalNotificationSettings)
@@ -837,13 +906,25 @@ export default function SettingsPage() {
               }
             }}
             className={`px-6 py-3 rounded-2xl flex items-center font-bold text-sm transition-all ${
-              isEditing ? 'bg-neutral-600 text-white' : 'bg-[#456882] hover:bg-[#3a5670] text-white'
+              isEditing ? 'bg-neutral-600 text-white' : (isFrozen ? 'bg-neutral-700 text-neutral-400 cursor-not-allowed' : 'bg-[#456882] hover:bg-[#3a5670] text-white')
             }`}
           >
             <Edit className="h-4 w-4 mr-2" />
             {isEditing ? 'CANCEL' : 'EDIT'}
           </motion.button>
         </div>
+
+        {/* Frozen Account Warning */}
+        {isFrozen && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="flex items-center gap-2 p-4 rounded-2xl bg-blue-500/10 border border-blue-500/20 text-blue-400"
+          >
+            <AlertCircle className="h-5 w-5" />
+            <span className="font-medium">Your account is frozen. Unfreeze it in the Security tab to make changes.</span>
+          </motion.div>
+        )}
 
         {/* Success/Error Message */}
         {message && (
