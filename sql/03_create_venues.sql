@@ -198,3 +198,54 @@ comment on policy "Anyone can view venues" on venues is 'Allows anonymous and au
 comment on policy "Partners can create own venues" on venues is 'Only authenticated partners can create venues for their own company';
 comment on policy "Partners can update own venues" on venues is 'Partners can only update venues they own';
 comment on policy "Partners can delete own venues" on venues is 'Partners can only delete venues they own';
+-
+- =====================================================
+-- STORAGE BUCKET FOR VENUE IMAGES
+-- =====================================================
+
+-- Create storage bucket for venue images
+INSERT INTO storage.buckets (id, name, public, file_size_limit, allowed_mime_types)
+VALUES ('venue-images', 'venue-images', true, 10485760, ARRAY['image/jpeg', 'image/jpg', 'image/png', 'image/webp'])
+ON CONFLICT (id) DO NOTHING;
+
+-- Storage policies for venue images
+DROP POLICY IF EXISTS "Venue images are publicly accessible" ON storage.objects;
+CREATE POLICY "Venue images are publicly accessible"
+    ON storage.objects FOR SELECT
+    USING (bucket_id = 'venue-images');
+
+DROP POLICY IF EXISTS "Partners can upload venue images" ON storage.objects;
+CREATE POLICY "Partners can upload venue images"
+    ON storage.objects FOR INSERT
+    WITH CHECK (
+        bucket_id = 'venue-images' AND
+        auth.role() = 'authenticated' AND
+        EXISTS (
+            SELECT 1 FROM partners p 
+            WHERE p.user_id = auth.uid()
+        )
+    );
+
+DROP POLICY IF EXISTS "Partners can update venue images" ON storage.objects;
+CREATE POLICY "Partners can update venue images"
+    ON storage.objects FOR UPDATE
+    USING (
+        bucket_id = 'venue-images' AND
+        auth.role() = 'authenticated' AND
+        EXISTS (
+            SELECT 1 FROM partners p 
+            WHERE p.user_id = auth.uid()
+        )
+    );
+
+DROP POLICY IF EXISTS "Partners can delete venue images" ON storage.objects;
+CREATE POLICY "Partners can delete venue images"
+    ON storage.objects FOR DELETE
+    USING (
+        bucket_id = 'venue-images' AND
+        auth.role() = 'authenticated' AND
+        EXISTS (
+            SELECT 1 FROM partners p 
+            WHERE p.user_id = auth.uid()
+        )
+    );

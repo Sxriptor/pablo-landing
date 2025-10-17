@@ -14,15 +14,43 @@ import {
   MoreHorizontal
 } from 'lucide-react'
 import { AddVenueOverlay } from '@/components/partner/overlays'
+import { createVenue, VenueData } from '@/lib/supabase/venues'
+import { useToast } from '@/hooks/use-toast'
 
 export default function VenuesPage() {
   const [showAddVenueOverlay, setShowAddVenueOverlay] = useState(false)
+  const { toast } = useToast()
 
-  const handleVenueSubmit = (venueData: any) => {
+  const handleVenueSubmit = async (venueData: VenueData) => {
     console.log('New venue data:', venueData)
-    // Here you would typically send the data to your backend API
-    // For now, we'll just log it and show a success message
-    alert('Venue created successfully! Check console for data.')
+    
+    try {
+      const result = await createVenue(venueData)
+      
+      if (result.success) {
+        toast({
+          title: "Success!",
+          description: "Venue created successfully!",
+        })
+        console.log('Created venue:', result.venue)
+        setShowAddVenueOverlay(false)
+        // Optionally refresh the page or update local state
+        window.location.reload()
+      } else {
+        toast({
+          title: "Error",
+          description: result.error || 'Failed to create venue',
+          variant: "destructive",
+        })
+      }
+    } catch (error) {
+      console.error('Error creating venue:', error)
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred",
+        variant: "destructive",
+      })
+    }
   }
 
   const mockVenues = [

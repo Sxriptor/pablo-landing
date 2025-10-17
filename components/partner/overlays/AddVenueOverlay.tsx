@@ -101,16 +101,54 @@ export function AddVenueOverlay({ isOpen, onClose, onSubmit }: AddVenueOverlayPr
     { code: 'WY', name: 'Wyoming' }
   ]
 
-  // Mock function to get partner data - replace with actual API call
-  const fetchPartnerData = async () => {
-    // This would be replaced with actual Supabase query
-    const mockPartnerData = {
-      address: '123 Business Street',
-      city: 'San Francisco',
-      state: 'CA',
-      zipCode: '94105'
+  // Function to parse full address string
+  const parseAddress = (fullAddress: string) => {
+    // Expected format: "412 west oak ave, Robesonia, PA, 19551"
+    const parts = fullAddress.split(',').map(part => part.trim())
+    
+    if (parts.length >= 4) {
+      return {
+        address: parts[0], // "412 west oak ave"
+        city: parts[1], // "Robesonia"
+        state: parts[2], // "PA"
+        zipCode: parts[3] // "19551"
+      }
+    } else if (parts.length === 3) {
+      // Handle format: "street, city state, zipcode"
+      const cityStatePart = parts[1].split(' ')
+      const state = cityStatePart.pop() // Last word is state
+      const city = cityStatePart.join(' ') // Rest is city
+      
+      return {
+        address: parts[0],
+        city: city,
+        state: state || '',
+        zipCode: parts[2]
+      }
+    } else {
+      // Fallback - just use the full address as street address
+      return {
+        address: fullAddress,
+        city: '',
+        state: '',
+        zipCode: ''
+      }
     }
-    setPartnerData(mockPartnerData)
+  }
+
+  // Function to get partner data from Supabase
+  const fetchPartnerData = async () => {
+    try {
+      const { getCurrentPartner } = await import('@/lib/supabase/venues')
+      const partner = await getCurrentPartner()
+      
+      if (partner && partner.address) {
+        const parsedAddress = parseAddress(partner.address)
+        setPartnerData(parsedAddress)
+      }
+    } catch (error) {
+      console.error('Error fetching partner data:', error)
+    }
   }
 
   useEffect(() => {

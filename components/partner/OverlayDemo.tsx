@@ -9,9 +9,12 @@ import {
   CreateEventOverlay,
   CreateClassOverlay
 } from './overlays'
+import { createVenue, VenueData } from '@/lib/supabase/venues'
+import { useToast } from '@/hooks/use-toast'
 
 export function OverlayDemo() {
   const [activeOverlay, setActiveOverlay] = useState<string | null>(null)
+  const { toast } = useToast()
 
   // Mock data for demo
   const mockVenues = [
@@ -28,10 +31,43 @@ export function OverlayDemo() {
     { id: '5', name: 'Multi-Purpose Court A', venueId: '3' },
   ]
 
+  const handleVenueSubmit = async (data: VenueData) => {
+    console.log('handleVenueSubmit called with:', data)
+    try {
+      const result = await createVenue(data)
+      
+      if (result.success) {
+        toast({
+          title: "Success!",
+          description: "Venue created successfully!",
+        })
+        console.log('Created venue:', result.venue)
+        // Optionally refresh the page or update local state
+        window.location.reload()
+      } else {
+        toast({
+          title: "Error",
+          description: result.error || 'Failed to create venue',
+          variant: "destructive",
+        })
+      }
+    } catch (error) {
+      console.error('Error creating venue:', error)
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred",
+        variant: "destructive",
+      })
+    }
+  }
+
   const handleOverlaySubmit = (type: string, data: any) => {
     console.log(`${type} submitted:`, data)
     // Here you would typically send the data to your backend
-    alert(`${type} created successfully! Check console for data.`)
+    toast({
+      title: "Success!",
+      description: `${type} created successfully! Check console for data.`,
+    })
   }
 
   const overlayButtons = [
@@ -45,7 +81,7 @@ export function OverlayDemo() {
         <AddVenueOverlay
           isOpen={activeOverlay === 'venue'}
           onClose={() => setActiveOverlay(null)}
-          onSubmit={(data) => handleOverlaySubmit('Venue', data)}
+          onSubmit={handleVenueSubmit}
         />
       )
     },
