@@ -67,6 +67,15 @@ export default function SettingsPage() {
   })
 
   const [profileId, setProfileId] = useState<string | null>(null)
+  const [isFrozen, setIsFrozen] = useState(false)
+
+  // Password change state
+  const [showPasswordForm, setShowPasswordForm] = useState(false)
+  const [passwordData, setPasswordData] = useState({
+    currentPassword: '',
+    newPassword: '',
+    confirmPassword: ''
+  })
 
   // Notification settings
   const [notificationSettings, setNotificationSettings] = useState({
@@ -161,6 +170,7 @@ export default function SettingsPage() {
           console.error('Error fetching profile:', profileError)
         } else if (profileData) {
           setProfileId(profileData.id)
+          setIsFrozen(profileData.is_frozen || false)
           const fetchedAccountSettings = {
             username: profileData.username || '',
             full_name: profileData.full_name || '',
@@ -206,6 +216,121 @@ export default function SettingsPage() {
       ...prev,
       [field]: !prev[field as keyof typeof prev]
     }))
+  }
+
+  // Handle password change
+  const handlePasswordChange = async () => {
+    // Validation
+    if (!passwordData.currentPassword || !passwordData.newPassword || !passwordData.confirmPassword) {
+      setMessage({ type: 'error', text: 'Please fill in all password fields' })
+      return
+    }
+
+    if (passwordData.newPassword !== passwordData.confirmPassword) {
+      setMessage({ type: 'error', text: 'New passwords do not match' })
+      return
+    }
+
+    if (passwordData.newPassword.length < 6) {
+      setMessage({ type: 'error', text: 'New password must be at least 6 characters long' })
+      return
+    }
+
+    try {
+      setSaving(true)
+      setMessage(null)
+
+      // Update password using Supabase auth
+      const { error } = await supabase.auth.updateUser({
+        password: passwordData.newPassword
+      })
+
+      if (error) {
+        console.error('Error updating password:', error)
+        setMessage({ type: 'error', text: 'Failed to update password. Please try again.' })
+        return
+      }
+
+      // Clear form and hide it
+      setPasswordData({
+        currentPassword: '',
+        newPassword: '',
+        confirmPassword: ''
+      })
+      setShowPasswordForm(false)
+      setMessage({ type: 'success', text: 'Password updated successfully!' })
+      
+      // Clear success message after 3 seconds
+      setTimeout(() => setMessage(null), 3000)
+    } catch (error) {
+      console.error('Error:', error)
+      setMessage({ type: 'error', text: 'An unexpected error occurred' })
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  // Handle account freeze/unfreeze toggle
+  const handleToggleFreezeAccount = async () => {
+    if (!profileId) {
+      setMessage({ type: 'error', text: 'Profile ID not found' })
+      return
+    }
+
+    const action = isFrozen ? 'unfreeze' : 'freeze'
+    const confirmed = confirm(
+      isFrozen 
+        ? 'Are you sure you want to unfreeze your account? This will restore full access to your account.'
+        : 'Are you sure you want to freeze your account? You can reactivate it at any time by unfreezing it.'
+    )
+
+    if (!confirmed) return
+
+    try {
+      setSaving(true)
+      setMessage(null)
+
+      // Toggle is_frozen status in profiles table
+      const updateData: { is_frozen: boolean; frozen_at?: string | null } = {
+        is_frozen: !isFrozen
+      }
+
+      // Set frozen_at timestamp when freezing, clear it when unfreezing
+      if (!isFrozen) {
+        updateData.frozen_at = new Date().toISOString()
+      } else {
+        updateData.frozen_at = null
+      }
+
+      const { error } = await supabase
+        .from('profiles')
+        .update(updateData)
+        .eq('id', profileId)
+
+      if (error) {
+        console.error(`Error ${action}ing account:`, error)
+        setMessage({ type: 'error', text: `Failed to ${action} account` })
+        return
+      }
+
+      // Update local state
+      setIsFrozen(!isFrozen)
+      
+      setMessage({ 
+        type: 'success', 
+        text: isFrozen 
+          ? 'Account unfrozen successfully!' 
+          : 'Account frozen successfully. You can unfreeze it anytime.' 
+      })
+      
+      // Clear message after 3 seconds
+      setTimeout(() => setMessage(null), 3000)
+    } catch (error) {
+      console.error('Error:', error)
+      setMessage({ type: 'error', text: 'An unexpected error occurred' })
+    } finally {
+      setSaving(false)
+    }
   }
 
   // Save changes to database
@@ -980,7 +1105,7 @@ export default function SettingsPage() {
             <div className="space-y-4">
               {/* Change Password */}
               <div className="rounded-3xl p-6 bg-neutral-800/50 border border-neutral-700 backdrop-blur-sm">
-                <div className="flex items-start justify-between">
+                <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
                       <div className="p-2 rounded-xl bg-[#456882]/10">
@@ -992,48 +1117,150 @@ export default function SettingsPage() {
                       Update your password to keep your account secure
                     </p>
                   </div>
-                  <motion.button
-                    onClick={() => {
-                      // TODO: Implement password change functionality
-                      setMessage({ type: 'success', text: 'Password change functionality coming soon' })
-                      setTimeout(() => setMessage(null), 3000)
-                    }}
-                    className="px-6 py-3 rounded-2xl bg-[#456882] hover:bg-[#3a5670] text-white font-bold text-sm transition-all whitespace-nowrap"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    Change Password
-                  </motion.button>
+                  {!showPasswordForm && (
+                    <motion.button
+                      onClick={() => setShowPasswordForm(true)}
+                      className="px-6 py-3 rounded-2xl bg-[#456882] hover:bg-[#3a5670] text-white font-bold text-sm transition-all whitespace-nowrap"
+                      whileHover={{ scale: 1.05 }}
+                      whileTap={{ scale: 0.95 }}
+                    >
+                      Change Password
+                    </motion.button>
+                  )}
                 </div>
+
+                {showPasswordForm && (
+                  <motion.div
+                    initial={{ opacity: 0, height: 0 }}
+                    animate={{ opacity: 1, height: 'auto' }}
+                    className="space-y-4 mt-4 pt-4 border-t border-neutral-700"
+                  >
+                    <div>
+                      <label className="block text-sm font-medium text-neutral-400 mb-2">
+                        Current Password
+                      </label>
+                      <input
+                        type="password"
+                        value={passwordData.currentPassword}
+                        onChange={(e) => setPasswordData(prev => ({ ...prev, currentPassword: e.target.value }))}
+                        className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all"
+                        placeholder="Enter current password"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-neutral-400 mb-2">
+                        New Password
+                      </label>
+                      <input
+                        type="password"
+                        value={passwordData.newPassword}
+                        onChange={(e) => setPasswordData(prev => ({ ...prev, newPassword: e.target.value }))}
+                        className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all"
+                        placeholder="Enter new password"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium text-neutral-400 mb-2">
+                        Confirm New Password
+                      </label>
+                      <input
+                        type="password"
+                        value={passwordData.confirmPassword}
+                        onChange={(e) => setPasswordData(prev => ({ ...prev, confirmPassword: e.target.value }))}
+                        className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all"
+                        placeholder="Confirm new password"
+                      />
+                    </div>
+                    <div className="flex justify-end gap-3">
+                      <motion.button
+                        onClick={() => {
+                          setShowPasswordForm(false)
+                          setPasswordData({
+                            currentPassword: '',
+                            newPassword: '',
+                            confirmPassword: ''
+                          })
+                          setMessage(null)
+                        }}
+                        className="px-6 py-3 rounded-2xl bg-neutral-600 hover:bg-neutral-700 text-white font-bold text-sm transition-all"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        Cancel
+                      </motion.button>
+                      <motion.button
+                        onClick={handlePasswordChange}
+                        disabled={saving}
+                        className="px-6 py-3 rounded-2xl bg-[#456882] hover:bg-[#3a5670] disabled:bg-neutral-600 disabled:cursor-not-allowed text-white font-bold text-sm transition-all flex items-center gap-2"
+                        whileHover={!saving ? { scale: 1.05 } : {}}
+                        whileTap={!saving ? { scale: 0.95 } : {}}
+                      >
+                        {saving ? (
+                          <>
+                            <Loader2 className="h-4 w-4 animate-spin" />
+                            Updating...
+                          </>
+                        ) : (
+                          <>
+                            <Save className="h-4 w-4" />
+                            Update Password
+                          </>
+                        )}
+                      </motion.button>
+                    </div>
+                  </motion.div>
+                )}
               </div>
 
-              {/* Freeze Account */}
-              <div className="rounded-3xl p-6 bg-neutral-800/50 border border-neutral-700 backdrop-blur-sm">
+              {/* Freeze/Unfreeze Account */}
+              <div className={`rounded-3xl p-6 backdrop-blur-sm ${
+                isFrozen 
+                  ? 'bg-blue-500/10 border border-blue-500/30' 
+                  : 'bg-neutral-800/50 border border-neutral-700'
+              }`}>
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <div className="p-2 rounded-xl bg-orange-500/10">
-                        <AlertCircle className="h-5 w-5 text-orange-500" />
+                      <div className={`p-2 rounded-xl ${
+                        isFrozen ? 'bg-blue-500/10' : 'bg-orange-500/10'
+                      }`}>
+                        <AlertCircle className={`h-5 w-5 ${
+                          isFrozen ? 'text-blue-500' : 'text-orange-500'
+                        }`} />
                       </div>
-                      <h3 className="text-lg font-bold text-white">Freeze Account</h3>
+                      <h3 className="text-lg font-bold text-white">
+                        {isFrozen ? 'Unfreeze Account' : 'Freeze Account'}
+                      </h3>
                     </div>
+                    {isFrozen && (
+                      <div className="mb-2 px-3 py-2 rounded-lg bg-blue-500/20 border border-blue-500/30">
+                        <p className="text-blue-300 text-sm font-medium">
+                          ⚠️ Your account is currently frozen
+                        </p>
+                      </div>
+                    )}
                     <p className="text-neutral-400 text-sm">
-                      Temporarily disable your account. You can reactivate it at any time.
+                      {isFrozen 
+                        ? 'Restore full access to your account and all features.'
+                        : 'Temporarily disable your account. You can reactivate it at any time.'
+                      }
                     </p>
                   </div>
                   <motion.button
-                    onClick={() => {
-                      // TODO: Implement account freeze functionality
-                      if (confirm('Are you sure you want to freeze your account? You can reactivate it at any time.')) {
-                        setMessage({ type: 'success', text: 'Account freeze functionality coming soon' })
-                        setTimeout(() => setMessage(null), 3000)
-                      }
-                    }}
-                    className="px-6 py-3 rounded-2xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm transition-all whitespace-nowrap"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
+                    onClick={handleToggleFreezeAccount}
+                    disabled={saving}
+                    className={`px-6 py-3 rounded-2xl disabled:bg-neutral-600 disabled:cursor-not-allowed text-white font-bold text-sm transition-all whitespace-nowrap ${
+                      isFrozen
+                        ? 'bg-blue-500 hover:bg-blue-600'
+                        : 'bg-orange-500 hover:bg-orange-600'
+                    }`}
+                    whileHover={!saving ? { scale: 1.05 } : {}}
+                    whileTap={!saving ? { scale: 0.95 } : {}}
                   >
-                    Freeze Account
+                    {saving 
+                      ? (isFrozen ? 'Unfreezing...' : 'Freezing...') 
+                      : (isFrozen ? 'Unfreeze Account' : 'Freeze Account')
+                    }
                   </motion.button>
                 </div>
               </div>
