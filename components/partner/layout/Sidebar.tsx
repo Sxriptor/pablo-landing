@@ -14,6 +14,7 @@ import {
   ChevronRight,
   Building2,
   Trophy,
+  ArrowRight,
 } from 'lucide-react'
 
 
@@ -102,34 +103,34 @@ export function Sidebar({ className }: SidebarProps) {
       {/* Navigation */}
       <div className="px-4 pb-4">
         <nav className="space-y-2">
-        {navigation.map((item) => {
-          const isActive = pathname === item.href
-          const Icon = item.icon
+          {navigation.map((item) => {
+            const isActive = pathname === item.href
+            const Icon = item.icon
 
-          return (
-            <Link key={item.name} href={item.href}>
-              <div
-                className={cn(
-                  'flex items-center px-4 py-3.5 text-sm font-semibold rounded-2xl transition-all',
-                  isActive
-                    ? 'text-white'
-                    : 'text-gray-400 hover:text-white'
-                )}
-                style={isActive ? {
-                  background: '#456882',
-                  boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)'
-                } : {}}
-              >
-                <div className={`p-2 rounded-xl ${isActive ? 'bg-white/20' : 'bg-transparent'}`}>
-                  <Icon className="h-4 w-4 flex-shrink-0" />
+            return (
+              <Link key={item.name} href={item.href}>
+                <div
+                  className={cn(
+                    'flex items-center px-4 py-3.5 text-sm font-semibold rounded-2xl transition-all',
+                    isActive
+                      ? 'text-white'
+                      : 'text-gray-400 hover:text-white'
+                  )}
+                  style={isActive ? {
+                    background: '#456882',
+                    boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)'
+                  } : {}}
+                >
+                  <div className={`p-2 rounded-xl ${isActive ? 'bg-white/20' : 'bg-transparent'}`}>
+                    <Icon className="h-4 w-4 flex-shrink-0" />
+                  </div>
+                  {!collapsed && (
+                    <span className="ml-3">{item.name}</span>
+                  )}
                 </div>
-                {!collapsed && (
-                  <span className="ml-3">{item.name}</span>
-                )}
-              </div>
-            </Link>
-          )
-        })}
+              </Link>
+            )
+          })}
         </nav>
       </div>
 
@@ -144,7 +145,7 @@ export function Sidebar({ className }: SidebarProps) {
             <p className="text-xs text-gray-400 mb-3">
               Contact our partner support team for assistance with your venues and bookings.
             </p>
-            <button 
+            <button
               className="w-full px-4 py-2 rounded-xl text-xs font-semibold text-white transition-all hover:scale-105"
               style={{
                 background: '#456882',
@@ -157,6 +158,19 @@ export function Sidebar({ className }: SidebarProps) {
         </div>
       )}
 
+      {/* Vertical Edge Button */}
+      <button
+        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-8 h-16 rounded-l-2xl flex items-center justify-center text-white transition-all hover:scale-110 hover:shadow-2xl z-10"
+        style={{
+          background: 'linear-gradient(135deg, #3b82f6 0%, #1d4ed8 100%)',
+          boxShadow: '0 4px 16px rgba(59, 130, 246, 0.4)',
+          writingMode: 'vertical-rl',
+          textOrientation: 'mixed'
+        }}
+        title="Quick Action"
+      >
+        <ArrowRight className="h-4 w-4" />
+      </button>
 
     </div>
   )
