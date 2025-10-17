@@ -915,19 +915,11 @@ export default function PartnerEntryPage() {
               initial={{ opacity: 0, scale: 0.8 }}
               animate={{ 
                 opacity: 1, 
-                scale: 1,
-                y: [0, -3, -5, -3, 0, 3, 5, 3, 0],
-                rotate: [0, 1, 0, -1, 0, 1, 0, -1, 0]
+                scale: 1
               }}
               transition={{
                 opacity: { duration: 0.8, delay: 0.6 },
-                scale: { duration: 0.8, delay: 0.6 },
-                y: { duration: 20, repeat: Infinity, ease: "easeInOut" },
-                rotate: { duration: 20, repeat: Infinity, ease: "easeInOut" }
-              }}
-              style={{ 
-                willChange: 'transform',
-                backfaceVisibility: 'hidden'
+                scale: { duration: 0.8, delay: 0.6 }
               }}
             >
               <Image
@@ -940,23 +932,7 @@ export default function PartnerEntryPage() {
             </motion.div>
             
             {/* Main Title with Advanced Styling */}
-            <motion.div
-              className="space-y-4"
-              style={{ 
-                willChange: 'transform',
-                backfaceVisibility: 'hidden',
-                transform: 'translate3d(0,0,0)'
-              }}
-              animate={{ 
-                x: [0, -2, -3, -2, 0, 2, 3, 2, 0],
-                y: [0, 2, 0, -2, -3, -2, 0, 2, 0]
-              }}
-              transition={{
-                duration: 18,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            >
+            <motion.div className="space-y-4">
               <h1 className="text-6xl lg:text-7xl font-black leading-none tracking-tight">
                 <span className="block bg-gradient-to-r from-white via-blue-100 to-purple-200 bg-clip-text text-transparent drop-shadow-lg">
                   PLAYCIRCLE
@@ -968,22 +944,7 @@ export default function PartnerEntryPage() {
             </motion.div>
             
             {/* Subtitle with Enhanced Typography */}
-            <motion.div 
-              className="space-y-3"
-              style={{ 
-                willChange: 'transform',
-                backfaceVisibility: 'hidden'
-              }}
-              animate={{ 
-                x: [0, 1.5, 2, 1.5, 0, -1.5, -2, -1.5, 0],
-                y: [0, -1, 0, 1, 1.5, 1, 0, -1, 0]
-              }}
-              transition={{
-                duration: 12,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            >
+            <motion.div className="space-y-3">
               <div className="h-px w-24 bg-gradient-to-r from-transparent via-white/50 to-transparent mx-auto"></div>
               <p className="text-xl lg:text-2xl font-light text-white/90 leading-relaxed mx-auto max-w-lg">
                 Manage your venues, events, and connect with players in your community
@@ -1036,40 +997,10 @@ export default function PartnerEntryPage() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
           >
-            <motion.h2
-              className="text-3xl font-bold text-white mb-2"
-              style={{
-                willChange: 'transform',
-                backfaceVisibility: 'hidden'
-              }}
-              animate={{
-                x: [0, 1, 1.5, 1, 0, -1, -1.5, -1, 0],
-                y: [0, -1, 0, 1, 1, 1, 0, -1, 0]
-              }}
-              transition={{
-                duration: 14,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            >
+            <motion.h2 className="text-3xl font-bold text-white mb-2">
               {isSignUp ? 'Create Your Account' : 'Nice to see you!'}
             </motion.h2>
-            <motion.p
-              className="text-slate-400"
-              style={{
-                willChange: 'transform',
-                backfaceVisibility: 'hidden'
-              }}
-              animate={{
-                x: [0, -1, -1.5, -1, 0, 1, 1.5, 1, 0],
-                y: [0, 1, 0, -1, -1, -1, 0, 1, 0]
-              }}
-              transition={{
-                duration: 16,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            >
+            <motion.p className="text-slate-400">
               {isSignUp ? 'Join PlayCircle as a partner' : 'Enter your email and password to sign in'}
             </motion.p>
           </motion.div>
@@ -1083,10 +1014,6 @@ export default function PartnerEntryPage() {
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -30 }}
             transition={{ duration: 0.6, delay: 0.8 }}
-            style={{
-              willChange: 'transform',
-              backfaceVisibility: 'hidden'
-            }}
           >
             {error && (
               <motion.div
@@ -1135,22 +1062,7 @@ export default function PartnerEntryPage() {
               </>
             )}
 
-            <motion.div
-              className="space-y-2"
-              style={{
-                willChange: 'transform',
-                backfaceVisibility: 'hidden'
-              }}
-              animate={{
-                x: [0, 0.5, 1, 0.5, 0, -0.5, -1, -0.5, 0],
-                y: [0, -0.5, 0, 0.5, 0.5, 0.5, 0, -0.5, 0]
-              }}
-              transition={{
-                duration: 13,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            >
+            <motion.div className="space-y-2">
               <label htmlFor="email" className="block text-sm font-medium text-white">
                 Email
               </label>
@@ -1166,22 +1078,7 @@ export default function PartnerEntryPage() {
               />
             </motion.div>
 
-            <motion.div
-              className="space-y-2"
-              style={{
-                willChange: 'transform',
-                backfaceVisibility: 'hidden'
-              }}
-              animate={{
-                x: [0, -0.5, -1, -0.5, 0, 0.5, 1, 0.5, 0],
-                y: [0, 0.5, 0, -0.5, -0.5, -0.5, 0, 0.5, 0]
-              }}
-              transition={{
-                duration: 15,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            >
+            <motion.div className="space-y-2">
               <label htmlFor="password" className="block text-sm font-medium text-white">
                 Password
               </label>
@@ -1216,22 +1113,7 @@ export default function PartnerEntryPage() {
             )}
 
             {!isSignUp && (
-              <motion.div
-                className="flex items-center"
-                style={{
-                  willChange: 'transform',
-                  backfaceVisibility: 'hidden'
-                }}
-                animate={{
-                  x: [0, 1, 1.5, 1, 0, -1, -1.5, -1, 0],
-                  y: [0, -0.5, 0, 0.5, 0.5, 0.5, 0, -0.5, 0]
-                }}
-                transition={{
-                  duration: 17,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              >
+              <motion.div className="flex items-center">
                 <input
                   id="remember-me"
                   type="checkbox"
@@ -1269,23 +1151,8 @@ export default function PartnerEntryPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1.0 }}
-            style={{
-              willChange: 'transform',
-              backfaceVisibility: 'hidden'
-            }}
           >
-            <motion.p
-              className="text-sm text-slate-400"
-              animate={{
-                x: [0, 0.5, 1, 0.5, 0, -0.5, -1, -0.5, 0],
-                y: [0, -0.5, 0, 0.5, 0.5, 0.5, 0, -0.5, 0]
-              }}
-              transition={{
-                duration: 11,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            >
+            <motion.p className="text-sm text-slate-400">
               {isSignUp ? (
                 <>
                   Already have an account?{' '}
@@ -1316,22 +1183,8 @@ export default function PartnerEntryPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1.2 }}
-            style={{ 
-              willChange: 'transform',
-              backfaceVisibility: 'hidden'
-            }}
           >
-            <motion.p
-              animate={{ 
-                x: [0, -0.5, -1, -0.5, 0, 0.5, 1, 0.5, 0],
-                y: [0, 0.5, 0, -0.5, -0.5, -0.5, 0, 0.5, 0]
-              }}
-              transition={{
-                duration: 19,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            >
+            <motion.p>
               © 2025 • Made with ❤️ by PlayCircle • Digitxl Link
             </motion.p>
           </motion.div>
