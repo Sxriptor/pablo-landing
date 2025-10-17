@@ -241,6 +241,25 @@ export function CreateMatchOverlay({
   // Populate form when editing
   React.useEffect(() => {
     if (editingMatch) {
+      // Convert boolean requirement fields back to array
+      const requirementMap: { [key: string]: string } = {
+        'valid_id_required': 'Valid ID Required',
+        'equipment_provided': 'Equipment Provided',
+        'skill_level_verification': 'Skill Level Verification',
+        'no_late_entries': 'No Late Entries',
+        'waiver_must_be_signed': 'Waiver Must Be Signed',
+        'bring_own_equipment': 'Bring Own Equipment',
+        'registration_fee_non_refundable': 'Registration Fee Non-Refundable',
+        'punctuality_required': 'Punctuality Required'
+      }
+      
+      const selectedRequirements: string[] = []
+      Object.entries(requirementMap).forEach(([field, label]) => {
+        if (editingMatch[field]) {
+          selectedRequirements.push(label)
+        }
+      })
+
       setFormData({
         title: editingMatch.title || '',
         description: editingMatch.description || '',
@@ -259,7 +278,7 @@ export function CreateMatchOverlay({
         skillLevel: editingMatch.skill_level || 'intermediate',
         format: editingMatch.format || 'singles',
         rules: editingMatch.rules || '',
-        requirements: editingMatch.requirements || [],
+        requirements: selectedRequirements,
       })
     }
   }, [editingMatch])

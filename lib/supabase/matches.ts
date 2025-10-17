@@ -66,6 +66,32 @@ export async function createMatch(matchData: MatchData): Promise<{ success: bool
       return { success: false, error: 'Court not found or does not belong to the selected venue.' }
     }
 
+    // Map requirements array to boolean fields
+    const requirementMap: { [key: string]: string } = {
+      'Valid ID Required': 'valid_id_required',
+      'Equipment Provided': 'equipment_provided',
+      'Skill Level Verification': 'skill_level_verification',
+      'No Late Entries': 'no_late_entries',
+      'Waiver Must Be Signed': 'waiver_must_be_signed',
+      'Bring Own Equipment': 'bring_own_equipment',
+      'Registration Fee Non-Refundable': 'registration_fee_non_refundable',
+      'Punctuality Required': 'punctuality_required'
+    }
+
+    // Convert requirements array to boolean fields
+    const requirementFields: { [key: string]: boolean } = {}
+    Object.values(requirementMap).forEach(field => {
+      requirementFields[field] = false
+    })
+    
+    // Set true for selected requirements
+    matchData.requirements.forEach(requirement => {
+      const fieldName = requirementMap[requirement]
+      if (fieldName) {
+        requirementFields[fieldName] = true
+      }
+    })
+
     // Prepare match data for database
     const matchPayload = {
       partner_id: partner.id,
@@ -84,7 +110,8 @@ export async function createMatch(matchData: MatchData): Promise<{ success: bool
       current_players: 0,
       entry_fee: matchData.entryFee ? parseFloat(matchData.entryFee) : 0,
       registration_deadline: matchData.registrationDeadline ? new Date(matchData.registrationDeadline).toISOString() : null,
-      status: 'scheduled'
+      status: 'scheduled',
+      ...requirementFields
     }
 
     console.log('Match payload for database:', matchPayload)
@@ -175,6 +202,18 @@ export async function updateMatch(matchId: string, matchData: Partial<MatchData>
       return { success: false, error: 'No partner found. Please ensure you are logged in as a partner.' }
     }
 
+    // Map requirements array to boolean fields
+    const requirementMap: { [key: string]: string } = {
+      'Valid ID Required': 'valid_id_required',
+      'Equipment Provided': 'equipment_provided',
+      'Skill Level Verification': 'skill_level_verification',
+      'No Late Entries': 'no_late_entries',
+      'Waiver Must Be Signed': 'waiver_must_be_signed',
+      'Bring Own Equipment': 'bring_own_equipment',
+      'Registration Fee Non-Refundable': 'registration_fee_non_refundable',
+      'Punctuality Required': 'punctuality_required'
+    }
+
     // Prepare update payload (only include fields that are provided)
     const updatePayload: any = {}
     
@@ -191,6 +230,22 @@ export async function updateMatch(matchId: string, matchData: Partial<MatchData>
     if (matchData.entryFee !== undefined) updatePayload.entry_fee = matchData.entryFee ? parseFloat(matchData.entryFee) : 0
     if (matchData.registrationDeadline !== undefined) {
       updatePayload.registration_deadline = matchData.registrationDeadline ? new Date(matchData.registrationDeadline).toISOString() : null
+    }
+    
+    // Handle requirements if provided
+    if (matchData.requirements !== undefined) {
+      // Reset all requirement fields to false first
+      Object.values(requirementMap).forEach(field => {
+        updatePayload[field] = false
+      })
+      
+      // Set true for selected requirements
+      matchData.requirements.forEach(requirement => {
+        const fieldName = requirementMap[requirement]
+        if (fieldName) {
+          updatePayload[fieldName] = true
+        }
+      })
     }
     
     updatePayload.updated_at = new Date().toISOString()

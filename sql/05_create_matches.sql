@@ -37,6 +37,16 @@ create table if not exists matches (
   status text default 'scheduled' check (status in ('scheduled', 'in_progress', 'completed', 'cancelled', 'postponed')),
   is_active boolean default true,
   
+  -- Requirements (boolean flags)
+  valid_id_required boolean default false,
+  equipment_provided boolean default false,
+  skill_level_verification boolean default false,
+  no_late_entries boolean default false,
+  waiver_must_be_signed boolean default false,
+  bring_own_equipment boolean default false,
+  registration_fee_non_refundable boolean default false,
+  punctuality_required boolean default false,
+  
   -- Results (filled after match completion)
   winner_ids uuid[],
   final_score text,
@@ -98,6 +108,39 @@ BEGIN
     -- Add is_active column if it doesn't exist
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'matches' AND column_name = 'is_active') THEN
         ALTER TABLE matches ADD COLUMN is_active boolean DEFAULT true;
+    END IF;
+    
+    -- Add requirement columns if they don't exist
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'matches' AND column_name = 'valid_id_required') THEN
+        ALTER TABLE matches ADD COLUMN valid_id_required boolean DEFAULT false;
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'matches' AND column_name = 'equipment_provided') THEN
+        ALTER TABLE matches ADD COLUMN equipment_provided boolean DEFAULT false;
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'matches' AND column_name = 'skill_level_verification') THEN
+        ALTER TABLE matches ADD COLUMN skill_level_verification boolean DEFAULT false;
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'matches' AND column_name = 'no_late_entries') THEN
+        ALTER TABLE matches ADD COLUMN no_late_entries boolean DEFAULT false;
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'matches' AND column_name = 'waiver_must_be_signed') THEN
+        ALTER TABLE matches ADD COLUMN waiver_must_be_signed boolean DEFAULT false;
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'matches' AND column_name = 'bring_own_equipment') THEN
+        ALTER TABLE matches ADD COLUMN bring_own_equipment boolean DEFAULT false;
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'matches' AND column_name = 'registration_fee_non_refundable') THEN
+        ALTER TABLE matches ADD COLUMN registration_fee_non_refundable boolean DEFAULT false;
+    END IF;
+    
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'matches' AND column_name = 'punctuality_required') THEN
+        ALTER TABLE matches ADD COLUMN punctuality_required boolean DEFAULT false;
     END IF;
 END $$;
 
