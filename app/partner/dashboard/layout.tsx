@@ -6,17 +6,18 @@ import { supabase, supabaseUrl } from '@/lib/supabase'
 import { validatePartnerAccess } from '@/lib/auth-utils'
 import { Navbar } from '@/components/partner/layout/Navbar'
 import { Sidebar } from '@/components/partner/layout/Sidebar'
+import { ThemeProvider, useTheme } from '@/components/partner/layout/ThemeProvider'
+import { getThemeColors } from '@/lib/theme-colors'
 import type { Partner } from '@/lib/types'
 import { Loader2 } from 'lucide-react'
 
-export default function DashboardLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+function DashboardContent({ children }: { children: React.ReactNode }) {
   const [partner, setPartner] = useState<Partner | null>(null)
   const [loading, setLoading] = useState(true)
   const router = useRouter()
+  const { theme } = useTheme()
+  const colors = getThemeColors(theme)
+
 
   useEffect(() => {
     const checkAuth = async () => {
@@ -109,15 +110,29 @@ export default function DashboardLayout({
 
   return (
     <div className="h-screen flex flex-col overflow-hidden" style={{ 
-      background: '#050a0f'
+      background: colors.background
     }}>
       <Navbar partner={partner} />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar />
-        <main className="flex-1 overflow-y-auto p-8">
+        <main className="flex-1 overflow-y-auto p-8" style={{ 
+          background: colors.background
+        }}>
           {children}
         </main>
       </div>
     </div>
+  )
+}
+
+export default function DashboardLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <ThemeProvider>
+      <DashboardContent>{children}</DashboardContent>
+    </ThemeProvider>
   )
 }

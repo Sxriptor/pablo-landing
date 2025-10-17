@@ -16,6 +16,8 @@ import {
   ArrowLeft,
   HelpCircle,
 } from 'lucide-react'
+import { useTheme } from './ThemeProvider'
+import { getThemeColors, themeColors } from '@/lib/theme-colors'
 
 
 const navigation = [
@@ -70,6 +72,8 @@ interface SidebarProps {
 export function Sidebar({ className }: SidebarProps) {
   const [collapsed, setCollapsed] = useState(false)
   const pathname = usePathname()
+  const { theme } = useTheme()
+  const colors = getThemeColors(theme)
 
   const handleGetSupport = () => {
     window.open('/contact', '_blank')
@@ -83,15 +87,15 @@ export function Sidebar({ className }: SidebarProps) {
         className
       )}
       style={{
-        background: 'rgba(5, 10, 15, 0.6)',
+        background: theme === 'dark' ? 'rgba(5, 10, 15, 0.6)' : 'rgba(255, 255, 255, 0.95)',
         backdropFilter: 'blur(20px)',
-        borderRight: '1px solid rgba(69, 104, 130, 0.2)'
+        borderRight: `1px solid ${colors.border}`
       }}
     >
       {/* Account Pages Section - Top */}
       <div className={cn("flex-1", collapsed && "pt-6")}>
         {!collapsed && (
-          <div className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+          <div className="px-6 py-4 text-xs font-semibold uppercase tracking-wider" style={{ color: colors.textSecondary }}>
             Account Pages
           </div>
         )}
@@ -108,14 +112,24 @@ export function Sidebar({ className }: SidebarProps) {
                   <div
                     className={cn(
                       'flex items-center px-4 py-3.5 text-sm font-semibold rounded-2xl transition-all',
-                      isActive
-                        ? 'text-white'
-                        : 'text-gray-400 hover:text-white'
                     )}
                     style={isActive ? {
-                      background: '#456882',
-                      boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)'
-                    } : {}}
+                      background: themeColors.accent,
+                      boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)',
+                      color: '#ffffff'
+                    } : {
+                      color: colors.textSecondary
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isActive) {
+                        e.currentTarget.style.color = colors.text
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isActive) {
+                        e.currentTarget.style.color = colors.textSecondary
+                      }
+                    }}
                   >
                     <div className={`p-2 rounded-xl ${isActive ? 'bg-white/20' : 'bg-transparent'}`}>
                       <Icon className="h-4 w-4 flex-shrink-0" />
@@ -135,18 +149,18 @@ export function Sidebar({ className }: SidebarProps) {
       {!collapsed ? (
         <div className="px-6 pb-6 mt-auto">
           <div className="rounded-2xl p-4" style={{
-            background: 'rgba(69, 104, 130, 0.1)',
-            border: '1px solid rgba(69, 104, 130, 0.2)'
+            background: theme === 'dark' ? 'rgba(69, 104, 130, 0.1)' : 'rgba(69, 104, 130, 0.05)',
+            border: `1px solid ${colors.border}`
           }}>
-            <h4 className="text-sm font-semibold text-white mb-2">Need Help?</h4>
-            <p className="text-xs text-gray-400 mb-3">
+            <h4 className="text-sm font-semibold mb-2" style={{ color: colors.text }}>Need Help?</h4>
+            <p className="text-xs mb-3" style={{ color: colors.textSecondary }}>
               Contact our partner support team for assistance with your venues and bookings.
             </p>
             <button
               onClick={handleGetSupport}
               className="w-full px-4 py-2 rounded-xl text-xs font-semibold text-white transition-all hover:scale-105"
               style={{
-                background: '#456882',
+                background: themeColors.accent,
                 boxShadow: '0 4px 12px rgba(69, 104, 130, 0.3)'
               }}
             >
@@ -161,7 +175,7 @@ export function Sidebar({ className }: SidebarProps) {
             onClick={handleGetSupport}
             className="w-full p-3 rounded-2xl flex items-center justify-center text-white transition-all hover:scale-105"
             style={{
-              background: '#456882',
+              background: themeColors.accent,
               boxShadow: '0 4px 12px rgba(69, 104, 130, 0.3)'
             }}
             title="Get Support"
@@ -176,7 +190,7 @@ export function Sidebar({ className }: SidebarProps) {
         onClick={() => setCollapsed(!collapsed)}
         className="absolute right-0 translate-x-1/2 w-8 h-16 rounded-2xl flex items-center justify-center text-white transition-all hover:scale-110 hover:shadow-2xl z-10"
         style={{
-          background: '#456882',
+          background: themeColors.accent,
           boxShadow: '0 4px 16px rgba(69, 104, 130, 0.4)',
           top: '200px' // Adjusted for removed header - centered in navigation area
         }}

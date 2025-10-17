@@ -5,6 +5,9 @@ import { Bell, Search, Settings, ChevronDown, LogOut } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
 import type { Partner } from '@/lib/types'
+import { ThemeToggle } from './ThemeToggle'
+import { useTheme } from './ThemeProvider'
+import { getThemeColors, themeColors } from '@/lib/theme-colors'
 
 interface NavbarProps {
   partner: Partner | null
@@ -17,6 +20,8 @@ export function Navbar({ partner }: NavbarProps) {
   const notificationRef = useRef<HTMLDivElement>(null)
   const profileRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
+  const { theme } = useTheme()
+  const colors = getThemeColors(theme)
 
   // Close dropdowns when clicking outside
   useEffect(() => {
@@ -105,22 +110,22 @@ export function Navbar({ partner }: NavbarProps) {
 
   return (
     <header className="sticky top-0 z-50 backdrop-blur-xl" style={{
-      background: 'rgba(5, 10, 15, 0.8)',
-      borderBottom: '1px solid rgba(69, 104, 130, 0.2)'
+      background: theme === 'dark' ? 'rgba(5, 10, 15, 0.8)' : 'rgba(255, 255, 255, 0.9)',
+      borderBottom: `1px solid ${colors.border}`
     }}>
       <div className="flex h-20 items-center justify-between px-8">
         {/* Logo and Brand */}
         <div className="flex items-center space-x-4">
           <div className="flex items-center space-x-3">
             <div className="text-xl font-bold tracking-wider" style={{
-              color: '#456882'
+              color: themeColors.accent
             }}>
               PLAYCIRCLE
             </div>
             <span className="px-3 py-1 text-xs font-semibold rounded-lg" style={{
-              background: 'rgba(69, 104, 130, 0.2)',
-              color: '#456882',
-              border: '1px solid rgba(69, 104, 130, 0.3)'
+              background: theme === 'dark' ? 'rgba(69, 104, 130, 0.2)' : 'rgba(69, 104, 130, 0.1)',
+              color: themeColors.accent,
+              border: `1px solid ${colors.border}`
             }}>
               PARTNER
             </span>
@@ -130,30 +135,40 @@ export function Navbar({ partner }: NavbarProps) {
         {/* Search Bar */}
         <div className="flex-1 max-w-xl mx-12">
           <div className="relative">
-            <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-gray-400" />
+            <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2" style={{ color: colors.textSecondary }} />
             <input
               placeholder="Search venues, courts, matches..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-12 pr-4 py-3 rounded-2xl text-white placeholder-gray-500 focus:outline-none transition-all"
+              className="w-full pl-12 pr-4 py-3 rounded-2xl focus:outline-none transition-all"
               style={{
-                background: 'rgba(69, 104, 130, 0.1)',
-                border: '1px solid rgba(69, 104, 130, 0.2)',
-                backdropFilter: 'blur(10px)'
+                background: colors.surfaceLight,
+                border: `1px solid ${colors.inputBorder}`,
+                backdropFilter: 'blur(10px)',
+                color: colors.text
               }}
             />
           </div>
         </div>
 
         {/* Right Side Actions */}
-        <div className="flex items-center space-x-6">
+        <div className="flex items-center space-x-4">
+          {/* Theme Toggle */}
+          <ThemeToggle />
+
+          {/* Notifications */}
           <div className="relative" ref={notificationRef}>
             <button
               onClick={() => setShowNotifications(!showNotifications)}
-              className="relative p-2 text-gray-400 hover:text-white transition-colors"
+              className="relative p-2 transition-colors"
+              style={{ 
+                color: colors.textSecondary,
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.color = colors.text}
+              onMouseLeave={(e) => e.currentTarget.style.color = colors.textSecondary}
             >
               <Bell className="h-5 w-5" />
-              <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-blue-500" />
+              <span className="absolute top-0 right-0 h-2 w-2 rounded-full" style={{ background: themeColors.accent }} />
             </button>
 
             {/* Notifications Dropdown */}
@@ -161,20 +176,22 @@ export function Navbar({ partner }: NavbarProps) {
               <div
                 className="absolute right-0 top-12 w-80 rounded-2xl shadow-2xl z-50"
                 style={{
-                  background: 'rgba(5, 10, 15, 0.95)',
-                  border: '1px solid rgba(69, 104, 130, 0.2)',
+                  background: colors.surface,
+                  border: `1px solid ${colors.border}`,
                   backdropFilter: 'blur(20px)'
                 }}
               >
-                <div className="p-4 border-b" style={{ borderColor: 'rgba(69, 104, 130, 0.2)' }}>
-                  <h3 className="text-lg font-semibold text-white">Latest Notifications</h3>
+                <div className="p-4 border-b" style={{ borderColor: colors.border }}>
+                  <h3 className="text-lg font-semibold" style={{ color: colors.text }}>Latest Notifications</h3>
                 </div>
                 <div className="max-h-96 overflow-y-auto">
                   {notifications.map((notification) => (
                     <div
                       key={notification.id}
-                      className="p-4 hover:bg-white/5 transition-colors border-b last:border-b-0"
-                      style={{ borderColor: 'rgba(69, 104, 130, 0.1)' }}
+                      className="p-4 transition-colors border-b last:border-b-0"
+                      style={{ borderColor: colors.borderLight }}
+                      onMouseEnter={(e) => e.currentTarget.style.background = colors.hover}
+                      onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
                     >
                       <div className="flex items-start space-x-3">
                         <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${notification.type === 'booking' ? 'bg-blue-400' :
@@ -183,18 +200,18 @@ export function Navbar({ partner }: NavbarProps) {
                               'bg-purple-400'
                           }`} />
                         <div className="flex-1 min-w-0">
-                          <p className="text-sm font-medium text-white">{notification.title}</p>
-                          <p className="text-xs text-gray-400 mt-1">{notification.message}</p>
-                          <p className="text-xs text-gray-500 mt-2">{notification.time}</p>
+                          <p className="text-sm font-medium" style={{ color: colors.text }}>{notification.title}</p>
+                          <p className="text-xs mt-1" style={{ color: colors.textSecondary }}>{notification.message}</p>
+                          <p className="text-xs mt-2" style={{ color: colors.textTertiary }}>{notification.time}</p>
                         </div>
                       </div>
                     </div>
                   ))}
                 </div>
-                <div className="p-4 border-t" style={{ borderColor: 'rgba(69, 104, 130, 0.2)' }}>
+                <div className="p-4 border-t" style={{ borderColor: colors.border }}>
                   <button
                     className="w-full text-center text-sm font-medium transition-colors"
-                    style={{ color: '#456882' }}
+                    style={{ color: themeColors.accent }}
                     onClick={() => setShowNotifications(false)}
                   >
                     View All Notifications
@@ -209,19 +226,21 @@ export function Navbar({ partner }: NavbarProps) {
           <div className="relative" ref={profileRef}>
             <button
               onClick={() => setShowProfileDropdown(!showProfileDropdown)}
-              className="flex items-center space-x-3 pl-6 py-2 hover:bg-white/5 rounded-lg transition-colors"
-              style={{ borderLeft: '1px solid rgba(69, 104, 130, 0.2)' }}
+              className="flex items-center space-x-3 pl-6 py-2 rounded-lg transition-colors"
+              style={{ borderLeft: `1px solid ${colors.border}` }}
+              onMouseEnter={(e) => e.currentTarget.style.background = colors.hover}
+              onMouseLeave={(e) => e.currentTarget.style.background = 'transparent'}
             >
               <div className="h-10 w-10 rounded-xl flex items-center justify-center text-white text-sm font-bold" style={{
-                background: '#456882'
+                background: themeColors.accent
               }}>
                 {partner ? getInitials(partner.company_name) : 'PC'}
               </div>
               <div className="hidden lg:block text-left">
-                <p className="text-sm font-semibold text-white">{partner?.company_name || 'Partner'}</p>
-                <p className="text-xs text-gray-400">{partner?.email || 'partner@playcircle.com'}</p>
+                <p className="text-sm font-semibold" style={{ color: colors.text }}>{partner?.company_name || 'Partner'}</p>
+                <p className="text-xs" style={{ color: colors.textSecondary }}>{partner?.email || 'partner@playcircle.com'}</p>
               </div>
-              <ChevronDown className={`h-4 w-4 text-gray-400 transition-transform ${showProfileDropdown ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`h-4 w-4 transition-transform ${showProfileDropdown ? 'rotate-180' : ''}`} style={{ color: colors.textSecondary }} />
             </button>
 
             {/* Profile Dropdown */}
@@ -229,8 +248,8 @@ export function Navbar({ partner }: NavbarProps) {
               <div
                 className="absolute right-0 top-16 w-48 rounded-2xl shadow-2xl z-50"
                 style={{
-                  background: 'rgba(5, 10, 15, 0.95)',
-                  border: '1px solid rgba(69, 104, 130, 0.2)',
+                  background: colors.surface,
+                  border: `1px solid ${colors.border}`,
                   backdropFilter: 'blur(20px)'
                 }}
               >
