@@ -376,19 +376,19 @@ export default function PartnerEntryPage() {
             </motion.button>
           </motion.form>
 
-          <motion.div 
+          <motion.div
             className="text-center"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.6, delay: 1.0 }}
-            style={{ 
+            style={{
               willChange: 'transform',
               backfaceVisibility: 'hidden'
             }}
           >
-            <motion.p 
+            <motion.p
               className="text-sm text-slate-400"
-              animate={{ 
+              animate={{
                 x: [0, 0.5, 1, 0.5, 0, -0.5, -1, -0.5, 0],
                 y: [0, -0.5, 0, 0.5, 0.5, 0.5, 0, -0.5, 0]
               }}
@@ -398,12 +398,12 @@ export default function PartnerEntryPage() {
                 ease: "easeInOut"
               }}
             >
-              Have an activation code?{' '}
+              Don't have an account?{' '}
               <a
-                href="/partner-activation"
+                href="/partner/signup"
                 className="font-medium text-blue-400 hover:text-blue-300 transition-colors"
               >
-                Enter it here!
+                Sign Up
               </a>
             </motion.p>
           </motion.div>
