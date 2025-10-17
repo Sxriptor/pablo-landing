@@ -118,7 +118,7 @@ export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [] }: AddC
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent 
-        className="max-w-4xl max-h-[90vh] overflow-y-auto"
+        className="!max-w-6xl max-h-[90vh] overflow-y-auto w-[95vw]"
         style={{
           background: 'rgba(5, 10, 15, 0.95)',
           border: '1px solid rgba(69, 104, 130, 0.3)',

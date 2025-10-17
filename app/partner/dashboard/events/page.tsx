@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { 
   Calendar, 
@@ -13,8 +13,33 @@ import {
   Edit,
   MoreHorizontal
 } from 'lucide-react'
+import { CreateEventOverlay } from '@/components/partner/overlays'
 
 export default function EventsPage() {
+  const [showCreateEventOverlay, setShowCreateEventOverlay] = useState(false)
+
+  // Mock data for the event overlay
+  const mockVenues = [
+    { id: '1', name: 'Downtown Tennis Center' },
+    { id: '2', name: 'Riverside Courts' },
+    { id: '3', name: 'Elite Training Facility' },
+  ]
+
+  const mockCourts = [
+    { id: '1', name: 'Center Court', venueId: '1' },
+    { id: '2', name: 'Court 1', venueId: '1' },
+    { id: '3', name: 'Court 2', venueId: '1' },
+    { id: '4', name: 'Pickleball Court A', venueId: '2' },
+    { id: '5', name: 'Court 1', venueId: '2' },
+    { id: '6', name: 'Premium Court', venueId: '3' },
+  ]
+
+  const handleEventSubmit = (eventData: any) => {
+    console.log('New event data:', eventData)
+    // Here you would typically send the data to your backend API
+    alert('Event created successfully! Check console for data.')
+  }
+
   const mockEvents = [
     {
       id: 1,
@@ -208,6 +233,7 @@ export default function EventsPage() {
           <p className="text-gray-400">Organize workshops, clinics, and special events</p>
         </div>
         <motion.button 
+          onClick={() => setShowCreateEventOverlay(true)}
           className="text-white px-6 py-3 rounded-2xl flex items-center font-bold text-sm"
           style={{
             background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -226,6 +252,15 @@ export default function EventsPage() {
           <EventCard key={event.id} event={event} />
         ))}
       </div>
+
+      {/* Create Event Overlay */}
+      <CreateEventOverlay
+        isOpen={showCreateEventOverlay}
+        onClose={() => setShowCreateEventOverlay(false)}
+        onSubmit={handleEventSubmit}
+        venues={mockVenues}
+        courts={mockCourts}
+      />
     </div>
   )
 }

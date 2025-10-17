@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { 
   Trophy, 
@@ -13,8 +13,33 @@ import {
   Edit,
   MoreHorizontal
 } from 'lucide-react'
+import { CreateEventOverlay } from '@/components/partner/overlays'
 
 export default function MatchesPage() {
+  const [showCreateMatchOverlay, setShowCreateMatchOverlay] = useState(false)
+
+  // Mock data for the match overlay (reusing event overlay for matches)
+  const mockVenues = [
+    { id: '1', name: 'Downtown Tennis Center' },
+    { id: '2', name: 'Riverside Courts' },
+    { id: '3', name: 'Elite Training Facility' },
+  ]
+
+  const mockCourts = [
+    { id: '1', name: 'Center Court', venueId: '1' },
+    { id: '2', name: 'Court 1', venueId: '1' },
+    { id: '3', name: 'Court 2', venueId: '1' },
+    { id: '4', name: 'Pickleball Court A', venueId: '2' },
+    { id: '5', name: 'Court 1', venueId: '2' },
+    { id: '6', name: 'Premium Court', venueId: '3' },
+  ]
+
+  const handleMatchSubmit = (matchData: any) => {
+    console.log('New match data:', matchData)
+    // Here you would typically send the data to your backend API
+    alert('Match created successfully! Check console for data.')
+  }
+
   const mockMatches = [
     { 
       id: 1, 
@@ -196,6 +221,7 @@ export default function MatchesPage() {
           <p className="text-gray-400">Organize and manage competitive matches</p>
         </div>
         <motion.button 
+          onClick={() => setShowCreateMatchOverlay(true)}
           className="text-white px-6 py-3 rounded-2xl flex items-center font-bold text-sm"
           style={{
             background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -214,6 +240,15 @@ export default function MatchesPage() {
           <MatchCard key={match.id} match={match} />
         ))}
       </div>
+
+      {/* Create Match Overlay (using Event overlay) */}
+      <CreateEventOverlay
+        isOpen={showCreateMatchOverlay}
+        onClose={() => setShowCreateMatchOverlay(false)}
+        onSubmit={handleMatchSubmit}
+        venues={mockVenues}
+        courts={mockCourts}
+      />
     </div>
   )
 }

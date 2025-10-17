@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { 
   Users, 
@@ -14,8 +14,35 @@ import {
   MoreHorizontal,
   GraduationCap
 } from 'lucide-react'
+import { CreateClassOverlay } from '@/components/partner/overlays'
 
 export default function ClassesPage() {
+  const [showCreateClassOverlay, setShowCreateClassOverlay] = useState(false)
+
+  // Mock data for the class overlay
+  const mockVenues = [
+    { id: '1', name: 'Downtown Tennis Center' },
+    { id: '2', name: 'Riverside Courts' },
+    { id: '3', name: 'Community Sports Center' },
+    { id: '4', name: 'Elite Squash Club' },
+    { id: '5', name: 'Premier Tennis Academy' },
+  ]
+
+  const mockCourts = [
+    { id: '1', name: 'Court 1', venueId: '1' },
+    { id: '2', name: 'Court 2', venueId: '1' },
+    { id: '3', name: 'Court 3', venueId: '2' },
+    { id: '4', name: 'Court 2', venueId: '3' },
+    { id: '5', name: 'Court 1', venueId: '4' },
+    { id: '6', name: 'Court 4', venueId: '5' },
+  ]
+
+  const handleClassSubmit = (classData: any) => {
+    console.log('New class data:', classData)
+    // Here you would typically send the data to your backend API
+    alert('Class created successfully! Check console for data.')
+  }
+
   const mockClasses = [
     {
       id: 1,
@@ -218,6 +245,7 @@ export default function ClassesPage() {
           <p className="text-gray-400">Manage instructional classes and training sessions</p>
         </div>
         <motion.button 
+          onClick={() => setShowCreateClassOverlay(true)}
           className="text-white px-6 py-3 rounded-2xl flex items-center font-bold text-sm"
           style={{
             background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -236,6 +264,15 @@ export default function ClassesPage() {
           <ClassCard key={classItem.id} classItem={classItem} />
         ))}
       </div>
+
+      {/* Create Class Overlay */}
+      <CreateClassOverlay
+        isOpen={showCreateClassOverlay}
+        onClose={() => setShowCreateClassOverlay(false)}
+        onSubmit={handleClassSubmit}
+        venues={mockVenues}
+        courts={mockCourts}
+      />
     </div>
   )
 }

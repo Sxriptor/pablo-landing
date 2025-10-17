@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { 
   Building2, 
@@ -13,8 +13,18 @@ import {
   Edit,
   MoreHorizontal
 } from 'lucide-react'
+import { AddVenueOverlay } from '@/components/partner/overlays'
 
 export default function VenuesPage() {
+  const [showAddVenueOverlay, setShowAddVenueOverlay] = useState(false)
+
+  const handleVenueSubmit = (venueData: any) => {
+    console.log('New venue data:', venueData)
+    // Here you would typically send the data to your backend API
+    // For now, we'll just log it and show a success message
+    alert('Venue created successfully! Check console for data.')
+  }
+
   const mockVenues = [
     { 
       id: 1, 
@@ -142,6 +152,7 @@ export default function VenuesPage() {
           <p className="text-gray-400">Manage your sports venues and facilities</p>
         </div>
         <motion.button 
+          onClick={() => setShowAddVenueOverlay(true)}
           className="text-white px-6 py-3 rounded-2xl flex items-center font-bold text-sm"
           style={{
             background: '#456882',
@@ -160,6 +171,13 @@ export default function VenuesPage() {
           <VenueCard key={venue.id} venue={venue} />
         ))}
       </div>
+
+      {/* Add Venue Overlay */}
+      <AddVenueOverlay
+        isOpen={showAddVenueOverlay}
+        onClose={() => setShowAddVenueOverlay(false)}
+        onSubmit={handleVenueSubmit}
+      />
     </div>
   )
 }

@@ -1,6 +1,6 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { 
   MapPin, 
@@ -10,8 +10,24 @@ import {
   Settings,
   MoreHorizontal
 } from 'lucide-react'
+import { AddCourtOverlay } from '@/components/partner/overlays'
 
 export default function CourtsPage() {
+  const [showAddCourtOverlay, setShowAddCourtOverlay] = useState(false)
+
+  // Mock venues data for the court overlay
+  const mockVenues = [
+    { id: '1', name: 'Downtown Tennis Center' },
+    { id: '2', name: 'Riverside Courts' },
+    { id: '3', name: 'Elite Training Facility' },
+  ]
+
+  const handleCourtSubmit = (courtData: any) => {
+    console.log('New court data:', courtData)
+    // Here you would typically send the data to your backend API
+    alert('Court created successfully! Check console for data.')
+  }
+
   const mockCourts = [
     {
       id: 1,
@@ -168,6 +184,7 @@ export default function CourtsPage() {
           <p className="text-gray-400">Manage individual courts and their settings</p>
         </div>
         <motion.button 
+          onClick={() => setShowAddCourtOverlay(true)}
           className="text-white px-6 py-3 rounded-2xl flex items-center font-bold text-sm"
           style={{
             background: '#456882',
@@ -186,6 +203,14 @@ export default function CourtsPage() {
           <CourtCard key={court.id} court={court} />
         ))}
       </div>
+
+      {/* Add Court Overlay */}
+      <AddCourtOverlay
+        isOpen={showAddCourtOverlay}
+        onClose={() => setShowAddCourtOverlay(false)}
+        onSubmit={handleCourtSubmit}
+        venues={mockVenues}
+      />
     </div>
   )
 }
