@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Bell, Search, Settings, DoorOpen } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
 import { useRouter } from 'next/navigation'
@@ -12,7 +12,58 @@ interface NavbarProps {
 
 export function Navbar({ partner }: NavbarProps) {
   const [searchQuery, setSearchQuery] = useState('')
+  const [showNotifications, setShowNotifications] = useState(false)
+  const notificationRef = useRef<HTMLDivElement>(null)
   const router = useRouter()
+
+  // Close notifications dropdown when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (notificationRef.current && !notificationRef.current.contains(event.target as Node)) {
+        setShowNotifications(false)
+      }
+    }
+
+    if (showNotifications) {
+      document.addEventListener('mousedown', handleClickOutside)
+    }
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  }, [showNotifications])
+
+  // Mock notifications data
+  const notifications = [
+    {
+      id: 1,
+      title: 'New booking confirmed',
+      message: 'Court 1 has been booked for tomorrow at 2:00 PM',
+      time: '5 minutes ago',
+      type: 'booking'
+    },
+    {
+      id: 2,
+      title: 'Payment received',
+      message: 'Payment of $45 received for Downtown Tennis Center',
+      time: '1 hour ago',
+      type: 'payment'
+    },
+    {
+      id: 3,
+      title: 'Court maintenance scheduled',
+      message: 'Court 3 maintenance scheduled for next Monday',
+      time: '2 hours ago',
+      type: 'maintenance'
+    },
+    {
+      id: 4,
+      title: 'New review posted',
+      message: 'Your venue received a 5-star review',
+      time: '1 day ago',
+      type: 'review'
+    }
+  ]
 
   const handleSignOut = async () => {
     try {
@@ -91,10 +142,63 @@ export function Navbar({ partner }: NavbarProps) {
 
         {/* Right Side Actions */}
         <div className="flex items-center space-x-6">
-          <button className="relative p-2 text-gray-400 hover:text-white transition-colors">
-            <Bell className="h-5 w-5" />
-            <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-blue-500" />
-          </button>
+          <div className="relative" ref={notificationRef}>
+            <button 
+              onClick={() => setShowNotifications(!showNotifications)}
+              className="relative p-2 text-gray-400 hover:text-white transition-colors"
+            >
+              <Bell className="h-5 w-5" />
+              <span className="absolute top-0 right-0 h-2 w-2 rounded-full bg-blue-500" />
+            </button>
+
+            {/* Notifications Dropdown */}
+            {showNotifications && (
+              <div 
+                className="absolute right-0 top-12 w-80 rounded-2xl shadow-2xl z-50"
+                style={{
+                  background: 'rgba(5, 10, 15, 0.95)',
+                  border: '1px solid rgba(69, 104, 130, 0.2)',
+                  backdropFilter: 'blur(20px)'
+                }}
+              >
+                <div className="p-4 border-b" style={{ borderColor: 'rgba(69, 104, 130, 0.2)' }}>
+                  <h3 className="text-lg font-semibold text-white">Latest Notifications</h3>
+                </div>
+                <div className="max-h-96 overflow-y-auto">
+                  {notifications.map((notification) => (
+                    <div 
+                      key={notification.id}
+                      className="p-4 hover:bg-white/5 transition-colors border-b last:border-b-0"
+                      style={{ borderColor: 'rgba(69, 104, 130, 0.1)' }}
+                    >
+                      <div className="flex items-start space-x-3">
+                        <div className={`w-2 h-2 rounded-full mt-2 flex-shrink-0 ${
+                          notification.type === 'booking' ? 'bg-blue-400' :
+                          notification.type === 'payment' ? 'bg-green-400' :
+                          notification.type === 'maintenance' ? 'bg-yellow-400' :
+                          'bg-purple-400'
+                        }`} />
+                        <div className="flex-1 min-w-0">
+                          <p className="text-sm font-medium text-white">{notification.title}</p>
+                          <p className="text-xs text-gray-400 mt-1">{notification.message}</p>
+                          <p className="text-xs text-gray-500 mt-2">{notification.time}</p>
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+                <div className="p-4 border-t" style={{ borderColor: 'rgba(69, 104, 130, 0.2)' }}>
+                  <button 
+                    className="w-full text-center text-sm font-medium transition-colors"
+                    style={{ color: '#456882' }}
+                    onClick={() => setShowNotifications(false)}
+                  >
+                    View All Notifications
+                  </button>
+                </div>
+              </div>
+            )}
+          </div>
           
           <button className="p-2 text-gray-400 hover:text-white transition-colors">
             <Settings className="h-5 w-5" />
