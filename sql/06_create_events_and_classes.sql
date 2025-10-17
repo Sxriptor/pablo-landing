@@ -2,6 +2,24 @@
 -- This file creates tables for both partner-hosted events/classes and mobile app event types
 -- Combines functionality from 06_create_events.sql and 06mobileevents.sql
 
+-- Sport formats configuration table
+-- Defines official formats for each sport (singles, doubles, team sizes, etc.)
+CREATE TABLE IF NOT EXISTS public.sport_formats (
+    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
+    sport TEXT NOT NULL CHECK (sport IN ('tennis', 'pickleball', 'squash', 'racquetball', 'badminton', 'table_tennis', 'basketball', 'volleyball')),
+    format_name TEXT NOT NULL, -- e.g., 'Singles', 'Doubles', '2v2', '3v3', '5v5', 'Indoor 6v6', 'Beach 2v2'
+    format_type TEXT NOT NULL, -- e.g., 'singles', 'doubles', 'team'
+    participant_count INTEGER NOT NULL, -- Total number of participants (2 for singles, 4 for doubles, etc.)
+    team_size INTEGER, -- Size per team if applicable (e.g., 2 for 2v2)
+    is_preferred BOOLEAN DEFAULT false, -- Mark preferred format for the sport
+    is_active BOOLEAN DEFAULT true,
+    display_order INTEGER DEFAULT 0, -- Order to display in UI
+    description TEXT,
+    created_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    updated_at TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    UNIQUE(sport, format_name)
+);
+
 -- Event types lookup table for mobile app
 CREATE TABLE IF NOT EXISTS public.event_types (
     id TEXT PRIMARY KEY,
@@ -23,17 +41,25 @@ CREATE TABLE IF NOT EXISTS public.events (
   partner_id UUID NOT NULL REFERENCES partners(id) ON DELETE CASCADE,
   venue_id UUID NOT NULL REFERENCES venues(id) ON DELETE CASCADE,
 
+  -- Sport MUST be selected first (drives format options)
+  sport TEXT NOT NULL CHECK (sport IN ('tennis', 'pickleball', 'squash', 'racquetball', 'badminton', 'table_tennis', 'basketball', 'volleyball')),
+  sport_id TEXT REFERENCES public.sports(id) ON DELETE CASCADE,
+
+  -- Sport format (dynamically populated based on sport selection)
+  sport_format_id UUID REFERENCES public.sport_formats(id),
+  match_format TEXT, -- e.g., 'Singles', 'Doubles', '2v2', '5v5', 'Indoor 6v6', 'Beach 2v2'
+
+  -- Event type (dynamically filtered based on sport)
+  event_type TEXT NOT NULL CHECK (event_type IN ('lesson', 'clinic', 'tournament', 'social', 'camp', 'workshop', 'class', 'match', 'league')),
+  event_type_id TEXT REFERENCES public.event_types(id),
+
   -- Mobile app specific fields
   host_id UUID REFERENCES auth.users(id) ON DELETE SET NULL,
-  sport_id TEXT REFERENCES public.sports(id) ON DELETE CASCADE,
-  event_type_id TEXT REFERENCES public.event_types(id),
 
   -- Event details
   name TEXT NOT NULL,
   title TEXT, -- Alias for mobile app compatibility
   description TEXT,
-  event_type TEXT NOT NULL CHECK (event_type IN ('lesson', 'clinic', 'tournament', 'social', 'camp', 'workshop', 'class')),
-  sport TEXT NOT NULL CHECK (sport IN ('tennis', 'pickleball', 'squash', 'racquetball', 'badminton', 'table_tennis')),
 
   -- Instructor/organizer info
   instructor_name TEXT,
@@ -151,10 +177,15 @@ CREATE TABLE IF NOT EXISTS public.event_participants (
 );
 
 -- Indexes for performance
+CREATE INDEX IF NOT EXISTS idx_sport_formats_sport ON sport_formats(sport);
+CREATE INDEX IF NOT EXISTS idx_sport_formats_is_active ON sport_formats(is_active);
+CREATE INDEX IF NOT EXISTS idx_sport_formats_is_preferred ON sport_formats(is_preferred);
+
 CREATE INDEX IF NOT EXISTS idx_events_partner_id ON events(partner_id);
 CREATE INDEX IF NOT EXISTS idx_events_venue_id ON events(venue_id);
 CREATE INDEX IF NOT EXISTS idx_events_host_id ON events(host_id);
 CREATE INDEX IF NOT EXISTS idx_events_sport_id ON events(sport_id);
+CREATE INDEX IF NOT EXISTS idx_events_sport_format_id ON events(sport_format_id);
 CREATE INDEX IF NOT EXISTS idx_events_event_type_id ON events(event_type_id);
 CREATE INDEX IF NOT EXISTS idx_events_start_date ON events(start_date);
 CREATE INDEX IF NOT EXISTS idx_events_start_timestamp ON events(start_timestamp);
@@ -173,6 +204,11 @@ CREATE INDEX IF NOT EXISTS idx_event_participants_status ON event_participants(s
 CREATE INDEX IF NOT EXISTS idx_event_types_is_active ON event_types(is_active);
 
 -- Triggers for updated_at timestamps
+CREATE TRIGGER update_sport_formats_updated_at
+  BEFORE UPDATE ON sport_formats
+  FOR EACH ROW
+  EXECUTE FUNCTION update_updated_at_column();
+
 CREATE TRIGGER update_events_updated_at
   BEFORE UPDATE ON events
   FOR EACH ROW
@@ -194,16 +230,33 @@ CREATE TRIGGER update_event_types_updated_at
   EXECUTE FUNCTION update_updated_at_column();
 
 -- Comments for documentation
+COMMENT ON TABLE sport_formats IS 'Official sport formats and participation configurations (singles, doubles, team sizes)';
 COMMENT ON TABLE events IS 'Combined events and classes table supporting both partner portal and mobile app functionality';
 COMMENT ON TABLE event_types IS 'Event type lookup table for mobile app categorization and points multipliers';
 COMMENT ON TABLE event_registrations IS 'Partner portal event registrations with payment and detailed registration info';
 COMMENT ON TABLE event_participants IS 'Mobile app event participation tracking with attendance and feedback';
 
 -- Enable Row Level Security (RLS)
+ALTER TABLE sport_formats ENABLE ROW LEVEL SECURITY;
 ALTER TABLE events ENABLE ROW LEVEL SECURITY;
 ALTER TABLE event_types ENABLE ROW LEVEL SECURITY;
 ALTER TABLE event_registrations ENABLE ROW LEVEL SECURITY;
 ALTER TABLE event_participants ENABLE ROW LEVEL SECURITY;
+
+-- RLS Policies for sport_formats table
+-- Anon key can view all sport formats
+CREATE POLICY "Allow anonymous read access to sport_formats"
+  ON sport_formats
+  FOR SELECT
+  TO anon
+  USING (is_active = true);
+
+-- Authenticated users can view all sport formats
+CREATE POLICY "Allow authenticated read access to sport_formats"
+  ON sport_formats
+  FOR SELECT
+  TO authenticated
+  USING (true);
 
 -- RLS Policies for events table
 -- Anon key can view all events
@@ -367,3 +420,47 @@ CREATE POLICY "Allow authenticated users to delete their participation"
   FOR DELETE
   TO authenticated
   USING (auth.uid() = user_id);
+
+-- ============================================================================
+-- SEED DATA: Official Sport Formats
+-- ============================================================================
+
+-- Tennis formats
+INSERT INTO sport_formats (sport, format_name, format_type, participant_count, team_size, is_preferred, display_order, description)
+VALUES
+  ('tennis', 'Singles', 'singles', 2, 1, true, 1, 'One player per side'),
+  ('tennis', 'Doubles', 'doubles', 4, 2, true, 2, 'Two players per side')
+ON CONFLICT (sport, format_name) DO NOTHING;
+
+-- Pickleball formats
+INSERT INTO sport_formats (sport, format_name, format_type, participant_count, team_size, is_preferred, display_order, description)
+VALUES
+  ('pickleball', '2v2', 'doubles', 4, 2, true, 1, 'Two players per side (preferred format)')
+ON CONFLICT (sport, format_name) DO NOTHING;
+
+-- Badminton formats
+INSERT INTO sport_formats (sport, format_name, format_type, participant_count, team_size, is_preferred, display_order, description)
+VALUES
+  ('badminton', 'Singles', 'singles', 2, 1, true, 1, 'One player per side'),
+  ('badminton', 'Doubles', 'doubles', 4, 2, true, 2, 'Two players per side')
+ON CONFLICT (sport, format_name) DO NOTHING;
+
+-- Squash formats
+INSERT INTO sport_formats (sport, format_name, format_type, participant_count, team_size, is_preferred, display_order, description)
+VALUES
+  ('squash', '1v1', 'singles', 2, 1, true, 1, 'One player per side (official format)')
+ON CONFLICT (sport, format_name) DO NOTHING;
+
+-- Basketball formats
+INSERT INTO sport_formats (sport, format_name, format_type, participant_count, team_size, is_preferred, display_order, description)
+VALUES
+  ('basketball', '5v5', 'team', 10, 5, true, 1, 'Five players per side (standard format)'),
+  ('basketball', '3v3', 'team', 6, 3, false, 2, 'Three players per side (streetball format)')
+ON CONFLICT (sport, format_name) DO NOTHING;
+
+-- Volleyball formats
+INSERT INTO sport_formats (sport, format_name, format_type, participant_count, team_size, is_preferred, display_order, description)
+VALUES
+  ('volleyball', 'Indoor 6v6', 'team', 12, 6, true, 1, 'Six players per side (indoor court)'),
+  ('volleyball', 'Beach 2v2', 'team', 4, 2, false, 2, 'Two players per side (beach volleyball)')
+ON CONFLICT (sport, format_name) DO NOTHING;

@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Calendar, Clock, Users, Trophy, DollarSign, X } from 'lucide-react'
 import {
@@ -13,6 +13,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import { supabase } from '@/lib/supabase'
 
 interface CreateEventOverlayProps {
   isOpen: boolean
@@ -22,13 +23,14 @@ interface CreateEventOverlayProps {
   courts?: Array<{ id: string; name: string; venueId: string }>
 }
 
-export function CreateEventOverlay({ 
-  isOpen, 
-  onClose, 
-  onSubmit, 
-  venues = [], 
-  courts = [] 
+export function CreateEventOverlay({
+  isOpen,
+  onClose,
+  onSubmit,
+  venues = [],
+  courts = []
 }: CreateEventOverlayProps) {
+
   const [formData, setFormData] = useState({
     title: '',
     description: '',
@@ -45,10 +47,23 @@ export function CreateEventOverlay({
     prizePool: '',
     registrationDeadline: '',
     skillLevel: 'all',
-    format: 'singles',
+    format: '',
+    sportFormatId: '',
     rules: '',
     requirements: [] as string[],
   })
+
+  const [sportFormats, setSportFormats] = useState<Array<{
+    id: string
+    sport: string
+    format_name: string
+    format_type: string
+    participant_count: number
+    team_size: number | null
+    is_preferred: boolean
+    description: string
+  }>>([])
+  const [loading, setLoading] = useState(false)
 
   const eventTypes = [
     { value: 'tournament', label: 'Tournament' },
@@ -75,12 +90,60 @@ export function CreateEventOverlay({
     { value: 'professional', label: 'Professional' },
   ]
 
-  const formatOptions = [
-    { value: 'singles', label: 'Singles' },
-    { value: 'doubles', label: 'Doubles' },
-    { value: 'mixed-doubles', label: 'Mixed Doubles' },
-    { value: 'team', label: 'Team' },
-  ]
+  // Fetch sport formats when sport changes
+  useEffect(() => {
+    const fetchSportFormats = async () => {
+      if (!formData.sport) return
+
+      console.log('Fetching formats for sport:', formData.sport)
+      setLoading(true)
+      try {
+        const { data, error } = await supabase
+          .from('sport_formats')
+          .select('*')
+          .eq('sport', formData.sport)
+          .eq('is_active', true)
+          .order('display_order', { ascending: true })
+
+        if (error) {
+          console.error('Error fetching sport formats:', error)
+          return
+        }
+
+        console.log('Fetched sport formats:', data)
+        setSportFormats(data || [])
+
+        // Auto-select preferred format if available
+        const preferredFormat = data?.find(f => f.is_preferred)
+        console.log('Preferred format:', preferredFormat)
+        if (preferredFormat) {
+          console.log('Auto-selecting preferred format with', preferredFormat.participant_count, 'participants')
+          setFormData(prev => ({
+            ...prev,
+            format: preferredFormat.format_name,
+            sportFormatId: preferredFormat.id,
+            maxParticipants: preferredFormat.participant_count.toString()
+          }))
+        } else if (data && data.length > 0) {
+          // If no preferred format, select the first one
+          console.log('No preferred format, selecting first format')
+          setFormData(prev => ({
+            ...prev,
+            format: data[0].format_name,
+            sportFormatId: data[0].id,
+            maxParticipants: data[0].participant_count.toString()
+          }))
+        }
+      } catch (err) {
+        console.error('Error fetching sport formats:', err)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchSportFormats()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formData.sport])
 
   const requirementOptions = [
     'Valid ID Required',
@@ -94,7 +157,36 @@ export function CreateEventOverlay({
   ]
 
   const handleInputChange = (field: string, value: string | string[]) => {
-    setFormData(prev => ({ ...prev, [field]: value }))
+    // If sport changes, reset format and maxParticipants
+    if (field === 'sport') {
+      setFormData(prev => ({
+        ...prev,
+        [field]: value,
+        format: '',
+        sportFormatId: '',
+        maxParticipants: ''
+      }))
+    } else {
+      setFormData(prev => ({ ...prev, [field]: value }))
+    }
+  }
+
+  const handleFormatChange = (formatName: string) => {
+    console.log('Format changed to:', formatName)
+    console.log('Available sportFormats:', sportFormats)
+    const selectedFormat = sportFormats.find(f => f.format_name === formatName)
+    console.log('Selected format:', selectedFormat)
+    if (selectedFormat) {
+      console.log('Setting maxParticipants to:', selectedFormat.participant_count)
+      setFormData(prev => ({
+        ...prev,
+        format: formatName,
+        sportFormatId: selectedFormat.id,
+        maxParticipants: selectedFormat.participant_count.toString()
+      }))
+    } else {
+      console.log('No format found!')
+    }
   }
 
   const handleCourtSelection = (courtId: string) => {
@@ -136,7 +228,8 @@ export function CreateEventOverlay({
       prizePool: '',
       registrationDeadline: '',
       skillLevel: 'all',
-      format: 'singles',
+      format: '',
+      sportFormatId: '',
       rules: '',
       requirements: [],
     })
@@ -196,6 +289,24 @@ export function CreateEventOverlay({
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Sport * <span className="text-xs text-gray-400">(Select first)</span>
+                </label>
+                <select
+                  value={formData.sport}
+                  onChange={(e) => handleInputChange('sport', e.target.value)}
+                  required
+                  className="w-full h-9 px-3 py-1 rounded-md bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  {sportOptions.map((sport) => (
+                    <option key={sport.value} value={sport.value} className="bg-gray-800">
+                      {sport.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Event Type *
                 </label>
                 <select
@@ -211,25 +322,7 @@ export function CreateEventOverlay({
                   ))}
                 </select>
               </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Sport *
-                </label>
-                <select
-                  value={formData.sport}
-                  onChange={(e) => handleInputChange('sport', e.target.value)}
-                  required
-                  className="w-full h-9 px-3 py-1 rounded-md bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  {sportOptions.map((sport) => (
-                    <option key={sport.value} value={sport.value} className="bg-gray-800">
-                      {sport.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
                   Skill Level
@@ -404,16 +497,21 @@ export function CreateEventOverlay({
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Max Participants
+                  Max Participants <span className="text-xs text-gray-400">(Auto-populated)</span>
                 </label>
                 <Input
                   type="number"
                   value={formData.maxParticipants}
                   onChange={(e) => handleInputChange('maxParticipants', e.target.value)}
-                  placeholder="32"
+                  placeholder="Select format first"
                   min="1"
                   className="bg-white/5 border-white/10 text-white placeholder-gray-500"
                 />
+                {formData.format && (
+                  <p className="text-xs text-gray-400 mt-1">
+                    Based on {formData.format} format
+                  </p>
+                )}
               </div>
               
               <div>
@@ -449,19 +547,29 @@ export function CreateEventOverlay({
 
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
-                Format
+                Format *
               </label>
               <select
                 value={formData.format}
-                onChange={(e) => handleInputChange('format', e.target.value)}
-                className="w-full h-9 px-3 py-1 rounded-md bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onChange={(e) => handleFormatChange(e.target.value)}
+                required
+                disabled={loading || sportFormats.length === 0}
+                className="w-full h-9 px-3 py-1 rounded-md bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                {formatOptions.map((format) => (
-                  <option key={format.value} value={format.value} className="bg-gray-800">
-                    {format.label}
+                <option value="">
+                  {loading ? 'Loading formats...' : sportFormats.length === 0 ? 'No formats available' : 'Select format'}
+                </option>
+                {sportFormats.map((format) => (
+                  <option key={format.id} value={format.format_name} className="bg-gray-800">
+                    {format.format_name} {format.is_preferred ? '(Preferred)' : ''} - {format.participant_count} players
                   </option>
                 ))}
               </select>
+              {formData.format && (
+                <p className="text-xs text-gray-400 mt-1">
+                  {sportFormats.find(f => f.format_name === formData.format)?.description}
+                </p>
+              )}
             </div>
           </div>
 
