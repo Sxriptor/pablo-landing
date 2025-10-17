@@ -79,60 +79,80 @@ export default function PartnerDashboard() {
         courtsCount = count || 0
       }
 
-      // Get matches count
-      const { count: matchesCount } = await supabase
-        .from('matches')
-        .select('*', { count: 'exact', head: true })
-        .eq('partner_id', partner.id)
+      // Get matches count (may not exist yet)
+      let matchesCount = 0
+      let activeMatchesCount = 0
+      let totalParticipants = 0
+      let recentMatches: any[] = []
 
-      // Get active matches
-      const { count: activeMatchesCount } = await supabase
-        .from('matches')
-        .select('*', { count: 'exact', head: true })
-        .eq('partner_id', partner.id)
-        .eq('status', 'scheduled')
+      try {
+        const { count } = await supabase
+          .from('matches')
+          .select('*', { count: 'exact', head: true })
+          .eq('partner_id', partner.id)
+        matchesCount = count || 0
 
-      // Get events count
-      const { count: eventsCount } = await supabase
-        .from('events')
-        .select('*', { count: 'exact', head: true })
-        .eq('partner_id', partner.id)
+        // Get active matches
+        const { count: activeCount } = await supabase
+          .from('matches')
+          .select('*', { count: 'exact', head: true })
+          .eq('partner_id', partner.id)
+          .eq('status', 'scheduled')
+        activeMatchesCount = activeCount || 0
 
-      // Get upcoming events
-      const { count: upcomingEventsCount } = await supabase
-        .from('events')
-        .select('*', { count: 'exact', head: true })
-        .eq('partner_id', partner.id)
-        .eq('status', 'scheduled')
+        // Get total participants
+        const { data: matchesData } = await supabase
+          .from('matches')
+          .select('current_players')
+          .eq('partner_id', partner.id)
+        totalParticipants = matchesData?.reduce((sum, match) => sum + (match.current_players || 0), 0) || 0
 
-      // Get total participants
-      const { data: matchesData } = await supabase
-        .from('matches')
-        .select('current_players')
-        .eq('partner_id', partner.id)
+        // Get recent matches
+        const { data } = await supabase
+          .from('matches')
+          .select('*')
+          .eq('partner_id', partner.id)
+          .order('scheduled_date', { ascending: false })
+          .limit(5)
+        recentMatches = data || []
+      } catch (error) {
+        console.log('Matches table not available or no access:', error)
+      }
 
-      const totalParticipants = matchesData?.reduce((sum, match) => sum + (match.current_players || 0), 0) || 0
+      // Get events count (may not exist yet)
+      let eventsCount = 0
+      let upcomingEventsCount = 0
 
-      // Get recent matches
-      const { data: recentMatches } = await supabase
-        .from('matches')
-        .select('*')
-        .eq('partner_id', partner.id)
-        .order('scheduled_date', { ascending: false })
-        .limit(5)
+      try {
+        const { count } = await supabase
+          .from('events')
+          .select('*', { count: 'exact', head: true })
+          .eq('partner_id', partner.id)
+        eventsCount = count || 0
+
+        // Get upcoming events
+        const { count: upcomingCount } = await supabase
+          .from('events')
+          .select('*', { count: 'exact', head: true })
+          .eq('partner_id', partner.id)
+          .eq('status', 'scheduled')
+        upcomingEventsCount = upcomingCount || 0
+      } catch (error) {
+        console.log('Events table not available or no access:', error)
+      }
 
       setStats({
         totalVenues: venuesCount || 0,
         totalCourts: courtsCount,
-        totalMatches: matchesCount || 0,
-        totalEvents: eventsCount || 0,
-        activeMatches: activeMatchesCount || 0,
-        upcomingEvents: upcomingEventsCount || 0,
+        totalMatches: matchesCount,
+        totalEvents: eventsCount,
+        activeMatches: activeMatchesCount,
+        upcomingEvents: upcomingEventsCount,
         monthlyRevenue: 0,
         totalParticipants
       })
 
-      setMatches(recentMatches || [])
+      setMatches(recentMatches)
     } catch (error) {
       console.error('Error loading dashboard data:', error)
     } finally {
