@@ -53,53 +53,8 @@ export default function VenuesPage() {
     }
   }
 
-  const mockVenues = [
-    { 
-      id: 1, 
-      name: 'Downtown Tennis Center', 
-      city: 'New York', 
-      address: '123 Main St, Manhattan, NY 10001', 
-      active: true, 
-      created_at: '2024-01-15',
-      courts: 8,
-      phone: '(212) 555-0123',
-      email: 'info@downtowntennis.com',
-      rating: 4.8,
-      amenities: ['Parking', 'Pro Shop', 'Locker Rooms', 'Café'],
-      revenue: '$12,450',
-      bookings: 156
-    },
-    { 
-      id: 2, 
-      name: 'Riverside Courts', 
-      city: 'Brooklyn', 
-      address: '456 River Ave, Brooklyn, NY 11201', 
-      active: true, 
-      created_at: '2024-02-20',
-      courts: 6,
-      phone: '(718) 555-0456',
-      email: 'contact@riversidecourts.com',
-      rating: 4.6,
-      amenities: ['Parking', 'Locker Rooms', 'Equipment Rental'],
-      revenue: '$8,920',
-      bookings: 98
-    },
-    { 
-      id: 3, 
-      name: 'Elite Training Facility', 
-      city: 'Manhattan', 
-      address: '789 Elite Blvd, Manhattan, NY 10022', 
-      active: false, 
-      created_at: '2024-03-10',
-      courts: 12,
-      phone: '(212) 555-0789',
-      email: 'admin@elitetraining.com',
-      rating: 4.9,
-      amenities: ['Parking', 'Pro Shop', 'Locker Rooms', 'Café', 'Fitness Center', 'Spa'],
-      revenue: '$18,750',
-      bookings: 234
-    },
-  ]
+  // For now, using empty array - will be replaced with real data from Supabase
+  const venues: any[] = []
 
   const VenueCard = ({ venue }: any) => (
     <motion.div
@@ -179,26 +134,68 @@ export default function VenuesPage() {
           <h1 className="text-3xl font-bold text-white">Venues</h1>
           <p className="text-gray-400">Manage your sports venues and facilities</p>
         </div>
-        <motion.button 
-          onClick={() => setShowAddVenueOverlay(true)}
-          className="text-white px-6 py-3 rounded-2xl flex items-center font-bold text-sm"
-          style={{
-            background: '#456882',
-            boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)'
-          }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <Plus className="h-4 w-4 mr-2" />
-          ADD VENUE
-        </motion.button>
+        {venues.length > 0 && (
+          <motion.button 
+            onClick={() => setShowAddVenueOverlay(true)}
+            className="text-white px-6 py-3 rounded-2xl flex items-center font-bold text-sm"
+            style={{
+              background: '#456882',
+              boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)'
+            }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            ADD VENUE
+          </motion.button>
+        )}
       </div>
 
-      <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-1">
-        {mockVenues.map((venue) => (
-          <VenueCard key={venue.id} venue={venue} />
-        ))}
-      </div>
+      {venues.length > 0 ? (
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-1">
+          {venues.map((venue) => (
+            <VenueCard key={venue.id} venue={venue} />
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center py-16">
+          <div 
+            className="rounded-3xl p-12 text-center max-w-md"
+            style={{
+              background: 'rgba(69, 104, 130, 0.1)',
+              border: '2px dashed rgba(69, 104, 130, 0.3)',
+              backdropFilter: 'blur(20px)'
+            }}
+          >
+            <div className="mb-6">
+              <div 
+                className="w-24 h-24 mx-auto rounded-2xl flex items-center justify-center mb-4"
+                style={{ background: 'rgba(69, 104, 130, 0.2)' }}
+              >
+                <Building2 className="h-12 w-12" style={{ color: '#456882' }} />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">No Venues Yet</h3>
+              <p className="text-gray-400 mb-6">
+                Get started by adding your first venue. You can manage courts, events, and bookings once you have a venue set up.
+              </p>
+            </div>
+            
+            <motion.button 
+              onClick={() => setShowAddVenueOverlay(true)}
+              className="text-white px-8 py-4 rounded-2xl flex items-center font-bold text-sm mx-auto"
+              style={{
+                background: '#456882',
+                boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)'
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Plus className="h-5 w-5 mr-2" />
+              ADD YOUR FIRST VENUE
+            </motion.button>
+          </div>
+        </div>
+      )}
 
       {/* Add Venue Overlay */}
       <AddVenueOverlay
