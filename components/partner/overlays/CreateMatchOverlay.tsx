@@ -50,14 +50,6 @@ export function CreateMatchOverlay({
     requirements: [] as string[],
   })
 
-  const matchTypes = [
-    { value: 'singles', label: 'Singles' },
-    { value: 'doubles', label: 'Doubles' },
-    { value: 'mixed-doubles', label: 'Mixed Doubles' },
-    { value: 'team', label: 'Team Match' },
-    { value: 'exhibition', label: 'Exhibition' },
-  ]
-
   const sportOptions = [
     { value: 'tennis', label: 'Tennis' },
     { value: 'pickleball', label: 'Pickleball' },
@@ -66,6 +58,72 @@ export function CreateMatchOverlay({
     { value: 'basketball', label: 'Basketball' },
     { value: 'volleyball', label: 'Volleyball' },
   ]
+
+  // Get available match types based on selected sport
+  const getMatchTypesForSport = (sport: string) => {
+    switch (sport) {
+      case 'tennis':
+        return [
+          { value: 'singles', label: 'Singles (1v1)' },
+          { value: 'doubles', label: 'Doubles (2v2)' },
+        ]
+      case 'pickleball':
+        return [
+          { value: 'doubles', label: 'Doubles (2v2 - Preferred)' },
+        ]
+      case 'badminton':
+        return [
+          { value: 'singles', label: 'Singles (1v1)' },
+          { value: 'doubles', label: 'Doubles (2v2)' },
+        ]
+      case 'squash':
+        return [
+          { value: 'singles', label: 'Singles (1v1)' },
+        ]
+      case 'basketball':
+        return [
+          { value: 'regular', label: '5v5 (Full Court)' },
+          { value: 'doubles', label: '3v3 (Half Court)' },
+        ]
+      case 'volleyball':
+        return [
+          { value: 'regular', label: 'Indoor (6v6)' },
+          { value: 'doubles', label: 'Beach (2v2)' },
+        ]
+      default:
+        return []
+    }
+  }
+
+  // Get match configuration based on sport and match type
+  const getMatchConfig = (sport: string, matchType: string) => {
+    const configs: { [key: string]: { [key: string]: { maxPlayers: string; format: string } } } = {
+      tennis: {
+        singles: { maxPlayers: '2', format: 'singles' },
+        doubles: { maxPlayers: '4', format: 'doubles' },
+      },
+      pickleball: {
+        doubles: { maxPlayers: '4', format: 'doubles' },
+      },
+      badminton: {
+        singles: { maxPlayers: '2', format: 'singles' },
+        doubles: { maxPlayers: '4', format: 'doubles' },
+      },
+      squash: {
+        singles: { maxPlayers: '2', format: 'singles' },
+      },
+      basketball: {
+        regular: { maxPlayers: '10', format: 'full-court' },
+        doubles: { maxPlayers: '6', format: 'half-court' },
+      },
+      volleyball: {
+        regular: { maxPlayers: '12', format: 'indoor' },
+        doubles: { maxPlayers: '4', format: 'beach' },
+      },
+    }
+    
+    return configs[sport]?.[matchType] || { maxPlayers: '4', format: 'casual' }
+  }
 
   const accessTypes = [
     { value: 'reserve', label: 'Reserve (Mobile App Booking)' },
@@ -80,14 +138,20 @@ export function CreateMatchOverlay({
     { value: 'open', label: 'Open (All Levels)' },
   ]
 
-  const formatOptions = [
-    { value: 'elimination', label: 'Single Elimination' },
-    { value: 'double-elimination', label: 'Double Elimination' },
-    { value: 'round-robin', label: 'Round Robin' },
-    { value: 'swiss', label: 'Swiss System' },
-    { value: 'ladder', label: 'Ladder Match' },
-    { value: 'friendly', label: 'Friendly Match' },
-  ]
+  // Get format display name
+  const getFormatDisplayName = (format: string) => {
+    const formatNames: { [key: string]: string } = {
+      'singles': 'Singles Format',
+      'doubles': 'Doubles Format', 
+      'full-court': '5v5 Full Court',
+      'half-court': '3v3 Half Court',
+      'indoor': '6v6 Indoor',
+      'beach': '2v2 Beach',
+      'elimination': 'Tournament Elimination',
+      'casual': 'Casual Play'
+    }
+    return formatNames[format] || format
+  }
 
   const requirementOptions = [
     'Valid ID Required',
@@ -101,7 +165,32 @@ export function CreateMatchOverlay({
   ]
 
   const handleInputChange = (field: string, value: string | string[]) => {
-    setFormData(prev => ({ ...prev, [field]: value }))
+    setFormData(prev => {
+      const newData = { ...prev, [field]: value }
+      
+      // When sport changes, reset match type and set first available option
+      if (field === 'sport') {
+        const availableMatchTypes = getMatchTypesForSport(value as string)
+        if (availableMatchTypes.length > 0) {
+          const firstMatchType = availableMatchTypes[0].value
+          newData.matchType = firstMatchType
+          
+          // Set config for the first match type
+          const config = getMatchConfig(value as string, firstMatchType)
+          newData.maxPlayers = config.maxPlayers
+          newData.format = config.format
+        }
+      }
+      
+      // When match type changes, update max players and format
+      if (field === 'matchType') {
+        const config = getMatchConfig(newData.sport, value as string)
+        newData.maxPlayers = config.maxPlayers
+        newData.format = config.format
+      }
+      
+      return newData
+    })
   }
 
   const handleRequirementToggle = (requirement: string) => {
@@ -218,24 +307,6 @@ export function CreateMatchOverlay({
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Match Type *
-                </label>
-                <select
-                  value={formData.matchType}
-                  onChange={(e) => handleInputChange('matchType', e.target.value)}
-                  required
-                  className="w-full h-9 px-3 py-1 rounded-md bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  {matchTypes.map((type) => (
-                    <option key={type.value} value={type.value} className="bg-gray-800">
-                      {type.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
                   Sport *
                 </label>
                 <select
@@ -247,6 +318,24 @@ export function CreateMatchOverlay({
                   {sportOptions.map((sport) => (
                     <option key={sport.value} value={sport.value} className="bg-gray-800">
                       {sport.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Match Type *
+                </label>
+                <select
+                  value={formData.matchType}
+                  onChange={(e) => handleInputChange('matchType', e.target.value)}
+                  required
+                  className="w-full h-9 px-3 py-1 rounded-md bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  {getMatchTypesForSport(formData.sport).map((type) => (
+                    <option key={type.value} value={type.value} className="bg-gray-800">
+                      {type.label}
                     </option>
                   ))}
                 </select>
@@ -404,19 +493,14 @@ export function CreateMatchOverlay({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Tournament Format
+                  Match Format
                 </label>
-                <select
-                  value={formData.format}
-                  onChange={(e) => handleInputChange('format', e.target.value)}
-                  className="w-full h-9 px-3 py-1 rounded-md bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  {formatOptions.map((format) => (
-                    <option key={format.value} value={format.value} className="bg-gray-800">
-                      {format.label}
-                    </option>
-                  ))}
-                </select>
+                <div className="w-full h-9 px-3 py-1 rounded-md bg-gray-800/50 border border-gray-600 text-gray-300 flex items-center">
+                  {getFormatDisplayName(formData.format)}
+                </div>
+                <p className="text-xs text-gray-400 mt-1">
+                  Automatically set based on sport and match type
+                </p>
               </div>
               
               <div>
@@ -426,11 +510,12 @@ export function CreateMatchOverlay({
                 <Input
                   type="number"
                   value={formData.maxPlayers}
-                  onChange={(e) => handleInputChange('maxPlayers', e.target.value)}
-                  placeholder="16"
-                  min="2"
-                  className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+                  readOnly
+                  className="bg-gray-800/50 border-gray-600 text-gray-300 cursor-not-allowed"
                 />
+                <p className="text-xs text-gray-400 mt-1">
+                  Automatically set based on match type
+                </p>
               </div>
             </div>
           </div>

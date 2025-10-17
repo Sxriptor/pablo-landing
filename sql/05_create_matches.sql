@@ -19,7 +19,7 @@ create table if not exists matches (
   timezone text default 'UTC',
   
   -- Match configuration
-  match_type text not null check (match_type in ('singles', 'doubles', 'mixed_doubles', 'tournament', 'lesson', 'clinic')),
+  match_type text not null check (match_type in ('singles', 'doubles', 'regular')),
   skill_level text check (skill_level in ('beginner', 'intermediate', 'advanced', 'open')),
   access_type text not null default 'reserve' check (access_type in ('open', 'reserve')),
   
@@ -93,6 +93,18 @@ BEGIN
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name = 'matches' AND column_name = 'access_type') THEN
         ALTER TABLE matches ADD COLUMN access_type text NOT NULL DEFAULT 'reserve' CHECK (access_type IN ('open', 'reserve'));
     END IF;
+END $$;
+
+-- Update match_type constraint for existing tables
+DO $$
+BEGIN
+    -- Drop existing constraint if it exists
+    IF EXISTS (SELECT 1 FROM information_schema.table_constraints WHERE table_name = 'matches' AND constraint_name = 'matches_match_type_check') THEN
+        ALTER TABLE matches DROP CONSTRAINT matches_match_type_check;
+    END IF;
+    
+    -- Add updated constraint
+    ALTER TABLE matches ADD CONSTRAINT matches_match_type_check CHECK (match_type IN ('singles', 'doubles', 'regular'));
 END $$;
 
 -- Triggers
