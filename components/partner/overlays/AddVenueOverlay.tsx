@@ -1,8 +1,7 @@
 'use client'
 
-import { useState } from 'react'
-import { motion } from 'framer-motion'
-import { Building2, MapPin, Phone, Globe, Upload, X } from 'lucide-react'
+import { useState, useEffect } from 'react'
+import { Building2, MapPin, Upload, X, Home } from 'lucide-react'
 import {
   Dialog,
   DialogContent,
@@ -13,6 +12,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+
 
 interface AddVenueOverlayProps {
   isOpen: boolean
@@ -45,6 +45,91 @@ export function AddVenueOverlay({ isOpen, onClose, onSubmit }: AddVenueOverlayPr
 
   const [selectedImage, setSelectedImage] = useState<File | null>(null)
   const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [partnerData, setPartnerData] = useState<any>(null)
+
+  // US States list with abbreviations
+  const usStates = [
+    { code: 'AL', name: 'Alabama' },
+    { code: 'AK', name: 'Alaska' },
+    { code: 'AZ', name: 'Arizona' },
+    { code: 'AR', name: 'Arkansas' },
+    { code: 'CA', name: 'California' },
+    { code: 'CO', name: 'Colorado' },
+    { code: 'CT', name: 'Connecticut' },
+    { code: 'DE', name: 'Delaware' },
+    { code: 'FL', name: 'Florida' },
+    { code: 'GA', name: 'Georgia' },
+    { code: 'HI', name: 'Hawaii' },
+    { code: 'ID', name: 'Idaho' },
+    { code: 'IL', name: 'Illinois' },
+    { code: 'IN', name: 'Indiana' },
+    { code: 'IA', name: 'Iowa' },
+    { code: 'KS', name: 'Kansas' },
+    { code: 'KY', name: 'Kentucky' },
+    { code: 'LA', name: 'Louisiana' },
+    { code: 'ME', name: 'Maine' },
+    { code: 'MD', name: 'Maryland' },
+    { code: 'MA', name: 'Massachusetts' },
+    { code: 'MI', name: 'Michigan' },
+    { code: 'MN', name: 'Minnesota' },
+    { code: 'MS', name: 'Mississippi' },
+    { code: 'MO', name: 'Missouri' },
+    { code: 'MT', name: 'Montana' },
+    { code: 'NE', name: 'Nebraska' },
+    { code: 'NV', name: 'Nevada' },
+    { code: 'NH', name: 'New Hampshire' },
+    { code: 'NJ', name: 'New Jersey' },
+    { code: 'NM', name: 'New Mexico' },
+    { code: 'NY', name: 'New York' },
+    { code: 'NC', name: 'North Carolina' },
+    { code: 'ND', name: 'North Dakota' },
+    { code: 'OH', name: 'Ohio' },
+    { code: 'OK', name: 'Oklahoma' },
+    { code: 'OR', name: 'Oregon' },
+    { code: 'PA', name: 'Pennsylvania' },
+    { code: 'RI', name: 'Rhode Island' },
+    { code: 'SC', name: 'South Carolina' },
+    { code: 'SD', name: 'South Dakota' },
+    { code: 'TN', name: 'Tennessee' },
+    { code: 'TX', name: 'Texas' },
+    { code: 'UT', name: 'Utah' },
+    { code: 'VT', name: 'Vermont' },
+    { code: 'VA', name: 'Virginia' },
+    { code: 'WA', name: 'Washington' },
+    { code: 'WV', name: 'West Virginia' },
+    { code: 'WI', name: 'Wisconsin' },
+    { code: 'WY', name: 'Wyoming' }
+  ]
+
+  // Mock function to get partner data - replace with actual API call
+  const fetchPartnerData = async () => {
+    // This would be replaced with actual Supabase query
+    const mockPartnerData = {
+      address: '123 Business Street',
+      city: 'San Francisco',
+      state: 'CA',
+      zipCode: '94105'
+    }
+    setPartnerData(mockPartnerData)
+  }
+
+  useEffect(() => {
+    if (isOpen) {
+      fetchPartnerData()
+    }
+  }, [isOpen])
+
+  const usePartnerAddress = () => {
+    if (partnerData) {
+      setFormData(prev => ({
+        ...prev,
+        address: partnerData.address,
+        city: partnerData.city,
+        state: partnerData.state,
+        zipCode: partnerData.zipCode
+      }))
+    }
+  }
 
   const amenityOptions = [
     'Parking', 'Restrooms', 'Locker Rooms', 'Pro Shop', 'Cafe/Restaurant',
@@ -171,13 +256,25 @@ export function AddVenueOverlay({ isOpen, onClose, onSubmit }: AddVenueOverlayPr
               <label className="block text-sm font-medium text-gray-300 mb-2">
                 Street Address *
               </label>
-              <Input
-                value={formData.address}
-                onChange={(e) => handleInputChange('address', e.target.value)}
-                placeholder="123 Sports Avenue"
-                required
-                className="bg-white/5 border-white/10 text-white placeholder-gray-500"
-              />
+              <div className="flex gap-2">
+                <Input
+                  value={formData.address}
+                  onChange={(e) => handleInputChange('address', e.target.value)}
+                  placeholder="123 Sports Avenue"
+                  required
+                  className="bg-white/5 border-white/10 text-white placeholder-gray-500 flex-1"
+                />
+                <Button
+                  type="button"
+                  onClick={usePartnerAddress}
+                  variant="outline"
+                  className="bg-white/5 border-white/20 text-gray-300 hover:bg-white/10 hover:text-white whitespace-nowrap"
+                  disabled={!partnerData}
+                >
+                  <Home className="h-4 w-4 mr-2" />
+                  Use Your Address
+                </Button>
+              </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
@@ -198,13 +295,19 @@ export function AddVenueOverlay({ isOpen, onClose, onSubmit }: AddVenueOverlayPr
                 <label className="block text-sm font-medium text-gray-300 mb-2">
                   State *
                 </label>
-                <Input
+                <select
                   value={formData.state}
                   onChange={(e) => handleInputChange('state', e.target.value)}
-                  placeholder="State"
                   required
-                  className="bg-white/5 border-white/10 text-white placeholder-gray-500"
-                />
+                  className="w-full h-9 px-3 py-1 rounded-md bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">Select state...</option>
+                  {usStates.map((state) => (
+                    <option key={state.code} value={state.code} className="bg-gray-800">
+                      {state.code} - {state.name}
+                    </option>
+                  ))}
+                </select>
               </div>
               
               <div>
