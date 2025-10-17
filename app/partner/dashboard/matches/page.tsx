@@ -234,11 +234,9 @@ export default function MatchesPage() {
             <div className="flex items-center space-x-3 mb-2">
               <h3 className="text-xl font-bold" style={{ color: colors.text }}>{match.title}</h3>
               <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${
-                match.status === 'scheduled' ? 'bg-blue-500/20 text-blue-400' :
-                match.status === 'completed' ? 'bg-green-500/20 text-green-400' :
-                'bg-gray-500/20 text-gray-400'
+                match.is_active ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
               }`}>
-                {match.status}
+                {match.is_active ? 'ACTIVE' : 'INACTIVE'}
               </span>
             </div>
             <p className="text-sm mb-3" style={{ color: colors.textSecondary }}>{match.description}</p>
