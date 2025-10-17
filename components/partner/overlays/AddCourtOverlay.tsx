@@ -369,6 +369,7 @@ export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [], editin
               <DollarSign className="h-5 w-5" />
               Pricing
             </h3>
+            <p className="text-sm text-gray-400">Set hourly rates for the entire court (not per player)</p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -384,6 +385,7 @@ export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [], editin
                   step="0.01"
                   className="bg-white/5 border-white/10 text-white placeholder-gray-500"
                 />
+                <p className="text-xs text-gray-500 mt-1">Price for the full court per hour</p>
               </div>
               
               <div>
@@ -399,6 +401,7 @@ export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [], editin
                   step="0.01"
                   className="bg-white/5 border-white/10 text-white placeholder-gray-500"
                 />
+                <p className="text-xs text-gray-500 mt-1">Higher rate during busy hours</p>
               </div>
             </div>
           </div>
