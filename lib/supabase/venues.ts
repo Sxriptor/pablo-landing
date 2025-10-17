@@ -255,6 +255,40 @@ async function uploadVenueImage(venueId: string, imageFile: File): Promise<strin
   }
 }
 
+export async function deleteVenue(venueId: string): Promise<{ success: boolean; error?: string }> {
+  try {
+    console.log('Deleting venue:', venueId)
+    
+    // Get current partner
+    const partner = await getCurrentPartner()
+    
+    if (!partner) {
+      console.error('No partner found')
+      return { success: false, error: 'No partner found. Please ensure you are logged in as a partner.' }
+    }
+
+    // Delete venue from database (cascade will handle related records)
+    const { error } = await supabase
+      .from('venues')
+      .delete()
+      .eq('id', venueId)
+      .eq('partner_id', partner.id) // Ensure user can only delete their own venues
+
+    console.log('Supabase delete result:', { error })
+
+    if (error) {
+      console.error('Error deleting venue:', error)
+      return { success: false, error: error.message }
+    }
+
+    console.log('Venue deletion successful')
+    return { success: true }
+  } catch (error) {
+    console.error('Error in deleteVenue:', error)
+    return { success: false, error: 'An unexpected error occurred' }
+  }
+}
+
 export async function toggleVenueStatus(venueId: string): Promise<{ success: boolean; error?: string; venue?: any }> {
   try {
     console.log('Toggling venue status for:', venueId)

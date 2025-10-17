@@ -12,17 +12,37 @@ import {
   Eye,
   EyeOff,
   Edit,
-  MoreHorizontal
+  MoreHorizontal,
+  Trash2,
+  AlertTriangle
 } from 'lucide-react'
 import { AddVenueOverlay } from '@/components/partner/overlays'
-import { createVenue, updateVenue, toggleVenueStatus, VenueData, getPartnerVenues } from '@/lib/supabase/venues'
+import { createVenue, updateVenue, toggleVenueStatus, deleteVenue, VenueData, getPartnerVenues } from '@/lib/supabase/venues'
 import { useToast } from '@/hooks/use-toast'
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu'
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@/components/ui/alert-dialog'
 
 export default function VenuesPage() {
   const [showAddVenueOverlay, setShowAddVenueOverlay] = useState(false)
   const [editingVenue, setEditingVenue] = useState<any>(null)
   const [venues, setVenues] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
+  const [venueToDelete, setVenueToDelete] = useState<any>(null)
+  const [showDeleteDialog, setShowDeleteDialog] = useState(false)
   const { toast } = useToast()
 
   // Fetch venues on component mount
@@ -127,6 +147,43 @@ export default function VenuesPage() {
     }
   }
 
+  const handleDeleteVenue = async () => {
+    if (!venueToDelete) return
+    
+    try {
+      const result = await deleteVenue(venueToDelete.id)
+      
+      if (result.success) {
+        toast({
+          title: "Success!",
+          description: "Venue deleted successfully!",
+        })
+        setShowDeleteDialog(false)
+        setVenueToDelete(null)
+        // Reload venues to reflect the change
+        loadVenues()
+      } else {
+        toast({
+          title: "Error",
+          description: result.error || 'Failed to delete venue',
+          variant: "destructive",
+        })
+      }
+    } catch (error) {
+      console.error('Error deleting venue:', error)
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred",
+        variant: "destructive",
+      })
+    }
+  }
+
+  const confirmDeleteVenue = (venue: any) => {
+    setVenueToDelete(venue)
+    setShowDeleteDialog(true)
+  }
+
 
 
   const VenueCard = ({ venue }: any) => (
@@ -180,9 +237,25 @@ export default function VenuesPage() {
               )}
             </div>
           </div>
-          <button className="p-2 text-gray-400 hover:text-white transition-colors rounded-lg">
-            <MoreHorizontal className="h-4 w-4" />
-          </button>
+          <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+              <button className="p-2 text-gray-400 hover:text-white transition-colors rounded-lg">
+                <MoreHorizontal className="h-4 w-4" />
+              </button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent 
+              align="end" 
+              className="bg-gray-900 border-gray-700"
+            >
+              <DropdownMenuItem
+                onClick={() => confirmDeleteVenue(venue)}
+                className="text-red-400 hover:text-red-300 hover:bg-red-900/20 cursor-pointer"
+              >
+                <Trash2 className="h-4 w-4 mr-2" />
+                Delete Venue
+              </DropdownMenuItem>
+            </DropdownMenuContent>
+          </DropdownMenu>
         </div>
 
         <div className="flex items-center justify-between">
@@ -303,6 +376,55 @@ export default function VenuesPage() {
         onSubmit={handleVenueSubmit}
         editingVenue={editingVenue}
       />
+
+      {/* Delete Confirmation Dialog */}
+      <AlertDialog open={showDeleteDialog} onOpenChange={setShowDeleteDialog}>
+        <AlertDialogContent 
+          className="bg-gray-900 border-gray-700"
+        >
+          <AlertDialogHeader>
+            <AlertDialogTitle className="text-white flex items-center gap-2">
+              <AlertTriangle className="h-5 w-5 text-red-400" />
+              Delete Venue - Dangerous Action
+            </AlertDialogTitle>
+            <AlertDialogDescription className="text-gray-300">
+              <div className="space-y-3">
+                <p>
+                  You are about to permanently delete <strong className="text-white">"{venueToDelete?.name}"</strong>.
+                </p>
+                <div 
+                  className="p-4 rounded-lg border-l-4 border-red-500"
+                  style={{ background: 'rgba(239, 68, 68, 0.1)' }}
+                >
+                  <p className="text-red-400 font-semibold mb-2">⚠️ This action will permanently remove:</p>
+                  <ul className="text-sm text-gray-300 space-y-1 ml-4">
+                    <li>• All courts associated with this venue</li>
+                    <li>• All active games and matches</li>
+                    <li>• All active player bookings</li>
+                    <li>• All venue data and history</li>
+                  </ul>
+                </div>
+                <p className="text-red-400 font-medium">
+                  This action cannot be undone. Are you absolutely sure?
+                </p>
+              </div>
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel 
+              className="bg-gray-700 text-white hover:bg-gray-600 border-gray-600"
+            >
+              Cancel
+            </AlertDialogCancel>
+            <AlertDialogAction
+              onClick={handleDeleteVenue}
+              className="bg-red-600 text-white hover:bg-red-700"
+            >
+              Yes, Delete Permanently
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
     </div>
   )
 }
