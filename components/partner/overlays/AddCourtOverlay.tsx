@@ -51,7 +51,7 @@ export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [], editin
     }
   })
 
-  // Populate form when editing a court
+  // Populate form when editing or reset when creating new court
   useEffect(() => {
     if (editingCourt) {
       // Convert availability from database format to form format
@@ -98,6 +98,35 @@ export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [], editin
         width: editingCourt.width_meters?.toString() || '',
         height: editingCourt.height_meters?.toString() || '',
         availability: availability,
+      })
+    } else {
+      // Reset form for new court creation
+      setFormData({
+        name: '',
+        venueId: '',
+        sport: 'tennis',
+        surface: 'hard',
+        indoor: false,
+        lighting: false,
+        netProvided: true,
+        equipmentRental: false,
+        description: '',
+        hourlyRate: '',
+        peakHourRate: '',
+        advanceBookingDays: '30',
+        maxBookingDuration: '180',
+        length: '',
+        width: '',
+        height: '',
+        availability: {
+          monday: { available: true, openTime: '06:00', closeTime: '22:00' },
+          tuesday: { available: true, openTime: '06:00', closeTime: '22:00' },
+          wednesday: { available: true, openTime: '06:00', closeTime: '22:00' },
+          thursday: { available: true, openTime: '06:00', closeTime: '22:00' },
+          friday: { available: true, openTime: '06:00', closeTime: '22:00' },
+          saturday: { available: true, openTime: '08:00', closeTime: '20:00' },
+          sunday: { available: true, openTime: '08:00', closeTime: '20:00' },
+        },
       })
     }
   }, [editingCourt])

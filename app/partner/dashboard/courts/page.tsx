@@ -416,6 +416,7 @@ export default function CourtsPage() {
 
       {/* Add Court Overlay */}
       <AddCourtOverlay
+        key={editingCourt ? `edit-${editingCourt.id}` : 'create'}
         isOpen={showAddCourtOverlay}
         onClose={handleCloseOverlay}
         onSubmit={handleCourtSubmit}
