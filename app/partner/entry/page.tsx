@@ -5,8 +5,12 @@ import { motion } from "framer-motion"
 import Image from 'next/image'
 
 export default function PartnerEntryPage() {
+  const [isSignUp, setIsSignUp] = useState(false)
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [companyName, setCompanyName] = useState('')
+  const [fullName, setFullName] = useState('')
   const [rememberMe, setRememberMe] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
@@ -31,6 +35,45 @@ export default function PartnerEntryPage() {
       setError('Partner Dashboard is currently in development. Please check back soon! (Use code 8891 for demo)')
       setLoading(false)
     }, 1000)
+  }
+
+  const handleSignUp = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setLoading(true)
+    setError('')
+
+    // Validate password match
+    if (password !== confirmPassword) {
+      setError('Passwords do not match')
+      setLoading(false)
+      return
+    }
+
+    // For now, show a message about signup being in development
+    setTimeout(() => {
+      setError('Partner sign up is currently in development. Please check back soon!')
+      setLoading(false)
+    }, 1000)
+  }
+
+  const switchToSignUp = () => {
+    setIsSignUp(true)
+    setError('')
+    setEmail('')
+    setPassword('')
+    setConfirmPassword('')
+    setCompanyName('')
+    setFullName('')
+  }
+
+  const switchToSignIn = () => {
+    setIsSignUp(false)
+    setError('')
+    setEmail('')
+    setPassword('')
+    setConfirmPassword('')
+    setCompanyName('')
+    setFullName('')
   }
 
   return (
@@ -200,19 +243,19 @@ export default function PartnerEntryPage() {
 
         <div className="w-full max-w-md space-y-8">
           {/* Welcome Message */}
-          <motion.div 
+          <motion.div
             className="text-center"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.6, delay: 0.6 }}
           >
-            <motion.h2 
+            <motion.h2
               className="text-3xl font-bold text-white mb-2"
-              style={{ 
+              style={{
                 willChange: 'transform',
                 backfaceVisibility: 'hidden'
               }}
-              animate={{ 
+              animate={{
                 x: [0, 1, 1.5, 1, 0, -1, -1.5, -1, 0],
                 y: [0, -1, 0, 1, 1, 1, 0, -1, 0]
               }}
@@ -222,15 +265,15 @@ export default function PartnerEntryPage() {
                 ease: "easeInOut"
               }}
             >
-              Nice to see you!
+              {isSignUp ? 'Create Your Account' : 'Nice to see you!'}
             </motion.h2>
-            <motion.p 
+            <motion.p
               className="text-slate-400"
-              style={{ 
+              style={{
                 willChange: 'transform',
                 backfaceVisibility: 'hidden'
               }}
-              animate={{ 
+              animate={{
                 x: [0, -1, -1.5, -1, 0, 1, 1.5, 1, 0],
                 y: [0, 1, 0, -1, -1, -1, 0, 1, 0]
               }}
@@ -240,18 +283,20 @@ export default function PartnerEntryPage() {
                 ease: "easeInOut"
               }}
             >
-              Enter your email and password to sign in
+              {isSignUp ? 'Join PlayCircle as a partner' : 'Enter your email and password to sign in'}
             </motion.p>
           </motion.div>
 
-          {/* Login Form */}
-          <motion.form 
-            onSubmit={handleSignIn} 
+          {/* Form */}
+          <motion.form
+            onSubmit={isSignUp ? handleSignUp : handleSignIn}
             className="space-y-6"
+            key={isSignUp ? 'signup' : 'signin'}
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -30 }}
             transition={{ duration: 0.6, delay: 0.8 }}
-            style={{ 
+            style={{
               willChange: 'transform',
               backfaceVisibility: 'hidden'
             }}
@@ -267,13 +312,49 @@ export default function PartnerEntryPage() {
               </motion.div>
             )}
 
-            <motion.div 
+            {isSignUp && (
+              <>
+                <motion.div className="space-y-2">
+                  <label htmlFor="fullName" className="block text-sm font-medium text-white">
+                    Full Name
+                  </label>
+                  <input
+                    id="fullName"
+                    type="text"
+                    value={fullName}
+                    onChange={(e) => setFullName(e.target.value)}
+                    placeholder="Your full name"
+                    required
+                    disabled={loading}
+                    className="w-full px-4 py-3 rounded-lg bg-slate-800 border border-slate-700 text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors disabled:opacity-50"
+                  />
+                </motion.div>
+
+                <motion.div className="space-y-2">
+                  <label htmlFor="companyName" className="block text-sm font-medium text-white">
+                    Company Name
+                  </label>
+                  <input
+                    id="companyName"
+                    type="text"
+                    value={companyName}
+                    onChange={(e) => setCompanyName(e.target.value)}
+                    placeholder="Your company name"
+                    required
+                    disabled={loading}
+                    className="w-full px-4 py-3 rounded-lg bg-slate-800 border border-slate-700 text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors disabled:opacity-50"
+                  />
+                </motion.div>
+              </>
+            )}
+
+            <motion.div
               className="space-y-2"
-              style={{ 
+              style={{
                 willChange: 'transform',
                 backfaceVisibility: 'hidden'
               }}
-              animate={{ 
+              animate={{
                 x: [0, 0.5, 1, 0.5, 0, -0.5, -1, -0.5, 0],
                 y: [0, -0.5, 0, 0.5, 0.5, 0.5, 0, -0.5, 0]
               }}
@@ -298,13 +379,13 @@ export default function PartnerEntryPage() {
               />
             </motion.div>
 
-            <motion.div 
+            <motion.div
               className="space-y-2"
-              style={{ 
+              style={{
                 willChange: 'transform',
                 backfaceVisibility: 'hidden'
               }}
-              animate={{ 
+              animate={{
                 x: [0, -0.5, -1, -0.5, 0, 0.5, 1, 0.5, 0],
                 y: [0, 0.5, 0, -0.5, -0.5, -0.5, 0, 0.5, 0]
               }}
@@ -329,33 +410,53 @@ export default function PartnerEntryPage() {
               />
             </motion.div>
 
-            <motion.div 
-              className="flex items-center"
-              style={{ 
-                willChange: 'transform',
-                backfaceVisibility: 'hidden'
-              }}
-              animate={{ 
-                x: [0, 1, 1.5, 1, 0, -1, -1.5, -1, 0],
-                y: [0, -0.5, 0, 0.5, 0.5, 0.5, 0, -0.5, 0]
-              }}
-              transition={{
-                duration: 17,
-                repeat: Infinity,
-                ease: "easeInOut"
-              }}
-            >
-              <input
-                id="remember-me"
-                type="checkbox"
-                checked={rememberMe}
-                onChange={(e) => setRememberMe(e.target.checked)}
-                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-slate-700 rounded bg-slate-800"
-              />
-              <label htmlFor="remember-me" className="ml-2 text-sm text-slate-300">
-                Remember me
-              </label>
-            </motion.div>
+            {isSignUp && (
+              <motion.div className="space-y-2">
+                <label htmlFor="confirmPassword" className="block text-sm font-medium text-white">
+                  Confirm Password
+                </label>
+                <input
+                  id="confirmPassword"
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  placeholder="Confirm your password"
+                  required
+                  disabled={loading}
+                  className="w-full px-4 py-3 rounded-lg bg-slate-800 border border-slate-700 text-white placeholder:text-slate-400 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-colors disabled:opacity-50"
+                />
+              </motion.div>
+            )}
+
+            {!isSignUp && (
+              <motion.div
+                className="flex items-center"
+                style={{
+                  willChange: 'transform',
+                  backfaceVisibility: 'hidden'
+                }}
+                animate={{
+                  x: [0, 1, 1.5, 1, 0, -1, -1.5, -1, 0],
+                  y: [0, -0.5, 0, 0.5, 0.5, 0.5, 0, -0.5, 0]
+                }}
+                transition={{
+                  duration: 17,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                <input
+                  id="remember-me"
+                  type="checkbox"
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-slate-700 rounded bg-slate-800"
+                />
+                <label htmlFor="remember-me" className="ml-2 text-sm text-slate-300">
+                  Remember me
+                </label>
+              </motion.div>
+            )}
 
             <motion.button
               type="submit"
@@ -368,10 +469,10 @@ export default function PartnerEntryPage() {
               {loading ? (
                 <>
                   <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                  Signing In...
+                  {isSignUp ? 'Creating Account...' : 'Signing In...'}
                 </>
               ) : (
-                'SIGN IN'
+                isSignUp ? 'CREATE ACCOUNT' : 'SIGN IN'
               )}
             </motion.button>
           </motion.form>
@@ -398,13 +499,27 @@ export default function PartnerEntryPage() {
                 ease: "easeInOut"
               }}
             >
-              Don't have an account?{' '}
-              <a
-                href="/partner/signup"
-                className="font-medium text-blue-400 hover:text-blue-300 transition-colors"
-              >
-                Sign Up
-              </a>
+              {isSignUp ? (
+                <>
+                  Already have an account?{' '}
+                  <button
+                    onClick={switchToSignIn}
+                    className="font-medium text-blue-400 hover:text-blue-300 transition-colors"
+                  >
+                    Sign In
+                  </button>
+                </>
+              ) : (
+                <>
+                  Don't have an account?{' '}
+                  <button
+                    onClick={switchToSignUp}
+                    className="font-medium text-blue-400 hover:text-blue-300 transition-colors"
+                  >
+                    Sign Up
+                  </button>
+                </>
+              )}
             </motion.p>
           </motion.div>
 
@@ -434,31 +549,33 @@ export default function PartnerEntryPage() {
             </motion.p>
           </motion.div>
 
-          {/* Development Notice */}
-          <motion.div
-            className="mt-6 p-3 rounded-lg bg-yellow-500/20 border border-yellow-500/30 text-yellow-300 text-xs text-center"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, delay: 1.4 }}
-            style={{ 
-              willChange: 'transform',
-              backfaceVisibility: 'hidden'
-            }}
-          >
-            <motion.p
-              animate={{ 
-                x: [0, 1, 1.5, 1, 0, -1, -1.5, -1, 0],
-                y: [0, -0.5, 0, 0.5, 0.5, 0.5, 0, -0.5, 0]
-              }}
-              transition={{
-                duration: 13,
-                repeat: Infinity,
-                ease: "easeInOut"
+          {/* Development Notice - Only for Sign In */}
+          {!isSignUp && (
+            <motion.div
+              className="mt-6 p-3 rounded-lg bg-yellow-500/20 border border-yellow-500/30 text-yellow-300 text-xs text-center"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 1.4 }}
+              style={{
+                willChange: 'transform',
+                backfaceVisibility: 'hidden'
               }}
             >
-              Development Notice: Use code 8891 for demo access
-            </motion.p>
-          </motion.div>
+              <motion.p
+                animate={{
+                  x: [0, 1, 1.5, 1, 0, -1, -1.5, -1, 0],
+                  y: [0, -0.5, 0, 0.5, 0.5, 0.5, 0, -0.5, 0]
+                }}
+                transition={{
+                  duration: 13,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }}
+              >
+                Development Notice: Use code 8891 for demo access
+              </motion.p>
+            </motion.div>
+          )}
         </div>
       </div>
     </div>
