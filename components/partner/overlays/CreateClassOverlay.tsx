@@ -18,7 +18,7 @@ interface CreateClassOverlayProps {
   isOpen: boolean
   onClose: () => void
   onSubmit: (classData: any) => void
-  venues?: Array<{ id: string; name: string }>
+  venues?: Array<{ id: string; name: string; address?: string; city?: string; state?: string; postal_code?: string }>
   courts?: Array<{ id: string; name: string; venueId: string }>
   editingClass?: any
 }
@@ -36,8 +36,10 @@ export function CreateClassOverlay({
     description: '',
     classType: 'group',
     sport: 'tennis',
+    accessType: 'reserve',
     venueId: '',
     courtId: '',
+    location: '',
     instructorName: '',
     instructorBio: '',
     skillLevel: 'beginner',
@@ -47,6 +49,7 @@ export function CreateClassOverlay({
     price: '',
     packagePrice: '',
     packageSessions: '4',
+    registrationDeadline: '',
     schedule: {
       recurring: true,
       frequency: 'weekly',
@@ -73,8 +76,10 @@ export function CreateClassOverlay({
         description: '',
         classType: 'group',
         sport: 'tennis',
+        accessType: 'reserve',
         venueId: '',
         courtId: '',
+        location: '',
         instructorName: '',
         instructorBio: '',
         skillLevel: 'beginner',
@@ -84,6 +89,7 @@ export function CreateClassOverlay({
         price: '',
         packagePrice: '',
         packageSessions: '4',
+        registrationDeadline: '',
         schedule: {
           recurring: true,
           frequency: 'weekly',
@@ -150,6 +156,11 @@ export function CreateClassOverlay({
     { value: 'sunday', label: 'Sunday' },
   ]
 
+  const accessTypes = [
+    { value: 'reserve', label: 'Reserve (Mobile App Booking)' },
+    { value: 'open', label: 'Open (Walk-in)' },
+  ]
+
   const equipmentOptions = [
     { value: 'provided', label: 'Equipment Provided' },
     { value: 'bring-own', label: 'Bring Your Own' },
@@ -190,6 +201,30 @@ export function CreateClassOverlay({
     }))
   }
 
+  // Auto-populate location when venue is selected
+  const handleVenueChange = (venueId: string) => {
+    const selectedVenue = venues.find(venue => venue.id === venueId)
+    let fullAddress = ''
+    
+    if (selectedVenue) {
+      // Build full address from venue data
+      const addressParts = []
+      if (selectedVenue.address) addressParts.push(selectedVenue.address)
+      if (selectedVenue.city) addressParts.push(selectedVenue.city)
+      if (selectedVenue.state) addressParts.push(selectedVenue.state)
+      if (selectedVenue.postal_code) addressParts.push(selectedVenue.postal_code)
+      
+      fullAddress = addressParts.join(', ')
+    }
+    
+    setFormData(prev => ({
+      ...prev,
+      venueId,
+      courtId: '', // Reset court selection when venue changes
+      location: fullAddress
+    }))
+  }
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
     onSubmit(formData)
@@ -200,8 +235,10 @@ export function CreateClassOverlay({
       description: '',
       classType: 'group',
       sport: 'tennis',
+      accessType: 'reserve',
       venueId: '',
       courtId: '',
+      location: '',
       instructorName: '',
       instructorBio: '',
       skillLevel: 'beginner',
@@ -211,6 +248,7 @@ export function CreateClassOverlay({
       price: '',
       packagePrice: '',
       packageSessions: '4',
+      registrationDeadline: '',
       schedule: {
         recurring: true,
         frequency: 'weekly',
@@ -278,7 +316,7 @@ export function CreateClassOverlay({
               />
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
                   Class Type *
@@ -313,6 +351,32 @@ export function CreateClassOverlay({
                     </option>
                   ))}
                 </select>
+              </div>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Access Type *
+                </label>
+                <select
+                  value={formData.accessType}
+                  onChange={(e) => handleInputChange('accessType', e.target.value)}
+                  required
+                  className="w-full h-9 px-3 py-1 rounded-md bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  {accessTypes.map((type) => (
+                    <option key={type.value} value={type.value} className="bg-gray-800">
+                      {type.label}
+                    </option>
+                  ))}
+                </select>
+                <p className="text-xs text-gray-400 mt-1">
+                  {formData.accessType === 'reserve' 
+                    ? 'Students book and pay through the mobile app' 
+                    : 'Walk-in class - no advance booking required'
+                  }
+                </p>
               </div>
               
               <div>
@@ -395,7 +459,7 @@ export function CreateClassOverlay({
                 </label>
                 <select
                   value={formData.venueId}
-                  onChange={(e) => handleInputChange('venueId', e.target.value)}
+                  onChange={(e) => handleVenueChange(e.target.value)}
                   required
                   className="w-full h-9 px-3 py-1 rounded-md bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
                 >
@@ -426,6 +490,21 @@ export function CreateClassOverlay({
                   ))}
                 </select>
               </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Location Details
+              </label>
+              <Input
+                value={formData.location}
+                onChange={(e) => handleInputChange('location', e.target.value)}
+                placeholder="Full address (auto-filled from venue)"
+                className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+              />
+              <p className="text-xs text-gray-400 mt-1">
+                This will be auto-filled with the venue's full address. You can modify or add additional details if needed.
+              </p>
             </div>
           </div>
 
@@ -572,16 +651,33 @@ export function CreateClassOverlay({
                 />
               </div>
             </div>
+
+            {formData.accessType === 'reserve' && (
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Registration Deadline
+                </label>
+                <Input
+                  type="date"
+                  value={formData.registrationDeadline}
+                  onChange={(e) => handleInputChange('registrationDeadline', e.target.value)}
+                  className="bg-white/5 border-white/10 text-white"
+                />
+                <p className="text-xs text-gray-400 mt-1">
+                  Last date students can register for this class (only for mobile app booking)
+                </p>
+              </div>
+            )}
           </div>
 
           {/* Capacity and Pricing */}
           <div className="space-y-4">
             <h3 className="text-lg font-semibold text-white flex items-center gap-2">
-              <DollarSign className="h-5 w-5" />
-              Capacity & Pricing
+              <Users className="h-5 w-5" />
+              Capacity & Details
             </h3>
             
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
                   Max Students
@@ -592,21 +688,6 @@ export function CreateClassOverlay({
                   onChange={(e) => handleInputChange('maxStudents', e.target.value)}
                   placeholder="8"
                   min="1"
-                  className="bg-white/5 border-white/10 text-white placeholder-gray-500"
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Price per Session ($)
-                </label>
-                <Input
-                  type="number"
-                  value={formData.price}
-                  onChange={(e) => handleInputChange('price', e.target.value)}
-                  placeholder="25.00"
-                  min="0"
-                  step="0.01"
                   className="bg-white/5 border-white/10 text-white placeholder-gray-500"
                 />
               </div>
@@ -629,36 +710,69 @@ export function CreateClassOverlay({
               </div>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Package Price ($)
-                </label>
-                <Input
-                  type="number"
-                  value={formData.packagePrice}
-                  onChange={(e) => handleInputChange('packagePrice', e.target.value)}
-                  placeholder="90.00"
-                  min="0"
-                  step="0.01"
-                  className="bg-white/5 border-white/10 text-white placeholder-gray-500"
-                />
+            {formData.accessType === 'reserve' && (
+              <div className="space-y-4">
+                <h3 className="text-lg font-semibold text-white flex items-center gap-2">
+                  <DollarSign className="h-5 w-5" />
+                  Pricing (Mobile App Booking)
+                </h3>
+                
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Price per Session ($)
+                    </label>
+                    <Input
+                      type="number"
+                      value={formData.price}
+                      onChange={(e) => handleInputChange('price', e.target.value)}
+                      placeholder="25.00"
+                      min="0"
+                      step="0.01"
+                      className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+                    />
+                  </div>
+                  
+                  <div>
+                    <label className="block text-sm font-medium text-gray-300 mb-2">
+                      Package Price ($)
+                    </label>
+                    <Input
+                      type="number"
+                      value={formData.packagePrice}
+                      onChange={(e) => handleInputChange('packagePrice', e.target.value)}
+                      placeholder="90.00"
+                      min="0"
+                      step="0.01"
+                      className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Sessions in Package
+                  </label>
+                  <Input
+                    type="number"
+                    value={formData.packageSessions}
+                    onChange={(e) => handleInputChange('packageSessions', e.target.value)}
+                    placeholder="4"
+                    min="1"
+                    className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+                  />
+                </div>
               </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Sessions in Package
-                </label>
-                <Input
-                  type="number"
-                  value={formData.packageSessions}
-                  onChange={(e) => handleInputChange('packageSessions', e.target.value)}
-                  placeholder="4"
-                  min="1"
-                  className="bg-white/5 border-white/10 text-white placeholder-gray-500"
-                />
+            )}
+
+            {formData.accessType === 'open' && (
+              <div className="p-4 rounded-lg border border-blue-500/20 bg-blue-500/10">
+                <p className="text-blue-400 text-sm">
+                  <strong>Walk-in Class:</strong> No advance booking required. Students can join directly at the venue. 
+                  Payment will be handled at the venue.
+                </p>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Learning Objectives and Curriculum */}

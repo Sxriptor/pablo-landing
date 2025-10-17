@@ -104,6 +104,9 @@ CREATE TABLE IF NOT EXISTS public.events (
   equipment_required TEXT, -- What participants need to bring
   requirements TEXT[], -- Array format for mobile app
 
+  -- Access control
+  access_type TEXT DEFAULT 'reserve' CHECK (access_type IN ('reserve', 'open')), -- reserve = mobile app booking, open = walk-in
+
   -- Event materials and metadata
   image_url TEXT,
   additional_images TEXT[],

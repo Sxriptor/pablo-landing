@@ -71,7 +71,11 @@ export default function ClassesPage() {
       // Transform venues data for the overlay
       const transformedVenues = partnerVenues.map((venue: any) => ({
         id: venue.id,
-        name: venue.name
+        name: venue.name,
+        address: venue.address,
+        city: venue.city,
+        state: venue.state,
+        postal_code: venue.postal_code
       }))
       
       // Transform courts data for the overlay (add venueId field)
@@ -119,6 +123,9 @@ export default function ClassesPage() {
         skill_level: classData.skillLevel,
         age_group: classData.ageGroup,
         equipment_provided: classData.equipment === 'provided',
+        access_type: classData.accessType,
+        location: classData.location,
+        registration_closes: classData.registrationDeadline || null,
         is_recurring: classData.schedule.recurring,
         recurrence_pattern: classData.schedule.recurring ? classData.schedule.frequency : null,
         recurrence_end_date: classData.schedule.recurring ? classData.schedule.endDate : null,
@@ -198,8 +205,10 @@ export default function ClassesPage() {
       description: classItem.description || '',
       classType: 'group', // Default since we don't store this
       sport: classItem.sport,
+      accessType: classItem.access_type || 'reserve',
       venueId: classItem.venue_id,
       courtId: classItem.court_id || '',
+      location: classItem.location || '',
       instructorName: classItem.instructor_name || '',
       instructorBio: classItem.instructor_bio || '',
       skillLevel: classItem.skill_level || 'beginner',
@@ -209,6 +218,7 @@ export default function ClassesPage() {
       price: classItem.price?.toString() || '',
       packagePrice: '',
       packageSessions: '4',
+      registrationDeadline: classItem.registration_closes ? classItem.registration_closes.split('T')[0] : '',
       schedule: {
         recurring: classItem.is_recurring || false,
         frequency: classItem.recurrence_pattern || 'weekly',
@@ -313,6 +323,11 @@ export default function ClassesPage() {
                 <span>{classItem.start_time} - {classItem.end_time}</span>
               </div>
             </div>
+            {classItem.registration_closes && classItem.access_type === 'reserve' && (
+              <div className="text-xs mb-3" style={{ color: colors.textSecondary }}>
+                Registration closes: {new Date(classItem.registration_closes).toLocaleDateString()}
+              </div>
+            )}
             <div className="flex items-center space-x-4 text-sm" style={{ color: colors.textSecondary }}>
               <div className="flex items-center space-x-1">
                 <MapPin className="h-4 w-4" />
@@ -392,6 +407,12 @@ export default function ClassesPage() {
               <>
                 <span> • </span>
                 <span className="capitalize">{classItem.age_group}</span>
+              </>
+            )}
+            {classItem.access_type && (
+              <>
+                <span> • </span>
+                <span className="capitalize">{classItem.access_type === 'reserve' ? 'Mobile Booking' : 'Walk-in'}</span>
               </>
             )}
           </div>

@@ -22,6 +22,9 @@ export interface EventData {
   skill_level?: string
   age_group?: string
   equipment_provided?: boolean
+  access_type?: string
+  location?: string
+  registration_closes?: string
   is_recurring?: boolean
   recurrence_pattern?: string
   recurrence_end_date?: string
