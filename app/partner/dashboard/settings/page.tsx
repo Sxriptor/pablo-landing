@@ -16,8 +16,12 @@ import {
   AlertCircle
 } from 'lucide-react'
 import { supabase } from '@/lib/supabase'
+import { useTheme } from '@/components/partner/layout/ThemeProvider'
+import { getThemeColors, themeColors } from '@/lib/theme-colors'
 
 export default function SettingsPage() {
+  const { theme } = useTheme()
+  const colors = getThemeColors(theme)
   const [activeTab, setActiveTab] = useState('company')
   const [isEditing, setIsEditing] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -522,7 +526,7 @@ export default function SettingsPage() {
     return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h2 className="text-2xl font-bold text-white">Company Information</h2>
+        <h2 className="text-2xl font-bold" style={{ color: colors.text }}>Company Information</h2>
         <motion.button 
             onClick={() => {
               if (isFrozen && !isEditing) {
@@ -582,66 +586,108 @@ export default function SettingsPage() {
       <div className="grid gap-6 md:grid-cols-2">
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-neutral-400 mb-2">Company Name</label>
+            <label className="block text-sm font-medium mb-2" style={{ color: colors.textSecondary }}>Company Name</label>
             <input
               type="text"
               value={settings.company_name}
                 onChange={(e) => handleFieldChange('company_name', e.target.value)}
               disabled={!isEditing}
-              className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
+              className="w-full px-4 py-3 rounded-2xl border focus:outline-none focus:ring-1 transition-all disabled:opacity-50"
+              style={{
+                background: theme === 'dark' ? '#1f2937' : 'white',
+                borderColor: theme === 'dark' ? '#374151' : '#d1d5db',
+                color: colors.text,
+                focusBorderColor: themeColors.accent,
+                focusRingColor: themeColors.accent
+              }}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-neutral-400 mb-2">Email</label>
+            <label className="block text-sm font-medium mb-2" style={{ color: colors.textSecondary }}>Email</label>
             <input
               type="email"
               value={settings.email}
                 onChange={(e) => handleFieldChange('email', e.target.value)}
               disabled={!isEditing}
-              className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
+              className="w-full px-4 py-3 rounded-2xl border focus:outline-none focus:ring-1 transition-all disabled:opacity-50"
+              style={{
+                background: theme === 'dark' ? '#1f2937' : 'white',
+                borderColor: theme === 'dark' ? '#374151' : '#d1d5db',
+                color: colors.text,
+                focusBorderColor: themeColors.accent,
+                focusRingColor: themeColors.accent
+              }}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-neutral-400 mb-2">Phone</label>
+            <label className="block text-sm font-medium mb-2" style={{ color: colors.textSecondary }}>Phone</label>
             <input
               type="tel"
               value={settings.phone}
                 onChange={(e) => handleFieldChange('phone', e.target.value)}
               disabled={!isEditing}
-              className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
+              className="w-full px-4 py-3 rounded-2xl border focus:outline-none focus:ring-1 transition-all disabled:opacity-50"
+              style={{
+                background: theme === 'dark' ? '#1f2937' : 'white',
+                borderColor: theme === 'dark' ? '#374151' : '#d1d5db',
+                color: colors.text,
+                focusBorderColor: themeColors.accent,
+                focusRingColor: themeColors.accent
+              }}
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-neutral-400 mb-2">Website</label>
+            <label className="block text-sm font-medium mb-2" style={{ color: colors.textSecondary }}>Website</label>
             <input
               type="url"
               value={settings.website}
                 onChange={(e) => handleFieldChange('website', e.target.value)}
               disabled={!isEditing}
-              className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
+              className="w-full px-4 py-3 rounded-2xl border focus:outline-none focus:ring-1 transition-all disabled:opacity-50"
+              style={{
+                background: theme === 'dark' ? '#1f2937' : 'white',
+                borderColor: theme === 'dark' ? '#374151' : '#d1d5db',
+                color: colors.text,
+                focusBorderColor: themeColors.accent,
+                focusRingColor: themeColors.accent
+              }}
             />
           </div>
         </div>
 
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-neutral-400 mb-2">Address</label>
+            <label className="block text-sm font-medium mb-2" style={{ color: colors.textSecondary }}>Address</label>
             <input
               type="text"
               value={settings.address}
                 onChange={(e) => handleFieldChange('address', e.target.value)}
               disabled={!isEditing}
-              className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
+              className="w-full px-4 py-3 rounded-2xl border focus:outline-none focus:ring-1 transition-all disabled:opacity-50"
+              style={{
+                background: theme === 'dark' ? '#1f2937' : 'white',
+                borderColor: theme === 'dark' ? '#374151' : '#d1d5db',
+                color: colors.text,
+                focusBorderColor: themeColors.accent,
+                focusRingColor: themeColors.accent
+              }}
             />
           </div>
             <div>
-              <label className="block text-sm font-medium text-neutral-400 mb-2">Description</label>
+              <label className="block text-sm font-medium mb-2" style={{ color: colors.textSecondary }}>Description</label>
               <textarea
                 value={settings.description}
                 onChange={(e) => handleFieldChange('description', e.target.value)}
                 disabled={!isEditing}
                 rows={8}
-                className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50 resize-none"
+                className="w-full px-4 py-3 rounded-2xl border focus:outline-none focus:ring-1 transition-all disabled:opacity-50 resize-none"
+                style={{
+                  background: theme === 'dark' ? '#1f2937' : 'white',
+                  borderColor: theme === 'dark' ? '#374151' : '#d1d5db',
+                  color: colors.text,
+                  focusBorderColor: themeColors.accent,
+                  focusRingColor: themeColors.accent
+                }}
               />
             </div>
           </div>
@@ -686,7 +732,7 @@ export default function SettingsPage() {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-white">Account Settings</h2>
+          <h2 className="text-2xl font-bold" style={{ color: colors.text }}>Account Settings</h2>
           <motion.button 
             onClick={() => {
               if (isFrozen && !isEditing) {
@@ -746,80 +792,129 @@ export default function SettingsPage() {
         <div className="grid gap-6 md:grid-cols-2">
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-neutral-400 mb-2">Username</label>
+              <label className="block text-sm font-medium mb-2" style={{ color: colors.textSecondary }}>Username</label>
               <input
                 type="text"
                 value={accountSettings.username}
                 onChange={(e) => handleAccountFieldChange('username', e.target.value)}
                 disabled={!isEditing}
-                className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
+                className="w-full px-4 py-3 rounded-2xl border focus:outline-none focus:ring-1 transition-all disabled:opacity-50"
+              style={{
+                background: theme === 'dark' ? '#1f2937' : 'white',
+                borderColor: theme === 'dark' ? '#374151' : '#d1d5db',
+                color: colors.text,
+                focusBorderColor: themeColors.accent,
+                focusRingColor: themeColors.accent
+              }}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-neutral-400 mb-2">Full Name</label>
+              <label className="block text-sm font-medium mb-2" style={{ color: colors.textSecondary }}>Full Name</label>
               <input
                 type="text"
                 value={accountSettings.full_name}
                 onChange={(e) => handleAccountFieldChange('full_name', e.target.value)}
               disabled={!isEditing}
-              className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
+              className="w-full px-4 py-3 rounded-2xl border focus:outline-none focus:ring-1 transition-all disabled:opacity-50"
+              style={{
+                background: theme === 'dark' ? '#1f2937' : 'white',
+                borderColor: theme === 'dark' ? '#374151' : '#d1d5db',
+                color: colors.text,
+                focusBorderColor: themeColors.accent,
+                focusRingColor: themeColors.accent
+              }}
             />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-                <label className="block text-sm font-medium text-neutral-400 mb-2">First Name</label>
+                <label className="block text-sm font-medium mb-2" style={{ color: colors.textSecondary }}>First Name</label>
               <input
                 type="text"
                   value={accountSettings.first_name}
                   onChange={(e) => handleAccountFieldChange('first_name', e.target.value)}
                 disabled={!isEditing}
-                  className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
+                  className="w-full px-4 py-3 rounded-2xl border focus:outline-none focus:ring-1 transition-all disabled:opacity-50"
+              style={{
+                background: theme === 'dark' ? '#1f2937' : 'white',
+                borderColor: theme === 'dark' ? '#374151' : '#d1d5db',
+                color: colors.text,
+                focusBorderColor: themeColors.accent,
+                focusRingColor: themeColors.accent
+              }}
               />
             </div>
             <div>
-                <label className="block text-sm font-medium text-neutral-400 mb-2">Last Name</label>
+                <label className="block text-sm font-medium mb-2" style={{ color: colors.textSecondary }}>Last Name</label>
               <input
                 type="text"
                   value={accountSettings.last_name}
                   onChange={(e) => handleAccountFieldChange('last_name', e.target.value)}
                 disabled={!isEditing}
-                  className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
+                  className="w-full px-4 py-3 rounded-2xl border focus:outline-none focus:ring-1 transition-all disabled:opacity-50"
+              style={{
+                background: theme === 'dark' ? '#1f2937' : 'white',
+                borderColor: theme === 'dark' ? '#374151' : '#d1d5db',
+                color: colors.text,
+                focusBorderColor: themeColors.accent,
+                focusRingColor: themeColors.accent
+              }}
               />
             </div>
           </div>
           <div>
-              <label className="block text-sm font-medium text-neutral-400 mb-2">Phone</label>
+              <label className="block text-sm font-medium mb-2" style={{ color: colors.textSecondary }}>Phone</label>
               <input
                 type="tel"
                 value={accountSettings.phone}
                 onChange={(e) => handleAccountFieldChange('phone', e.target.value)}
                 disabled={!isEditing}
-                className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
+                className="w-full px-4 py-3 rounded-2xl border focus:outline-none focus:ring-1 transition-all disabled:opacity-50"
+              style={{
+                background: theme === 'dark' ? '#1f2937' : 'white',
+                borderColor: theme === 'dark' ? '#374151' : '#d1d5db',
+                color: colors.text,
+                focusBorderColor: themeColors.accent,
+                focusRingColor: themeColors.accent
+              }}
               />
             </div>
           </div>
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-neutral-400 mb-2">Location</label>
+              <label className="block text-sm font-medium mb-2" style={{ color: colors.textSecondary }}>Location</label>
               <input
                 type="text"
                 value={accountSettings.location}
                 onChange={(e) => handleAccountFieldChange('location', e.target.value)}
                 disabled={!isEditing}
                 placeholder="City, State, Country"
-                className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
+                className="w-full px-4 py-3 rounded-2xl border focus:outline-none focus:ring-1 transition-all disabled:opacity-50"
+              style={{
+                background: theme === 'dark' ? '#1f2937' : 'white',
+                borderColor: theme === 'dark' ? '#374151' : '#d1d5db',
+                color: colors.text,
+                focusBorderColor: themeColors.accent,
+                focusRingColor: themeColors.accent
+              }}
               />
           </div>
           <div>
-              <label className="block text-sm font-medium text-neutral-400 mb-2">Bio</label>
+              <label className="block text-sm font-medium mb-2" style={{ color: colors.textSecondary }}>Bio</label>
             <textarea
                 value={accountSettings.bio}
                 onChange={(e) => handleAccountFieldChange('bio', e.target.value)}
               disabled={!isEditing}
                 rows={8}
                 placeholder="Tell us about yourself..."
-              className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50 resize-none"
+              className="w-full px-4 py-3 rounded-2xl border focus:outline-none focus:ring-1 transition-all disabled:opacity-50 resize-none"
+                style={{
+                  background: theme === 'dark' ? '#1f2937' : 'white',
+                  borderColor: theme === 'dark' ? '#374151' : '#d1d5db',
+                  color: colors.text,
+                  focusBorderColor: themeColors.accent,
+                  focusRingColor: themeColors.accent
+                }}
             />
           </div>
         </div>
@@ -889,7 +984,7 @@ export default function SettingsPage() {
     return (
       <div className="space-y-6">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-white">Notification Settings</h2>
+          <h2 className="text-2xl font-bold" style={{ color: colors.text }}>Notification Settings</h2>
           <motion.button 
             onClick={() => {
               if (isFrozen && !isEditing) {
@@ -947,14 +1042,24 @@ export default function SettingsPage() {
         )}
 
         {/* General Notifications Section */}
-        <div className="rounded-3xl p-6 bg-neutral-800/50 border border-neutral-700">
-          <h3 className="text-lg font-semibold text-white mb-4">General Notifications</h3>
+        <div 
+          className="rounded-3xl p-6"
+          style={{
+            background: theme === 'dark' ? 'rgba(69, 104, 130, 0.1)' : 'rgba(255, 255, 255, 0.9)',
+            border: `1px solid ${colors.cardBorder}`,
+            backdropFilter: 'blur(20px)'
+          }}
+        >
+          <h3 className="text-lg font-semibold mb-4" style={{ color: colors.text }}>General Notifications</h3>
           <div className="space-y-4">
             {/* Master Toggle */}
-            <div className="flex items-center justify-between py-3 border-b border-neutral-700">
+            <div 
+              className="flex items-center justify-between py-3 border-b"
+              style={{ borderColor: colors.cardBorder }}
+            >
               <div>
-                <h4 className="text-white font-medium">All Notifications</h4>
-                <p className="text-sm text-neutral-400">Master switch for all notifications</p>
+                <h4 className="font-medium" style={{ color: colors.text }}>All Notifications</h4>
+                <p className="text-sm" style={{ color: colors.textSecondary }}>Master switch for all notifications</p>
               </div>
               <ToggleSwitch
                 enabled={notificationSettings.notifications_enabled}
@@ -963,10 +1068,13 @@ export default function SettingsPage() {
             </div>
 
             {/* Email Notifications */}
-            <div className="flex items-center justify-between py-3 border-b border-neutral-700">
+            <div 
+              className="flex items-center justify-between py-3 border-b"
+              style={{ borderColor: colors.cardBorder }}
+            >
               <div>
-                <h4 className="text-white font-medium">Email Notifications</h4>
-                <p className="text-sm text-neutral-400">Receive notifications via email</p>
+                <h4 className="font-medium" style={{ color: colors.text }}>Email Notifications</h4>
+                <p className="text-sm" style={{ color: colors.textSecondary }}>Receive notifications via email</p>
               </div>
               <ToggleSwitch
                 enabled={notificationSettings.email_notifications}
@@ -978,8 +1086,8 @@ export default function SettingsPage() {
             {/* SMS Notifications */}
             <div className="flex items-center justify-between py-3">
               <div>
-                <h4 className="text-white font-medium">SMS Notifications</h4>
-                <p className="text-sm text-neutral-400">Receive notifications via SMS</p>
+                <h4 className="font-medium" style={{ color: colors.text }}>SMS Notifications</h4>
+                <p className="text-sm" style={{ color: colors.textSecondary }}>Receive notifications via SMS</p>
               </div>
               <ToggleSwitch
                 enabled={notificationSettings.sms_notifications}
@@ -991,14 +1099,24 @@ export default function SettingsPage() {
         </div>
 
         {/* Category-Specific Notifications Section */}
-        <div className="rounded-3xl p-6 bg-neutral-800/50 border border-neutral-700">
-          <h3 className="text-lg font-semibold text-white mb-4">Notification Categories</h3>
+        <div 
+          className="rounded-3xl p-6"
+          style={{
+            background: theme === 'dark' ? 'rgba(69, 104, 130, 0.1)' : 'rgba(255, 255, 255, 0.9)',
+            border: `1px solid ${colors.cardBorder}`,
+            backdropFilter: 'blur(20px)'
+          }}
+        >
+          <h3 className="text-lg font-semibold mb-4" style={{ color: colors.text }}>Notification Categories</h3>
           <div className="space-y-4">
             {/* Court Notifications */}
-            <div className="flex items-center justify-between py-3 border-b border-neutral-700">
+            <div 
+              className="flex items-center justify-between py-3 border-b"
+              style={{ borderColor: colors.cardBorder }}
+            >
               <div>
-                <h4 className="text-white font-medium">Court Notifications</h4>
-                <p className="text-sm text-neutral-400">Updates about court bookings and availability</p>
+                <h4 className="font-medium" style={{ color: colors.text }}>Court Notifications</h4>
+                <p className="text-sm" style={{ color: colors.textSecondary }}>Updates about court bookings and availability</p>
               </div>
               <ToggleSwitch
                 enabled={notificationSettings.court_notifications}
@@ -1008,10 +1126,13 @@ export default function SettingsPage() {
             </div>
 
             {/* Class Notifications */}
-            <div className="flex items-center justify-between py-3 border-b border-neutral-700">
+            <div 
+              className="flex items-center justify-between py-3 border-b"
+              style={{ borderColor: colors.cardBorder }}
+            >
               <div>
-                <h4 className="text-white font-medium">Class Notifications</h4>
-                <p className="text-sm text-neutral-400">Updates about classes and registrations</p>
+                <h4 className="font-medium" style={{ color: colors.text }}>Class Notifications</h4>
+                <p className="text-sm" style={{ color: colors.textSecondary }}>Updates about classes and registrations</p>
               </div>
               <ToggleSwitch
                 enabled={notificationSettings.class_notifications}
@@ -1021,10 +1142,13 @@ export default function SettingsPage() {
             </div>
 
             {/* Event Notifications */}
-            <div className="flex items-center justify-between py-3 border-b border-neutral-700">
+            <div 
+              className="flex items-center justify-between py-3 border-b"
+              style={{ borderColor: colors.cardBorder }}
+            >
               <div>
-                <h4 className="text-white font-medium">Event Notifications</h4>
-                <p className="text-sm text-neutral-400">Updates about events and tournaments</p>
+                <h4 className="font-medium" style={{ color: colors.text }}>Event Notifications</h4>
+                <p className="text-sm" style={{ color: colors.textSecondary }}>Updates about events and tournaments</p>
               </div>
               <ToggleSwitch
                 enabled={notificationSettings.event_notifications}
@@ -1034,10 +1158,13 @@ export default function SettingsPage() {
             </div>
 
             {/* Match Notifications */}
-            <div className="flex items-center justify-between py-3 border-b border-neutral-700">
+            <div 
+              className="flex items-center justify-between py-3 border-b"
+              style={{ borderColor: colors.cardBorder }}
+            >
               <div>
-                <h4 className="text-white font-medium">Match Notifications</h4>
-                <p className="text-sm text-neutral-400">Updates about matches and results</p>
+                <h4 className="font-medium" style={{ color: colors.text }}>Match Notifications</h4>
+                <p className="text-sm" style={{ color: colors.textSecondary }}>Updates about matches and results</p>
               </div>
               <ToggleSwitch
                 enabled={notificationSettings.match_notifications}
@@ -1049,8 +1176,8 @@ export default function SettingsPage() {
             {/* Venue Notifications */}
             <div className="flex items-center justify-between py-3">
               <div>
-                <h4 className="text-white font-medium">Venue Notifications</h4>
-                <p className="text-sm text-neutral-400">Updates about venue operations and status</p>
+                <h4 className="font-medium" style={{ color: colors.text }}>Venue Notifications</h4>
+                <p className="text-sm" style={{ color: colors.textSecondary }}>Updates about venue operations and status</p>
               </div>
               <ToggleSwitch
                 enabled={notificationSettings.venue_notifications}
@@ -1100,19 +1227,26 @@ export default function SettingsPage() {
         return (
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-white">Billing & Payments</h2>
-              <p className="text-neutral-400 mt-2">Manage your subscription, payment methods, and billing history</p>
+              <h2 className="text-2xl font-bold" style={{ color: colors.text }}>Billing & Payments</h2>
+              <p className="mt-2" style={{ color: colors.textSecondary }}>Manage your subscription, payment methods, and billing history</p>
             </div>
 
-            <div className="rounded-3xl p-8 bg-neutral-800/50 border border-neutral-700">
+            <div 
+              className="rounded-3xl p-8"
+              style={{
+                background: theme === 'dark' ? 'rgba(69, 104, 130, 0.1)' : 'rgba(255, 255, 255, 0.9)',
+                border: `1px solid ${colors.cardBorder}`,
+                backdropFilter: 'blur(20px)'
+              }}
+            >
               <div className="flex flex-col items-center text-center space-y-6">
-                <div className="p-4 rounded-full bg-[#456882]/10">
+                <div className="p-4 rounded-full" style={{ background: theme === 'dark' ? 'rgba(69, 104, 130, 0.1)' : 'rgba(69, 104, 130, 0.05)' }}>
                   <CreditCard className="h-12 w-12 text-[#456882]" />
                 </div>
                 
                 <div className="max-w-md space-y-2">
-                  <h3 className="text-xl font-bold text-white">Billing Management</h3>
-                  <p className="text-neutral-400">
+                  <h3 className="text-xl font-bold" style={{ color: colors.text }}>Billing Management</h3>
+                  <p style={{ color: colors.textSecondary }}>
                     Access your billing dashboard to manage your subscription, update payment methods, view invoices, and download receipts.
                   </p>
                 </div>
@@ -1132,7 +1266,7 @@ export default function SettingsPage() {
                   Manage Billing with Stripe
                 </motion.button>
 
-                <p className="text-sm text-neutral-500">
+                <p className="text-sm" style={{ color: colors.textTertiary }}>
                   You'll be securely redirected to Stripe's billing portal
                 </p>
               </div>
@@ -1141,16 +1275,16 @@ export default function SettingsPage() {
             {/* Billing Info Cards */}
             <div className="grid gap-4 md:grid-cols-3">
               <div className="rounded-2xl p-6 bg-neutral-800/30 border border-neutral-700">
-                <h4 className="text-sm font-medium text-neutral-400 mb-1">Current Plan</h4>
-                <p className="text-2xl font-bold text-white">Professional</p>
+                <h4 className="text-sm font-medium mb-1" style={{ color: colors.textSecondary }}>Current Plan</h4>
+                <p className="text-2xl font-bold" style={{ color: colors.text }}>Professional</p>
               </div>
               <div className="rounded-2xl p-6 bg-neutral-800/30 border border-neutral-700">
-                <h4 className="text-sm font-medium text-neutral-400 mb-1">Billing Cycle</h4>
-                <p className="text-2xl font-bold text-white">Monthly</p>
+                <h4 className="text-sm font-medium mb-1" style={{ color: colors.textSecondary }}>Billing Cycle</h4>
+                <p className="text-2xl font-bold" style={{ color: colors.text }}>Monthly</p>
               </div>
               <div className="rounded-2xl p-6 bg-neutral-800/30 border border-neutral-700">
-                <h4 className="text-sm font-medium text-neutral-400 mb-1">Next Billing Date</h4>
-                <p className="text-2xl font-bold text-white">Nov 15, 2024</p>
+                <h4 className="text-sm font-medium mb-1" style={{ color: colors.textSecondary }}>Next Billing Date</h4>
+                <p className="text-2xl font-bold" style={{ color: colors.text }}>Nov 15, 2024</p>
               </div>
             </div>
           </div>
@@ -1159,8 +1293,8 @@ export default function SettingsPage() {
         return (
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-white">Security Settings</h2>
-              <p className="text-neutral-400 mt-2">Manage your account security and preferences</p>
+              <h2 className="text-2xl font-bold" style={{ color: colors.text }}>Security Settings</h2>
+              <p className="mt-2" style={{ color: colors.textSecondary }}>Manage your account security and preferences</p>
             </div>
 
             {/* Success/Error Message */}
@@ -1185,16 +1319,23 @@ export default function SettingsPage() {
 
             <div className="space-y-4">
               {/* Change Password */}
-              <div className="rounded-3xl p-6 bg-neutral-800/50 border border-neutral-700 backdrop-blur-sm">
+              <div 
+                className="rounded-3xl p-6"
+                style={{
+                  background: theme === 'dark' ? 'rgba(69, 104, 130, 0.1)' : 'rgba(255, 255, 255, 0.9)',
+                  border: `1px solid ${colors.cardBorder}`,
+                  backdropFilter: 'blur(20px)'
+                }}
+              >
                 <div className="flex items-start justify-between mb-4">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
-                      <div className="p-2 rounded-xl bg-[#456882]/10">
+                      <div className="p-2 rounded-xl" style={{ background: theme === 'dark' ? 'rgba(69, 104, 130, 0.1)' : 'rgba(69, 104, 130, 0.05)' }}>
                         <Shield className="h-5 w-5 text-[#456882]" />
                       </div>
-                      <h3 className="text-lg font-bold text-white">Change Password</h3>
+                      <h3 className="text-lg font-bold" style={{ color: colors.text }}>Change Password</h3>
                     </div>
-                    <p className="text-neutral-400 text-sm">
+                    <p className="text-sm" style={{ color: colors.textSecondary }}>
                       Update your password to keep your account secure
                     </p>
                   </div>
@@ -1217,7 +1358,7 @@ export default function SettingsPage() {
                     className="space-y-4 mt-4 pt-4 border-t border-neutral-700"
                   >
                     <div>
-                      <label className="block text-sm font-medium text-neutral-400 mb-2">
+                      <label className="block text-sm font-medium mb-2" style={{ color: colors.textSecondary }}>
                         Current Password
                       </label>
                       <input
@@ -1229,7 +1370,7 @@ export default function SettingsPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-neutral-400 mb-2">
+                      <label className="block text-sm font-medium mb-2" style={{ color: colors.textSecondary }}>
                         New Password
                       </label>
                       <input
@@ -1241,7 +1382,7 @@ export default function SettingsPage() {
                       />
                     </div>
                     <div>
-                      <label className="block text-sm font-medium text-neutral-400 mb-2">
+                      <label className="block text-sm font-medium mb-2" style={{ color: colors.textSecondary }}>
                         Confirm New Password
                       </label>
                       <input
@@ -1294,11 +1435,18 @@ export default function SettingsPage() {
               </div>
 
               {/* Freeze/Unfreeze Account */}
-              <div className={`rounded-3xl p-6 backdrop-blur-sm ${
-                isFrozen 
-                  ? 'bg-blue-500/10 border border-blue-500/30' 
-                  : 'bg-neutral-800/50 border border-neutral-700'
-              }`}>
+              <div 
+                className="rounded-3xl p-6"
+                style={{
+                  background: isFrozen 
+                    ? 'rgba(59, 130, 246, 0.1)' 
+                    : (theme === 'dark' ? 'rgba(69, 104, 130, 0.1)' : 'rgba(255, 255, 255, 0.9)'),
+                  border: isFrozen 
+                    ? '1px solid rgba(59, 130, 246, 0.3)' 
+                    : `1px solid ${colors.cardBorder}`,
+                  backdropFilter: 'blur(20px)'
+                }}
+              >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
@@ -1309,7 +1457,7 @@ export default function SettingsPage() {
                           isFrozen ? 'text-blue-500' : 'text-orange-500'
                         }`} />
                       </div>
-                      <h3 className="text-lg font-bold text-white">
+                      <h3 className="text-lg font-bold" style={{ color: colors.text }}>
                         {isFrozen ? 'Unfreeze Account' : 'Freeze Account'}
                       </h3>
                     </div>
@@ -1320,7 +1468,7 @@ export default function SettingsPage() {
                         </p>
                       </div>
                     )}
-                    <p className="text-neutral-400 text-sm">
+                    <p className="text-sm" style={{ color: colors.textSecondary }}>
                       {isFrozen 
                         ? 'Restore full access to your account and all features.'
                         : 'Temporarily disable your account. You can reactivate it at any time.'
@@ -1347,16 +1495,23 @@ export default function SettingsPage() {
               </div>
 
               {/* Delete Account */}
-              <div className="rounded-3xl p-6 bg-neutral-800/50 border border-red-900/50 backdrop-blur-sm">
+              <div 
+                className="rounded-3xl p-6"
+                style={{
+                  background: theme === 'dark' ? 'rgba(69, 104, 130, 0.1)' : 'rgba(255, 255, 255, 0.9)',
+                  border: theme === 'dark' ? '1px solid rgba(185, 28, 28, 0.3)' : '1px solid rgba(239, 68, 68, 0.2)',
+                  backdropFilter: 'blur(20px)'
+                }}
+              >
                 <div className="flex items-start justify-between">
                   <div className="flex-1">
                     <div className="flex items-center gap-3 mb-2">
                       <div className="p-2 rounded-xl bg-red-500/10">
                         <AlertCircle className="h-5 w-5 text-red-500" />
                       </div>
-                      <h3 className="text-lg font-bold text-white">Delete Account</h3>
+                      <h3 className="text-lg font-bold" style={{ color: colors.text }}>Delete Account</h3>
                     </div>
-                    <p className="text-neutral-400 text-sm">
+                    <p className="text-sm" style={{ color: colors.textSecondary }}>
                       Permanently delete your account and all associated data. This action cannot be undone.
                     </p>
                   </div>
@@ -1383,19 +1538,26 @@ export default function SettingsPage() {
         return (
           <div className="space-y-6">
             <div>
-              <h2 className="text-2xl font-bold text-white">Integrations</h2>
-              <p className="text-neutral-400 mt-2">Connect with third-party services and APIs</p>
+              <h2 className="text-2xl font-bold" style={{ color: colors.text }}>Integrations</h2>
+              <p className="mt-2" style={{ color: colors.textSecondary }}>Connect with third-party services and APIs</p>
             </div>
 
-            <div className="rounded-3xl p-8 bg-neutral-800/50 border border-neutral-700 backdrop-blur-sm">
+            <div 
+              className="rounded-3xl p-8"
+              style={{
+                background: theme === 'dark' ? 'rgba(69, 104, 130, 0.1)' : 'rgba(255, 255, 255, 0.9)',
+                border: `1px solid ${colors.cardBorder}`,
+                backdropFilter: 'blur(20px)'
+              }}
+            >
               <div className="flex flex-col items-center text-center space-y-6">
-                <div className="p-4 rounded-full bg-[#456882]/10">
+                <div className="p-4 rounded-full" style={{ background: theme === 'dark' ? 'rgba(69, 104, 130, 0.1)' : 'rgba(69, 104, 130, 0.05)' }}>
                   <Globe className="h-12 w-12 text-[#456882]" />
                 </div>
                 
                 <div className="max-w-md space-y-2">
-                  <h3 className="text-xl font-bold text-white">Coming Soon</h3>
-                  <p className="text-neutral-400">
+                  <h3 className="text-xl font-bold" style={{ color: colors.text }}>Coming Soon</h3>
+                  <p style={{ color: colors.textSecondary }}>
                     Integration features are currently under development. Soon you'll be able to connect with popular third-party services and APIs to enhance your experience.
                   </p>
                 </div>
@@ -1411,15 +1573,20 @@ export default function SettingsPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-white">Settings</h1>
-        <p className="text-neutral-400">Manage your account and business preferences</p>
+        <h1 className="text-3xl font-bold" style={{ color: colors.text }}>Settings</h1>
+        <p style={{ color: colors.textSecondary }}>Manage your account and business preferences</p>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-4">
         {/* Sidebar */}
         <div className="lg:col-span-1">
           <div 
-            className="rounded-3xl p-6 bg-neutral-900/90 border border-neutral-800"
+            className="rounded-3xl p-6"
+            style={{
+              background: theme === 'dark' ? 'rgba(69, 104, 130, 0.1)' : 'rgba(255, 255, 255, 0.9)',
+              border: `1px solid ${colors.cardBorder}`,
+              backdropFilter: 'blur(20px)'
+            }}
           >
             <nav className="space-y-2">
               {tabs.map((tab) => {
@@ -1430,11 +1597,23 @@ export default function SettingsPage() {
                   <motion.button
                     key={tab.id}
                     onClick={() => setActiveTab(tab.id)}
-                    className={`w-full flex items-center px-4 py-3 text-sm font-semibold rounded-2xl transition-all ${
-                      isActive
-                        ? 'text-white bg-[#456882]'
-                        : 'text-neutral-400 hover:text-white hover:bg-neutral-800'
-                    }`}
+                    className="w-full flex items-center px-4 py-3 text-sm font-semibold rounded-2xl transition-all"
+                    style={{
+                      color: isActive ? 'white' : colors.textSecondary,
+                      background: isActive ? themeColors.accent : 'transparent'
+                    }}
+                    onMouseEnter={(e) => {
+                      if (!isActive) {
+                        e.currentTarget.style.color = colors.text
+                        e.currentTarget.style.background = theme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(69, 104, 130, 0.05)'
+                      }
+                    }}
+                    onMouseLeave={(e) => {
+                      if (!isActive) {
+                        e.currentTarget.style.color = colors.textSecondary
+                        e.currentTarget.style.background = 'transparent'
+                      }
+                    }}
                     whileHover={!isActive ? { x: 4 } : {}}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -1452,7 +1631,12 @@ export default function SettingsPage() {
         {/* Content */}
         <div className="lg:col-span-3">
           <div 
-            className="rounded-3xl p-8 bg-neutral-900/90 border border-neutral-800"
+            className="rounded-3xl p-8"
+            style={{
+              background: theme === 'dark' ? 'rgba(69, 104, 130, 0.1)' : 'rgba(255, 255, 255, 0.9)',
+              border: `1px solid ${colors.cardBorder}`,
+              backdropFilter: 'blur(20px)'
+            }}
           >
             <motion.div
               key={activeTab}
