@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { 
   Building2, 
@@ -14,12 +14,37 @@ import {
   MoreHorizontal
 } from 'lucide-react'
 import { AddVenueOverlay } from '@/components/partner/overlays'
-import { createVenue, VenueData } from '@/lib/supabase/venues'
+import { createVenue, VenueData, getPartnerVenues } from '@/lib/supabase/venues'
 import { useToast } from '@/hooks/use-toast'
 
 export default function VenuesPage() {
   const [showAddVenueOverlay, setShowAddVenueOverlay] = useState(false)
+  const [venues, setVenues] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
   const { toast } = useToast()
+
+  // Fetch venues on component mount
+  useEffect(() => {
+    loadVenues()
+  }, [])
+
+  const loadVenues = async () => {
+    try {
+      setLoading(true)
+      const partnerVenues = await getPartnerVenues()
+      console.log('Loaded venues:', partnerVenues)
+      setVenues(partnerVenues)
+    } catch (error) {
+      console.error('Error loading venues:', error)
+      toast({
+        title: "Error",
+        description: "Failed to load venues",
+        variant: "destructive",
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleVenueSubmit = async (venueData: VenueData) => {
     console.log('New venue data:', venueData)
@@ -34,8 +59,8 @@ export default function VenuesPage() {
         })
         console.log('Created venue:', result.venue)
         setShowAddVenueOverlay(false)
-        // Optionally refresh the page or update local state
-        window.location.reload()
+        // Reload venues instead of refreshing the page
+        loadVenues()
       } else {
         toast({
           title: "Error",
@@ -53,8 +78,7 @@ export default function VenuesPage() {
     }
   }
 
-  // For now, using empty array - will be replaced with real data from Supabase
-  const venues: any[] = []
+
 
   const VenueCard = ({ venue }: any) => (
     <motion.div
@@ -87,20 +111,24 @@ export default function VenuesPage() {
                 {venue.active ? 'ACTIVE' : 'INACTIVE'}
               </span>
             </div>
-            <p className="text-sm text-gray-400 mb-3">{venue.address}</p>
+            <p className="text-sm text-gray-400 mb-3">
+              {venue.address}, {venue.city}, {venue.state} {venue.postal_code}
+            </p>
             <div className="flex items-center space-x-4 text-sm text-gray-300">
               <div className="flex items-center space-x-1">
                 <MapPin className="h-4 w-4" />
-                <span>{venue.courts} courts</span>
+                <span>{venue.city}, {venue.state}</span>
               </div>
-              <div className="flex items-center space-x-1">
-                <Star className="h-4 w-4 text-yellow-400" />
-                <span>{venue.rating}</span>
-              </div>
-              <div className="flex items-center space-x-1">
-                <Users className="h-4 w-4" />
-                <span>{venue.bookings} bookings</span>
-              </div>
+              {venue.phone && (
+                <div className="flex items-center space-x-1">
+                  <span>{venue.phone}</span>
+                </div>
+              )}
+              {venue.amenities && venue.amenities.length > 0 && (
+                <div className="flex items-center space-x-1">
+                  <span>{venue.amenities.length} amenities</span>
+                </div>
+              )}
             </div>
           </div>
           <button className="p-2 text-gray-400 hover:text-white transition-colors rounded-lg">
@@ -109,10 +137,8 @@ export default function VenuesPage() {
         </div>
 
         <div className="flex items-center justify-between">
-          <div className="flex items-center space-x-1">
-            <DollarSign className="h-4 w-4 text-green-400" />
-            <span className="text-lg font-bold text-green-400">{venue.revenue}</span>
-            <span className="text-xs text-gray-500">this month</span>
+          <div className="text-xs text-gray-500">
+            Created {new Date(venue.created_at).toLocaleDateString()}
           </div>
           <div className="flex space-x-2">
             <button className="p-2 text-blue-400 hover:text-blue-300 transition-colors rounded-lg">
@@ -151,7 +177,14 @@ export default function VenuesPage() {
         )}
       </div>
 
-      {venues.length > 0 ? (
+      {loading ? (
+        <div className="flex items-center justify-center py-16">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+            <p className="text-gray-400">Loading venues...</p>
+          </div>
+        </div>
+      ) : venues.length > 0 ? (
         <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-1">
           {venues.map((venue) => (
             <VenueCard key={venue.id} venue={venue} />
