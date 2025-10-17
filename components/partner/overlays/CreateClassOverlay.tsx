@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Users, Calendar, Clock, DollarSign, GraduationCap, X } from 'lucide-react'
 import {
@@ -20,6 +20,7 @@ interface CreateClassOverlayProps {
   onSubmit: (classData: any) => void
   venues?: Array<{ id: string; name: string }>
   courts?: Array<{ id: string; name: string; venueId: string }>
+  editingClass?: any
 }
 
 export function CreateClassOverlay({ 
@@ -27,7 +28,8 @@ export function CreateClassOverlay({
   onClose, 
   onSubmit, 
   venues = [], 
-  courts = [] 
+  courts = [],
+  editingClass = null
 }: CreateClassOverlayProps) {
   const [formData, setFormData] = useState({
     title: '',
@@ -59,6 +61,45 @@ export function CreateClassOverlay({
     objectives: '',
     curriculum: '',
   })
+
+  // Update form data when editing class changes
+  React.useEffect(() => {
+    if (editingClass) {
+      setFormData(editingClass)
+    } else {
+      // Reset form when not editing
+      setFormData({
+        title: '',
+        description: '',
+        classType: 'group',
+        sport: 'tennis',
+        venueId: '',
+        courtId: '',
+        instructorName: '',
+        instructorBio: '',
+        skillLevel: 'beginner',
+        ageGroup: 'adult',
+        maxStudents: '',
+        duration: '60',
+        price: '',
+        packagePrice: '',
+        packageSessions: '4',
+        schedule: {
+          recurring: true,
+          frequency: 'weekly',
+          dayOfWeek: 'monday',
+          startTime: '',
+          endTime: '',
+          startDate: '',
+          endDate: '',
+        },
+        equipment: 'provided',
+        requirements: [] as string[],
+        objectives: '',
+        curriculum: '',
+      })
+    }
+  }, [editingClass])
 
   const classTypes = [
     { value: 'group', label: 'Group Class' },
@@ -212,10 +253,10 @@ export function CreateClassOverlay({
             <div className="p-2 rounded-xl" style={{ background: 'rgba(69, 104, 130, 0.2)' }}>
               <GraduationCap className="h-6 w-6" style={{ color: '#456882' }} />
             </div>
-            Create New Class
+            {editingClass ? 'Edit Class' : 'Create New Class'}
           </DialogTitle>
           <DialogDescription className="text-gray-400">
-            Create a new class or lesson program at your venue
+            {editingClass ? 'Update your class details and schedule' : 'Create a new class or lesson program at your venue'}
           </DialogDescription>
         </DialogHeader>
 
@@ -699,7 +740,7 @@ export function CreateClassOverlay({
                 boxShadow: '0 4px 12px rgba(69, 104, 130, 0.3)'
               }}
             >
-              Create Class
+              {editingClass ? 'Update Class' : 'Create Class'}
             </Button>
           </div>
         </form>
