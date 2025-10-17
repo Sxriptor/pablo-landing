@@ -34,6 +34,11 @@ export default function PartnerEntryPage() {
   const [appDescription, setAppDescription] = useState('')
   const [appYearsInBusiness, setAppYearsInBusiness] = useState('')
   const [appNumberOfCourts, setAppNumberOfCourts] = useState('')
+  const [appSportsOffered, setAppSportsOffered] = useState<string[]>([])
+  const [appEstimatedMonthlyBookings, setAppEstimatedMonthlyBookings] = useState('')
+  const [appCurrentBookingSystem, setAppCurrentBookingSystem] = useState('')
+  const [appBusinessLicenseUrl, setAppBusinessLicenseUrl] = useState('')
+  const [appInsuranceCertificateUrl, setAppInsuranceCertificateUrl] = useState('')
 
   const handleSignIn = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -319,6 +324,11 @@ export default function PartnerEntryPage() {
           description: appDescription,
           years_in_business: appYearsInBusiness ? parseInt(appYearsInBusiness) : null,
           number_of_courts: appNumberOfCourts ? parseInt(appNumberOfCourts) : null,
+          sports_offered: appSportsOffered.length > 0 ? appSportsOffered : null,
+          estimated_monthly_bookings: appEstimatedMonthlyBookings ? parseInt(appEstimatedMonthlyBookings) : null,
+          current_booking_system: appCurrentBookingSystem || null,
+          business_license_url: appBusinessLicenseUrl || null,
+          insurance_certificate_url: appInsuranceCertificateUrl || null,
         })
         .eq('user_id', currentUserId)
 
@@ -332,7 +342,12 @@ export default function PartnerEntryPage() {
       setShowApplicationForm(false)
       setShowApplicationOverlay(false)
       await supabase.auth.signOut()
-      alert('Application submitted successfully! We will review your application and notify you once it has been processed.')
+
+      const message = applicationStatus === 'pending'
+        ? 'Application updated successfully! Your changes have been saved.'
+        : 'Application submitted successfully! We will review your application and notify you once it has been processed.'
+
+      alert(message)
       setLoading(false)
     } catch (err: any) {
       setError(err.message || 'An error occurred')
@@ -345,6 +360,55 @@ export default function PartnerEntryPage() {
     setShowApplicationOverlay(false)
     setShowApplicationForm(false)
     await supabase.auth.signOut()
+  }
+
+  // Handle editing existing application
+  const handleEditApplication = async () => {
+    if (!currentUserId) return
+
+    setLoading(true)
+    try {
+      // Fetch the existing application data
+      const { data: appData, error: fetchError } = await supabase
+        .from('partner_applications')
+        .select('*')
+        .eq('user_id', currentUserId)
+        .single()
+
+      if (fetchError) {
+        setError('Failed to load application data: ' + fetchError.message)
+        setLoading(false)
+        return
+      }
+
+      // Populate form fields with existing data
+      if (appData) {
+        setCompanyName(appData.company_name || '')
+        setFullName(appData.contact_person || '')
+        setAppPhone(appData.phone || '')
+        setAppWebsite(appData.website || '')
+        setAppAddress(appData.address || '')
+        setAppCity(appData.city || '')
+        setAppState(appData.state || '')
+        setAppPostalCode(appData.postal_code || '')
+        setAppBusinessType(appData.business_type || 'venue')
+        setAppDescription(appData.description || '')
+        setAppYearsInBusiness(appData.years_in_business?.toString() || '')
+        setAppNumberOfCourts(appData.number_of_courts?.toString() || '')
+        setAppSportsOffered(appData.sports_offered || [])
+        setAppEstimatedMonthlyBookings(appData.estimated_monthly_bookings?.toString() || '')
+        setAppCurrentBookingSystem(appData.current_booking_system || '')
+        setAppBusinessLicenseUrl(appData.business_license_url || '')
+        setAppInsuranceCertificateUrl(appData.insurance_certificate_url || '')
+      }
+
+      // Show the form
+      setShowApplicationForm(true)
+      setLoading(false)
+    } catch (err: any) {
+      setError(err.message || 'An error occurred')
+      setLoading(false)
+    }
   }
 
   return (
@@ -383,6 +447,15 @@ export default function PartnerEntryPage() {
                       className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-8 py-3 rounded-lg transition-colors disabled:opacity-50"
                     >
                       {loading ? 'Creating...' : 'Fill Out Application'}
+                    </button>
+                  )}
+                  {applicationStatus === 'pending' && (
+                    <button
+                      onClick={handleEditApplication}
+                      disabled={loading}
+                      className="bg-blue-600 hover:bg-blue-700 text-white font-medium px-8 py-3 rounded-lg transition-colors disabled:opacity-50"
+                    >
+                      {loading ? 'Loading...' : 'Edit Application'}
                     </button>
                   )}
                   <button
@@ -523,6 +596,76 @@ export default function PartnerEntryPage() {
                       onChange={(e) => setAppPostalCode(e.target.value)}
                       className="w-full px-4 py-3 rounded-lg bg-slate-700 border border-slate-600 text-white"
                     />
+                  </div>
+
+                  <div className="space-y-2 md:col-span-2">
+                    <label className="block text-sm font-medium text-white">Sports Offered*</label>
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                      {['Tennis', 'Pickleball', 'Padel', 'Squash', 'Racquetball', 'Badminton', 'Table Tennis', 'Other'].map((sport) => (
+                        <label key={sport} className="flex items-center space-x-2 text-white cursor-pointer">
+                          <input
+                            type="checkbox"
+                            checked={appSportsOffered.includes(sport)}
+                            onChange={(e) => {
+                              if (e.target.checked) {
+                                setAppSportsOffered([...appSportsOffered, sport])
+                              } else {
+                                setAppSportsOffered(appSportsOffered.filter(s => s !== sport))
+                              }
+                            }}
+                            className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-slate-600 rounded bg-slate-700"
+                          />
+                          <span className="text-sm">{sport}</span>
+                        </label>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-white">Estimated Monthly Bookings</label>
+                    <input
+                      type="number"
+                      value={appEstimatedMonthlyBookings}
+                      onChange={(e) => setAppEstimatedMonthlyBookings(e.target.value)}
+                      min="0"
+                      className="w-full px-4 py-3 rounded-lg bg-slate-700 border border-slate-600 text-white"
+                      placeholder="e.g., 150"
+                    />
+                  </div>
+
+                  <div className="space-y-2">
+                    <label className="block text-sm font-medium text-white">Current Booking System</label>
+                    <input
+                      type="text"
+                      value={appCurrentBookingSystem}
+                      onChange={(e) => setAppCurrentBookingSystem(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg bg-slate-700 border border-slate-600 text-white"
+                      placeholder="e.g., CourtReserve, Manual, etc."
+                    />
+                  </div>
+
+                  <div className="space-y-2 md:col-span-2">
+                    <label className="block text-sm font-medium text-white">Business License URL</label>
+                    <input
+                      type="url"
+                      value={appBusinessLicenseUrl}
+                      onChange={(e) => setAppBusinessLicenseUrl(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg bg-slate-700 border border-slate-600 text-white"
+                      placeholder="https://example.com/business-license.pdf"
+                    />
+                    <p className="text-xs text-slate-400">Upload your business license to a file hosting service and paste the URL here</p>
+                  </div>
+
+                  <div className="space-y-2 md:col-span-2">
+                    <label className="block text-sm font-medium text-white">Insurance Certificate URL</label>
+                    <input
+                      type="url"
+                      value={appInsuranceCertificateUrl}
+                      onChange={(e) => setAppInsuranceCertificateUrl(e.target.value)}
+                      className="w-full px-4 py-3 rounded-lg bg-slate-700 border border-slate-600 text-white"
+                      placeholder="https://example.com/insurance-certificate.pdf"
+                    />
+                    <p className="text-xs text-slate-400">Upload your insurance certificate to a file hosting service and paste the URL here</p>
                   </div>
 
                   <div className="space-y-2 md:col-span-2">
