@@ -951,10 +951,124 @@ export default function SettingsPage() {
         )
       case 'security':
         return (
-          <div className="text-center py-12">
-            <Shield className="h-16 w-16 text-neutral-400 mx-auto mb-4" />
-            <h3 className="text-xl font-bold text-white mb-2">Security Settings</h3>
-            <p className="text-neutral-400">Manage passwords and security preferences</p>
+          <div className="space-y-6">
+            <div>
+              <h2 className="text-2xl font-bold text-white">Security Settings</h2>
+              <p className="text-neutral-400 mt-2">Manage your account security and preferences</p>
+            </div>
+
+            {/* Success/Error Message */}
+            {message && (
+              <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className={`flex items-center gap-2 p-4 rounded-2xl ${
+                  message.type === 'success' 
+                    ? 'bg-green-500/10 border border-green-500/20 text-green-400' 
+                    : 'bg-red-500/10 border border-red-500/20 text-red-400'
+                }`}
+              >
+                {message.type === 'success' ? (
+                  <CheckCircle className="h-5 w-5" />
+                ) : (
+                  <AlertCircle className="h-5 w-5" />
+                )}
+                <span className="font-medium">{message.text}</span>
+              </motion.div>
+            )}
+
+            <div className="space-y-4">
+              {/* Change Password */}
+              <div className="rounded-3xl p-6 bg-neutral-800/50 border border-neutral-700 backdrop-blur-sm">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="p-2 rounded-xl bg-[#456882]/10">
+                        <Shield className="h-5 w-5 text-[#456882]" />
+                      </div>
+                      <h3 className="text-lg font-bold text-white">Change Password</h3>
+                    </div>
+                    <p className="text-neutral-400 text-sm">
+                      Update your password to keep your account secure
+                    </p>
+                  </div>
+                  <motion.button
+                    onClick={() => {
+                      // TODO: Implement password change functionality
+                      setMessage({ type: 'success', text: 'Password change functionality coming soon' })
+                      setTimeout(() => setMessage(null), 3000)
+                    }}
+                    className="px-6 py-3 rounded-2xl bg-[#456882] hover:bg-[#3a5670] text-white font-bold text-sm transition-all whitespace-nowrap"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Change Password
+                  </motion.button>
+                </div>
+              </div>
+
+              {/* Freeze Account */}
+              <div className="rounded-3xl p-6 bg-neutral-800/50 border border-neutral-700 backdrop-blur-sm">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="p-2 rounded-xl bg-orange-500/10">
+                        <AlertCircle className="h-5 w-5 text-orange-500" />
+                      </div>
+                      <h3 className="text-lg font-bold text-white">Freeze Account</h3>
+                    </div>
+                    <p className="text-neutral-400 text-sm">
+                      Temporarily disable your account. You can reactivate it at any time.
+                    </p>
+                  </div>
+                  <motion.button
+                    onClick={() => {
+                      // TODO: Implement account freeze functionality
+                      if (confirm('Are you sure you want to freeze your account? You can reactivate it at any time.')) {
+                        setMessage({ type: 'success', text: 'Account freeze functionality coming soon' })
+                        setTimeout(() => setMessage(null), 3000)
+                      }
+                    }}
+                    className="px-6 py-3 rounded-2xl bg-orange-500 hover:bg-orange-600 text-white font-bold text-sm transition-all whitespace-nowrap"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Freeze Account
+                  </motion.button>
+                </div>
+              </div>
+
+              {/* Delete Account */}
+              <div className="rounded-3xl p-6 bg-neutral-800/50 border border-red-900/50 backdrop-blur-sm">
+                <div className="flex items-start justify-between">
+                  <div className="flex-1">
+                    <div className="flex items-center gap-3 mb-2">
+                      <div className="p-2 rounded-xl bg-red-500/10">
+                        <AlertCircle className="h-5 w-5 text-red-500" />
+                      </div>
+                      <h3 className="text-lg font-bold text-white">Delete Account</h3>
+                    </div>
+                    <p className="text-neutral-400 text-sm">
+                      Permanently delete your account and all associated data. This action cannot be undone.
+                    </p>
+                  </div>
+                  <motion.button
+                    onClick={() => {
+                      // TODO: Implement account deletion functionality
+                      if (confirm('Are you sure you want to delete your account? This action cannot be undone and all your data will be permanently deleted.')) {
+                        setMessage({ type: 'error', text: 'Account deletion functionality coming soon' })
+                        setTimeout(() => setMessage(null), 3000)
+                      }
+                    }}
+                    className="px-6 py-3 rounded-2xl bg-red-600 hover:bg-red-700 text-white font-bold text-sm transition-all whitespace-nowrap"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    Delete Account
+                  </motion.button>
+                </div>
+              </div>
+            </div>
           </div>
         )
       case 'integrations':
