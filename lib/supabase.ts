@@ -39,6 +39,101 @@ export interface Database {
           updated_at?: string
         }
       }
+      partner_applications: {
+        Row: {
+          id: string
+          user_id: string | null
+          company_name: string
+          email: string
+          phone: string | null
+          contact_person: string
+          business_type: 'venue' | 'club' | 'academy' | 'other'
+          description: string
+          website: string | null
+          address: string | null
+          city: string | null
+          state: string | null
+          postal_code: string | null
+          country: string
+          years_in_business: number | null
+          number_of_courts: number | null
+          sports_offered: string[] | null
+          estimated_monthly_bookings: number | null
+          current_booking_system: string | null
+          status: 'pending' | 'approved' | 'rejected' | 'under_review'
+          submitted_at: string
+          reviewed_at: string | null
+          reviewed_by: string | null
+          rejection_reason: string | null
+          admin_notes: string | null
+          business_license_url: string | null
+          insurance_certificate_url: string | null
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id?: string
+          user_id?: string | null
+          company_name: string
+          email: string
+          phone?: string | null
+          contact_person: string
+          business_type: 'venue' | 'club' | 'academy' | 'other'
+          description: string
+          website?: string | null
+          address?: string | null
+          city?: string | null
+          state?: string | null
+          postal_code?: string | null
+          country?: string
+          years_in_business?: number | null
+          number_of_courts?: number | null
+          sports_offered?: string[] | null
+          estimated_monthly_bookings?: number | null
+          current_booking_system?: string | null
+          status?: 'pending' | 'approved' | 'rejected' | 'under_review'
+          submitted_at?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          rejection_reason?: string | null
+          admin_notes?: string | null
+          business_license_url?: string | null
+          insurance_certificate_url?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          user_id?: string | null
+          company_name?: string
+          email?: string
+          phone?: string | null
+          contact_person?: string
+          business_type?: 'venue' | 'club' | 'academy' | 'other'
+          description?: string
+          website?: string | null
+          address?: string | null
+          city?: string | null
+          state?: string | null
+          postal_code?: string | null
+          country?: string
+          years_in_business?: number | null
+          number_of_courts?: number | null
+          sports_offered?: string[] | null
+          estimated_monthly_bookings?: number | null
+          current_booking_system?: string | null
+          status?: 'pending' | 'approved' | 'rejected' | 'under_review'
+          submitted_at?: string
+          reviewed_at?: string | null
+          reviewed_by?: string | null
+          rejection_reason?: string | null
+          admin_notes?: string | null
+          business_license_url?: string | null
+          insurance_certificate_url?: string | null
+          created_at?: string
+          updated_at?: string
+        }
+      }
       partners: {
         Row: {
           id: string
