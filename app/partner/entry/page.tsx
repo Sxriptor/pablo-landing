@@ -15,6 +15,8 @@ export default function PartnerEntryPage() {
   const [rememberMe, setRememberMe] = useState(false)
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
+  const [showEmailVerification, setShowEmailVerification] = useState(false)
+  const [signupEmail, setSignupEmail] = useState('')
 
   // Application overlay states
   const [showApplicationOverlay, setShowApplicationOverlay] = useState(false)
@@ -243,35 +245,14 @@ export default function PartnerEntryPage() {
 
         if (profileError) {
           console.warn('Failed to update profile, but continuing:', profileError.message)
-          // Don't return - continue with application creation
         }
       }
 
-      // Create partner application record
-      const { error: applicationError } = await supabase
-        .from('partner_applications')
-        .insert({
-          user_id: authData.user.id,
-          email: email,
-          company_name: companyName,
-          contact_person: fullName,
-          description: 'Application submitted through partner signup',
-          business_type: 'venue', // Default, can be updated later
-          status: 'pending'
-        })
-
-      if (applicationError) {
-        setError('Failed to create application: ' + applicationError.message)
-        setLoading(false)
-        return
-      }
-
-      // Success - show message
+      // Success - show email verification overlay
       setError('')
-      alert('Account created successfully! Your partner application is pending review. You can check your application status by signing in.')
-
-      // Switch to sign in view
-      switchToSignIn()
+      setLoading(false)
+      setSignupEmail(email)
+      setShowEmailVerification(true)
 
     } catch (err: any) {
       setError(err.message || 'An error occurred during sign up')
@@ -289,14 +270,19 @@ export default function PartnerEntryPage() {
     setFullName('')
   }
 
-  const switchToSignIn = () => {
+  const switchToSignIn = (prefillEmail?: string) => {
     setIsSignUp(false)
     setError('')
-    setEmail('')
+    setEmail(prefillEmail || '')
     setPassword('')
     setConfirmPassword('')
     setCompanyName('')
     setFullName('')
+  }
+
+  const handleEmailVerificationClose = () => {
+    setShowEmailVerification(false)
+    switchToSignIn(signupEmail)
   }
 
   // Handle creating application row when user clicks "Fill Out Application"
@@ -456,6 +442,62 @@ export default function PartnerEntryPage() {
 
   return (
     <>
+      {/* Email Verification Overlay */}
+      {showEmailVerification && (
+        <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <motion.div
+            className="bg-slate-800 rounded-lg p-8 max-w-md w-full text-center"
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.3 }}
+          >
+            {/* Email Icon */}
+            <div className="flex justify-center mb-6">
+              <div className="w-20 h-20 bg-blue-600/20 rounded-full flex items-center justify-center">
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-10 h-10 text-blue-400"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75"
+                  />
+                </svg>
+              </div>
+            </div>
+
+            <h2 className="text-3xl font-bold text-white mb-4">
+              Verify Your Email
+            </h2>
+            
+            <p className="text-slate-300 text-lg mb-2">
+              We've sent a verification email to:
+            </p>
+            
+            <p className="text-blue-400 font-medium text-lg mb-6">
+              {signupEmail}
+            </p>
+            
+            <p className="text-slate-400 text-sm mb-8">
+              Please check your inbox and click the verification link to activate your account. 
+              Once verified, you can sign in and submit your partner application.
+            </p>
+
+            <button
+              onClick={handleEmailVerificationClose}
+              className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 rounded-lg transition-colors"
+            >
+              Continue to Sign In
+            </button>
+          </motion.div>
+        </div>
+      )}
+
       {/* Application Status Overlay */}
       {showApplicationOverlay && (
         <div className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
@@ -1248,7 +1290,7 @@ export default function PartnerEntryPage() {
                 <>
                   Already have an account?{' '}
                   <button
-                    onClick={switchToSignIn}
+                    onClick={() => switchToSignIn()}
                     className="font-medium text-blue-400 hover:text-blue-300 transition-colors"
                   >
                     Sign In
