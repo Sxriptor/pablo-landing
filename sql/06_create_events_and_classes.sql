@@ -40,6 +40,10 @@ CREATE TABLE IF NOT EXISTS public.events (
   id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
   partner_id UUID NOT NULL REFERENCES partners(id) ON DELETE CASCADE,
   venue_id UUID NOT NULL REFERENCES venues(id) ON DELETE CASCADE,
+<<<<<<< HEAD
+=======
+  court_id UUID REFERENCES courts(id) ON DELETE SET NULL, -- Optional specific court
+>>>>>>> landingvisual
 
   -- Sport MUST be selected first (drives format options)
   sport TEXT NOT NULL CHECK (sport IN ('tennis', 'pickleball', 'squash', 'racquetball', 'badminton', 'table_tennis', 'basketball', 'volleyball')),
@@ -104,6 +108,12 @@ CREATE TABLE IF NOT EXISTS public.events (
   equipment_required TEXT, -- What participants need to bring
   requirements TEXT[], -- Array format for mobile app
 
+<<<<<<< HEAD
+=======
+  -- Access control
+  access_type TEXT DEFAULT 'reserve' CHECK (access_type IN ('reserve', 'open')), -- reserve = mobile app booking, open = walk-in
+
+>>>>>>> landingvisual
   -- Event materials and metadata
   image_url TEXT,
   additional_images TEXT[],
@@ -183,6 +193,10 @@ CREATE INDEX IF NOT EXISTS idx_sport_formats_is_preferred ON sport_formats(is_pr
 
 CREATE INDEX IF NOT EXISTS idx_events_partner_id ON events(partner_id);
 CREATE INDEX IF NOT EXISTS idx_events_venue_id ON events(venue_id);
+<<<<<<< HEAD
+=======
+CREATE INDEX IF NOT EXISTS idx_events_court_id ON events(court_id);
+>>>>>>> landingvisual
 CREATE INDEX IF NOT EXISTS idx_events_host_id ON events(host_id);
 CREATE INDEX IF NOT EXISTS idx_events_sport_id ON events(sport_id);
 CREATE INDEX IF NOT EXISTS idx_events_sport_format_id ON events(sport_format_id);

@@ -365,7 +365,10 @@ export default function CourtsPage() {
                 Add your first court to start managing bookings and tracking performance.
               </p>
               <motion.button
-                onClick={() => setShowAddCourtOverlay(true)}
+                onClick={() => {
+                  setEditingCourt(null)
+                  setShowAddCourtOverlay(true)
+                }}
                 className="text-white px-6 py-3 rounded-2xl flex items-center font-bold text-sm mx-auto"
                 style={{
                   background: '#456882',
@@ -386,7 +389,10 @@ export default function CourtsPage() {
           <div className="flex items-center justify-between">
             <p className="text-gray-400">{courts.length} court{courts.length !== 1 ? 's' : ''} found</p>
             <motion.button
-              onClick={() => setShowAddCourtOverlay(true)}
+              onClick={() => {
+                setEditingCourt(null)
+                setShowAddCourtOverlay(true)
+              }}
               className="text-white px-6 py-3 rounded-2xl flex items-center font-bold text-sm"
               style={{
                 background: '#456882',
@@ -410,6 +416,7 @@ export default function CourtsPage() {
 
       {/* Add Court Overlay */}
       <AddCourtOverlay
+        key={editingCourt ? `edit-${editingCourt.id}` : 'create'}
         isOpen={showAddCourtOverlay}
         onClose={handleCloseOverlay}
         onSubmit={handleCourtSubmit}

@@ -13,6 +13,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Textarea } from '@/components/ui/textarea'
+import React from 'react'
 
 interface CreateMatchOverlayProps {
   isOpen: boolean
@@ -20,6 +21,7 @@ interface CreateMatchOverlayProps {
   onSubmit: (matchData: any) => void
   venues?: Array<{ id: string; name: string }>
   courts?: Array<{ id: string; name: string; venueId: string }>
+  editingMatch?: any
 }
 
 export function CreateMatchOverlay({ 
@@ -27,13 +29,15 @@ export function CreateMatchOverlay({
   onClose, 
   onSubmit, 
   venues = [], 
-  courts = [] 
+  courts = [],
+  editingMatch = null
 }: CreateMatchOverlayProps) {
   const [formData, setFormData] = useState({
     title: '',
     description: '',
     matchType: 'singles',
     sport: 'tennis',
+    accessType: 'reserve',
     venueId: '',
     courtId: '',
     scheduledDate: '',
@@ -49,14 +53,6 @@ export function CreateMatchOverlay({
     requirements: [] as string[],
   })
 
-  const matchTypes = [
-    { value: 'singles', label: 'Singles' },
-    { value: 'doubles', label: 'Doubles' },
-    { value: 'mixed-doubles', label: 'Mixed Doubles' },
-    { value: 'team', label: 'Team Match' },
-    { value: 'exhibition', label: 'Exhibition' },
-  ]
-
   const sportOptions = [
     { value: 'tennis', label: 'Tennis' },
     { value: 'pickleball', label: 'Pickleball' },
@@ -64,6 +60,77 @@ export function CreateMatchOverlay({
     { value: 'squash', label: 'Squash' },
     { value: 'basketball', label: 'Basketball' },
     { value: 'volleyball', label: 'Volleyball' },
+  ]
+
+  // Get available match types based on selected sport
+  const getMatchTypesForSport = (sport: string) => {
+    switch (sport) {
+      case 'tennis':
+        return [
+          { value: 'singles', label: 'Singles (1v1)' },
+          { value: 'doubles', label: 'Doubles (2v2)' },
+        ]
+      case 'pickleball':
+        return [
+          { value: 'doubles', label: 'Doubles (2v2 - Preferred)' },
+        ]
+      case 'badminton':
+        return [
+          { value: 'singles', label: 'Singles (1v1)' },
+          { value: 'doubles', label: 'Doubles (2v2)' },
+        ]
+      case 'squash':
+        return [
+          { value: 'singles', label: 'Singles (1v1)' },
+        ]
+      case 'basketball':
+        return [
+          { value: 'regular', label: '5v5 (Full Court)' },
+          { value: 'doubles', label: '3v3 (Half Court)' },
+        ]
+      case 'volleyball':
+        return [
+          { value: 'regular', label: 'Indoor (6v6)' },
+          { value: 'doubles', label: 'Beach (2v2)' },
+        ]
+      default:
+        return []
+    }
+  }
+
+  // Get match configuration based on sport and match type
+  const getMatchConfig = (sport: string, matchType: string) => {
+    const configs: { [key: string]: { [key: string]: { maxPlayers: string; format: string } } } = {
+      tennis: {
+        singles: { maxPlayers: '2', format: 'singles' },
+        doubles: { maxPlayers: '4', format: 'doubles' },
+      },
+      pickleball: {
+        doubles: { maxPlayers: '4', format: 'doubles' },
+      },
+      badminton: {
+        singles: { maxPlayers: '2', format: 'singles' },
+        doubles: { maxPlayers: '4', format: 'doubles' },
+      },
+      squash: {
+        singles: { maxPlayers: '2', format: 'singles' },
+      },
+      basketball: {
+        regular: { maxPlayers: '10', format: 'full-court' },
+        doubles: { maxPlayers: '6', format: 'half-court' },
+      },
+      volleyball: {
+        regular: { maxPlayers: '12', format: 'indoor' },
+        doubles: { maxPlayers: '4', format: 'beach' },
+      },
+    }
+    
+    return configs[sport]?.[matchType] || { maxPlayers: '4', format: 'casual' }
+  }
+
+  const accessTypes = [
+    { value: 'reserve', label: 'Reserve (Mobile App Booking)' },
+    { value: 'open', label: 'Open (Walk-in)' },
   ]
 
   const skillLevels = [
@@ -74,14 +141,20 @@ export function CreateMatchOverlay({
     { value: 'open', label: 'Open (All Levels)' },
   ]
 
-  const formatOptions = [
-    { value: 'elimination', label: 'Single Elimination' },
-    { value: 'double-elimination', label: 'Double Elimination' },
-    { value: 'round-robin', label: 'Round Robin' },
-    { value: 'swiss', label: 'Swiss System' },
-    { value: 'ladder', label: 'Ladder Match' },
-    { value: 'friendly', label: 'Friendly Match' },
-  ]
+  // Get format display name
+  const getFormatDisplayName = (format: string) => {
+    const formatNames: { [key: string]: string } = {
+      'singles': 'Singles Format',
+      'doubles': 'Doubles Format', 
+      'full-court': '5v5 Full Court',
+      'half-court': '3v3 Half Court',
+      'indoor': '6v6 Indoor',
+      'beach': '2v2 Beach',
+      'elimination': 'Tournament Elimination',
+      'casual': 'Casual Play'
+    }
+    return formatNames[format] || format
+  }
 
   const requirementOptions = [
     'Valid ID Required',
@@ -95,7 +168,32 @@ export function CreateMatchOverlay({
   ]
 
   const handleInputChange = (field: string, value: string | string[]) => {
-    setFormData(prev => ({ ...prev, [field]: value }))
+    setFormData(prev => {
+      const newData = { ...prev, [field]: value }
+      
+      // When sport changes, reset match type and set first available option
+      if (field === 'sport') {
+        const availableMatchTypes = getMatchTypesForSport(value as string)
+        if (availableMatchTypes.length > 0) {
+          const firstMatchType = availableMatchTypes[0].value
+          newData.matchType = firstMatchType
+          
+          // Set config for the first match type
+          const config = getMatchConfig(value as string, firstMatchType)
+          newData.maxPlayers = config.maxPlayers
+          newData.format = config.format
+        }
+      }
+      
+      // When match type changes, update max players and format
+      if (field === 'matchType') {
+        const config = getMatchConfig(newData.sport, value as string)
+        newData.maxPlayers = config.maxPlayers
+        newData.format = config.format
+      }
+      
+      return newData
+    })
   }
 
   const handleRequirementToggle = (requirement: string) => {
@@ -109,7 +207,13 @@ export function CreateMatchOverlay({
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    onSubmit(formData)
+    
+    // Include match ID if editing
+    const submitData = editingMatch 
+      ? { ...formData, matchId: editingMatch.id }
+      : formData
+    
+    onSubmit(submitData)
     onClose()
     // Reset form
     setFormData({
@@ -117,6 +221,7 @@ export function CreateMatchOverlay({
       description: '',
       matchType: 'singles',
       sport: 'tennis',
+      accessType: 'reserve',
       venueId: '',
       courtId: '',
       scheduledDate: '',
@@ -132,6 +237,75 @@ export function CreateMatchOverlay({
       requirements: [],
     })
   }
+
+  // Reset form when overlay opens, then populate if editing
+  React.useEffect(() => {
+    if (isOpen) {
+      if (editingMatch) {
+        // Convert boolean requirement fields back to array
+        const requirementMap: { [key: string]: string } = {
+          'valid_id_required': 'Valid ID Required',
+          'equipment_provided': 'Equipment Provided',
+          'skill_level_verification': 'Skill Level Verification',
+          'no_late_entries': 'No Late Entries',
+          'waiver_must_be_signed': 'Waiver Must Be Signed',
+          'bring_own_equipment': 'Bring Own Equipment',
+          'registration_fee_non_refundable': 'Registration Fee Non-Refundable',
+          'punctuality_required': 'Punctuality Required'
+        }
+        
+        const selectedRequirements: string[] = []
+        Object.entries(requirementMap).forEach(([field, label]) => {
+          if (editingMatch[field]) {
+            selectedRequirements.push(label)
+          }
+        })
+
+        setFormData({
+          title: editingMatch.title || '',
+          description: editingMatch.description || '',
+          matchType: editingMatch.match_type || 'singles',
+          sport: editingMatch.sport || 'tennis',
+          accessType: editingMatch.access_type || 'reserve',
+          venueId: editingMatch.venue_id || '',
+          courtId: editingMatch.court_id || '',
+          scheduledDate: editingMatch.scheduled_date || '',
+          startTime: editingMatch.start_time || '',
+          endTime: editingMatch.end_time || '',
+          maxPlayers: editingMatch.max_players?.toString() || '',
+          entryFee: editingMatch.entry_fee?.toString() || '',
+          prizePool: editingMatch.prize_pool?.toString() || '',
+          registrationDeadline: editingMatch.registration_deadline ? editingMatch.registration_deadline.split('T')[0] : '',
+          skillLevel: editingMatch.skill_level || 'intermediate',
+          format: editingMatch.format || 'singles',
+          rules: editingMatch.rules || '',
+          requirements: selectedRequirements,
+        })
+      } else {
+        // Reset form for new match creation
+        setFormData({
+          title: '',
+          description: '',
+          matchType: 'singles',
+          sport: 'tennis',
+          accessType: 'reserve',
+          venueId: '',
+          courtId: '',
+          scheduledDate: '',
+          startTime: '',
+          endTime: '',
+          maxPlayers: '',
+          entryFee: '',
+          prizePool: '',
+          registrationDeadline: '',
+          skillLevel: 'intermediate',
+          format: 'singles',
+          rules: '',
+          requirements: [],
+        })
+      }
+    }
+  }, [isOpen, editingMatch])
 
   const availableCourts = courts.filter(court => 
     formData.venueId ? court.venueId === formData.venueId : true
@@ -159,10 +333,13 @@ export function CreateMatchOverlay({
             <div className="p-2 rounded-xl" style={{ background: 'rgba(69, 104, 130, 0.2)' }}>
               <Target className="h-6 w-6" style={{ color: '#456882' }} />
             </div>
-            Create New Match
+            {editingMatch ? 'Edit Match' : 'Create New Match'}
           </DialogTitle>
           <DialogDescription className="text-gray-400">
-            Organize a competitive match or tournament at your venue
+            {editingMatch 
+              ? 'Update match details and settings'
+              : 'Organize a competitive match or tournament at your venue'
+            }
           </DialogDescription>
         </DialogHeader>
 
@@ -184,25 +361,31 @@ export function CreateMatchOverlay({
               />
             </div>
 
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Access Type *
+              </label>
+              <select
+                value={formData.accessType}
+                onChange={(e) => handleInputChange('accessType', e.target.value)}
+                required
+                className="w-full h-9 px-3 py-1 rounded-md bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                {accessTypes.map((type) => (
+                  <option key={type.value} value={type.value} className="bg-gray-800">
+                    {type.label}
+                  </option>
+                ))}
+              </select>
+              <p className="text-xs text-gray-400 mt-1">
+                {formData.accessType === 'reserve' 
+                  ? 'Players book and pay through the mobile app' 
+                  : 'Walk-in match - no advance booking required'
+                }
+              </p>
+            </div>
+
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Match Type *
-                </label>
-                <select
-                  value={formData.matchType}
-                  onChange={(e) => handleInputChange('matchType', e.target.value)}
-                  required
-                  className="w-full h-9 px-3 py-1 rounded-md bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  {matchTypes.map((type) => (
-                    <option key={type.value} value={type.value} className="bg-gray-800">
-                      {type.label}
-                    </option>
-                  ))}
-                </select>
-              </div>
-              
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
                   Sport *
@@ -216,6 +399,24 @@ export function CreateMatchOverlay({
                   {sportOptions.map((sport) => (
                     <option key={sport.value} value={sport.value} className="bg-gray-800">
                       {sport.label}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Match Type *
+                </label>
+                <select
+                  value={formData.matchType}
+                  onChange={(e) => handleInputChange('matchType', e.target.value)}
+                  required
+                  className="w-full h-9 px-3 py-1 rounded-md bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  {getMatchTypesForSport(formData.sport).map((type) => (
+                    <option key={type.value} value={type.value} className="bg-gray-800">
+                      {type.label}
                     </option>
                   ))}
                 </select>
@@ -348,17 +549,19 @@ export function CreateMatchOverlay({
               </div>
             </div>
 
-            <div>
-              <label className="block text-sm font-medium text-gray-300 mb-2">
-                Registration Deadline
-              </label>
-              <Input
-                type="date"
-                value={formData.registrationDeadline}
-                onChange={(e) => handleInputChange('registrationDeadline', e.target.value)}
-                className="bg-white/5 border-white/10 text-white"
-              />
-            </div>
+            {formData.accessType === 'reserve' && (
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Registration Deadline
+                </label>
+                <Input
+                  type="date"
+                  value={formData.registrationDeadline}
+                  onChange={(e) => handleInputChange('registrationDeadline', e.target.value)}
+                  className="bg-white/5 border-white/10 text-white"
+                />
+              </div>
+            )}
           </div>
 
           {/* Match Format & Participants */}
@@ -371,19 +574,14 @@ export function CreateMatchOverlay({
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Tournament Format
+                  Match Format
                 </label>
-                <select
-                  value={formData.format}
-                  onChange={(e) => handleInputChange('format', e.target.value)}
-                  className="w-full h-9 px-3 py-1 rounded-md bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
-                >
-                  {formatOptions.map((format) => (
-                    <option key={format.value} value={format.value} className="bg-gray-800">
-                      {format.label}
-                    </option>
-                  ))}
-                </select>
+                <div className="w-full h-9 px-3 py-1 rounded-md bg-gray-800/50 border border-gray-600 text-gray-300 flex items-center">
+                  {getFormatDisplayName(formData.format)}
+                </div>
+                <p className="text-xs text-gray-400 mt-1">
+                  Automatically set based on sport and match type
+                </p>
               </div>
               
               <div>
@@ -393,11 +591,12 @@ export function CreateMatchOverlay({
                 <Input
                   type="number"
                   value={formData.maxPlayers}
-                  onChange={(e) => handleInputChange('maxPlayers', e.target.value)}
-                  placeholder="16"
-                  min="2"
-                  className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+                  readOnly
+                  className="bg-gray-800/50 border-gray-600 text-gray-300 cursor-not-allowed"
                 />
+                <p className="text-xs text-gray-400 mt-1">
+                  Automatically set based on match type
+                </p>
               </div>
             </div>
           </div>
@@ -409,37 +608,45 @@ export function CreateMatchOverlay({
               Pricing & Prizes
             </h3>
             
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Entry Fee ($)
-                </label>
-                <Input
-                  type="number"
-                  value={formData.entryFee}
-                  onChange={(e) => handleInputChange('entryFee', e.target.value)}
-                  placeholder="25.00"
-                  min="0"
-                  step="0.01"
-                  className="bg-white/5 border-white/10 text-white placeholder-gray-500"
-                />
+            {formData.accessType === 'reserve' ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Entry Fee ($)
+                  </label>
+                  <Input
+                    type="number"
+                    value={formData.entryFee}
+                    onChange={(e) => handleInputChange('entryFee', e.target.value)}
+                    placeholder="25.00"
+                    min="0"
+                    step="0.01"
+                    className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+                  />
+                </div>
+                
+                <div>
+                  <label className="block text-sm font-medium text-gray-300 mb-2">
+                    Prize Pool ($)
+                  </label>
+                  <Input
+                    type="number"
+                    value={formData.prizePool}
+                    onChange={(e) => handleInputChange('prizePool', e.target.value)}
+                    placeholder="500.00"
+                    min="0"
+                    step="0.01"
+                    className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+                  />
+                </div>
               </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Prize Pool ($)
-                </label>
-                <Input
-                  type="number"
-                  value={formData.prizePool}
-                  onChange={(e) => handleInputChange('prizePool', e.target.value)}
-                  placeholder="500.00"
-                  min="0"
-                  step="0.01"
-                  className="bg-white/5 border-white/10 text-white placeholder-gray-500"
-                />
+            ) : (
+              <div className="p-4 rounded-xl bg-blue-500/10 border border-blue-500/20">
+                <p className="text-blue-400 text-sm">
+                  <strong>Open Match:</strong> This is a walk-in match. Players pay court fees directly at the venue. No advance booking or entry fees required.
+                </p>
               </div>
-            </div>
+            )}
           </div>
 
           {/* Rules and Requirements */}
@@ -511,7 +718,7 @@ export function CreateMatchOverlay({
                 boxShadow: '0 4px 12px rgba(69, 104, 130, 0.3)'
               }}
             >
-              Create Match
+              {editingMatch ? 'Update Match' : 'Create Match'}
             </Button>
           </div>
         </form>

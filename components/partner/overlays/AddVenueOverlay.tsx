@@ -184,6 +184,33 @@ export function AddVenueOverlay({ isOpen, onClose, onSubmit, editingVenue }: Add
         if (editingVenue.image_url) {
           setImagePreview(editingVenue.image_url)
         }
+      } else {
+        // Reset form for new venue creation
+        setFormData({
+          name: '',
+          address: '',
+          city: '',
+          state: '',
+          zipCode: '',
+          phone: '',
+          email: '',
+          website: '',
+          description: '',
+          amenities: [],
+          operatingHours: {
+            monday: { open: '06:00', close: '22:00', closed: false },
+            tuesday: { open: '06:00', close: '22:00', closed: false },
+            wednesday: { open: '06:00', close: '22:00', closed: false },
+            thursday: { open: '06:00', close: '22:00', closed: false },
+            friday: { open: '06:00', close: '22:00', closed: false },
+            saturday: { open: '08:00', close: '20:00', closed: false },
+            sunday: { open: '08:00', close: '20:00', closed: false },
+          }
+        })
+        
+        // Clear image preview
+        setImagePreview(null)
+        setSelectedImage(null)
       }
     }
   }, [isOpen, editingVenue])
