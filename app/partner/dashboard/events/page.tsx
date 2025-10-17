@@ -21,109 +21,17 @@ export default function EventsPage() {
   const { theme } = useTheme()
   const colors = getThemeColors(theme)
   const [showCreateEventOverlay, setShowCreateEventOverlay] = useState(false)
+  const [events, setEvents] = useState<any[]>([])
+  const [loading, setLoading] = useState(false)
 
-  // Mock data for the event overlay
-  const mockVenues = [
-    { id: '1', name: 'Downtown Tennis Center' },
-    { id: '2', name: 'Riverside Courts' },
-    { id: '3', name: 'Elite Training Facility' },
-  ]
-
-  const mockCourts = [
-    { id: '1', name: 'Center Court', venueId: '1' },
-    { id: '2', name: 'Court 1', venueId: '1' },
-    { id: '3', name: 'Court 2', venueId: '1' },
-    { id: '4', name: 'Pickleball Court A', venueId: '2' },
-    { id: '5', name: 'Court 1', venueId: '2' },
-    { id: '6', name: 'Premium Court', venueId: '3' },
-  ]
+  const mockVenues: any[] = []
+  const mockCourts: any[] = []
 
   const handleEventSubmit = (eventData: any) => {
     console.log('New event data:', eventData)
     // Here you would typically send the data to your backend API
     alert('Event created successfully! Check console for data.')
   }
-
-  const mockEvents = [
-    {
-      id: 1,
-      name: 'Tennis Fundamentals Workshop',
-      description: 'Learn the basics of tennis including proper grip, stance, and swing techniques',
-      event_type: 'workshop',
-      sport: 'tennis',
-      instructor_name: 'Sarah Johnson',
-      start_date: '2024-12-21',
-      end_date: '2024-12-21',
-      start_time: '10:00',
-      end_time: '12:00',
-      capacity: 12,
-      current_registrations: 8,
-      price: 75,
-      early_bird_price: 65,
-      skill_level: 'beginner',
-      age_group: 'adults',
-      venue_name: 'Downtown Tennis Center',
-      status: 'scheduled',
-    },
-    {
-      id: 2,
-      name: 'Advanced Pickleball Clinic',
-      description: 'Master advanced pickleball strategies, shot placement, and competitive play techniques',
-      event_type: 'clinic',
-      sport: 'pickleball',
-      instructor_name: 'Mike Rodriguez',
-      start_date: '2024-12-23',
-      end_date: '2024-12-23',
-      start_time: '14:00',
-      end_time: '16:30',
-      capacity: 16,
-      current_registrations: 14,
-      price: 95,
-      skill_level: 'advanced',
-      age_group: 'adults',
-      venue_name: 'Riverside Courts',
-      status: 'scheduled',
-    },
-    {
-      id: 3,
-      name: 'Junior Tennis Summer Camp',
-      description: 'Week-long tennis camp for kids featuring skill development, games, and fun activities',
-      event_type: 'camp',
-      sport: 'tennis',
-      instructor_name: 'Coach Emma Wilson',
-      start_date: '2024-12-26',
-      end_date: '2024-12-30',
-      start_time: '09:00',
-      end_time: '15:00',
-      capacity: 20,
-      current_registrations: 18,
-      price: 350,
-      early_bird_price: 300,
-      skill_level: 'all_levels',
-      age_group: 'kids',
-      venue_name: 'Elite Training Facility',
-      status: 'scheduled',
-    },
-    {
-      id: 4,
-      name: 'Monthly Tennis Social',
-      description: 'Casual tennis social for players of all levels. Meet new players and enjoy friendly games',
-      event_type: 'social',
-      sport: 'tennis',
-      instructor_name: null,
-      start_date: '2024-12-28',
-      end_date: '2024-12-28',
-      start_time: '18:00',
-      end_time: '21:00',
-      capacity: 24,
-      current_registrations: 16,
-      price: 25,
-      skill_level: 'all_levels',
-      age_group: 'adults',
-      venue_name: 'Central Park Tennis Club',
-      status: 'scheduled',
-    },
-  ]
 
   const EventCard = ({ event }: any) => (
     <motion.div
@@ -246,26 +154,75 @@ export default function EventsPage() {
           <h1 className="text-3xl font-bold" style={{ color: colors.text }}>Events</h1>
           <p style={{ color: colors.textSecondary }}>Organize workshops, clinics, and special events</p>
         </div>
-        <motion.button 
-          onClick={() => setShowCreateEventOverlay(true)}
-          className="text-white px-6 py-3 rounded-2xl flex items-center font-bold text-sm"
-          style={{
-            background: themeColors.accent,
-            boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)'
-          }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <Plus className="h-4 w-4 mr-2" />
-          CREATE EVENT
-        </motion.button>
+        {events.length > 0 && (
+          <motion.button
+            onClick={() => setShowCreateEventOverlay(true)}
+            className="text-white px-6 py-3 rounded-2xl flex items-center font-bold text-sm"
+            style={{
+              background: themeColors.accent,
+              boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)'
+            }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            CREATE EVENT
+          </motion.button>
+        )}
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        {mockEvents.map((event) => (
-          <EventCard key={event.id} event={event} />
-        ))}
-      </div>
+      {loading ? (
+        <div className="flex items-center justify-center py-16">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+            <p className="text-gray-400">Loading events...</p>
+          </div>
+        </div>
+      ) : events.length > 0 ? (
+        <div className="grid gap-6 lg:grid-cols-2">
+          {events.map((event) => (
+            <EventCard key={event.id} event={event} />
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center py-16">
+          <div
+            className="rounded-3xl p-12 text-center max-w-md"
+            style={{
+              background: theme === 'dark' ? 'rgba(69, 104, 130, 0.1)' : 'rgba(255, 255, 255, 0.9)',
+              border: `1px solid ${colors.cardBorder}`,
+              backdropFilter: 'blur(20px)'
+            }}
+          >
+            <div className="mb-6">
+              <div
+                className="w-24 h-24 mx-auto rounded-2xl flex items-center justify-center mb-4"
+                style={{ background: theme === 'dark' ? 'rgba(69, 104, 130, 0.2)' : 'rgba(69, 104, 130, 0.1)' }}
+              >
+                <Calendar className="h-12 w-12" style={{ color: themeColors.accent }} />
+              </div>
+              <h3 className="text-xl font-bold mb-2" style={{ color: colors.text }}>No Events Yet</h3>
+              <p className="mb-6" style={{ color: colors.textSecondary }}>
+                Get started by creating your first event. Host workshops, clinics, camps, and tournaments for your community.
+              </p>
+            </div>
+
+            <motion.button
+              onClick={() => setShowCreateEventOverlay(true)}
+              className="text-white px-8 py-4 rounded-2xl flex items-center font-bold text-sm mx-auto"
+              style={{
+                background: themeColors.accent,
+                boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)'
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Plus className="h-5 w-5 mr-2" />
+              CREATE YOUR FIRST EVENT
+            </motion.button>
+          </div>
+        </div>
+      )}
 
       {/* Create Event Overlay */}
       <CreateEventOverlay

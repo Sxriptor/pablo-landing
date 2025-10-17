@@ -22,118 +22,17 @@ export default function ClassesPage() {
   const { theme } = useTheme()
   const colors = getThemeColors(theme)
   const [showCreateClassOverlay, setShowCreateClassOverlay] = useState(false)
+  const [classes, setClasses] = useState<any[]>([])
+  const [loading, setLoading] = useState(false)
 
-  // Mock data for the class overlay
-  const mockVenues = [
-    { id: '1', name: 'Downtown Tennis Center' },
-    { id: '2', name: 'Riverside Courts' },
-    { id: '3', name: 'Community Sports Center' },
-    { id: '4', name: 'Elite Squash Club' },
-    { id: '5', name: 'Premier Tennis Academy' },
-  ]
-
-  const mockCourts = [
-    { id: '1', name: 'Court 1', venueId: '1' },
-    { id: '2', name: 'Court 2', venueId: '1' },
-    { id: '3', name: 'Court 3', venueId: '2' },
-    { id: '4', name: 'Court 2', venueId: '3' },
-    { id: '5', name: 'Court 1', venueId: '4' },
-    { id: '6', name: 'Court 4', venueId: '5' },
-  ]
+  const mockVenues: any[] = []
+  const mockCourts: any[] = []
 
   const handleClassSubmit = (classData: any) => {
     console.log('New class data:', classData)
     // Here you would typically send the data to your backend API
     alert('Class created successfully! Check console for data.')
   }
-
-  const mockClasses = [
-    {
-      id: 1,
-      title: 'Beginner Tennis Fundamentals',
-      description: 'Learn the basics of tennis including proper grip, stance, and basic strokes.',
-      instructor: 'Sarah Johnson',
-      date: '2024-12-15',
-      time: '10:00',
-      duration: 90,
-      capacity: 8,
-      enrolled: 6,
-      price: 45,
-      venue: 'Downtown Tennis Center',
-      court: 'Court 1',
-      status: 'upcoming',
-      skill_level: 'beginner',
-      sport: 'Tennis'
-    },
-    {
-      id: 2,
-      title: 'Advanced Pickleball Strategy',
-      description: 'Master advanced techniques and strategic play for competitive pickleball.',
-      instructor: 'Mike Chen',
-      date: '2024-12-16',
-      time: '14:00',
-      duration: 120,
-      capacity: 6,
-      enrolled: 4,
-      price: 60,
-      venue: 'Riverside Courts',
-      court: 'Court 3',
-      status: 'upcoming',
-      skill_level: 'advanced',
-      sport: 'Pickleball'
-    },
-    {
-      id: 3,
-      title: 'Youth Tennis Camp',
-      description: 'Fun and engaging tennis lessons for kids aged 8-14.',
-      instructor: 'Emma Davis',
-      date: '2024-12-14',
-      time: '09:00',
-      duration: 60,
-      capacity: 12,
-      enrolled: 12,
-      price: 30,
-      venue: 'Community Sports Center',
-      court: 'Court 2',
-      status: 'completed',
-      skill_level: 'all',
-      sport: 'Tennis'
-    },
-    {
-      id: 4,
-      title: 'Squash Fitness Bootcamp',
-      description: 'High-intensity squash training focused on fitness and conditioning.',
-      instructor: 'David Wilson',
-      date: '2024-12-17',
-      time: '18:00',
-      duration: 75,
-      capacity: 10,
-      enrolled: 8,
-      price: 50,
-      venue: 'Elite Squash Club',
-      court: 'Court 1',
-      status: 'upcoming',
-      skill_level: 'intermediate',
-      sport: 'Squash'
-    },
-    {
-      id: 5,
-      title: 'Mixed Doubles Strategy',
-      description: 'Learn effective strategies and communication for mixed doubles play.',
-      instructor: 'Lisa & Tom Rodriguez',
-      date: '2024-12-18',
-      time: '16:00',
-      duration: 90,
-      capacity: 8,
-      enrolled: 2,
-      price: 55,
-      venue: 'Premier Tennis Academy',
-      court: 'Court 4',
-      status: 'upcoming',
-      skill_level: 'intermediate',
-      sport: 'Tennis'
-    }
-  ]
 
   const ClassCard = ({ classItem }: any) => (
     <motion.div
@@ -258,26 +157,75 @@ export default function ClassesPage() {
           <h1 className="text-3xl font-bold" style={{ color: colors.text }}>Classes</h1>
           <p style={{ color: colors.textSecondary }}>Manage instructional classes and training sessions</p>
         </div>
-        <motion.button 
-          onClick={() => setShowCreateClassOverlay(true)}
-          className="text-white px-6 py-3 rounded-2xl flex items-center font-bold text-sm"
-          style={{
-            background: themeColors.accent,
-            boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)'
-          }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <Plus className="h-4 w-4 mr-2" />
-          CREATE CLASS
-        </motion.button>
+        {classes.length > 0 && (
+          <motion.button
+            onClick={() => setShowCreateClassOverlay(true)}
+            className="text-white px-6 py-3 rounded-2xl flex items-center font-bold text-sm"
+            style={{
+              background: themeColors.accent,
+              boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)'
+            }}
+            whileHover={{ scale: 1.05 }}
+            whileTap={{ scale: 0.95 }}
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            CREATE CLASS
+          </motion.button>
+        )}
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        {mockClasses.map((classItem) => (
-          <ClassCard key={classItem.id} classItem={classItem} />
-        ))}
-      </div>
+      {loading ? (
+        <div className="flex items-center justify-center py-16">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+            <p className="text-gray-400">Loading classes...</p>
+          </div>
+        </div>
+      ) : classes.length > 0 ? (
+        <div className="grid gap-6 lg:grid-cols-2">
+          {classes.map((classItem) => (
+            <ClassCard key={classItem.id} classItem={classItem} />
+          ))}
+        </div>
+      ) : (
+        <div className="flex flex-col items-center justify-center py-16">
+          <div
+            className="rounded-3xl p-12 text-center max-w-md"
+            style={{
+              background: theme === 'dark' ? 'rgba(69, 104, 130, 0.1)' : 'rgba(255, 255, 255, 0.9)',
+              border: `1px solid ${colors.cardBorder}`,
+              backdropFilter: 'blur(20px)'
+            }}
+          >
+            <div className="mb-6">
+              <div
+                className="w-24 h-24 mx-auto rounded-2xl flex items-center justify-center mb-4"
+                style={{ background: theme === 'dark' ? 'rgba(69, 104, 130, 0.2)' : 'rgba(69, 104, 130, 0.1)' }}
+              >
+                <GraduationCap className="h-12 w-12" style={{ color: themeColors.accent }} />
+              </div>
+              <h3 className="text-xl font-bold mb-2" style={{ color: colors.text }}>No Classes Yet</h3>
+              <p className="mb-6" style={{ color: colors.textSecondary }}>
+                Get started by creating your first class. Offer lessons, clinics, and training sessions to your community.
+              </p>
+            </div>
+
+            <motion.button
+              onClick={() => setShowCreateClassOverlay(true)}
+              className="text-white px-8 py-4 rounded-2xl flex items-center font-bold text-sm mx-auto"
+              style={{
+                background: themeColors.accent,
+                boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)'
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Plus className="h-5 w-5 mr-2" />
+              CREATE YOUR FIRST CLASS
+            </motion.button>
+          </div>
+        </div>
+      )}
 
       {/* Create Class Overlay */}
       <CreateClassOverlay
