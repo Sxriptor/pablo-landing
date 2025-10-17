@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { MapPin, Clock, DollarSign, X } from 'lucide-react'
 import {
@@ -19,9 +19,10 @@ interface AddCourtOverlayProps {
   onClose: () => void
   onSubmit: (courtData: any) => void
   venues?: Array<{ id: string; name: string }>
+  editingCourt?: any
 }
 
-export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [] }: AddCourtOverlayProps) {
+export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [], editingCourt }: AddCourtOverlayProps) {
   const [formData, setFormData] = useState({
     name: '',
     venueId: '',
@@ -29,9 +30,16 @@ export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [] }: AddC
     surface: 'hard',
     indoor: false,
     lighting: false,
+    netProvided: true,
+    equipmentRental: false,
     description: '',
     hourlyRate: '',
     peakHourRate: '',
+    advanceBookingDays: '30',
+    maxBookingDuration: '180',
+    length: '',
+    width: '',
+    height: '',
     availability: {
       monday: { available: true, openTime: '06:00', closeTime: '22:00' },
       tuesday: { available: true, openTime: '06:00', closeTime: '22:00' },
@@ -43,22 +51,73 @@ export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [] }: AddC
     }
   })
 
+  // Populate form when editing a court
+  useEffect(() => {
+    if (editingCourt) {
+      // Convert availability from database format to form format
+      const availability: any = {
+        monday: { available: true, openTime: '06:00', closeTime: '22:00' },
+        tuesday: { available: true, openTime: '06:00', closeTime: '22:00' },
+        wednesday: { available: true, openTime: '06:00', closeTime: '22:00' },
+        thursday: { available: true, openTime: '06:00', closeTime: '22:00' },
+        friday: { available: true, openTime: '06:00', closeTime: '22:00' },
+        saturday: { available: true, openTime: '08:00', closeTime: '20:00' },
+        sunday: { available: true, openTime: '08:00', closeTime: '20:00' },
+      }
+
+      // If court has available_hours, convert them to form format
+      if (editingCourt.available_hours) {
+        Object.keys(availability).forEach(day => {
+          if (editingCourt.available_hours[day] && editingCourt.available_hours[day].length > 0) {
+            availability[day] = {
+              available: true,
+              openTime: editingCourt.available_hours[day][0].start,
+              closeTime: editingCourt.available_hours[day][0].end,
+            }
+          } else {
+            availability[day] = { available: false, openTime: '06:00', closeTime: '22:00' }
+          }
+        })
+      }
+
+      setFormData({
+        name: editingCourt.name || '',
+        venueId: editingCourt.venue_id || '',
+        sport: editingCourt.sport_type || 'tennis',
+        surface: editingCourt.surface_type || 'hard',
+        indoor: editingCourt.indoor || false,
+        lighting: editingCourt.lighting || false,
+        netProvided: editingCourt.net_provided || true,
+        equipmentRental: editingCourt.equipment_rental || false,
+        description: editingCourt.description || '',
+        hourlyRate: editingCourt.hourly_rate?.toString() || '',
+        peakHourRate: editingCourt.peak_rate?.toString() || '',
+        advanceBookingDays: editingCourt.advance_booking_days?.toString() || '30',
+        maxBookingDuration: editingCourt.max_booking_duration?.toString() || '180',
+        length: editingCourt.length_meters?.toString() || '',
+        width: editingCourt.width_meters?.toString() || '',
+        height: editingCourt.height_meters?.toString() || '',
+        availability: availability,
+      })
+    }
+  }, [editingCourt])
+
   const sportOptions = [
     { value: 'tennis', label: 'Tennis' },
     { value: 'pickleball', label: 'Pickleball' },
     { value: 'badminton', label: 'Badminton' },
     { value: 'squash', label: 'Squash' },
-    { value: 'basketball', label: 'Basketball' },
-    { value: 'volleyball', label: 'Volleyball' },
+    { value: 'racquetball', label: 'Racquetball' },
+    { value: 'table_tennis', label: 'Table Tennis' },
   ]
 
   const surfaceOptions = [
     { value: 'hard', label: 'Hard Court' },
     { value: 'clay', label: 'Clay Court' },
     { value: 'grass', label: 'Grass Court' },
+    { value: 'indoor_hard', label: 'Indoor Hard Court' },
     { value: 'synthetic', label: 'Synthetic' },
     { value: 'wood', label: 'Wood' },
-    { value: 'concrete', label: 'Concrete' },
   ]
 
   const handleInputChange = (field: string, value: string | boolean) => {
@@ -80,7 +139,10 @@ export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [] }: AddC
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    onSubmit(formData)
+    const submitData = editingCourt 
+      ? { ...formData, courtId: editingCourt.id }
+      : formData
+    onSubmit(submitData)
     onClose()
     // Reset form
     setFormData({
@@ -90,9 +152,16 @@ export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [] }: AddC
       surface: 'hard',
       indoor: false,
       lighting: false,
+      netProvided: true,
+      equipmentRental: false,
       description: '',
       hourlyRate: '',
       peakHourRate: '',
+      advanceBookingDays: '30',
+      maxBookingDuration: '180',
+      length: '',
+      width: '',
+      height: '',
       availability: {
         monday: { available: true, openTime: '06:00', closeTime: '22:00' },
         tuesday: { available: true, openTime: '06:00', closeTime: '22:00' },
@@ -137,10 +206,10 @@ export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [] }: AddC
             <div className="p-2 rounded-xl" style={{ background: 'rgba(69, 104, 130, 0.2)' }}>
               <MapPin className="h-6 w-6" style={{ color: '#456882' }} />
             </div>
-            Add New Court
+            {editingCourt ? 'Edit Court' : 'Add New Court'}
           </DialogTitle>
           <DialogDescription className="text-gray-400">
-            Add a new court to your venue for bookings and matches
+            {editingCourt ? 'Update court information and settings' : 'Add a new court to your venue for bookings and matches'}
           </DialogDescription>
         </DialogHeader>
 
@@ -265,6 +334,32 @@ export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [] }: AddC
                   Lighting Available
                 </label>
               </div>
+
+              <div className="flex items-center space-x-3">
+                <input
+                  type="checkbox"
+                  id="netProvided"
+                  checked={formData.netProvided}
+                  onChange={(e) => handleInputChange('netProvided', e.target.checked)}
+                  className="w-4 h-4 rounded border-white/20 bg-white/5 text-blue-500 focus:ring-blue-500"
+                />
+                <label htmlFor="netProvided" className="text-sm font-medium text-gray-300">
+                  Net Provided
+                </label>
+              </div>
+              
+              <div className="flex items-center space-x-3">
+                <input
+                  type="checkbox"
+                  id="equipmentRental"
+                  checked={formData.equipmentRental}
+                  onChange={(e) => handleInputChange('equipmentRental', e.target.checked)}
+                  className="w-4 h-4 rounded border-white/20 bg-white/5 text-blue-500 focus:ring-blue-500"
+                />
+                <label htmlFor="equipmentRental" className="text-sm font-medium text-gray-300">
+                  Equipment Rental Available
+                </label>
+              </div>
             </div>
           </div>
 
@@ -274,6 +369,7 @@ export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [] }: AddC
               <DollarSign className="h-5 w-5" />
               Pricing
             </h3>
+            <p className="text-sm text-gray-400">Set hourly rates for the entire court (not per player)</p>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
@@ -289,6 +385,7 @@ export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [] }: AddC
                   step="0.01"
                   className="bg-white/5 border-white/10 text-white placeholder-gray-500"
                 />
+                <p className="text-xs text-gray-500 mt-1">Price for the full court per hour</p>
               </div>
               
               <div>
@@ -300,6 +397,60 @@ export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [] }: AddC
                   value={formData.peakHourRate}
                   onChange={(e) => handleInputChange('peakHourRate', e.target.value)}
                   placeholder="35.00"
+                  min="0"
+                  step="0.01"
+                  className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+                />
+                <p className="text-xs text-gray-500 mt-1">Higher rate during busy hours</p>
+              </div>
+            </div>
+          </div>
+
+          {/* Court Dimensions */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-white">Court Dimensions</h3>
+            <p className="text-sm text-gray-400">Optional - specify court size in meters</p>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Length (meters)
+                </label>
+                <Input
+                  type="number"
+                  value={formData.length}
+                  onChange={(e) => handleInputChange('length', e.target.value)}
+                  placeholder=""
+                  min="0"
+                  step="0.01"
+                  className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Width (meters)
+                </label>
+                <Input
+                  type="number"
+                  value={formData.width}
+                  onChange={(e) => handleInputChange('width', e.target.value)}
+                  placeholder=""
+                  min="0"
+                  step="0.01"
+                  className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Net Height (meters)
+                </label>
+                <Input
+                  type="number"
+                  value={formData.height}
+                  onChange={(e) => handleInputChange('height', e.target.value)}
+                  placeholder=""
                   min="0"
                   step="0.01"
                   className="bg-white/5 border-white/10 text-white placeholder-gray-500"
@@ -359,6 +510,45 @@ export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [] }: AddC
             </div>
           </div>
 
+          {/* Booking Settings */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold text-white">Booking Settings</h3>
+            
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Advance Booking Days
+                </label>
+                <Input
+                  type="number"
+                  value={formData.advanceBookingDays}
+                  onChange={(e) => handleInputChange('advanceBookingDays', e.target.value)}
+                  placeholder="30"
+                  min="1"
+                  max="365"
+                  className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+                />
+                <p className="text-xs text-gray-500 mt-1">How many days in advance can users book this court</p>
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Maximum Booking Duration (minutes)
+                </label>
+                <Input
+                  type="number"
+                  value={formData.maxBookingDuration}
+                  onChange={(e) => handleInputChange('maxBookingDuration', e.target.value)}
+                  placeholder="180"
+                  min="30"
+                  step="30"
+                  className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+                />
+                <p className="text-xs text-gray-500 mt-1">Maximum time one user can book in a row</p>
+              </div>
+            </div>
+          </div>
+
           {/* Form Actions */}
           <div className="flex justify-end space-x-4 pt-6 border-t border-white/10">
             <Button
@@ -377,7 +567,7 @@ export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [] }: AddC
                 boxShadow: '0 4px 12px rgba(69, 104, 130, 0.3)'
               }}
             >
-              Create Court
+              {editingCourt ? 'Save Changes' : 'Create Court'}
             </Button>
           </div>
         </form>

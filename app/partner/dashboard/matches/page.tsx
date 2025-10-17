@@ -13,14 +13,14 @@ import {
   Edit,
   MoreHorizontal
 } from 'lucide-react'
-import { CreateEventOverlay } from '@/components/partner/overlays'
-import { useTheme } from '@/components/partner/layout/ThemeProvider'
-import { getThemeColors, themeColors } from '@/lib/theme-colors'
+import { CreateMatchOverlay } from '@/components/partner/overlays'
 
 export default function MatchesPage() {
   const { theme } = useTheme()
   const colors = getThemeColors(theme)
   const [showCreateMatchOverlay, setShowCreateMatchOverlay] = useState(false)
+  const [matches, setMatches] = useState<any[]>([])
+  const [loading, setLoading] = useState(false)
 
   // Mock data for the match overlay (reusing event overlay for matches)
   const mockVenues = [
@@ -44,87 +44,12 @@ export default function MatchesPage() {
     alert('Match created successfully! Check console for data.')
   }
 
-  const mockMatches = [
-    { 
-      id: 1, 
-      title: 'Singles Tournament', 
-      description: 'Competitive singles tournament for intermediate to advanced players',
-      sport: 'tennis', 
-      scheduled_date: '2024-12-20', 
-      start_time: '10:00', 
-      end_time: '12:00', 
-      current_players: 8, 
-      max_players: 16, 
-      entry_fee: 25, 
-      status: 'scheduled',
-      venue_name: 'Downtown Tennis Center',
-      court_name: 'Center Court',
-      match_type: 'singles',
-      skill_level: 'intermediate',
-      prize_pool: 500,
-    },
-    { 
-      id: 2, 
-      title: 'Doubles League Match', 
-      description: 'Weekly doubles league - Division A championship match',
-      sport: 'tennis', 
-      scheduled_date: '2024-12-22', 
-      start_time: '14:00', 
-      end_time: '16:00', 
-      current_players: 12, 
-      max_players: 16, 
-      entry_fee: 35, 
-      status: 'scheduled',
-      venue_name: 'Riverside Courts',
-      court_name: 'Court 1',
-      match_type: 'doubles',
-      skill_level: 'advanced',
-      prize_pool: 800,
-    },
-    { 
-      id: 3, 
-      title: 'Pro Exhibition Match', 
-      description: 'Special exhibition featuring local tennis professionals',
-      sport: 'tennis', 
-      scheduled_date: '2024-12-18', 
-      start_time: '19:00', 
-      end_time: '21:00', 
-      current_players: 4, 
-      max_players: 4, 
-      entry_fee: 0, 
-      status: 'completed',
-      venue_name: 'Elite Training Facility',
-      court_name: 'Premium Court',
-      match_type: 'exhibition',
-      skill_level: 'professional',
-      prize_pool: 0,
-    },
-    { 
-      id: 4, 
-      title: 'Pickleball Social', 
-      description: 'Fun social pickleball games for all skill levels',
-      sport: 'pickleball', 
-      scheduled_date: '2024-12-21', 
-      start_time: '16:00', 
-      end_time: '18:00', 
-      current_players: 6, 
-      max_players: 12, 
-      entry_fee: 15, 
-      status: 'scheduled',
-      venue_name: 'Riverside Courts',
-      court_name: 'Pickleball Court A',
-      match_type: 'social',
-      skill_level: 'beginner',
-      prize_pool: 0,
-    },
-  ]
-
   const MatchCard = ({ match }: any) => (
     <motion.div
       className="rounded-3xl p-6 relative overflow-hidden"
       style={{
-        background: theme === 'dark' ? 'rgba(69, 104, 130, 0.1)' : 'rgba(255, 255, 255, 0.9)',
-        border: `1px solid ${colors.cardBorder}`,
+        background: 'rgba(69, 104, 130, 0.1)',
+        border: '1px solid rgba(69, 104, 130, 0.2)',
         backdropFilter: 'blur(20px)'
       }}
       whileHover={{ 
@@ -133,7 +58,7 @@ export default function MatchesPage() {
       }}
     >
       <div className="absolute top-0 right-0 w-32 h-32 rounded-full" style={{
-        background: theme === 'dark' ? 'radial-gradient(circle, rgba(69, 104, 130, 0.15) 0%, transparent 70%)' : 'radial-gradient(circle, rgba(69, 104, 130, 0.08) 0%, transparent 70%)',
+        background: 'radial-gradient(circle, rgba(69, 104, 130, 0.15) 0%, transparent 70%)',
         filter: 'blur(30px)'
       }} />
       
@@ -229,34 +154,82 @@ export default function MatchesPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold" style={{ color: colors.text }}>Matches</h1>
-          <p style={{ color: colors.textSecondary }}>Organize and manage competitive matches</p>
+      <div>
+        <h1 className="text-3xl font-bold text-white">Matches</h1>
+        <p className="text-gray-400">Organize and manage competitive matches</p>
+      </div>
+
+      {loading ? (
+        <div className="flex items-center justify-center py-16">
+          <div className="text-center">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white mx-auto mb-4"></div>
+            <p className="text-gray-400">Loading matches...</p>
+          </div>
         </div>
-        <motion.button 
-          onClick={() => setShowCreateMatchOverlay(true)}
-          className="text-white px-6 py-3 rounded-2xl flex items-center font-bold text-sm"
-          style={{
-            background: themeColors.accent,
-            boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)'
-          }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <Plus className="h-4 w-4 mr-2" />
-          CREATE MATCH
-        </motion.button>
-      </div>
+      ) : matches.length === 0 ? (
+        /* No matches yet */
+        <div className="text-center py-12">
+          <div className="rounded-3xl p-8 max-w-md mx-auto" style={{
+            background: 'rgba(69, 104, 130, 0.1)',
+            border: '1px solid rgba(69, 104, 130, 0.2)',
+            backdropFilter: 'blur(20px)'
+          }}>
+            <div className="mb-6">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{
+                background: 'rgba(69, 104, 130, 0.2)'
+              }}>
+                <Trophy className="h-8 w-8" style={{ color: '#456882' }} />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">No Matches Yet</h3>
+              <p className="text-gray-400 mb-6">
+                Create your first match to start organizing competitive games and tournaments.
+              </p>
+              <motion.button
+                onClick={() => setShowCreateMatchOverlay(true)}
+                className="text-white px-6 py-3 rounded-2xl flex items-center font-bold text-sm mx-auto"
+                style={{
+                  background: '#456882',
+                  boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)'
+                }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                CREATE MATCH
+              </motion.button>
+            </div>
+          </div>
+        </div>
+      ) : (
+        /* Show matches */
+        <div className="space-y-6">
+          <div className="flex items-center justify-between">
+            <p className="text-gray-400">{matches.length} match{matches.length !== 1 ? 'es' : ''} found</p>
+            <motion.button
+              onClick={() => setShowCreateMatchOverlay(true)}
+              className="text-white px-6 py-3 rounded-2xl flex items-center font-bold text-sm"
+              style={{
+                background: '#456882',
+                boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)'
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              CREATE MATCH
+            </motion.button>
+          </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
-        {mockMatches.map((match) => (
-          <MatchCard key={match.id} match={match} />
-        ))}
-      </div>
+          <div className="grid gap-6 md:grid-cols-2">
+            {matches.map((match) => (
+              <MatchCard key={match.id} match={match} />
+            ))}
+          </div>
+        </div>
+      )}
 
-      {/* Create Match Overlay (using Event overlay) */}
-      <CreateEventOverlay
+      {/* Create Match Overlay */}
+      <CreateMatchOverlay
         isOpen={showCreateMatchOverlay}
         onClose={() => setShowCreateMatchOverlay(false)}
         onSubmit={handleMatchSubmit}
