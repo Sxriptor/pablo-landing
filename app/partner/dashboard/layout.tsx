@@ -108,13 +108,13 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen" style={{ 
+    <div className="h-screen flex flex-col overflow-hidden" style={{ 
       background: '#050a0f'
     }}>
       <Navbar partner={partner} />
-      <div className="flex">
+      <div className="flex flex-1 overflow-hidden">
         <Sidebar />
-        <main className="flex-1 p-8">
+        <main className="flex-1 overflow-y-auto p-8">
           {children}
         </main>
       </div>

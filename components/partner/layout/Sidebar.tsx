@@ -10,12 +10,11 @@ import {
   Calendar,
   Users,
   Settings,
-  ChevronLeft,
-  ChevronRight,
   Building2,
   Trophy,
   ArrowRight,
   ArrowLeft,
+  HelpCircle,
 } from 'lucide-react'
 
 
@@ -75,7 +74,7 @@ export function Sidebar({ className }: SidebarProps) {
   return (
     <div
       className={cn(
-        'transition-all duration-300 relative min-h-screen',
+        'transition-all duration-300 relative h-full flex flex-col',
         collapsed ? 'w-24' : 'w-80',
         className
       )}
@@ -85,60 +84,53 @@ export function Sidebar({ className }: SidebarProps) {
         borderRight: '1px solid rgba(69, 104, 130, 0.2)'
       }}
     >
-      {/* Header */}
-      <div className="flex h-20 items-center justify-end px-6" style={{ borderBottom: '1px solid rgba(69, 104, 130, 0.2)' }}>
-        <button
-          onClick={() => setCollapsed(!collapsed)}
-          className="p-2 text-gray-400 hover:text-white transition-colors rounded-lg"
-        >
-          {collapsed ? <ChevronRight className="h-4 w-4" /> : <ChevronLeft className="h-4 w-4" />}
-        </button>
-      </div>
+      {/* Account Pages Section - Top */}
+      <div className={cn("flex-1", collapsed && "pt-6")}>
+        {!collapsed && (
+          <div className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+            Account Pages
+          </div>
+        )}
 
-      {!collapsed && (
-        <div className="px-6 py-4 text-xs font-semibold text-gray-500 uppercase tracking-wider">
-          Account Pages
-        </div>
-      )}
+        {/* Navigation */}
+        <div className="px-4 pb-4">
+          <nav className="space-y-2">
+            {navigation.map((item) => {
+              const isActive = pathname === item.href
+              const Icon = item.icon
 
-      {/* Navigation */}
-      <div className="px-4 pb-4">
-        <nav className="space-y-2">
-          {navigation.map((item) => {
-            const isActive = pathname === item.href
-            const Icon = item.icon
-
-            return (
-              <Link key={item.name} href={item.href}>
-                <div
-                  className={cn(
-                    'flex items-center px-4 py-3.5 text-sm font-semibold rounded-2xl transition-all',
-                    isActive
-                      ? 'text-white'
-                      : 'text-gray-400 hover:text-white'
-                  )}
-                  style={isActive ? {
-                    background: '#456882',
-                    boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)'
-                  } : {}}
-                >
-                  <div className={`p-2 rounded-xl ${isActive ? 'bg-white/20' : 'bg-transparent'}`}>
-                    <Icon className="h-4 w-4 flex-shrink-0" />
+              return (
+                <Link key={item.name} href={item.href}>
+                  <div
+                    className={cn(
+                      'flex items-center px-4 py-3.5 text-sm font-semibold rounded-2xl transition-all',
+                      isActive
+                        ? 'text-white'
+                        : 'text-gray-400 hover:text-white'
+                    )}
+                    style={isActive ? {
+                      background: '#456882',
+                      boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)'
+                    } : {}}
+                  >
+                    <div className={`p-2 rounded-xl ${isActive ? 'bg-white/20' : 'bg-transparent'}`}>
+                      <Icon className="h-4 w-4 flex-shrink-0" />
+                    </div>
+                    {!collapsed && (
+                      <span className="ml-3">{item.name}</span>
+                    )}
                   </div>
-                  {!collapsed && (
-                    <span className="ml-3">{item.name}</span>
-                  )}
-                </div>
-              </Link>
-            )
-          })}
-        </nav>
+                </Link>
+              )
+            })}
+          </nav>
+        </div>
       </div>
 
-      {/* Footer */}
-      {!collapsed && (
-        <div className="px-6 pb-6 border-t border-gray-700/50">
-          <div className="rounded-2xl p-4 mt-6" style={{
+      {/* Need Help Section - Bottom */}
+      {!collapsed ? (
+        <div className="px-6 pb-6 mt-auto">
+          <div className="rounded-2xl p-4" style={{
             background: 'rgba(69, 104, 130, 0.1)',
             border: '1px solid rgba(69, 104, 130, 0.2)'
           }}>
@@ -157,15 +149,30 @@ export function Sidebar({ className }: SidebarProps) {
             </button>
           </div>
         </div>
+      ) : (
+        /* Collapsed Support Button */
+        <div className="px-4 pb-6 mt-auto">
+          <button
+            className="w-full p-3 rounded-2xl flex items-center justify-center text-white transition-all hover:scale-105"
+            style={{
+              background: '#456882',
+              boxShadow: '0 4px 12px rgba(69, 104, 130, 0.3)'
+            }}
+            title="Get Support"
+          >
+            <HelpCircle className="h-5 w-5" />
+          </button>
+        </div>
       )}
 
-      {/* Vertical Edge Button */}
+      {/* Vertical Edge Button - Centered on Account Pages section */}
       <button
         onClick={() => setCollapsed(!collapsed)}
-        className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 w-8 h-16 rounded-2xl flex items-center justify-center text-white transition-all hover:scale-110 hover:shadow-2xl z-10"
+        className="absolute right-0 translate-x-1/2 w-8 h-16 rounded-2xl flex items-center justify-center text-white transition-all hover:scale-110 hover:shadow-2xl z-10"
         style={{
           background: '#456882',
-          boxShadow: '0 4px 16px rgba(69, 104, 130, 0.4)'
+          boxShadow: '0 4px 16px rgba(69, 104, 130, 0.4)',
+          top: '200px' // Adjusted for removed header - centered in navigation area
         }}
         title={collapsed ? "Expand Sidebar" : "Collapse Sidebar"}
       >
