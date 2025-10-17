@@ -14,7 +14,7 @@ import {
 } from 'lucide-react'
 import { AddCourtOverlay } from '@/components/partner/overlays'
 import { getPartnerVenues } from '@/lib/supabase/venues'
-import { createCourt, getPartnerCourts, toggleCourtStatus, deleteCourt, CourtData } from '@/lib/supabase/courts'
+import { createCourt, getPartnerCourts, toggleCourtStatus, deleteCourt, updateCourt, CourtData } from '@/lib/supabase/courts'
 import { useToast } from '@/hooks/use-toast'
 import {
   DropdownMenu,
@@ -35,6 +35,7 @@ import {
 
 export default function CourtsPage() {
   const [showAddCourtOverlay, setShowAddCourtOverlay] = useState(false)
+  const [editingCourt, setEditingCourt] = useState<any>(null)
   const [venues, setVenues] = useState<any[]>([])
   const [courts, setCourts] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
@@ -68,30 +69,39 @@ export default function CourtsPage() {
     }
   }
 
-  const handleCourtSubmit = async (courtData: CourtData) => {
+  const handleCourtSubmit = async (courtData: CourtData & { courtId?: string }) => {
     console.log('Court data:', courtData)
 
     try {
-      const result = await createCourt(courtData)
+      let result
+
+      if (courtData.courtId) {
+        // Update existing court
+        result = await updateCourt(courtData.courtId, courtData)
+      } else {
+        // Create new court
+        result = await createCourt(courtData)
+      }
 
       if (result.success) {
         toast({
           title: "Success!",
-          description: "Court created successfully!",
+          description: courtData.courtId ? "Court updated successfully!" : "Court created successfully!",
         })
-        console.log('Court creation result:', result.court)
+        console.log('Court operation result:', result.court)
         setShowAddCourtOverlay(false)
-        // Reload courts to show the new one
+        setEditingCourt(null)
+        // Reload courts to show the changes
         loadData()
       } else {
         toast({
           title: "Error",
-          description: result.error || "Failed to create court",
+          description: result.error || `Failed to ${courtData.courtId ? 'update' : 'create'} court`,
           variant: "destructive",
         })
       }
     } catch (error) {
-      console.error('Error creating court:', error)
+      console.error('Error with court operation:', error)
       toast({
         title: "Error",
         description: "An unexpected error occurred",
@@ -129,12 +139,13 @@ export default function CourtsPage() {
   }
 
   const handleEditCourt = (court: any) => {
-    // TODO: Implement court editing functionality
-    console.log('Edit court:', court)
-    toast({
-      title: "Coming Soon",
-      description: "Court editing functionality will be available soon!",
-    })
+    setEditingCourt(court)
+    setShowAddCourtOverlay(true)
+  }
+
+  const handleCloseOverlay = () => {
+    setShowAddCourtOverlay(false)
+    setEditingCourt(null)
   }
 
   const handleDeleteCourt = async () => {
@@ -396,9 +407,10 @@ export default function CourtsPage() {
       {/* Add Court Overlay */}
       <AddCourtOverlay
         isOpen={showAddCourtOverlay}
-        onClose={() => setShowAddCourtOverlay(false)}
+        onClose={handleCloseOverlay}
         onSubmit={handleCourtSubmit}
         venues={venues}
+        editingCourt={editingCourt}
       />
 
       {/* Delete Confirmation Dialog */}

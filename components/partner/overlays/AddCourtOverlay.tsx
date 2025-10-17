@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { MapPin, Clock, DollarSign, X } from 'lucide-react'
 import {
@@ -19,9 +19,10 @@ interface AddCourtOverlayProps {
   onClose: () => void
   onSubmit: (courtData: any) => void
   venues?: Array<{ id: string; name: string }>
+  editingCourt?: any
 }
 
-export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [] }: AddCourtOverlayProps) {
+export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [], editingCourt }: AddCourtOverlayProps) {
   const [formData, setFormData] = useState({
     name: '',
     venueId: '',
@@ -49,6 +50,57 @@ export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [] }: AddC
       sunday: { available: true, openTime: '08:00', closeTime: '20:00' },
     }
   })
+
+  // Populate form when editing a court
+  useEffect(() => {
+    if (editingCourt) {
+      // Convert availability from database format to form format
+      const availability: any = {
+        monday: { available: true, openTime: '06:00', closeTime: '22:00' },
+        tuesday: { available: true, openTime: '06:00', closeTime: '22:00' },
+        wednesday: { available: true, openTime: '06:00', closeTime: '22:00' },
+        thursday: { available: true, openTime: '06:00', closeTime: '22:00' },
+        friday: { available: true, openTime: '06:00', closeTime: '22:00' },
+        saturday: { available: true, openTime: '08:00', closeTime: '20:00' },
+        sunday: { available: true, openTime: '08:00', closeTime: '20:00' },
+      }
+
+      // If court has available_hours, convert them to form format
+      if (editingCourt.available_hours) {
+        Object.keys(availability).forEach(day => {
+          if (editingCourt.available_hours[day] && editingCourt.available_hours[day].length > 0) {
+            availability[day] = {
+              available: true,
+              openTime: editingCourt.available_hours[day][0].start,
+              closeTime: editingCourt.available_hours[day][0].end,
+            }
+          } else {
+            availability[day] = { available: false, openTime: '06:00', closeTime: '22:00' }
+          }
+        })
+      }
+
+      setFormData({
+        name: editingCourt.name || '',
+        venueId: editingCourt.venue_id || '',
+        sport: editingCourt.sport_type || 'tennis',
+        surface: editingCourt.surface_type || 'hard',
+        indoor: editingCourt.indoor || false,
+        lighting: editingCourt.lighting || false,
+        netProvided: editingCourt.net_provided || true,
+        equipmentRental: editingCourt.equipment_rental || false,
+        description: editingCourt.description || '',
+        hourlyRate: editingCourt.hourly_rate?.toString() || '',
+        peakHourRate: editingCourt.peak_rate?.toString() || '',
+        advanceBookingDays: editingCourt.advance_booking_days?.toString() || '30',
+        maxBookingDuration: editingCourt.max_booking_duration?.toString() || '180',
+        length: editingCourt.length_meters?.toString() || '',
+        width: editingCourt.width_meters?.toString() || '',
+        height: editingCourt.height_meters?.toString() || '',
+        availability: availability,
+      })
+    }
+  }, [editingCourt])
 
   const sportOptions = [
     { value: 'tennis', label: 'Tennis' },
@@ -87,7 +139,10 @@ export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [] }: AddC
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault()
-    onSubmit(formData)
+    const submitData = editingCourt 
+      ? { ...formData, courtId: editingCourt.id }
+      : formData
+    onSubmit(submitData)
     onClose()
     // Reset form
     setFormData({
@@ -151,10 +206,10 @@ export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [] }: AddC
             <div className="p-2 rounded-xl" style={{ background: 'rgba(69, 104, 130, 0.2)' }}>
               <MapPin className="h-6 w-6" style={{ color: '#456882' }} />
             </div>
-            Add New Court
+            {editingCourt ? 'Edit Court' : 'Add New Court'}
           </DialogTitle>
           <DialogDescription className="text-gray-400">
-            Add a new court to your venue for bookings and matches
+            {editingCourt ? 'Update court information and settings' : 'Add a new court to your venue for bookings and matches'}
           </DialogDescription>
         </DialogHeader>
 
@@ -509,7 +564,7 @@ export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [] }: AddC
                 boxShadow: '0 4px 12px rgba(69, 104, 130, 0.3)'
               }}
             >
-              Create Court
+              {editingCourt ? 'Save Changes' : 'Create Court'}
             </Button>
           </div>
         </form>
