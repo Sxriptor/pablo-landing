@@ -13,7 +13,7 @@ import {
   Edit,
   MoreHorizontal
 } from 'lucide-react'
-import { CreateEventOverlay } from '@/components/partner/overlays'
+import { CreateMatchOverlay } from '@/components/partner/overlays'
 
 export default function MatchesPage() {
   const [showCreateMatchOverlay, setShowCreateMatchOverlay] = useState(false)
@@ -216,8 +216,8 @@ export default function MatchesPage() {
         </div>
       )}
 
-      {/* Create Match Overlay (using Event overlay) */}
-      <CreateEventOverlay
+      {/* Create Match Overlay */}
+      <CreateMatchOverlay
         isOpen={showCreateMatchOverlay}
         onClose={() => setShowCreateMatchOverlay(false)}
         onSubmit={handleMatchSubmit}
