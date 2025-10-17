@@ -15,8 +15,12 @@ import {
   GraduationCap
 } from 'lucide-react'
 import { CreateClassOverlay } from '@/components/partner/overlays'
+import { useTheme } from '@/components/partner/layout/ThemeProvider'
+import { getThemeColors, themeColors } from '@/lib/theme-colors'
 
 export default function ClassesPage() {
+  const { theme } = useTheme()
+  const colors = getThemeColors(theme)
   const [showCreateClassOverlay, setShowCreateClassOverlay] = useState(false)
 
   // Mock data for the class overlay
@@ -135,8 +139,8 @@ export default function ClassesPage() {
     <motion.div
       className="rounded-3xl p-6 relative overflow-hidden"
       style={{
-        background: 'linear-gradient(135deg, rgba(26, 32, 53, 0.8) 0%, rgba(15, 21, 53, 0.8) 100%)',
-        border: '1px solid rgba(59, 130, 246, 0.1)',
+        background: theme === 'dark' ? 'rgba(69, 104, 130, 0.1)' : 'rgba(255, 255, 255, 0.9)',
+        border: `1px solid ${colors.cardBorder}`,
         backdropFilter: 'blur(20px)'
       }}
       whileHover={{ 
@@ -145,7 +149,7 @@ export default function ClassesPage() {
       }}
     >
       <div className="absolute top-0 right-0 w-32 h-32 rounded-full" style={{
-        background: 'radial-gradient(circle, rgba(102, 126, 234, 0.15) 0%, transparent 70%)',
+        background: theme === 'dark' ? 'radial-gradient(circle, rgba(69, 104, 130, 0.15) 0%, transparent 70%)' : 'radial-gradient(circle, rgba(69, 104, 130, 0.08) 0%, transparent 70%)',
         filter: 'blur(30px)'
       }} />
       
@@ -153,7 +157,7 @@ export default function ClassesPage() {
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1">
             <div className="flex items-center space-x-3 mb-2">
-              <h3 className="text-xl font-bold text-white">{classItem.title}</h3>
+              <h3 className="text-xl font-bold" style={{ color: colors.text }}>{classItem.title}</h3>
               <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${
                 classItem.status === 'upcoming' ? 'bg-blue-500/20 text-blue-400' :
                 classItem.status === 'completed' ? 'bg-green-500/20 text-green-400' :
@@ -163,8 +167,8 @@ export default function ClassesPage() {
                 {classItem.status}
               </span>
             </div>
-            <p className="text-sm text-gray-400 mb-3">{classItem.description}</p>
-            <div className="flex items-center space-x-4 text-sm text-gray-300 mb-3">
+            <p className="text-sm mb-3" style={{ color: colors.textSecondary }}>{classItem.description}</p>
+            <div className="flex items-center space-x-4 text-sm mb-3" style={{ color: colors.textSecondary }}>
               <div className="flex items-center space-x-1">
                 <Calendar className="h-4 w-4" />
                 <span>{new Date(classItem.date).toLocaleDateString()}</span>
@@ -174,7 +178,7 @@ export default function ClassesPage() {
                 <span>{classItem.time} ({classItem.duration}min)</span>
               </div>
             </div>
-            <div className="flex items-center space-x-4 text-sm text-gray-300">
+            <div className="flex items-center space-x-4 text-sm" style={{ color: colors.textSecondary }}>
               <div className="flex items-center space-x-1">
                 <MapPin className="h-4 w-4" />
                 <span>{classItem.venue}</span>
@@ -185,15 +189,20 @@ export default function ClassesPage() {
               <span className="capitalize">{classItem.skill_level}</span>
             </div>
           </div>
-          <button className="p-2 text-gray-400 hover:text-white transition-colors rounded-lg">
+          <button 
+            className="p-2 transition-colors rounded-lg"
+            style={{ color: colors.textSecondary }}
+            onMouseEnter={(e) => e.currentTarget.style.color = colors.text}
+            onMouseLeave={(e) => e.currentTarget.style.color = colors.textSecondary}
+          >
             <MoreHorizontal className="h-4 w-4" />
           </button>
         </div>
 
-        <div className="mb-4 p-3 rounded-2xl bg-white/5">
+        <div className="mb-4 p-3 rounded-2xl" style={{ background: theme === 'dark' ? 'rgba(255, 255, 255, 0.05)' : 'rgba(69, 104, 130, 0.05)' }}>
           <div className="flex items-center space-x-2">
             <GraduationCap className="h-4 w-4 text-purple-400" />
-            <p className="text-sm text-gray-300">
+            <p className="text-sm" style={{ color: colors.textSecondary }}>
               <span className="font-semibold">Instructor:</span> {classItem.instructor}
             </p>
           </div>
@@ -204,31 +213,36 @@ export default function ClassesPage() {
             <div className="flex items-center justify-center mb-1">
               <Users className="h-4 w-4 text-blue-400" />
             </div>
-            <p className="text-lg font-bold text-white">{classItem.enrolled}/{classItem.capacity}</p>
-            <p className="text-xs text-gray-500">Enrolled</p>
+            <p className="text-lg font-bold" style={{ color: colors.text }}>{classItem.enrolled}/{classItem.capacity}</p>
+            <p className="text-xs" style={{ color: colors.textTertiary }}>Enrolled</p>
           </div>
           <div className="text-center">
             <div className="flex items-center justify-center mb-1">
               <DollarSign className="h-4 w-4 text-green-400" />
             </div>
-            <p className="text-lg font-bold text-white">${classItem.price}</p>
-            <p className="text-xs text-gray-500">Price</p>
+            <p className="text-lg font-bold" style={{ color: colors.text }}>${classItem.price}</p>
+            <p className="text-xs" style={{ color: colors.textTertiary }}>Price</p>
           </div>
           <div className="text-center">
-            <p className="text-lg font-bold text-white">{Math.round((classItem.enrolled / classItem.capacity) * 100)}%</p>
-            <p className="text-xs text-gray-500">Full</p>
+            <p className="text-lg font-bold" style={{ color: colors.text }}>{Math.round((classItem.enrolled / classItem.capacity) * 100)}%</p>
+            <p className="text-xs" style={{ color: colors.textTertiary }}>Full</p>
           </div>
         </div>
 
         <div className="flex items-center justify-between">
-          <div className="text-sm text-gray-300">
+          <div className="text-sm" style={{ color: colors.textSecondary }}>
             {classItem.court} • {classItem.duration} minutes
           </div>
           <div className="flex space-x-2">
             <button className="p-2 text-blue-400 hover:text-blue-300 transition-colors rounded-lg">
               <Eye className="h-4 w-4" />
             </button>
-            <button className="p-2 text-gray-400 hover:text-white transition-colors rounded-lg">
+            <button 
+              className="p-2 transition-colors rounded-lg"
+              style={{ color: colors.textSecondary }}
+              onMouseEnter={(e) => e.currentTarget.style.color = colors.text}
+              onMouseLeave={(e) => e.currentTarget.style.color = colors.textSecondary}
+            >
               <Edit className="h-4 w-4" />
             </button>
           </div>
@@ -241,15 +255,15 @@ export default function ClassesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Classes</h1>
-          <p className="text-gray-400">Manage instructional classes and training sessions</p>
+          <h1 className="text-3xl font-bold" style={{ color: colors.text }}>Classes</h1>
+          <p style={{ color: colors.textSecondary }}>Manage instructional classes and training sessions</p>
         </div>
         <motion.button 
           onClick={() => setShowCreateClassOverlay(true)}
           className="text-white px-6 py-3 rounded-2xl flex items-center font-bold text-sm"
           style={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)'
+            background: themeColors.accent,
+            boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)'
           }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}

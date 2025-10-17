@@ -343,20 +343,20 @@ export default function VenuesPage() {
           <div 
             className="rounded-3xl p-12 text-center max-w-md"
             style={{
-              background: 'rgba(69, 104, 130, 0.1)',
-              border: '2px dashed rgba(69, 104, 130, 0.3)',
+              background: theme === 'dark' ? 'rgba(69, 104, 130, 0.1)' : 'rgba(255, 255, 255, 0.9)',
+              border: `2px dashed ${colors.border}`,
               backdropFilter: 'blur(20px)'
             }}
           >
             <div className="mb-6">
               <div 
                 className="w-24 h-24 mx-auto rounded-2xl flex items-center justify-center mb-4"
-                style={{ background: 'rgba(69, 104, 130, 0.2)' }}
+                style={{ background: theme === 'dark' ? 'rgba(69, 104, 130, 0.2)' : 'rgba(69, 104, 130, 0.1)' }}
               >
-                <Building2 className="h-12 w-12" style={{ color: '#456882' }} />
+                <Building2 className="h-12 w-12" style={{ color: themeColors.accent }} />
               </div>
-              <h3 className="text-xl font-bold text-white mb-2">No Venues Yet</h3>
-              <p className="text-gray-400 mb-6">
+              <h3 className="text-xl font-bold mb-2" style={{ color: colors.text }}>No Venues Yet</h3>
+              <p className="mb-6" style={{ color: colors.textSecondary }}>
                 Get started by adding your first venue. You can manage courts, events, and bookings once you have a venue set up.
               </p>
             </div>
@@ -365,7 +365,7 @@ export default function VenuesPage() {
               onClick={() => setShowAddVenueOverlay(true)}
               className="text-white px-8 py-4 rounded-2xl flex items-center font-bold text-sm mx-auto"
               style={{
-                background: '#456882',
+                background: themeColors.accent,
                 boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)'
               }}
               whileHover={{ scale: 1.05 }}

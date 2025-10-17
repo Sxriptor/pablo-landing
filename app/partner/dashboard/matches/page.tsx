@@ -14,8 +14,12 @@ import {
   MoreHorizontal
 } from 'lucide-react'
 import { CreateEventOverlay } from '@/components/partner/overlays'
+import { useTheme } from '@/components/partner/layout/ThemeProvider'
+import { getThemeColors, themeColors } from '@/lib/theme-colors'
 
 export default function MatchesPage() {
+  const { theme } = useTheme()
+  const colors = getThemeColors(theme)
   const [showCreateMatchOverlay, setShowCreateMatchOverlay] = useState(false)
 
   // Mock data for the match overlay (reusing event overlay for matches)
@@ -119,8 +123,8 @@ export default function MatchesPage() {
     <motion.div
       className="rounded-3xl p-6 relative overflow-hidden"
       style={{
-        background: 'linear-gradient(135deg, rgba(26, 32, 53, 0.8) 0%, rgba(15, 21, 53, 0.8) 100%)',
-        border: '1px solid rgba(59, 130, 246, 0.1)',
+        background: theme === 'dark' ? 'rgba(69, 104, 130, 0.1)' : 'rgba(255, 255, 255, 0.9)',
+        border: `1px solid ${colors.cardBorder}`,
         backdropFilter: 'blur(20px)'
       }}
       whileHover={{ 
@@ -129,7 +133,7 @@ export default function MatchesPage() {
       }}
     >
       <div className="absolute top-0 right-0 w-32 h-32 rounded-full" style={{
-        background: 'radial-gradient(circle, rgba(102, 126, 234, 0.15) 0%, transparent 70%)',
+        background: theme === 'dark' ? 'radial-gradient(circle, rgba(69, 104, 130, 0.15) 0%, transparent 70%)' : 'radial-gradient(circle, rgba(69, 104, 130, 0.08) 0%, transparent 70%)',
         filter: 'blur(30px)'
       }} />
       
@@ -137,7 +141,7 @@ export default function MatchesPage() {
         <div className="flex items-start justify-between mb-4">
           <div className="flex-1">
             <div className="flex items-center space-x-3 mb-2">
-              <h3 className="text-xl font-bold text-white">{match.title}</h3>
+              <h3 className="text-xl font-bold" style={{ color: colors.text }}>{match.title}</h3>
               <span className={`px-3 py-1 rounded-full text-xs font-bold uppercase ${
                 match.status === 'scheduled' ? 'bg-blue-500/20 text-blue-400' :
                 match.status === 'completed' ? 'bg-green-500/20 text-green-400' :
@@ -146,8 +150,8 @@ export default function MatchesPage() {
                 {match.status}
               </span>
             </div>
-            <p className="text-sm text-gray-400 mb-3">{match.description}</p>
-            <div className="flex items-center space-x-4 text-sm text-gray-300 mb-3">
+            <p className="text-sm mb-3" style={{ color: colors.textSecondary }}>{match.description}</p>
+            <div className="flex items-center space-x-4 text-sm mb-3" style={{ color: colors.textSecondary }}>
               <div className="flex items-center space-x-1">
                 <Calendar className="h-4 w-4" />
                 <span>{new Date(match.scheduled_date).toLocaleDateString()}</span>
@@ -156,7 +160,7 @@ export default function MatchesPage() {
                 <span>{match.start_time} - {match.end_time}</span>
               </div>
             </div>
-            <div className="flex items-center space-x-4 text-sm text-gray-300">
+            <div className="flex items-center space-x-4 text-sm" style={{ color: colors.textSecondary }}>
               <div className="flex items-center space-x-1">
                 <MapPin className="h-4 w-4" />
                 <span>{match.venue_name}</span>
@@ -167,7 +171,12 @@ export default function MatchesPage() {
               <span className="capitalize">{match.skill_level}</span>
             </div>
           </div>
-          <button className="p-2 text-gray-400 hover:text-white transition-colors rounded-lg">
+          <button 
+            className="p-2 transition-colors rounded-lg"
+            style={{ color: colors.textSecondary }}
+            onMouseEnter={(e) => e.currentTarget.style.color = colors.text}
+            onMouseLeave={(e) => e.currentTarget.style.color = colors.textSecondary}
+          >
             <MoreHorizontal className="h-4 w-4" />
           </button>
         </div>
@@ -177,34 +186,39 @@ export default function MatchesPage() {
             <div className="flex items-center justify-center mb-1">
               <Users className="h-4 w-4 text-blue-400" />
             </div>
-            <p className="text-lg font-bold text-white">{match.current_players}/{match.max_players}</p>
-            <p className="text-xs text-gray-500">Players</p>
+            <p className="text-lg font-bold" style={{ color: colors.text }}>{match.current_players}/{match.max_players}</p>
+            <p className="text-xs" style={{ color: colors.textTertiary }}>Players</p>
           </div>
           <div className="text-center">
             <div className="flex items-center justify-center mb-1">
               <DollarSign className="h-4 w-4 text-green-400" />
             </div>
-            <p className="text-lg font-bold text-white">${match.entry_fee}</p>
-            <p className="text-xs text-gray-500">Entry Fee</p>
+            <p className="text-lg font-bold" style={{ color: colors.text }}>${match.entry_fee}</p>
+            <p className="text-xs" style={{ color: colors.textTertiary }}>Entry Fee</p>
           </div>
           <div className="text-center">
             <div className="flex items-center justify-center mb-1">
               <Trophy className="h-4 w-4 text-yellow-400" />
             </div>
-            <p className="text-lg font-bold text-white">${match.prize_pool}</p>
-            <p className="text-xs text-gray-500">Prize Pool</p>
+            <p className="text-lg font-bold" style={{ color: colors.text }}>${match.prize_pool}</p>
+            <p className="text-xs" style={{ color: colors.textTertiary }}>Prize Pool</p>
           </div>
         </div>
 
         <div className="flex items-center justify-between">
-          <div className="text-sm text-gray-300">
+          <div className="text-sm" style={{ color: colors.textSecondary }}>
             <span className="capitalize">{match.match_type}</span> • {match.court_name}
           </div>
           <div className="flex space-x-2">
             <button className="p-2 text-blue-400 hover:text-blue-300 transition-colors rounded-lg">
               <Eye className="h-4 w-4" />
             </button>
-            <button className="p-2 text-gray-400 hover:text-white transition-colors rounded-lg">
+            <button 
+              className="p-2 transition-colors rounded-lg"
+              style={{ color: colors.textSecondary }}
+              onMouseEnter={(e) => e.currentTarget.style.color = colors.text}
+              onMouseLeave={(e) => e.currentTarget.style.color = colors.textSecondary}
+            >
               <Edit className="h-4 w-4" />
             </button>
           </div>
@@ -217,15 +231,15 @@ export default function MatchesPage() {
     <div className="space-y-6">
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-3xl font-bold text-white">Matches</h1>
-          <p className="text-gray-400">Organize and manage competitive matches</p>
+          <h1 className="text-3xl font-bold" style={{ color: colors.text }}>Matches</h1>
+          <p style={{ color: colors.textSecondary }}>Organize and manage competitive matches</p>
         </div>
         <motion.button 
           onClick={() => setShowCreateMatchOverlay(true)}
           className="text-white px-6 py-3 rounded-2xl flex items-center font-bold text-sm"
           style={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)'
+            background: themeColors.accent,
+            boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)'
           }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
