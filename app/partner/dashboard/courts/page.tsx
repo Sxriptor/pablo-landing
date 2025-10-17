@@ -1,15 +1,35 @@
 'use client'
 
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { 
   MapPin, 
   Plus
 } from 'lucide-react'
 import { AddCourtOverlay } from '@/components/partner/overlays'
+import { getPartnerVenues } from '@/lib/supabase/venues'
 
 export default function CourtsPage() {
   const [showAddCourtOverlay, setShowAddCourtOverlay] = useState(false)
+  const [venues, setVenues] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+
+  // Fetch venues on component mount
+  useEffect(() => {
+    loadVenues()
+  }, [])
+
+  const loadVenues = async () => {
+    try {
+      setLoading(true)
+      const partnerVenues = await getPartnerVenues()
+      setVenues(partnerVenues)
+    } catch (error) {
+      console.error('Error loading venues:', error)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleCourtSubmit = (courtData: any) => {
     // TODO: Implement court creation API call
@@ -20,24 +40,9 @@ export default function CourtsPage() {
 
   return (
     <div className="space-y-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-3xl font-bold text-white">Courts</h1>
-          <p className="text-gray-400">Manage individual courts and their settings</p>
-        </div>
-        <motion.button 
-          onClick={() => setShowAddCourtOverlay(true)}
-          className="text-white px-6 py-3 rounded-2xl flex items-center font-bold text-sm"
-          style={{
-            background: '#456882',
-            boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)'
-          }}
-          whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.95 }}
-        >
-          <Plus className="h-4 w-4 mr-2" />
-          ADD COURT
-        </motion.button>
+      <div>
+        <h1 className="text-3xl font-bold text-white">Courts</h1>
+        <p className="text-gray-400">Manage individual courts and their settings</p>
       </div>
 
       {/* Empty state - no courts yet */}
@@ -57,6 +62,19 @@ export default function CourtsPage() {
             <p className="text-gray-400 mb-6">
               Add your first court to start managing bookings and tracking performance.
             </p>
+            <motion.button 
+              onClick={() => setShowAddCourtOverlay(true)}
+              className="text-white px-6 py-3 rounded-2xl flex items-center font-bold text-sm mx-auto"
+              style={{
+                background: '#456882',
+                boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)'
+              }}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              ADD COURT
+            </motion.button>
           </div>
         </div>
       </div>
@@ -66,7 +84,7 @@ export default function CourtsPage() {
         isOpen={showAddCourtOverlay}
         onClose={() => setShowAddCourtOverlay(false)}
         onSubmit={handleCourtSubmit}
-        venues={[]}
+        venues={venues}
       />
     </div>
   )
