@@ -48,17 +48,17 @@ export function AddCourtOverlay({ isOpen, onClose, onSubmit, venues = [] }: AddC
     { value: 'pickleball', label: 'Pickleball' },
     { value: 'badminton', label: 'Badminton' },
     { value: 'squash', label: 'Squash' },
-    { value: 'basketball', label: 'Basketball' },
-    { value: 'volleyball', label: 'Volleyball' },
+    { value: 'racquetball', label: 'Racquetball' },
+    { value: 'table_tennis', label: 'Table Tennis' },
   ]
 
   const surfaceOptions = [
     { value: 'hard', label: 'Hard Court' },
     { value: 'clay', label: 'Clay Court' },
     { value: 'grass', label: 'Grass Court' },
+    { value: 'indoor_hard', label: 'Indoor Hard Court' },
     { value: 'synthetic', label: 'Synthetic' },
     { value: 'wood', label: 'Wood' },
-    { value: 'concrete', label: 'Concrete' },
   ]
 
   const handleInputChange = (field: string, value: string | boolean) => {
