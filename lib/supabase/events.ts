@@ -10,11 +10,11 @@ export interface EventData {
   sport: string
   event_type: string
   venue_id: string
-  court_id?: string
+  court_id?: string | null
   instructor_name?: string
   instructor_bio?: string
   start_date: string
-  end_date?: string
+  end_date?: string | null
   start_time: string
   end_time: string
   capacity: number
@@ -24,10 +24,10 @@ export interface EventData {
   equipment_provided?: boolean
   access_type?: string
   location?: string
-  registration_closes?: string
+  registration_closes?: string | null
   is_recurring?: boolean
-  recurrence_pattern?: string
-  recurrence_end_date?: string
+  recurrence_pattern?: string | null
+  recurrence_end_date?: string | null
   status?: string
 }
 

@@ -111,7 +111,7 @@ export default function ClassesPage() {
         sport: classData.sport,
         event_type: 'class',
         venue_id: classData.venueId,
-        court_id: classData.courtId || null,
+        court_id: classData.courtId && classData.courtId !== '' ? classData.courtId : undefined,
         instructor_name: classData.instructorName,
         instructor_bio: classData.instructorBio,
         start_date: classData.schedule.startDate,
