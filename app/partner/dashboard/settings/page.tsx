@@ -49,12 +49,8 @@ export default function SettingsPage() {
         <motion.button 
           onClick={() => setIsEditing(!isEditing)}
           className={`px-6 py-3 rounded-2xl flex items-center font-bold text-sm transition-all ${
-            isEditing ? 'bg-gray-600 text-white' : 'text-white'
+            isEditing ? 'bg-neutral-600 text-white' : 'bg-[#456882] hover:bg-[#3a5670] text-white'
           }`}
-          style={!isEditing ? {
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)'
-          } : {}}
         >
           <Edit className="h-4 w-4 mr-2" />
           {isEditing ? 'CANCEL' : 'EDIT'}
@@ -64,81 +60,56 @@ export default function SettingsPage() {
       <div className="grid gap-6 md:grid-cols-2">
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-2">Company Name</label>
+            <label className="block text-sm font-medium text-neutral-400 mb-2">Company Name</label>
             <input
               type="text"
               value={settings.company_name}
               disabled={!isEditing}
-              className="w-full px-4 py-3 rounded-2xl text-white placeholder-gray-500 focus:outline-none transition-all disabled:opacity-50"
-              style={{
-                background: 'rgba(26, 32, 53, 0.5)',
-                border: '1px solid rgba(59, 130, 246, 0.1)',
-                backdropFilter: 'blur(10px)'
-              }}
+              className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-2">Email</label>
+            <label className="block text-sm font-medium text-neutral-400 mb-2">Email</label>
             <input
               type="email"
               value={settings.email}
               disabled={!isEditing}
-              className="w-full px-4 py-3 rounded-2xl text-white placeholder-gray-500 focus:outline-none transition-all disabled:opacity-50"
-              style={{
-                background: 'rgba(26, 32, 53, 0.5)',
-                border: '1px solid rgba(59, 130, 246, 0.1)',
-                backdropFilter: 'blur(10px)'
-              }}
+              className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-2">Phone</label>
+            <label className="block text-sm font-medium text-neutral-400 mb-2">Phone</label>
             <input
               type="tel"
               value={settings.phone}
               disabled={!isEditing}
-              className="w-full px-4 py-3 rounded-2xl text-white placeholder-gray-500 focus:outline-none transition-all disabled:opacity-50"
-              style={{
-                background: 'rgba(26, 32, 53, 0.5)',
-                border: '1px solid rgba(59, 130, 246, 0.1)',
-                backdropFilter: 'blur(10px)'
-              }}
+              className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-2">Website</label>
+            <label className="block text-sm font-medium text-neutral-400 mb-2">Website</label>
             <input
               type="url"
               value={settings.website}
               disabled={!isEditing}
-              className="w-full px-4 py-3 rounded-2xl text-white placeholder-gray-500 focus:outline-none transition-all disabled:opacity-50"
-              style={{
-                background: 'rgba(26, 32, 53, 0.5)',
-                border: '1px solid rgba(59, 130, 246, 0.1)',
-                backdropFilter: 'blur(10px)'
-              }}
+              className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
             />
           </div>
         </div>
 
         <div className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-2">Address</label>
+            <label className="block text-sm font-medium text-neutral-400 mb-2">Address</label>
             <input
               type="text"
               value={settings.address}
               disabled={!isEditing}
-              className="w-full px-4 py-3 rounded-2xl text-white placeholder-gray-500 focus:outline-none transition-all disabled:opacity-50"
-              style={{
-                background: 'rgba(26, 32, 53, 0.5)',
-                border: '1px solid rgba(59, 130, 246, 0.1)',
-                backdropFilter: 'blur(10px)'
-              }}
+              className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
             />
           </div>
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-2">City</label>
+              <label className="block text-sm font-medium text-neutral-400 mb-2">City</label>
               <input
                 type="text"
                 value={settings.city}
@@ -152,7 +123,7 @@ export default function SettingsPage() {
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-400 mb-2">State</label>
+              <label className="block text-sm font-medium text-neutral-400 mb-2">State</label>
               <input
                 type="text"
                 value={settings.state}
@@ -167,17 +138,12 @@ export default function SettingsPage() {
             </div>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-400 mb-2">Description</label>
+            <label className="block text-sm font-medium text-neutral-400 mb-2">Description</label>
             <textarea
               value={settings.description}
               disabled={!isEditing}
               rows={4}
-              className="w-full px-4 py-3 rounded-2xl text-white placeholder-gray-500 focus:outline-none transition-all disabled:opacity-50 resize-none"
-              style={{
-                background: 'rgba(26, 32, 53, 0.5)',
-                border: '1px solid rgba(59, 130, 246, 0.1)',
-                backdropFilter: 'blur(10px)'
-              }}
+              className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50 resize-none"
             />
           </div>
         </div>
@@ -186,11 +152,7 @@ export default function SettingsPage() {
       {isEditing && (
         <div className="flex justify-end">
           <motion.button 
-            className="text-white px-8 py-3 rounded-2xl flex items-center font-bold text-sm"
-            style={{
-              background: 'linear-gradient(135deg, #10b981 0%, #059669 100%)',
-              boxShadow: '0 8px 24px rgba(16, 185, 129, 0.4)'
-            }}
+            className="text-white bg-[#456882] hover:bg-[#3a5670] px-8 py-3 rounded-2xl flex items-center font-bold text-sm transition-colors"
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
@@ -209,41 +171,41 @@ export default function SettingsPage() {
       case 'account':
         return (
           <div className="text-center py-12">
-            <User className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+            <User className="h-16 w-16 text-neutral-400 mx-auto mb-4" />
             <h3 className="text-xl font-bold text-white mb-2">Account Settings</h3>
-            <p className="text-gray-400">Manage your account preferences and profile</p>
+            <p className="text-neutral-400">Manage your account preferences and profile</p>
           </div>
         )
       case 'notifications':
         return (
           <div className="text-center py-12">
-            <Bell className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+            <Bell className="h-16 w-16 text-neutral-400 mx-auto mb-4" />
             <h3 className="text-xl font-bold text-white mb-2">Notification Settings</h3>
-            <p className="text-gray-400">Configure how you receive notifications</p>
+            <p className="text-neutral-400">Configure how you receive notifications</p>
           </div>
         )
       case 'billing':
         return (
           <div className="text-center py-12">
-            <CreditCard className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+            <CreditCard className="h-16 w-16 text-neutral-400 mx-auto mb-4" />
             <h3 className="text-xl font-bold text-white mb-2">Billing & Payments</h3>
-            <p className="text-gray-400">Manage your subscription and payment methods</p>
+            <p className="text-neutral-400">Manage your subscription and payment methods</p>
           </div>
         )
       case 'security':
         return (
           <div className="text-center py-12">
-            <Shield className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+            <Shield className="h-16 w-16 text-neutral-400 mx-auto mb-4" />
             <h3 className="text-xl font-bold text-white mb-2">Security Settings</h3>
-            <p className="text-gray-400">Manage passwords and security preferences</p>
+            <p className="text-neutral-400">Manage passwords and security preferences</p>
           </div>
         )
       case 'integrations':
         return (
           <div className="text-center py-12">
-            <Globe className="h-16 w-16 text-gray-400 mx-auto mb-4" />
+            <Globe className="h-16 w-16 text-neutral-400 mx-auto mb-4" />
             <h3 className="text-xl font-bold text-white mb-2">Integrations</h3>
-            <p className="text-gray-400">Connect with third-party services and APIs</p>
+            <p className="text-neutral-400">Connect with third-party services and APIs</p>
           </div>
         )
       default:
@@ -255,19 +217,14 @@ export default function SettingsPage() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold text-white">Settings</h1>
-        <p className="text-gray-400">Manage your account and business preferences</p>
+        <p className="text-neutral-400">Manage your account and business preferences</p>
       </div>
 
       <div className="grid gap-6 lg:grid-cols-4">
         {/* Sidebar */}
         <div className="lg:col-span-1">
           <div 
-            className="rounded-3xl p-6"
-            style={{
-              background: 'linear-gradient(135deg, rgba(26, 32, 53, 0.8) 0%, rgba(15, 21, 53, 0.8) 100%)',
-              border: '1px solid rgba(59, 130, 246, 0.1)',
-              backdropFilter: 'blur(20px)'
-            }}
+            className="rounded-3xl p-6 bg-neutral-900/90 border border-neutral-800"
           >
             <nav className="space-y-2">
               {tabs.map((tab) => {
@@ -280,13 +237,9 @@ export default function SettingsPage() {
                     onClick={() => setActiveTab(tab.id)}
                     className={`w-full flex items-center px-4 py-3 text-sm font-semibold rounded-2xl transition-all ${
                       isActive
-                        ? 'text-white'
-                        : 'text-gray-400 hover:text-white'
+                        ? 'text-white bg-[#456882]'
+                        : 'text-neutral-400 hover:text-white hover:bg-neutral-800'
                     }`}
-                    style={isActive ? {
-                      background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                      boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)'
-                    } : {}}
                     whileHover={!isActive ? { x: 4 } : {}}
                     whileTap={{ scale: 0.98 }}
                   >
@@ -304,12 +257,7 @@ export default function SettingsPage() {
         {/* Content */}
         <div className="lg:col-span-3">
           <div 
-            className="rounded-3xl p-8"
-            style={{
-              background: 'linear-gradient(135deg, rgba(26, 32, 53, 0.8) 0%, rgba(15, 21, 53, 0.8) 100%)',
-              border: '1px solid rgba(59, 130, 246, 0.1)',
-              backdropFilter: 'blur(20px)'
-            }}
+            className="rounded-3xl p-8 bg-neutral-900/90 border border-neutral-800"
           >
             <motion.div
               key={activeTab}
