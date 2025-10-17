@@ -67,8 +67,8 @@ export default function VenuesPage() {
     <motion.div
       className="rounded-3xl p-6 relative overflow-hidden"
       style={{
-        background: 'linear-gradient(135deg, rgba(26, 32, 53, 0.8) 0%, rgba(15, 21, 53, 0.8) 100%)',
-        border: '1px solid rgba(59, 130, 246, 0.1)',
+        background: 'rgba(69, 104, 130, 0.1)',
+        border: '1px solid rgba(69, 104, 130, 0.2)',
         backdropFilter: 'blur(20px)'
       }}
       whileHover={{ 
@@ -77,7 +77,7 @@ export default function VenuesPage() {
       }}
     >
       <div className="absolute top-0 right-0 w-32 h-32 rounded-full" style={{
-        background: 'radial-gradient(circle, rgba(102, 126, 234, 0.15) 0%, transparent 70%)',
+        background: 'radial-gradient(circle, rgba(69, 104, 130, 0.15) 0%, transparent 70%)',
         filter: 'blur(30px)'
       }} />
       
@@ -87,8 +87,10 @@ export default function VenuesPage() {
             <div className="flex items-center space-x-3 mb-2">
               <h3 className="text-xl font-bold text-white">{venue.name}</h3>
               <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                venue.active ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
-              }`}>
+                venue.active ? 'text-green-400' : 'text-red-400'
+              }`} style={{
+                background: venue.active ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)'
+              }}>
                 {venue.active ? 'ACTIVE' : 'INACTIVE'}
               </span>
             </div>
@@ -142,8 +144,8 @@ export default function VenuesPage() {
         <motion.button 
           className="text-white px-6 py-3 rounded-2xl flex items-center font-bold text-sm"
           style={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)'
+            background: '#456882',
+            boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)'
           }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}

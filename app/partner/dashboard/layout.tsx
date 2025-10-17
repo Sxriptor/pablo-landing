@@ -108,13 +108,13 @@ export default function DashboardLayout({
   }
 
   return (
-    <div className="min-h-screen" style={{ 
-      background: 'linear-gradient(135deg, #0f1535 0%, #1a1f3a 50%, #0a0e27 100%)'
+    <div className="h-screen flex flex-col overflow-hidden" style={{ 
+      background: '#050a0f'
     }}>
       <Navbar partner={partner} />
-      <div className="flex">
+      <div className="flex flex-1 overflow-hidden">
         <Sidebar />
-        <main className="flex-1 p-8">
+        <main className="flex-1 overflow-y-auto p-8">
           {children}
         </main>
       </div>

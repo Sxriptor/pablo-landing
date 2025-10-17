@@ -83,8 +83,8 @@ export default function CourtsPage() {
     <motion.div
       className="rounded-3xl p-6 relative overflow-hidden"
       style={{
-        background: 'linear-gradient(135deg, rgba(26, 32, 53, 0.8) 0%, rgba(15, 21, 53, 0.8) 100%)',
-        border: '1px solid rgba(59, 130, 246, 0.1)',
+        background: 'rgba(69, 104, 130, 0.1)',
+        border: '1px solid rgba(69, 104, 130, 0.2)',
         backdropFilter: 'blur(20px)'
       }}
       whileHover={{ 
@@ -93,7 +93,7 @@ export default function CourtsPage() {
       }}
     >
       <div className="absolute top-0 right-0 w-32 h-32 rounded-full" style={{
-        background: 'radial-gradient(circle, rgba(102, 126, 234, 0.15) 0%, transparent 70%)',
+        background: 'radial-gradient(circle, rgba(69, 104, 130, 0.15) 0%, transparent 70%)',
         filter: 'blur(30px)'
       }} />
       
@@ -103,8 +103,10 @@ export default function CourtsPage() {
             <div className="flex items-center space-x-3 mb-2">
               <h3 className="text-xl font-bold text-white">{court.name}</h3>
               <span className={`px-3 py-1 rounded-full text-xs font-bold ${
-                court.available ? 'bg-green-500/20 text-green-400' : 'bg-red-500/20 text-red-400'
-              }`}>
+                court.available ? 'text-green-400' : 'text-red-400'
+              }`} style={{
+                background: court.available ? 'rgba(34, 197, 94, 0.2)' : 'rgba(239, 68, 68, 0.2)'
+              }}>
                 {court.available ? 'AVAILABLE' : 'MAINTENANCE'}
               </span>
             </div>
@@ -125,7 +127,7 @@ export default function CourtsPage() {
         <div className="grid grid-cols-3 gap-4 mb-4">
           <div className="text-center">
             <div className="flex items-center justify-center mb-1">
-              <Activity className="h-4 w-4 text-blue-400" />
+              <Activity className="h-4 w-4" style={{ color: '#456882' }} />
             </div>
             <p className="text-2xl font-bold text-white">{court.utilization}%</p>
             <p className="text-xs text-gray-500">Utilization</p>
@@ -168,8 +170,8 @@ export default function CourtsPage() {
         <motion.button 
           className="text-white px-6 py-3 rounded-2xl flex items-center font-bold text-sm"
           style={{
-            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-            boxShadow: '0 8px 24px rgba(102, 126, 234, 0.4)'
+            background: '#456882',
+            boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)'
           }}
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
