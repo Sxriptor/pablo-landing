@@ -49,10 +49,14 @@ export function CreateEventOverlay({
     prizePool: '',
     registrationDeadline: '',
     skillLevel: 'all_levels',
+    ageGroup: 'all_ages',
     format: '',
     sportFormatId: '',
     rules: '',
     requirements: [] as string[],
+    equipmentProvidedList: [] as string[],
+    equipmentRequired: '',
+    location: '',
   })
 
   const [sportFormats, setSportFormats] = useState<Array<{
@@ -98,6 +102,25 @@ export function CreateEventOverlay({
     { value: 'intermediate', label: 'Intermediate' },
     { value: 'advanced', label: 'Advanced' },
     { value: 'Expert', label: 'Expert' },
+  ]
+
+  const ageGroups = [
+    { value: 'all_ages', label: 'All Ages' },
+    { value: 'kids', label: 'Kids (Under 12)' },
+    { value: 'teens', label: 'Teens (13-17)' },
+    { value: 'adults', label: 'Adults (18+)' },
+    { value: 'seniors', label: 'Seniors (55+)' },
+  ]
+
+  const equipmentOptions = [
+    'Rackets',
+    'Balls',
+    'Nets',
+    'Water Bottles',
+    'Towels',
+    'Training Cones',
+    'Scorecards',
+    'First Aid Kit',
   ]
 
   // Fetch partner's venues and courts when overlay opens
@@ -233,6 +256,47 @@ export function CreateEventOverlay({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [formData.sport])
 
+  // Auto-populate location from selected venue
+  useEffect(() => {
+    const fetchVenueLocation = async () => {
+      if (!formData.venueId) {
+        setFormData(prev => ({ ...prev, location: '' }))
+        return
+      }
+
+      try {
+        const { data: venue, error } = await supabase
+          .from('venues')
+          .select('address, city, state, postal_code')
+          .eq('id', formData.venueId)
+          .single()
+
+        if (error) {
+          console.error('Error fetching venue location:', error)
+          return
+        }
+
+        if (venue) {
+          // Build location string from venue data
+          const locationParts = [
+            venue.address,
+            venue.city,
+            venue.state,
+            venue.postal_code
+          ].filter(Boolean)
+          
+          const locationString = locationParts.join(', ')
+          setFormData(prev => ({ ...prev, location: locationString }))
+        }
+      } catch (err) {
+        console.error('Error in fetchVenueLocation:', err)
+      }
+    }
+
+    fetchVenueLocation()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [formData.venueId])
+
   // Populate form when editing an event
   useEffect(() => {
     if (editingEvent && isOpen) {
@@ -253,10 +317,14 @@ export function CreateEventOverlay({
         prizePool: '', // Not stored in events table
         registrationDeadline: editingEvent.registration_deadline ? editingEvent.registration_deadline.split('T')[0] : '',
         skillLevel: editingEvent.skill_level || 'all_levels',
+        ageGroup: editingEvent.age_group || 'all_ages',
         format: editingEvent.match_format || '',
         sportFormatId: editingEvent.sport_format_id || '',
         rules: '', // Not stored in events table
         requirements: editingEvent.requirements || [],
+        equipmentProvidedList: editingEvent.equipment_provided_list || [],
+        equipmentRequired: editingEvent.equipment_required || '',
+        location: editingEvent.location || '',
       })
     } else if (!isOpen) {
       // Reset form when closing
@@ -276,10 +344,14 @@ export function CreateEventOverlay({
         prizePool: '',
         registrationDeadline: '',
         skillLevel: 'all_levels',
+        ageGroup: 'all_ages',
         format: '',
         sportFormatId: '',
         rules: '',
         requirements: [],
+        equipmentProvidedList: [],
+        equipmentRequired: '',
+        location: '',
       })
     }
   }, [editingEvent, isOpen])
@@ -352,6 +424,15 @@ export function CreateEventOverlay({
       requirements: prev.requirements.includes(requirement)
         ? prev.requirements.filter(r => r !== requirement)
         : [...prev.requirements, requirement]
+    }))
+  }
+
+  const handleEquipmentToggle = (equipment: string) => {
+    setFormData(prev => ({
+      ...prev,
+      equipmentProvidedList: prev.equipmentProvidedList.includes(equipment)
+        ? prev.equipmentProvidedList.filter(e => e !== equipment)
+        : [...prev.equipmentProvidedList, equipment]
     }))
   }
 
@@ -430,16 +511,20 @@ export function CreateEventOverlay({
 
         // Requirements and details
         skill_level: formData.skillLevel,
+        age_group: formData.ageGroup,
         requirements: formData.requirements.length > 0 ? formData.requirements : null,
+
+        // Location
+        location: formData.location || null,
 
         // Status
         status: 'published', // Set to published so it's visible
 
         // Equipment handling
-        equipment_provided: formData.requirements.includes('Equipment Provided'),
-        equipment_required: formData.requirements.includes('Bring Own Equipment')
-          ? 'Please bring your own equipment'
-          : null
+        equipment_provided: formData.equipmentProvidedList.length > 0 || formData.requirements.includes('Equipment Provided'),
+        equipment_provided_list: formData.equipmentProvidedList.length > 0 ? formData.equipmentProvidedList : null,
+        equipment_required: formData.equipmentRequired || 
+          (formData.requirements.includes('Bring Own Equipment') ? 'Please bring your own equipment' : null)
       }
 
       console.log(editingEvent ? 'Updating event with data:' : 'Creating event with data:', eventData)
@@ -604,6 +689,23 @@ export function CreateEventOverlay({
 
             <div>
               <label className="block text-sm font-medium text-gray-300 mb-2">
+                Age Group
+              </label>
+              <select
+                value={formData.ageGroup}
+                onChange={(e) => handleInputChange('ageGroup', e.target.value)}
+                className="w-full h-9 px-3 py-1 rounded-md bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+              >
+                {ageGroups.map((group) => (
+                  <option key={group.value} value={group.value} className="bg-gray-800">
+                    {group.label}
+                  </option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
                 Description
               </label>
               <Textarea
@@ -646,6 +748,19 @@ export function CreateEventOverlay({
                 </p>
               )}
             </div>
+
+            {formData.venueId && formData.location && (
+              <div>
+                <label className="block text-sm font-medium text-gray-300 mb-2">
+                  Address <span className="text-xs text-gray-400">(Auto-populated from venue)</span>
+                </label>
+                <Input
+                  value={formData.location}
+                  readOnly
+                  className="bg-white/5 border-white/10 text-gray-400 cursor-not-allowed"
+                />
+              </div>
+            )}
 
             {formData.venueId && (
               <div>
@@ -893,6 +1008,54 @@ export function CreateEventOverlay({
                   </button>
                 ))}
               </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Equipment Provided
+              </label>
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
+                {equipmentOptions.map((equipment) => (
+                  <button
+                    key={equipment}
+                    type="button"
+                    onClick={() => handleEquipmentToggle(equipment)}
+                    className={`p-3 rounded-xl text-sm font-medium transition-all text-center ${
+                      formData.equipmentProvidedList.includes(equipment)
+                        ? 'text-white'
+                        : 'text-gray-400 hover:text-white'
+                    }`}
+                    style={{
+                      background: formData.equipmentProvidedList.includes(equipment)
+                        ? '#456882'
+                        : 'rgba(69, 104, 130, 0.1)',
+                      border: `1px solid ${formData.equipmentProvidedList.includes(equipment)
+                        ? '#456882'
+                        : 'rgba(69, 104, 130, 0.2)'}`
+                    }}
+                  >
+                    {equipment}
+                  </button>
+                ))}
+              </div>
+              {formData.equipmentProvidedList.length > 0 && (
+                <p className="text-xs text-gray-400 mt-2">
+                  Selected: {formData.equipmentProvidedList.join(', ')}
+                </p>
+              )}
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-300 mb-2">
+                Equipment Required (What participants need to bring)
+              </label>
+              <Textarea
+                value={formData.equipmentRequired}
+                onChange={(e) => handleInputChange('equipmentRequired', e.target.value)}
+                placeholder="e.g., Tennis racket, appropriate athletic shoes, water bottle..."
+                rows={2}
+                className="bg-white/5 border-white/10 text-white placeholder-gray-500"
+              />
             </div>
           </div>
 
