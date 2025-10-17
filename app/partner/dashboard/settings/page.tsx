@@ -68,6 +68,30 @@ export default function SettingsPage() {
 
   const [profileId, setProfileId] = useState<string | null>(null)
 
+  // Notification settings
+  const [notificationSettings, setNotificationSettings] = useState({
+    notifications_enabled: true,
+    email_notifications: true,
+    sms_notifications: true,
+    court_notifications: true,
+    class_notifications: true,
+    event_notifications: true,
+    match_notifications: true,
+    venue_notifications: true,
+  })
+
+  // Store original notification settings for cancel functionality
+  const [originalNotificationSettings, setOriginalNotificationSettings] = useState({
+    notifications_enabled: true,
+    email_notifications: true,
+    sms_notifications: true,
+    court_notifications: true,
+    class_notifications: true,
+    event_notifications: true,
+    match_notifications: true,
+    venue_notifications: true,
+  })
+
   // Reset editing mode when switching tabs
   useEffect(() => {
     setIsEditing(false)
@@ -110,6 +134,20 @@ export default function SettingsPage() {
           }
           setSettings(fetchedSettings)
           setOriginalSettings(fetchedSettings)
+
+          // Fetch notification settings
+          const fetchedNotificationSettings = {
+            notifications_enabled: partnerData.notifications_enabled ?? true,
+            email_notifications: partnerData.email_notifications ?? true,
+            sms_notifications: partnerData.sms_notifications ?? true,
+            court_notifications: partnerData.court_notifications ?? true,
+            class_notifications: partnerData.class_notifications ?? true,
+            event_notifications: partnerData.event_notifications ?? true,
+            match_notifications: partnerData.match_notifications ?? true,
+            venue_notifications: partnerData.venue_notifications ?? true,
+          }
+          setNotificationSettings(fetchedNotificationSettings)
+          setOriginalNotificationSettings(fetchedNotificationSettings)
         }
 
         // Fetch profile data
@@ -159,6 +197,14 @@ export default function SettingsPage() {
     setAccountSettings(prev => ({
       ...prev,
       [field]: value
+    }))
+  }
+
+  // Handle notification toggle changes
+  const handleNotificationToggle = (field: string) => {
+    setNotificationSettings(prev => ({
+      ...prev,
+      [field]: !prev[field as keyof typeof prev]
     }))
   }
 
@@ -251,6 +297,52 @@ export default function SettingsPage() {
     }
   }
 
+  // Save notification changes to database
+  const handleSaveNotificationChanges = async () => {
+    if (!partnerId) {
+      setMessage({ type: 'error', text: 'Partner ID not found' })
+      return
+    }
+
+    try {
+      setSaving(true)
+      setMessage(null)
+
+      const { error } = await supabase
+        .from('partners')
+        .update({
+          notifications_enabled: notificationSettings.notifications_enabled,
+          email_notifications: notificationSettings.email_notifications,
+          sms_notifications: notificationSettings.sms_notifications,
+          court_notifications: notificationSettings.court_notifications,
+          class_notifications: notificationSettings.class_notifications,
+          event_notifications: notificationSettings.event_notifications,
+          match_notifications: notificationSettings.match_notifications,
+          venue_notifications: notificationSettings.venue_notifications,
+        })
+        .eq('id', partnerId)
+
+      if (error) {
+        console.error('Error updating notifications:', error)
+        setMessage({ type: 'error', text: 'Failed to save notification settings' })
+        return
+      }
+
+      // Update original notification settings to current settings after successful save
+      setOriginalNotificationSettings(notificationSettings)
+      setMessage({ type: 'success', text: 'Notification settings saved successfully!' })
+      setIsEditing(false)
+      
+      // Clear success message after 3 seconds
+      setTimeout(() => setMessage(null), 3000)
+    } catch (error) {
+      console.error('Error:', error)
+      setMessage({ type: 'error', text: 'An unexpected error occurred' })
+    } finally {
+      setSaving(false)
+    }
+  }
+
   const tabs = [
     { id: 'company', label: 'Company Info', icon: Building2 },
     { id: 'account', label: 'Account', icon: User },
@@ -270,10 +362,10 @@ export default function SettingsPage() {
     }
 
     return (
-      <div className="space-y-6">
-        <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-white">Company Information</h2>
-          <motion.button 
+    <div className="space-y-6">
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold text-white">Company Information</h2>
+        <motion.button 
             onClick={() => {
               if (isEditing) {
                 // Revert to original settings
@@ -284,14 +376,14 @@ export default function SettingsPage() {
                 setIsEditing(true)
               }
             }}
-            className={`px-6 py-3 rounded-2xl flex items-center font-bold text-sm transition-all ${
-              isEditing ? 'bg-neutral-600 text-white' : 'bg-[#456882] hover:bg-[#3a5670] text-white'
-            }`}
-          >
-            <Edit className="h-4 w-4 mr-2" />
-            {isEditing ? 'CANCEL' : 'EDIT'}
-          </motion.button>
-        </div>
+          className={`px-6 py-3 rounded-2xl flex items-center font-bold text-sm transition-all ${
+            isEditing ? 'bg-neutral-600 text-white' : 'bg-[#456882] hover:bg-[#3a5670] text-white'
+          }`}
+        >
+          <Edit className="h-4 w-4 mr-2" />
+          {isEditing ? 'CANCEL' : 'EDIT'}
+        </motion.button>
+      </div>
 
         {/* Success/Error Message */}
         {message && (
@@ -313,61 +405,61 @@ export default function SettingsPage() {
           </motion.div>
         )}
 
-        <div className="grid gap-6 md:grid-cols-2">
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-neutral-400 mb-2">Company Name</label>
-              <input
-                type="text"
-                value={settings.company_name}
+      <div className="grid gap-6 md:grid-cols-2">
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-neutral-400 mb-2">Company Name</label>
+            <input
+              type="text"
+              value={settings.company_name}
                 onChange={(e) => handleFieldChange('company_name', e.target.value)}
-                disabled={!isEditing}
-                className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-neutral-400 mb-2">Email</label>
-              <input
-                type="email"
-                value={settings.email}
-                onChange={(e) => handleFieldChange('email', e.target.value)}
-                disabled={!isEditing}
-                className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-neutral-400 mb-2">Phone</label>
-              <input
-                type="tel"
-                value={settings.phone}
-                onChange={(e) => handleFieldChange('phone', e.target.value)}
-                disabled={!isEditing}
-                className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
-              />
-            </div>
-            <div>
-              <label className="block text-sm font-medium text-neutral-400 mb-2">Website</label>
-              <input
-                type="url"
-                value={settings.website}
-                onChange={(e) => handleFieldChange('website', e.target.value)}
-                disabled={!isEditing}
-                className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
-              />
-            </div>
+              disabled={!isEditing}
+              className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
+            />
           </div>
+          <div>
+            <label className="block text-sm font-medium text-neutral-400 mb-2">Email</label>
+            <input
+              type="email"
+              value={settings.email}
+                onChange={(e) => handleFieldChange('email', e.target.value)}
+              disabled={!isEditing}
+              className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-neutral-400 mb-2">Phone</label>
+            <input
+              type="tel"
+              value={settings.phone}
+                onChange={(e) => handleFieldChange('phone', e.target.value)}
+              disabled={!isEditing}
+              className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
+            />
+          </div>
+          <div>
+            <label className="block text-sm font-medium text-neutral-400 mb-2">Website</label>
+            <input
+              type="url"
+              value={settings.website}
+                onChange={(e) => handleFieldChange('website', e.target.value)}
+              disabled={!isEditing}
+              className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
+            />
+          </div>
+        </div>
 
-          <div className="space-y-4">
-            <div>
-              <label className="block text-sm font-medium text-neutral-400 mb-2">Address</label>
-              <input
-                type="text"
-                value={settings.address}
+        <div className="space-y-4">
+          <div>
+            <label className="block text-sm font-medium text-neutral-400 mb-2">Address</label>
+            <input
+              type="text"
+              value={settings.address}
                 onChange={(e) => handleFieldChange('address', e.target.value)}
-                disabled={!isEditing}
-                className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
-              />
-            </div>
+              disabled={!isEditing}
+              className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
+            />
+          </div>
             <div>
               <label className="block text-sm font-medium text-neutral-400 mb-2">Description</label>
               <textarea
@@ -528,16 +620,236 @@ export default function SettingsPage() {
                 placeholder="City, State, Country"
                 className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50"
               />
-            </div>
-            <div>
+          </div>
+          <div>
               <label className="block text-sm font-medium text-neutral-400 mb-2">Bio</label>
-              <textarea
+            <textarea
                 value={accountSettings.bio}
                 onChange={(e) => handleAccountFieldChange('bio', e.target.value)}
-                disabled={!isEditing}
+              disabled={!isEditing}
                 rows={8}
                 placeholder="Tell us about yourself..."
-                className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50 resize-none"
+              className="w-full px-4 py-3 rounded-2xl bg-neutral-800 border border-neutral-700 text-white placeholder-neutral-500 focus:outline-none focus:border-[#456882] focus:ring-1 focus:ring-[#456882] transition-all disabled:opacity-50 resize-none"
+            />
+          </div>
+        </div>
+      </div>
+
+      {isEditing && (
+        <div className="flex justify-end">
+          <motion.button 
+              onClick={handleSaveAccountChanges}
+              disabled={saving}
+              className="text-white bg-[#456882] hover:bg-[#3a5670] disabled:bg-neutral-600 disabled:cursor-not-allowed px-8 py-3 rounded-2xl flex items-center font-bold text-sm transition-colors"
+              whileHover={!saving ? { scale: 1.05 } : {}}
+              whileTap={!saving ? { scale: 0.95 } : {}}
+            >
+              {saving ? (
+                <>
+                  <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                  SAVING...
+                </>
+              ) : (
+                <>
+            <Save className="h-4 w-4 mr-2" />
+            SAVE CHANGES
+                </>
+              )}
+          </motion.button>
+        </div>
+      )}
+    </div>
+  )
+  }
+
+  const renderNotifications = () => {
+    if (loading) {
+      return (
+        <div className="flex items-center justify-center py-12">
+          <Loader2 className="h-8 w-8 animate-spin text-[#456882]" />
+        </div>
+      )
+    }
+
+    // Toggle Switch Component
+    const ToggleSwitch = ({ 
+      enabled, 
+      onChange, 
+      disabled = false 
+    }: { 
+      enabled: boolean
+      onChange: () => void
+      disabled?: boolean
+    }) => (
+      <button
+        onClick={onChange}
+        disabled={disabled || !isEditing}
+        className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-[#456882] focus:ring-offset-2 focus:ring-offset-neutral-900 ${
+          enabled ? 'bg-[#456882]' : 'bg-neutral-700'
+        } ${(disabled || !isEditing) ? 'opacity-50 cursor-not-allowed' : 'cursor-pointer'}`}
+      >
+        <span
+          className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${
+            enabled ? 'translate-x-6' : 'translate-x-1'
+          }`}
+        />
+      </button>
+    )
+
+    return (
+      <div className="space-y-6">
+        <div className="flex items-center justify-between">
+          <h2 className="text-2xl font-bold text-white">Notification Settings</h2>
+          <motion.button 
+            onClick={() => {
+              if (isEditing) {
+                // Revert to original notification settings
+                setNotificationSettings(originalNotificationSettings)
+                setIsEditing(false)
+                setMessage(null)
+              } else {
+                setIsEditing(true)
+              }
+            }}
+            className={`px-6 py-3 rounded-2xl flex items-center font-bold text-sm transition-all ${
+              isEditing ? 'bg-neutral-600 text-white' : 'bg-[#456882] hover:bg-[#3a5670] text-white'
+            }`}
+          >
+            <Edit className="h-4 w-4 mr-2" />
+            {isEditing ? 'CANCEL' : 'EDIT'}
+          </motion.button>
+        </div>
+
+        {/* Success/Error Message */}
+        {message && (
+          <motion.div
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            className={`flex items-center gap-2 p-4 rounded-2xl ${
+              message.type === 'success' 
+                ? 'bg-green-500/10 border border-green-500/20 text-green-400' 
+                : 'bg-red-500/10 border border-red-500/20 text-red-400'
+            }`}
+          >
+            {message.type === 'success' ? (
+              <CheckCircle className="h-5 w-5" />
+            ) : (
+              <AlertCircle className="h-5 w-5" />
+            )}
+            <span className="font-medium">{message.text}</span>
+          </motion.div>
+        )}
+
+        {/* General Notifications Section */}
+        <div className="rounded-3xl p-6 bg-neutral-800/50 border border-neutral-700">
+          <h3 className="text-lg font-semibold text-white mb-4">General Notifications</h3>
+          <div className="space-y-4">
+            {/* Master Toggle */}
+            <div className="flex items-center justify-between py-3 border-b border-neutral-700">
+              <div>
+                <h4 className="text-white font-medium">All Notifications</h4>
+                <p className="text-sm text-neutral-400">Master switch for all notifications</p>
+              </div>
+              <ToggleSwitch
+                enabled={notificationSettings.notifications_enabled}
+                onChange={() => handleNotificationToggle('notifications_enabled')}
+              />
+            </div>
+
+            {/* Email Notifications */}
+            <div className="flex items-center justify-between py-3 border-b border-neutral-700">
+              <div>
+                <h4 className="text-white font-medium">Email Notifications</h4>
+                <p className="text-sm text-neutral-400">Receive notifications via email</p>
+              </div>
+              <ToggleSwitch
+                enabled={notificationSettings.email_notifications}
+                onChange={() => handleNotificationToggle('email_notifications')}
+                disabled={!notificationSettings.notifications_enabled}
+              />
+            </div>
+
+            {/* SMS Notifications */}
+            <div className="flex items-center justify-between py-3">
+              <div>
+                <h4 className="text-white font-medium">SMS Notifications</h4>
+                <p className="text-sm text-neutral-400">Receive notifications via SMS</p>
+              </div>
+              <ToggleSwitch
+                enabled={notificationSettings.sms_notifications}
+                onChange={() => handleNotificationToggle('sms_notifications')}
+                disabled={!notificationSettings.notifications_enabled}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Category-Specific Notifications Section */}
+        <div className="rounded-3xl p-6 bg-neutral-800/50 border border-neutral-700">
+          <h3 className="text-lg font-semibold text-white mb-4">Notification Categories</h3>
+          <div className="space-y-4">
+            {/* Court Notifications */}
+            <div className="flex items-center justify-between py-3 border-b border-neutral-700">
+              <div>
+                <h4 className="text-white font-medium">Court Notifications</h4>
+                <p className="text-sm text-neutral-400">Updates about court bookings and availability</p>
+              </div>
+              <ToggleSwitch
+                enabled={notificationSettings.court_notifications}
+                onChange={() => handleNotificationToggle('court_notifications')}
+                disabled={!notificationSettings.notifications_enabled}
+              />
+            </div>
+
+            {/* Class Notifications */}
+            <div className="flex items-center justify-between py-3 border-b border-neutral-700">
+              <div>
+                <h4 className="text-white font-medium">Class Notifications</h4>
+                <p className="text-sm text-neutral-400">Updates about classes and registrations</p>
+              </div>
+              <ToggleSwitch
+                enabled={notificationSettings.class_notifications}
+                onChange={() => handleNotificationToggle('class_notifications')}
+                disabled={!notificationSettings.notifications_enabled}
+              />
+            </div>
+
+            {/* Event Notifications */}
+            <div className="flex items-center justify-between py-3 border-b border-neutral-700">
+              <div>
+                <h4 className="text-white font-medium">Event Notifications</h4>
+                <p className="text-sm text-neutral-400">Updates about events and tournaments</p>
+              </div>
+              <ToggleSwitch
+                enabled={notificationSettings.event_notifications}
+                onChange={() => handleNotificationToggle('event_notifications')}
+                disabled={!notificationSettings.notifications_enabled}
+              />
+            </div>
+
+            {/* Match Notifications */}
+            <div className="flex items-center justify-between py-3 border-b border-neutral-700">
+              <div>
+                <h4 className="text-white font-medium">Match Notifications</h4>
+                <p className="text-sm text-neutral-400">Updates about matches and results</p>
+              </div>
+              <ToggleSwitch
+                enabled={notificationSettings.match_notifications}
+                onChange={() => handleNotificationToggle('match_notifications')}
+                disabled={!notificationSettings.notifications_enabled}
+              />
+            </div>
+
+            {/* Venue Notifications */}
+            <div className="flex items-center justify-between py-3">
+              <div>
+                <h4 className="text-white font-medium">Venue Notifications</h4>
+                <p className="text-sm text-neutral-400">Updates about venue operations and status</p>
+              </div>
+              <ToggleSwitch
+                enabled={notificationSettings.venue_notifications}
+                onChange={() => handleNotificationToggle('venue_notifications')}
+                disabled={!notificationSettings.notifications_enabled}
               />
             </div>
           </div>
@@ -546,7 +858,7 @@ export default function SettingsPage() {
         {isEditing && (
           <div className="flex justify-end">
             <motion.button 
-              onClick={handleSaveAccountChanges}
+              onClick={handleSaveNotificationChanges}
               disabled={saving}
               className="text-white bg-[#456882] hover:bg-[#3a5670] disabled:bg-neutral-600 disabled:cursor-not-allowed px-8 py-3 rounded-2xl flex items-center font-bold text-sm transition-colors"
               whileHover={!saving ? { scale: 1.05 } : {}}
@@ -577,13 +889,7 @@ export default function SettingsPage() {
       case 'account':
         return renderAccountInfo()
       case 'notifications':
-        return (
-          <div className="text-center py-12">
-            <Bell className="h-16 w-16 text-neutral-400 mx-auto mb-4" />
-            <h3 className="text-xl font-bold text-white mb-2">Notification Settings</h3>
-            <p className="text-neutral-400">Configure how you receive notifications</p>
-          </div>
-        )
+        return renderNotifications()
       case 'billing':
         return (
           <div className="text-center py-12">

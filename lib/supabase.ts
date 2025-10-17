@@ -148,6 +148,14 @@ export interface Database {
           user_id: string
           created_at: string
           updated_at: string
+          notifications_enabled: boolean
+          email_notifications: boolean
+          sms_notifications: boolean
+          court_notifications: boolean
+          class_notifications: boolean
+          event_notifications: boolean
+          match_notifications: boolean
+          venue_notifications: boolean
         }
         Insert: {
           id?: string
@@ -162,6 +170,14 @@ export interface Database {
           user_id: string
           created_at?: string
           updated_at?: string
+          notifications_enabled?: boolean
+          email_notifications?: boolean
+          sms_notifications?: boolean
+          court_notifications?: boolean
+          class_notifications?: boolean
+          event_notifications?: boolean
+          match_notifications?: boolean
+          venue_notifications?: boolean
         }
         Update: {
           id?: string
@@ -176,6 +192,14 @@ export interface Database {
           user_id?: string
           created_at?: string
           updated_at?: string
+          notifications_enabled?: boolean
+          email_notifications?: boolean
+          sms_notifications?: boolean
+          court_notifications?: boolean
+          class_notifications?: boolean
+          event_notifications?: boolean
+          match_notifications?: boolean
+          venue_notifications?: boolean
         }
       }
       venues: {
