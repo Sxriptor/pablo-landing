@@ -412,7 +412,10 @@ export default function MatchesPage() {
                 Create your first match to start organizing competitive games and tournaments.
               </p>
               <motion.button
-                onClick={() => setShowCreateMatchOverlay(true)}
+                onClick={() => {
+                  setEditingMatch(null)
+                  setShowCreateMatchOverlay(true)
+                }}
                 className="text-white px-6 py-3 rounded-2xl flex items-center font-bold text-sm mx-auto"
                 style={{
                   background: '#456882',
@@ -433,7 +436,10 @@ export default function MatchesPage() {
           <div className="flex items-center justify-between">
             <p className="text-gray-400">{matches.length} match{matches.length !== 1 ? 'es' : ''} found</p>
             <motion.button
-              onClick={() => setShowCreateMatchOverlay(true)}
+              onClick={() => {
+                setEditingMatch(null)
+                setShowCreateMatchOverlay(true)
+              }}
               className="text-white px-6 py-3 rounded-2xl flex items-center font-bold text-sm"
               style={{
                 background: '#456882',
@@ -457,6 +463,7 @@ export default function MatchesPage() {
 
       {/* Create Match Overlay */}
       <CreateMatchOverlay
+        key={editingMatch ? `edit-${editingMatch.id}` : 'create'}
         isOpen={showCreateMatchOverlay}
         onClose={handleCloseOverlay}
         onSubmit={handleMatchSubmit}

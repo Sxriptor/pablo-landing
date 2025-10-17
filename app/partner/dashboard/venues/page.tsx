@@ -310,7 +310,10 @@ export default function VenuesPage() {
         </div>
         {venues.length > 0 && (
           <motion.button 
-            onClick={() => setShowAddVenueOverlay(true)}
+            onClick={() => {
+              setEditingVenue(null)
+              setShowAddVenueOverlay(true)
+            }}
             className="text-white px-6 py-3 rounded-2xl flex items-center font-bold text-sm"
             style={{
               background: themeColors.accent,
@@ -362,7 +365,10 @@ export default function VenuesPage() {
             </div>
             
             <motion.button 
-              onClick={() => setShowAddVenueOverlay(true)}
+              onClick={() => {
+                setEditingVenue(null)
+                setShowAddVenueOverlay(true)
+              }}
               className="text-white px-8 py-4 rounded-2xl flex items-center font-bold text-sm mx-auto"
               style={{
                 background: themeColors.accent,
@@ -380,6 +386,7 @@ export default function VenuesPage() {
 
       {/* Add/Edit Venue Overlay */}
       <AddVenueOverlay
+        key={editingVenue ? `edit-${editingVenue.id}` : 'create'}
         isOpen={showAddVenueOverlay}
         onClose={handleCloseOverlay}
         onSubmit={handleVenueSubmit}

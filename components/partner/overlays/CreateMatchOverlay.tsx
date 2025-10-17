@@ -238,50 +238,74 @@ export function CreateMatchOverlay({
     })
   }
 
-  // Populate form when editing
+  // Reset form when overlay opens, then populate if editing
   React.useEffect(() => {
-    if (editingMatch) {
-      // Convert boolean requirement fields back to array
-      const requirementMap: { [key: string]: string } = {
-        'valid_id_required': 'Valid ID Required',
-        'equipment_provided': 'Equipment Provided',
-        'skill_level_verification': 'Skill Level Verification',
-        'no_late_entries': 'No Late Entries',
-        'waiver_must_be_signed': 'Waiver Must Be Signed',
-        'bring_own_equipment': 'Bring Own Equipment',
-        'registration_fee_non_refundable': 'Registration Fee Non-Refundable',
-        'punctuality_required': 'Punctuality Required'
-      }
-      
-      const selectedRequirements: string[] = []
-      Object.entries(requirementMap).forEach(([field, label]) => {
-        if (editingMatch[field]) {
-          selectedRequirements.push(label)
+    if (isOpen) {
+      if (editingMatch) {
+        // Convert boolean requirement fields back to array
+        const requirementMap: { [key: string]: string } = {
+          'valid_id_required': 'Valid ID Required',
+          'equipment_provided': 'Equipment Provided',
+          'skill_level_verification': 'Skill Level Verification',
+          'no_late_entries': 'No Late Entries',
+          'waiver_must_be_signed': 'Waiver Must Be Signed',
+          'bring_own_equipment': 'Bring Own Equipment',
+          'registration_fee_non_refundable': 'Registration Fee Non-Refundable',
+          'punctuality_required': 'Punctuality Required'
         }
-      })
+        
+        const selectedRequirements: string[] = []
+        Object.entries(requirementMap).forEach(([field, label]) => {
+          if (editingMatch[field]) {
+            selectedRequirements.push(label)
+          }
+        })
 
-      setFormData({
-        title: editingMatch.title || '',
-        description: editingMatch.description || '',
-        matchType: editingMatch.match_type || 'singles',
-        sport: editingMatch.sport || 'tennis',
-        accessType: editingMatch.access_type || 'reserve',
-        venueId: editingMatch.venue_id || '',
-        courtId: editingMatch.court_id || '',
-        scheduledDate: editingMatch.scheduled_date || '',
-        startTime: editingMatch.start_time || '',
-        endTime: editingMatch.end_time || '',
-        maxPlayers: editingMatch.max_players?.toString() || '',
-        entryFee: editingMatch.entry_fee?.toString() || '',
-        prizePool: editingMatch.prize_pool?.toString() || '',
-        registrationDeadline: editingMatch.registration_deadline ? editingMatch.registration_deadline.split('T')[0] : '',
-        skillLevel: editingMatch.skill_level || 'intermediate',
-        format: editingMatch.format || 'singles',
-        rules: editingMatch.rules || '',
-        requirements: selectedRequirements,
-      })
+        setFormData({
+          title: editingMatch.title || '',
+          description: editingMatch.description || '',
+          matchType: editingMatch.match_type || 'singles',
+          sport: editingMatch.sport || 'tennis',
+          accessType: editingMatch.access_type || 'reserve',
+          venueId: editingMatch.venue_id || '',
+          courtId: editingMatch.court_id || '',
+          scheduledDate: editingMatch.scheduled_date || '',
+          startTime: editingMatch.start_time || '',
+          endTime: editingMatch.end_time || '',
+          maxPlayers: editingMatch.max_players?.toString() || '',
+          entryFee: editingMatch.entry_fee?.toString() || '',
+          prizePool: editingMatch.prize_pool?.toString() || '',
+          registrationDeadline: editingMatch.registration_deadline ? editingMatch.registration_deadline.split('T')[0] : '',
+          skillLevel: editingMatch.skill_level || 'intermediate',
+          format: editingMatch.format || 'singles',
+          rules: editingMatch.rules || '',
+          requirements: selectedRequirements,
+        })
+      } else {
+        // Reset form for new match creation
+        setFormData({
+          title: '',
+          description: '',
+          matchType: 'singles',
+          sport: 'tennis',
+          accessType: 'reserve',
+          venueId: '',
+          courtId: '',
+          scheduledDate: '',
+          startTime: '',
+          endTime: '',
+          maxPlayers: '',
+          entryFee: '',
+          prizePool: '',
+          registrationDeadline: '',
+          skillLevel: 'intermediate',
+          format: 'singles',
+          rules: '',
+          requirements: [],
+        })
+      }
     }
-  }, [editingMatch])
+  }, [isOpen, editingMatch])
 
   const availableCourts = courts.filter(court => 
     formData.venueId ? court.venueId === formData.venueId : true
