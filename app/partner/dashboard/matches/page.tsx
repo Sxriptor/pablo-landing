@@ -16,33 +16,70 @@ import {
 import { CreateMatchOverlay } from '@/components/partner/overlays'
 import { useTheme } from '@/components/partner/layout/ThemeProvider'
 import { getThemeColors, themeColors } from '@/lib/theme-colors'
+import { getPartnerVenues } from '@/lib/supabase/venues'
+import { getPartnerCourts } from '@/lib/supabase/courts'
+import { useToast } from '@/hooks/use-toast'
 export default function MatchesPage() {
   const { theme } = useTheme()
   const colors = getThemeColors(theme)
   const [showCreateMatchOverlay, setShowCreateMatchOverlay] = useState(false)
   const [matches, setMatches] = useState<any[]>([])
-  const [loading, setLoading] = useState(false)
+  const [venues, setVenues] = useState<any[]>([])
+  const [courts, setCourts] = useState<any[]>([])
+  const [loading, setLoading] = useState(true)
+  const { toast } = useToast()
 
-  // Mock data for the match overlay (reusing event overlay for matches)
-  const mockVenues = [
-    { id: '1', name: 'Downtown Tennis Center' },
-    { id: '2', name: 'Riverside Courts' },
-    { id: '3', name: 'Elite Training Facility' },
-  ]
+  // Fetch venues and courts on component mount
+  React.useEffect(() => {
+    loadData()
+  }, [])
 
-  const mockCourts = [
-    { id: '1', name: 'Center Court', venueId: '1' },
-    { id: '2', name: 'Court 1', venueId: '1' },
-    { id: '3', name: 'Court 2', venueId: '1' },
-    { id: '4', name: 'Pickleball Court A', venueId: '2' },
-    { id: '5', name: 'Court 1', venueId: '2' },
-    { id: '6', name: 'Premium Court', venueId: '3' },
-  ]
+  const loadData = async () => {
+    try {
+      setLoading(true)
+      const [partnerVenues, partnerCourts] = await Promise.all([
+        getPartnerVenues(),
+        getPartnerCourts()
+      ])
+      
+      // Transform venues data for the overlay
+      const transformedVenues = partnerVenues.map(venue => ({
+        id: venue.id,
+        name: venue.name
+      }))
+      
+      // Transform courts data for the overlay (add venueId field)
+      const transformedCourts = partnerCourts.map(court => ({
+        id: court.id,
+        name: court.name,
+        venueId: court.venue_id // Transform venue_id to venueId for overlay compatibility
+      }))
+      
+      setVenues(transformedVenues)
+      setCourts(transformedCourts)
+      // TODO: Load matches when we have the matches API
+      setMatches([])
+    } catch (error) {
+      console.error('Error loading data:', error)
+      toast({
+        title: "Error",
+        description: "Failed to load venues and courts",
+        variant: "destructive",
+      })
+    } finally {
+      setLoading(false)
+    }
+  }
 
   const handleMatchSubmit = (matchData: any) => {
     console.log('New match data:', matchData)
     // Here you would typically send the data to your backend API
-    alert('Match created successfully! Check console for data.')
+    toast({
+      title: "Success!",
+      description: "Match created successfully!",
+    })
+    // TODO: Actually create the match and reload data
+    // loadData()
   }
 
   const MatchCard = ({ match }: any) => (
@@ -167,6 +204,40 @@ export default function MatchesPage() {
             <p className="text-gray-400">Loading matches...</p>
           </div>
         </div>
+      ) : venues.length === 0 ? (
+        /* No venues - can't create matches without venues */
+        <div className="text-center py-12">
+          <div className="rounded-3xl p-8 max-w-md mx-auto" style={{
+            background: 'rgba(69, 104, 130, 0.1)',
+            border: '1px solid rgba(69, 104, 130, 0.2)',
+            backdropFilter: 'blur(20px)'
+          }}>
+            <div className="mb-6">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center" style={{
+                background: 'rgba(69, 104, 130, 0.2)'
+              }}>
+                <MapPin className="h-8 w-8" style={{ color: '#456882' }} />
+              </div>
+              <h3 className="text-xl font-bold text-white mb-2">No Venues Found</h3>
+              <p className="text-gray-400 mb-6">
+                You need to create a venue first before you can organize matches. Matches are held at venues.
+              </p>
+              <motion.button
+                onClick={() => window.location.href = '/partner/dashboard/venues'}
+                className="text-white px-6 py-3 rounded-2xl flex items-center font-bold text-sm mx-auto"
+                style={{
+                  background: '#456882',
+                  boxShadow: '0 8px 24px rgba(69, 104, 130, 0.4)'
+                }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                <Plus className="h-4 w-4 mr-2" />
+                CREATE VENUE FIRST
+              </motion.button>
+            </div>
+          </div>
+        </div>
       ) : matches.length === 0 ? (
         /* No matches yet */
         <div className="text-center py-12">
@@ -234,8 +305,8 @@ export default function MatchesPage() {
         isOpen={showCreateMatchOverlay}
         onClose={() => setShowCreateMatchOverlay(false)}
         onSubmit={handleMatchSubmit}
-        venues={mockVenues}
-        courts={mockCourts}
+        venues={venues}
+        courts={courts}
       />
     </div>
   )
