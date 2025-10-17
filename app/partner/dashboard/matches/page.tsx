@@ -14,7 +14,8 @@ import {
   MoreHorizontal
 } from 'lucide-react'
 import { CreateMatchOverlay } from '@/components/partner/overlays'
-
+import { useTheme } from '@/components/partner/layout/ThemeProvider'
+import { getThemeColors, themeColors } from '@/lib/theme-colors'
 export default function MatchesPage() {
   const { theme } = useTheme()
   const colors = getThemeColors(theme)

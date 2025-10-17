@@ -16,6 +16,8 @@ import { AddCourtOverlay } from '@/components/partner/overlays'
 import { getPartnerVenues } from '@/lib/supabase/venues'
 import { createCourt, getPartnerCourts, toggleCourtStatus, deleteCourt, updateCourt, CourtData } from '@/lib/supabase/courts'
 import { useToast } from '@/hooks/use-toast'
+import { useTheme } from '@/components/partner/layout/ThemeProvider'
+import { getThemeColors, themeColors } from '@/lib/theme-colors'
 import {
   DropdownMenu,
   DropdownMenuContent,
