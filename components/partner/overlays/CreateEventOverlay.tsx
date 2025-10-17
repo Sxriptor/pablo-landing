@@ -46,7 +46,7 @@ export function CreateEventOverlay({
     entryFee: '',
     prizePool: '',
     registrationDeadline: '',
-    skillLevel: 'all',
+    skillLevel: 'all_levels',
     format: '',
     sportFormatId: '',
     rules: '',
@@ -64,13 +64,21 @@ export function CreateEventOverlay({
     description: string
   }>>([])
   const [loading, setLoading] = useState(false)
+  const [fetchedVenues, setFetchedVenues] = useState<Array<{ id: string; name: string }>>([])
+  const [fetchedCourts, setFetchedCourts] = useState<Array<{ id: string; name: string; venueId: string; venue_id: string }>>([])
+  const [loadingVenues, setLoadingVenues] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
 
   const eventTypes = [
     { value: 'tournament', label: 'Tournament' },
     { value: 'league', label: 'League' },
     { value: 'clinic', label: 'Clinic' },
+    { value: 'lesson', label: 'Lesson' },
     { value: 'social', label: 'Social Event' },
-    { value: 'exhibition', label: 'Exhibition Match' },
+    { value: 'camp', label: 'Camp' },
+    { value: 'workshop', label: 'Workshop' },
+    { value: 'class', label: 'Class' },
+    { value: 'match', label: 'Match' },
   ]
 
   const sportOptions = [
@@ -83,12 +91,90 @@ export function CreateEventOverlay({
   ]
 
   const skillLevels = [
-    { value: 'all', label: 'All Levels' },
+    { value: 'all_levels', label: 'All Levels' },
     { value: 'beginner', label: 'Beginner' },
     { value: 'intermediate', label: 'Intermediate' },
     { value: 'advanced', label: 'Advanced' },
-    { value: 'professional', label: 'Professional' },
+    { value: 'Expert', label: 'Expert' },
   ]
+
+  // Fetch partner's venues and courts when overlay opens
+  useEffect(() => {
+    const fetchVenuesAndCourts = async () => {
+      if (!isOpen) return
+
+      setLoadingVenues(true)
+      try {
+        // Get current user
+        const { data: { user } } = await supabase.auth.getUser()
+        if (!user) {
+          console.error('No authenticated user')
+          return
+        }
+
+        // Get partner ID for this user
+        const { data: partner, error: partnerError } = await supabase
+          .from('partners')
+          .select('id')
+          .eq('user_id', user.id)
+          .single()
+
+        if (partnerError) {
+          console.error('Error fetching partner:', partnerError)
+          return
+        }
+
+        if (!partner) {
+          console.error('No partner found for user')
+          return
+        }
+
+        // Fetch venues for this partner
+        const { data: venuesData, error: venuesError } = await supabase
+          .from('venues')
+          .select('id, name')
+          .eq('partner_id', partner.id)
+          .order('name', { ascending: true })
+
+        if (venuesError) {
+          console.error('Error fetching venues:', venuesError)
+          return
+        }
+
+        console.log('Fetched venues:', venuesData)
+        setFetchedVenues(venuesData || [])
+
+        // Fetch all courts for this partner's venues
+        if (venuesData && venuesData.length > 0) {
+          const venueIds = venuesData.map(v => v.id)
+          const { data: courtsData, error: courtsError } = await supabase
+            .from('courts')
+            .select('id, name, venue_id')
+            .in('venue_id', venueIds)
+            .order('name', { ascending: true })
+
+          if (courtsError) {
+            console.error('Error fetching courts:', courtsError)
+            return
+          }
+
+          console.log('Fetched courts:', courtsData)
+          // Map venue_id to venueId for compatibility
+          const mappedCourts = courtsData?.map(court => ({
+            ...court,
+            venueId: court.venue_id
+          })) || []
+          setFetchedCourts(mappedCourts)
+        }
+      } catch (err) {
+        console.error('Error in fetchVenuesAndCourts:', err)
+      } finally {
+        setLoadingVenues(false)
+      }
+    }
+
+    fetchVenuesAndCourts()
+  }, [isOpen])
 
   // Fetch sport formats when sport changes
   useEffect(() => {
@@ -166,7 +252,16 @@ export function CreateEventOverlay({
         sportFormatId: '',
         maxParticipants: ''
       }))
-    } else {
+    }
+    // If venue changes, reset court selection
+    else if (field === 'venueId') {
+      setFormData(prev => ({
+        ...prev,
+        [field]: value,
+        courtIds: []
+      }))
+    }
+    else {
       setFormData(prev => ({ ...prev, [field]: value }))
     }
   }
@@ -207,35 +302,152 @@ export function CreateEventOverlay({
     }))
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    onSubmit(formData)
-    onClose()
-    // Reset form
-    setFormData({
-      title: '',
-      description: '',
-      eventType: 'tournament',
-      sport: 'tennis',
-      venueId: '',
-      courtIds: [],
-      startDate: '',
-      endDate: '',
-      startTime: '',
-      endTime: '',
-      maxParticipants: '',
-      entryFee: '',
-      prizePool: '',
-      registrationDeadline: '',
-      skillLevel: 'all',
-      format: '',
-      sportFormatId: '',
-      rules: '',
-      requirements: [],
-    })
+    setSubmitting(true)
+
+    try {
+      // Get current user
+      const { data: { user }, error: userError } = await supabase.auth.getUser()
+      if (userError || !user) {
+        console.error('Error getting user:', userError)
+        alert('You must be logged in to create events')
+        return
+      }
+
+      // Get partner ID for this user
+      const { data: partner, error: partnerError } = await supabase
+        .from('partners')
+        .select('id')
+        .eq('user_id', user.id)
+        .single()
+
+      if (partnerError || !partner) {
+        console.error('Error fetching partner:', partnerError)
+        alert('Partner account not found')
+        return
+      }
+
+      // Combine date and time into timestamps
+      const startTimestamp = formData.startDate && formData.startTime
+        ? new Date(`${formData.startDate}T${formData.startTime}`).toISOString()
+        : null
+
+      const endTimestamp = formData.endDate && formData.endTime
+        ? new Date(`${formData.endDate}T${formData.endTime}`).toISOString()
+        : null
+
+      const registrationDeadlineTimestamp = formData.registrationDeadline
+        ? new Date(formData.registrationDeadline).toISOString()
+        : null
+
+      // Prepare event data matching the database schema
+      const eventData = {
+        // Required fields
+        partner_id: partner.id,
+        venue_id: formData.venueId,
+        sport: formData.sport,
+        event_type: formData.eventType,
+        name: formData.title,
+
+        // Sport format
+        sport_format_id: formData.sportFormatId || null,
+        match_format: formData.format || null,
+
+        // Event details
+        title: formData.title, // Alias for mobile app
+        description: formData.description || null,
+
+        // Scheduling
+        start_date: formData.startDate,
+        end_date: formData.endDate,
+        start_time: formData.startTime,
+        end_time: formData.endTime,
+        start_timestamp: startTimestamp,
+        end_timestamp: endTimestamp,
+
+        // Participation and pricing
+        capacity: parseInt(formData.maxParticipants) || 0,
+        max_participants: parseInt(formData.maxParticipants) || null, // Alias
+        price: parseFloat(formData.entryFee) || 0,
+
+        // Registration
+        registration_deadline: registrationDeadlineTimestamp,
+        registration_closes: registrationDeadlineTimestamp,
+
+        // Requirements and details
+        skill_level: formData.skillLevel,
+        requirements: formData.requirements.length > 0 ? formData.requirements : null,
+
+        // Status
+        status: 'published', // Set to published so it's visible
+
+        // Equipment handling
+        equipment_provided: formData.requirements.includes('Equipment Provided'),
+        equipment_required: formData.requirements.includes('Bring Own Equipment')
+          ? 'Please bring your own equipment'
+          : null
+      }
+
+      console.log('Creating event with data:', eventData)
+
+      // Insert event into database
+      const { data: newEvent, error: insertError } = await supabase
+        .from('events')
+        .insert([eventData])
+        .select()
+        .single()
+
+      if (insertError) {
+        console.error('Error creating event:', insertError)
+        alert(`Failed to create event: ${insertError.message}`)
+        return
+      }
+
+      console.log('Event created successfully:', newEvent)
+
+      // Call the onSubmit callback if provided (for parent component updates)
+      onSubmit(formData)
+
+      // Show success message
+      alert('Event created successfully!')
+
+      // Close and reset form
+      onClose()
+      setFormData({
+        title: '',
+        description: '',
+        eventType: 'tournament',
+        sport: 'tennis',
+        venueId: '',
+        courtIds: [],
+        startDate: '',
+        endDate: '',
+        startTime: '',
+        endTime: '',
+        maxParticipants: '',
+        entryFee: '',
+        prizePool: '',
+        registrationDeadline: '',
+        skillLevel: 'all_levels',
+        format: '',
+        sportFormatId: '',
+        rules: '',
+        requirements: [],
+      })
+    } catch (error) {
+      console.error('Error in handleSubmit:', error)
+      alert('An unexpected error occurred while creating the event')
+    } finally {
+      setSubmitting(false)
+    }
   }
 
-  const availableCourts = courts.filter(court => 
+  // Use fetched venues/courts if available, otherwise use props
+  const displayVenues = fetchedVenues.length > 0 ? fetchedVenues : venues
+  const displayCourts = fetchedCourts.length > 0 ? fetchedCourts : courts
+
+  const availableCourts = displayCourts.filter(court =>
     formData.venueId ? court.venueId === formData.venueId : true
   )
 
@@ -367,46 +579,60 @@ export function CreateEventOverlay({
                 value={formData.venueId}
                 onChange={(e) => handleInputChange('venueId', e.target.value)}
                 required
-                className="w-full h-9 px-3 py-1 rounded-md bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                disabled={loadingVenues}
+                className="w-full h-9 px-3 py-1 rounded-md bg-white/5 border border-white/10 text-white focus:outline-none focus:ring-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
               >
-                <option value="">Select a venue</option>
-                {venues.map((venue) => (
+                <option value="">
+                  {loadingVenues ? 'Loading venues...' : displayVenues.length === 0 ? 'No venues available' : 'Select a venue'}
+                </option>
+                {displayVenues.map((venue) => (
                   <option key={venue.id} value={venue.id} className="bg-gray-800">
                     {venue.name}
                   </option>
                 ))}
               </select>
+              {!loadingVenues && displayVenues.length === 0 && (
+                <p className="text-xs text-yellow-400 mt-1">
+                  Please create a venue first before creating events
+                </p>
+              )}
             </div>
 
-            {formData.venueId && availableCourts.length > 0 && (
+            {formData.venueId && (
               <div>
                 <label className="block text-sm font-medium text-gray-300 mb-2">
-                  Courts (Select one or more)
+                  Courts (Optional - Select one or more)
                 </label>
-                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                  {availableCourts.map((court) => (
-                    <button
-                      key={court.id}
-                      type="button"
-                      onClick={() => handleCourtSelection(court.id)}
-                      className={`p-3 rounded-xl text-sm font-medium transition-all ${
-                        formData.courtIds.includes(court.id)
-                          ? 'text-white'
-                          : 'text-gray-400 hover:text-white'
-                      }`}
-                      style={{
-                        background: formData.courtIds.includes(court.id)
-                          ? '#456882'
-                          : 'rgba(69, 104, 130, 0.1)',
-                        border: `1px solid ${formData.courtIds.includes(court.id)
-                          ? '#456882'
-                          : 'rgba(69, 104, 130, 0.2)'}`
-                      }}
-                    >
-                      {court.name}
-                    </button>
-                  ))}
-                </div>
+                {availableCourts.length > 0 ? (
+                  <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
+                    {availableCourts.map((court) => (
+                      <button
+                        key={court.id}
+                        type="button"
+                        onClick={() => handleCourtSelection(court.id)}
+                        className={`p-3 rounded-xl text-sm font-medium transition-all ${
+                          formData.courtIds.includes(court.id)
+                            ? 'text-white'
+                            : 'text-gray-400 hover:text-white'
+                        }`}
+                        style={{
+                          background: formData.courtIds.includes(court.id)
+                            ? '#456882'
+                            : 'rgba(69, 104, 130, 0.1)',
+                          border: `1px solid ${formData.courtIds.includes(court.id)
+                            ? '#456882'
+                            : 'rgba(69, 104, 130, 0.2)'}`
+                        }}
+                      >
+                        {court.name}
+                      </button>
+                    ))}
+                  </div>
+                ) : (
+                  <p className="text-sm text-gray-400 p-4 bg-white/5 rounded-lg border border-white/10">
+                    No courts available for this venue. You can still create the event without specific court assignments.
+                  </p>
+                )}
               </div>
             )}
           </div>
@@ -633,13 +859,14 @@ export function CreateEventOverlay({
             </Button>
             <Button
               type="submit"
-              className="text-white"
+              disabled={submitting}
+              className="text-white disabled:opacity-50 disabled:cursor-not-allowed"
               style={{
                 background: '#456882',
                 boxShadow: '0 4px 12px rgba(69, 104, 130, 0.3)'
               }}
             >
-              Create Event
+              {submitting ? 'Creating Event...' : 'Create Event'}
             </Button>
           </div>
         </form>

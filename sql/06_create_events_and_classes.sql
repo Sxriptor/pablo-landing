@@ -267,41 +267,92 @@ CREATE POLICY "Allow anonymous read access to events"
   USING (true);
 
 -- Authenticated partners can insert their own events
+-- Validates both partner_id and venue_id ownership
 CREATE POLICY "Allow authenticated partners to insert events"
   ON events
   FOR INSERT
-  TO authenticated
+  TO public
   WITH CHECK (
-    auth.uid() IN (
-      SELECT user_id FROM partners WHERE id = partner_id
-    )
+    (auth.role() = 'authenticated'::text) AND
+    (EXISTS (
+      SELECT 1
+      FROM partners p
+      WHERE p.user_id = auth.uid()
+        AND p.id = partner_id
+    )) AND
+    (EXISTS (
+      SELECT 1
+      FROM venues v
+      WHERE v.id = venue_id
+        AND v.partner_id IN (
+          SELECT id FROM partners WHERE user_id = auth.uid()
+        )
+    ))
   );
 
 -- Authenticated partners can update their own events
+-- Validates partner_id and venue_id ownership
 CREATE POLICY "Allow authenticated partners to update their events"
   ON events
   FOR UPDATE
-  TO authenticated
+  TO public
   USING (
-    auth.uid() IN (
-      SELECT user_id FROM partners WHERE id = partner_id
-    )
+    (auth.role() = 'authenticated'::text) AND
+    (EXISTS (
+      SELECT 1
+      FROM partners p
+      WHERE p.user_id = auth.uid()
+        AND p.id = events.partner_id
+    )) AND
+    (EXISTS (
+      SELECT 1
+      FROM venues v
+      WHERE v.id = events.venue_id
+        AND v.partner_id IN (
+          SELECT id FROM partners WHERE user_id = auth.uid()
+        )
+    ))
   )
   WITH CHECK (
-    auth.uid() IN (
-      SELECT user_id FROM partners WHERE id = partner_id
-    )
+    (auth.role() = 'authenticated'::text) AND
+    (EXISTS (
+      SELECT 1
+      FROM partners p
+      WHERE p.user_id = auth.uid()
+        AND p.id = partner_id
+    )) AND
+    (EXISTS (
+      SELECT 1
+      FROM venues v
+      WHERE v.id = venue_id
+        AND v.partner_id IN (
+          SELECT id FROM partners WHERE user_id = auth.uid()
+        )
+    ))
   );
 
 -- Authenticated partners can delete their own events
+-- Validates partner_id and venue_id ownership
 CREATE POLICY "Allow authenticated partners to delete their events"
   ON events
   FOR DELETE
-  TO authenticated
+  TO public
   USING (
-    auth.uid() IN (
-      SELECT user_id FROM partners WHERE id = partner_id
-    )
+    (auth.role() = 'authenticated'::text) AND
+    (EXISTS (
+      SELECT 1
+      FROM partners p
+      WHERE p.user_id = auth.uid()
+        AND p.id = events.partner_id
+    )) AND
+    (EXISTS (
+      SELECT 1
+      FROM venues v
+      WHERE v.id = events.venue_id
+        AND v.partner_id IN (
+          SELECT id FROM partners WHERE user_id = auth.uid()
+        )
+    ))
   );
 
 -- RLS Policies for event_types table
