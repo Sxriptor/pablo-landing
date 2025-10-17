@@ -1,7 +1,11 @@
 import { createClient } from '@supabase/supabase-js'
 
-export const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co'
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-key'
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
+
+if (!supabaseUrl || !supabaseAnonKey) {
+  throw new Error('Missing Supabase environment variables. Please check your .env.local file.')
+}
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 
@@ -9,6 +13,32 @@ export const supabase = createClient(supabaseUrl, supabaseAnonKey)
 export interface Database {
   public: {
     Tables: {
+      profiles: {
+        Row: {
+          id: string
+          username: string
+          full_name: string | null
+          partner: boolean
+          created_at: string
+          updated_at: string
+        }
+        Insert: {
+          id: string
+          username: string
+          full_name?: string | null
+          partner?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+        Update: {
+          id?: string
+          username?: string
+          full_name?: string | null
+          partner?: boolean
+          created_at?: string
+          updated_at?: string
+        }
+      }
       partners: {
         Row: {
           id: string

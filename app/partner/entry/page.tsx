@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { motion } from "framer-motion"
 import Image from 'next/image'
+import { supabase } from '@/lib/supabase'
 
 export default function PartnerEntryPage() {
   const [isSignUp, setIsSignUp] = useState(false)
@@ -20,21 +21,52 @@ export default function PartnerEntryPage() {
     setLoading(true)
     setError('')
 
-    // Dev bypass code
-    if (password === '8891') {
-      setTimeout(() => {
-        // Redirect to the partner dashboard
-        window.location.href = '/partner/dashboard'
-        setLoading(false)
-      }, 1000)
-      return
-    }
+    try {
+      // Sign in with Supabase
+      const { data: authData, error: authError } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+      })
 
-    // For now, show a message about the partner dashboard being in development
-    setTimeout(() => {
-      setError('Partner Dashboard is currently in development. Please check back soon! (Use code 8891 for demo)')
+      if (authError) {
+        setError(authError.message)
+        setLoading(false)
+        return
+      }
+
+      if (!authData.user) {
+        setError('Failed to sign in. Please try again.')
+        setLoading(false)
+        return
+      }
+
+      // Check if user is a partner
+      const { data: profileData, error: profileError } = await supabase
+        .from('profiles')
+        .select('partner')
+        .eq('id', authData.user.id)
+        .single()
+
+      if (profileError) {
+        setError('Failed to verify partner status: ' + profileError.message)
+        await supabase.auth.signOut()
+        setLoading(false)
+        return
+      }
+
+      if (!profileData || !profileData.partner) {
+        setError('This account is not registered as a partner. Please contact support.')
+        await supabase.auth.signOut()
+        setLoading(false)
+        return
+      }
+
+      // Redirect to partner dashboard
+      window.location.href = '/partner/dashboard'
+    } catch (err: any) {
+      setError(err.message || 'An error occurred during sign in')
       setLoading(false)
-    }, 1000)
+    }
   }
 
   const handleSignUp = async (e: React.FormEvent) => {
@@ -49,11 +81,57 @@ export default function PartnerEntryPage() {
       return
     }
 
-    // For now, show a message about signup being in development
-    setTimeout(() => {
-      setError('Partner sign up is currently in development. Please check back soon!')
+    try {
+      // Sign up with Supabase Auth
+      const { data: authData, error: authError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: {
+            full_name: fullName,
+            company_name: companyName,
+          }
+        }
+      })
+
+      if (authError) {
+        setError(authError.message)
+        setLoading(false)
+        return
+      }
+
+      if (!authData.user) {
+        setError('Failed to create account. Please try again.')
+        setLoading(false)
+        return
+      }
+
+      // Update profile to set partner = true
+      const { error: profileError } = await supabase
+        .from('profiles')
+        .update({
+          partner: true,
+          full_name: fullName,
+        })
+        .eq('id', authData.user.id)
+
+      if (profileError) {
+        setError('Failed to update partner status: ' + profileError.message)
+        setLoading(false)
+        return
+      }
+
+      // Success - show message
+      setError('')
+      alert('Account created successfully! You can now sign in with your credentials.')
+
+      // Switch to sign in view
+      switchToSignIn()
+
+    } catch (err: any) {
+      setError(err.message || 'An error occurred during sign up')
       setLoading(false)
-    }, 1000)
+    }
   }
 
   const switchToSignUp = () => {
@@ -549,33 +627,6 @@ export default function PartnerEntryPage() {
             </motion.p>
           </motion.div>
 
-          {/* Development Notice - Only for Sign In */}
-          {!isSignUp && (
-            <motion.div
-              className="mt-6 p-3 rounded-lg bg-yellow-500/20 border border-yellow-500/30 text-yellow-300 text-xs text-center"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6, delay: 1.4 }}
-              style={{
-                willChange: 'transform',
-                backfaceVisibility: 'hidden'
-              }}
-            >
-              <motion.p
-                animate={{
-                  x: [0, 1, 1.5, 1, 0, -1, -1.5, -1, 0],
-                  y: [0, -0.5, 0, 0.5, 0.5, 0.5, 0, -0.5, 0]
-                }}
-                transition={{
-                  duration: 13,
-                  repeat: Infinity,
-                  ease: "easeInOut"
-                }}
-              >
-                Development Notice: Use code 8891 for demo access
-              </motion.p>
-            </motion.div>
-          )}
         </div>
       </div>
     </div>
