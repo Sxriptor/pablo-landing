@@ -18,6 +18,7 @@ import { useTheme } from '@/components/partner/layout/ThemeProvider'
 import { getThemeColors, themeColors } from '@/lib/theme-colors'
 import { getPartnerVenues } from '@/lib/supabase/venues'
 import { getPartnerCourts } from '@/lib/supabase/courts'
+import { createMatch, getPartnerMatches, MatchData } from '@/lib/supabase/matches'
 import { useToast } from '@/hooks/use-toast'
 export default function MatchesPage() {
   const { theme } = useTheme()
@@ -37,9 +38,10 @@ export default function MatchesPage() {
   const loadData = async () => {
     try {
       setLoading(true)
-      const [partnerVenues, partnerCourts] = await Promise.all([
+      const [partnerVenues, partnerCourts, partnerMatches] = await Promise.all([
         getPartnerVenues(),
-        getPartnerCourts()
+        getPartnerCourts(),
+        getPartnerMatches()
       ])
       
       // Transform venues data for the overlay
@@ -57,13 +59,12 @@ export default function MatchesPage() {
       
       setVenues(transformedVenues)
       setCourts(transformedCourts)
-      // TODO: Load matches when we have the matches API
-      setMatches([])
+      setMatches(partnerMatches)
     } catch (error) {
       console.error('Error loading data:', error)
       toast({
         title: "Error",
-        description: "Failed to load venues and courts",
+        description: "Failed to load data",
         variant: "destructive",
       })
     } finally {
@@ -71,15 +72,35 @@ export default function MatchesPage() {
     }
   }
 
-  const handleMatchSubmit = (matchData: any) => {
+  const handleMatchSubmit = async (matchData: MatchData) => {
     console.log('New match data:', matchData)
-    // Here you would typically send the data to your backend API
-    toast({
-      title: "Success!",
-      description: "Match created successfully!",
-    })
-    // TODO: Actually create the match and reload data
-    // loadData()
+    
+    try {
+      const result = await createMatch(matchData)
+
+      if (result.success) {
+        toast({
+          title: "Success!",
+          description: "Match created successfully!",
+        })
+        console.log('Match creation result:', result.match)
+        // Reload data to show the new match
+        loadData()
+      } else {
+        toast({
+          title: "Error",
+          description: result.error || "Failed to create match",
+          variant: "destructive",
+        })
+      }
+    } catch (error) {
+      console.error('Error creating match:', error)
+      toast({
+        title: "Error",
+        description: "An unexpected error occurred",
+        variant: "destructive",
+      })
+    }
   }
 
   const MatchCard = ({ match }: any) => (
