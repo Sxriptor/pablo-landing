@@ -1,6 +1,7 @@
 interface GeocodeResult {
   latitude: number
   longitude: number
+  displayName: string
 }
 
 interface NominatimResponse {
@@ -21,29 +22,28 @@ export async function geocodeAddress(
   country: string = 'US'
 ): Promise<GeocodeResult | null> {
   try {
-    // Build the search query with all address components
-    const searchParams: Record<string, string> = {
-      street: address,
-      city,
-      state,
-      country,
-      format: 'json',
-      limit: '1'
-    }
-
+    // Build a combined query string for more accurate results
+    // Format: "street, city, state postalcode"
+    let queryString = `${address}, ${city}, ${state}`
     if (postalCode) {
-      searchParams.postalcode = postalCode
+      queryString += ` ${postalCode}`
     }
 
     const nominatimUrl =
       `https://nominatim.openstreetmap.org/search?` +
-      new URLSearchParams(searchParams)
+      new URLSearchParams({
+        q: queryString,
+        format: 'json',
+        limit: '1',
+        countrycodes: country.toLowerCase()
+      })
 
-    console.log(`Geocoding address: ${address}, ${city}, ${state} ${postalCode || ''}`)
+    console.log(`Geocoding address: ${queryString}`)
+    console.log(`Request URL: ${nominatimUrl}`)
 
     const response = await fetch(nominatimUrl, {
       headers: {
-        'User-Agent': 'PlayCircle/1.0 (contact@playcircle.com)'
+        'User-Agent': 'PlayCircle/1.0 (contact@playcircleapp.com)'
       }
     })
 
@@ -55,19 +55,21 @@ export async function geocodeAddress(
     const data = await response.json() as NominatimResponse[]
 
     if (!data || data.length === 0) {
-      console.error(`No geocoding results found for address: ${address}, ${city}, ${state}`)
+      console.error(`No geocoding results found for: ${queryString}`)
       return null
     }
 
     const latitude = parseFloat(data[0].lat)
     const longitude = parseFloat(data[0].lon)
 
-    console.log(`✓ Geocoded to: ${latitude}, ${longitude}`)
-    console.log(`  Full location: ${data[0].display_name}`)
+    console.log(`✓ Geocoded successfully!`)
+    console.log(`  Coordinates: ${latitude}, ${longitude}`)
+    console.log(`  Matched location: ${data[0].display_name}`)
 
     return {
       latitude,
-      longitude
+      longitude,
+      displayName: data[0].display_name
     }
   } catch (error) {
     console.error('Error geocoding address:', error)
