@@ -1,4 +1,5 @@
 import { createClient } from '@supabase/supabase-js'
+import { geocodeAddress } from '../geocoding'
 
 const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!
 const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
@@ -88,15 +89,25 @@ export async function getCurrentPartner(): Promise<Partner | null> {
 export async function updateVenue(venueId: string, venueData: VenueData): Promise<{ success: boolean; error?: string; venue?: any }> {
   try {
     console.log('Starting venue update with data:', venueData)
-    
+
     // Get current partner
     const partner = await getCurrentPartner()
     console.log('Current partner:', partner)
-    
+
     if (!partner) {
       console.error('No partner found')
       return { success: false, error: 'No partner found. Please ensure you are logged in as a partner.' }
     }
+
+    // Geocode the address to get latitude and longitude
+    console.log('Geocoding venue address...')
+    const geocodeResult = await geocodeAddress(
+      venueData.address,
+      venueData.city,
+      venueData.state,
+      venueData.zipCode,
+      'US'
+    )
 
     // Prepare venue data for database
     const venuePayload = {
@@ -111,6 +122,8 @@ export async function updateVenue(venueId: string, venueData: VenueData): Promis
       description: venueData.description || null,
       amenities: venueData.amenities,
       operating_hours: venueData.operatingHours,
+      latitude: geocodeResult?.latitude || null,
+      longitude: geocodeResult?.longitude || null,
       updated_at: new Date().toISOString()
     }
 
@@ -160,15 +173,25 @@ export async function updateVenue(venueId: string, venueData: VenueData): Promis
 export async function createVenue(venueData: VenueData): Promise<{ success: boolean; error?: string; venue?: any }> {
   try {
     console.log('Starting venue creation with data:', venueData)
-    
+
     // Get current partner
     const partner = await getCurrentPartner()
     console.log('Current partner:', partner)
-    
+
     if (!partner) {
       console.error('No partner found')
       return { success: false, error: 'No partner found. Please ensure you are logged in as a partner.' }
     }
+
+    // Geocode the address to get latitude and longitude
+    console.log('Geocoding venue address...')
+    const geocodeResult = await geocodeAddress(
+      venueData.address,
+      venueData.city,
+      venueData.state,
+      venueData.zipCode,
+      'US'
+    )
 
     // Prepare venue data for database
     const venuePayload = {
@@ -185,6 +208,8 @@ export async function createVenue(venueData: VenueData): Promise<{ success: bool
       description: venueData.description || null,
       amenities: venueData.amenities,
       operating_hours: venueData.operatingHours,
+      latitude: geocodeResult?.latitude || null,
+      longitude: geocodeResult?.longitude || null,
       active: true
     }
 
