@@ -22,21 +22,27 @@ export async function POST(request: NextRequest) {
       process.env.USER_ADMIN2,
     ].filter(Boolean);
 
-    // Email content
-    const emailHtml = `
-      <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
-        <h2 style="color: #333;">New Partner Application Submitted</h2>
-        <p>A new partner application is waiting for your review.</p>
+// Email content
+const emailHtml = `
+  <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+    <h2 style="color: #333;">New Partner Application Submitted</h2>
+    <p>A new partner application is waiting for your review.</p>
 
-        <div style="background-color: #f5f5f5; padding: 20px; border-radius: 5px; margin: 20px 0;">
-          <p><strong>Company Name:</strong> ${company_name}</p>
-          <p><strong>Contact Person:</strong> ${contact_person}</p>
-          <p><strong>Email:</strong> ${email}</p>
-        </div>
+    <div style="background-color: #f5f5f5; padding: 20px; border-radius: 5px; margin: 20px 0;">
+      <p><strong>Company Name:</strong> ${company_name}</p>
+      <p><strong>Contact Person:</strong> ${contact_person}</p>
+      <p><strong>Email:</strong> ${email}</p>
+    </div>
 
-        <p>Please log in to the admin dashboard to review this application.</p>
-      </div>
-    `;
+    <p>
+      Please log in to the admin dashboard to review this application:<br />
+      <a href="https://panel.playcircleapp.com" target="_blank" rel="noopener noreferrer" style="color: #007bff; text-decoration: none;">
+        panel.playcircleapp.com
+      </a>
+    </p>
+  </div>
+`;
+
 
     // Send email to both admins
     // Authenticate with no-reply but send from partner alias
