@@ -305,7 +305,8 @@ export default function PartnerEntryPage() {
         })
 
       if (createError) {
-        setError('Failed to create application: ' + createError.message)
+        console.error('Supabase error details:', createError)
+        setError('Failed to create application: ' + createError.message + (createError.hint ? ' (' + createError.hint + ')' : ''))
         setLoading(false)
         return
       }
@@ -314,6 +315,7 @@ export default function PartnerEntryPage() {
       setShowApplicationForm(true)
       setLoading(false)
     } catch (err: any) {
+      console.error('Caught error:', err)
       setError(err.message || 'An error occurred')
       setLoading(false)
     }
