@@ -34,7 +34,7 @@ export function CreateClassOverlay({
   const [formData, setFormData] = useState({
     title: '',
     description: '',
-    classType: 'group',
+    classType: 'clinic',
     sport: 'tennis',
     accessType: 'reserve',
     venueId: '',
@@ -74,7 +74,7 @@ export function CreateClassOverlay({
       setFormData({
         title: '',
         description: '',
-        classType: 'group',
+        classType: 'clinic',
         sport: 'tennis',
         accessType: 'reserve',
         venueId: '',
@@ -108,11 +108,10 @@ export function CreateClassOverlay({
   }, [editingClass])
 
   const classTypes = [
-    { value: 'group', label: 'Group Class' },
-    { value: 'private', label: 'Private Lesson' },
-    { value: 'semi-private', label: 'Semi-Private (2-3 people)' },
     { value: 'clinic', label: 'Clinic' },
     { value: 'camp', label: 'Camp' },
+    { value: 'workshop', label: 'Workshop' },
+    { value: 'class', label: 'Class' },
   ]
 
   const sportOptions = [
@@ -233,7 +232,7 @@ export function CreateClassOverlay({
     setFormData({
       title: '',
       description: '',
-      classType: 'group',
+      classType: 'clinic',
       sport: 'tennis',
       accessType: 'reserve',
       venueId: '',

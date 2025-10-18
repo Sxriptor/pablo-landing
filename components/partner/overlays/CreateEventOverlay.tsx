@@ -78,12 +78,7 @@ export function CreateEventOverlay({
   const eventTypes = [
     { value: 'tournament', label: 'Tournament' },
     { value: 'league', label: 'League' },
-    { value: 'clinic', label: 'Clinic' },
-    { value: 'lesson', label: 'Lesson' },
-    { value: 'social', label: 'Social Event' },
-    { value: 'camp', label: 'Camp' },
-    { value: 'workshop', label: 'Workshop' },
-    { value: 'class', label: 'Class' },
+    { value: 'social', label: 'Social' },
     { value: 'match', label: 'Match' },
   ]
 
